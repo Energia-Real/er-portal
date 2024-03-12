@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'GintoNord';
+    src: url('./assets/fonts/GintoNord-Regular.otf');
+}
+
+@font-face {
+    font-family: 'NeueMontreal';
+    src: url('./assets/fonts/NeueMontreal-Regular.otf');
+}
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+* {
+    font-family: 'NeueMontreal';
+}
