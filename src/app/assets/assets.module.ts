@@ -15,6 +15,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+
+const angularMaterial = [
+  MatMenuModule,
+  MatButtonModule,
+  MatIconModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatInputModule,
+  MatSelectModule
+];
 
 @NgModule({
   declarations: [
@@ -30,12 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormsModule,
     ReactiveFormsModule,
     LayoutModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule
+    ...angularMaterial
   ]
 })
 export class AssetsModule { }

@@ -1,1 +1,66 @@
-<p>edit works!</p>
+<mat-spinner *ngIf="showLoader"></mat-spinner>
+<div class="edit-asset-main-container" *ngIf="!showLoader">
+    <div class="edit-asset-form-container">
+        <div class="edit-asset-header-container">
+            <h1>Editar Planta</h1>
+            <p>Modifica los datos para editar la planta</p>
+        </div>
+        <div class="edit-asset-inputs-component">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-group-container mb-3 text-center">
+                    <h3>{{assetData.siteName}}</h3>
+                </div>
+
+                <div class="text-left grid">
+                    <mat-label class="mb-3">ID de cliente:</mat-label>
+                    <mat-form-field class="w-full" floatLabel="always" appearance="outline">
+                        <input type="email" 
+                            matInput
+                            formControlName="clientId"
+                            [errorStateMatcher]="matcher"
+                            placeholder="ID de cliente">
+                        @if (form.get('clientId')?.hasError('required')) {
+                            <mat-error>Debe agregar un ID de cliente es <strong>requerido</strong></mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <div class="text-left grid">
+                    <mat-label class="mb-3">ID de cliente:</mat-label>
+                    <mat-form-field class="w-full" floatLabel="always" appearance="outline">
+                        <mat-select>
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-group-container input-email-container">
+                    <p>Esquema de operación</p>
+                    <select id="operationScheme" formControlName="operationScheme" required
+                        placeholder="Esquema de operación">
+                        <option value="" disabled>Seleccione uno</option>
+                        <option value="Net Zero Export">Net Zero Export</option>
+                        <option value="Normal">Normal</option>
+                    </select>
+                    <div class="message-error">
+                        <p
+                            *ngIf="form.get('operationScheme')?.value == '' && (form.get('operationScheme')?.dirty || form.get('operationScheme')?.touched)">
+                            Debe agregar un esquema</p>
+                    </div>
+                </div>
+
+                <div class="button-container d-flex justify-content-between pt-3">
+                    <div>
+                        <button class="button-cancel" (click)="form.reset()" type="button">Cancelar</button>
+                    </div>
+                    <div>
+                        <span class="loader" *ngIf="loading"></span>
+                        <button class="button-primary" *ngIf="!loading" type="submit"
+                            [disabled]="form.invalid || buttonDisabled">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
