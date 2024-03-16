@@ -6,9 +6,10 @@ import { authGuard } from './_helpers/auth.guard';
 
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
 const assetsModule = () => import('./assets/assets.module').then(x => x.AssetsModule);
+const homeComponent = () => import('./home/home.component').then(x => x.HomeComponent);
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [authGuard] },
+  { path: '', loadComponent: homeComponent, canActivate: [authGuard] },
   { path: 'assets', loadChildren: assetsModule, canActivate: [authGuard] },
   { path: 'account', loadChildren: accountModule },
 
