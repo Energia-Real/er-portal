@@ -13,6 +13,5 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-* {
-    font-family: 'NeueMontreal';
-}
+html, body { height: 100%; }
+body { font-family: 'NeueMontreal', "Helvetica Neue", sans-serif; }

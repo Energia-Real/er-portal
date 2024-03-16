@@ -1,0 +1,100 @@
+<mat-spinner *ngIf="showLoader"></mat-spinner>
+<div class="px-16 pt-16" *ngIf="!showLoader">
+  <div class="mb-8">
+    <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
+      <div class="px-8 py-4 rounded-3xl border-2">
+        <h2 class="text-er-orange text-base font-normal" i18n>Plantas totales</h2>
+        <div class="grid md:grid-cols-4 gap-4 text-center">
+          <div class="border-r-2 ">
+            <h1>{{ dataSummary.noOfSites }}</h1>
+            <p class="text-sm" i18n># de sitios</p>
+          </div>
+          <div class="border-r-2">
+            <h1>{{ dataSummary.noOfInverters }}</h1>
+            <p class="text-sm" i18n># de inversores</p>
+          </div>
+          <div class="border-r-2">
+            <h1>{{ dataSummary.mWhInstalled | number:'1.2-2' }}</h1>
+            <p class="text-sm" i18n>MW instalados</p>
+          </div>
+          <div>
+            <h1>{{dataSummary.co2T}}</h1>
+            <p class="text-sm" i18n>Co2 T</p>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <form class="relative w-80 ms-auto">
+          <label class="search-icon">
+            <img src="./assets/icons/search.svg" alt="Icon Search">
+          </label>
+          <input class="mt-1 block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder placeholder="Buscar por nombre de sitio"
+            [(ngModel)]="searchValue" [ngModelOptions]="{ standalone: true }" (input)="searchData()">
+        </form>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <table mat-table [dataSource]="dataSource" class="table-assets">
+
+        <ng-container matColumnDef="siteName">
+          <th mat-header-cell *matHeaderCellDef i18n> Nombre del sitio </th>
+          <td mat-cell *matCellDef="let element" class="font-semibold"> {{ element.siteName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="clientId">
+          <th mat-header-cell *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let element"> {{ element.clientId || '-' }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="commissionDate">
+          <th mat-header-cell *matHeaderCellDef i18n> Fecha de comisión </th>
+          <td mat-cell *matCellDef="let element"> {{element.commissionDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="inverterQty">
+          <th mat-header-cell *matHeaderCellDef i18n> # de inversores </th>
+          <td mat-cell *matCellDef="let element"> {{element.inverterQty}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="systemSize">
+          <th mat-header-cell *matHeaderCellDef i18n> Tamaño de sistema </th>
+          <td mat-cell *matCellDef="let element"> {{element.systemSize}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="googleMapAdress">
+          <th mat-header-cell *matHeaderCellDef i18n> Dirección </th>
+          <td mat-cell *matCellDef="let element">
+            <a [href]="element.googleMapAdress" target="_blank">
+              {{element.googleMapAdress}}
+            </a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="navigate('/assets/edit/' + element.id)" i18n>Editar</button>
+              <button mat-menu-item (click)="navigate('/assets/details/' + element.id)" i18n>Detalle</button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
+      </table>
+
+      <mat-paginator
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="itemsPerPageOptions"
+        (page)="getServerData($event)" 
+        showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

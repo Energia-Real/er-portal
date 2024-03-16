@@ -10,6 +10,10 @@
           "es-MX": {
             "translation": "src/locale/messages.es.xlf",
             "baseHref": "es-MX/"
+          },
+          "en-MX": {
+            "translation": "src/locale/messages.en.xlf",
+            "baseHref": "en-MX/"
           }
         }
       },
@@ -47,6 +51,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -97,6 +102,9 @@
               "buildTarget": "er-backoffice-root-mf-mx:build:development"
             }
           },
+          "options": {
+            "port": 9000
+          },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
@@ -119,6 +127,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []

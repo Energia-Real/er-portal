@@ -2,11 +2,95 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="8492035355930446799" datatype="html">
-        <source>Ingresa tus datos para acceder al sitio</source>
+      <trans-unit id="5843792601150942349" datatype="html">
+        <source>Plantas totales</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/account/login/login.component.html</context>
-          <context context-type="linenumber">4,5</context>
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8746516477406827472" datatype="html">
+        <source># de sitios</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6148785385716425288" datatype="html">
+        <source># de inversores</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">14,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8309776195419145470" datatype="html">
+        <source>MW instalados</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8459533404022994182" datatype="html">
+        <source>Co2 T</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="574207328016014209" datatype="html">
+        <source>Buscar por nombre de sitio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8935958191734783544" datatype="html">
+        <source> Nombre del sitio </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9100784883236557142" datatype="html">
+        <source> Fecha de comisión </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">52,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7568179184632491298" datatype="html">
+        <source> # de inversores </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="21181715306413526" datatype="html">
+        <source> Tamaño de sistema </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1379356035188373214" datatype="html">
+        <source> Dirección </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2153980152639237955" datatype="html">
+        <source>Editar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">80,81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7341573395859226797" datatype="html">
+        <source>Detalle</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
+          <context context-type="linenumber">81,82</context>
         </context-group>
       </trans-unit>
     </body>
