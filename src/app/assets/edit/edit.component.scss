@@ -1,0 +1,47 @@
+.edit-asset-main-container{
+    padding: 7% 4% 4% 4%;
+    .edit-asset-form-container{
+      text-align: center;
+      width: 50%;
+      margin: 0 auto;
+      padding-top: 20px;
+      .edit-asset-header-container{
+        img{
+          margin-bottom: 20px;
+        }
+        h2{
+          margin-bottom: 20px;
+        }
+        p{
+          margin-bottom: 30px;
+        }
+      }
+      .edit-asset-inputs-component{
+        .form-group-container{
+          text-align: left;
+        }
+        input, select{
+          height: 45px;
+          width: 100%;
+        }
+        .button-container{
+          padding-top: 5px;
+        }
+      }
+    }
+  }
+  
+  .message-error {
+    color: #E30613;
+    min-height: 30px;
+    text-align: left;
+    p{
+      margin: 0;
+    }
+  }
+  
+  #error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+  }
