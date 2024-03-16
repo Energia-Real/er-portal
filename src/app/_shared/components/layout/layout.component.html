@@ -4,14 +4,21 @@
       <img src="./assets/svg/logo.svg" alt="Logo" style="width: 120px;">
     </a>
     <ul class="flex">
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 text-er-orange cursor-pointer">Home</a></li>
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer">Overview</a></li>
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer">Site details</a></li>
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer">Site performance</a></li>
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer">FAQ</a></li>
+      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive === '/' }">Home</a></li>
+      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">Overview</a></li>
+      <li class="mx-5"><a routerLink="/assets/management" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('assets') }">Site details</a></li>
+      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">Site performance</a></li>
+      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">FAQ</a></li>
     </ul>
     <div class="flex">
-      <button class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-4 py-1.5 inline-flex items-center border mr-3" type="button">
+      <button
+        class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-2 py-1.5 inline-flex items-center border mr-3"
+        type="button">
         <svg class="fill-current w-4 h-4 mr-2" width="14" height="14" viewBox="0 0 14 14" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <g id="bar-chart-2">
@@ -23,7 +30,9 @@
         </svg>
         <span>Automated reporting</span>
       </button>
-      <button class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-4 py-1.5 inline-flex items-center border mr-3" type="button">
+      <button
+        class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-2 py-1.5 inline-flex items-center border mr-3"
+        type="button">
         <svg class="w-4 h-4 mr-2" width="14" height="14" viewBox="0 0 14 14" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <g id="message-square">
@@ -34,26 +43,20 @@
         </svg>
         <span>Chat</span>
       </button>
-      <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
-        class="font-thin text-sm px-4 py-1.5 text-center inline-flex items-center border rounded-full hover:bg-gray-100"
-        type="button">
+
+      <button [matMenuTriggerFor]="menu"
+        class="font-thin text-sm px-2 py-1.5 text-center inline-flex items-center border rounded-full hover:bg-gray-100">
         <img src="./assets/svg/profile.png" alt="" srcset="" class="rounded-full mr-2">
-        {{userInfo.nombres}} {{userInfo.apellidos}}
-        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+        {{ userInfo?.username }} {{ userInfo?.lastName }}
+        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 10 6">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="m1 1 4 4 4-4" />
         </svg>
       </button>
-      <!-- Dropdown menu -->
-      <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-          <li>
-            <a class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" (click)="signOut()">Sign
-              out</a>
-          </li>
-        </ul>
-      </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="signOut()">Sign out</button>
+      </mat-menu>
     </div>
   </div>
 </nav>

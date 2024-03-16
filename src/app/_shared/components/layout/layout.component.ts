@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
 
 import { AccountService } from '@app/_services/account.service';
+import { User } from '@app/_models/user';
 
 @Component({
   selector: 'app-layout',
@@ -9,7 +10,8 @@ import { AccountService } from '@app/_services/account.service';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-  userInfo: any = {};
+  userInfo: User | null = null;
+  @Input() routeActive = '';
 
   constructor(private location: Location, private accountService: AccountService) {}
 
@@ -24,7 +26,6 @@ export class LayoutComponent {
   getInfoUser() {
     this.accountService?.user.subscribe(data => {
       this.userInfo = data;
-      console.log(this.userInfo);
     })
   }
 }
