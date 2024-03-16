@@ -79,21 +79,35 @@
             </tr>
         </table>
     </div>
-    <div>
-        <button mat-fab extended class="bg-white" color="warn">
-            Export PDF Report
-            <mat-icon>favorite</mat-icon>
-        </button>
-        <div>
-            <button>
-                Range
-            </button>
-            <button>
-                Group View
+    <div class="h-max">
+        <div class="flex justify-end">
+            <button
+                class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-2 py-1.5 inline-flex items-center border mr-3">
+                Export PDF Report
+                <mat-icon>favorite</mat-icon>
             </button>
         </div>
+        <div class="flex items-start mt-4">
+            <mat-form-field appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start date">
+                    <input matEndDate placeholder="End date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker" [disableRipple]="true"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+            <mat-form-field floatLabel="always" appearance="outline" class="ms-3">
+                <mat-select placeholder="Group View">
+                    <mat-option value="one">First option</mat-option>
+                    <mat-option value="two">Second option</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
         <div>
-            Graph
+            <highcharts-chart 
+                [Highcharts]="Highcharts"
+                [options]="chartOptions"
+                class="h-max w-full block"></highcharts-chart>
         </div>
     </div>
 </main>
