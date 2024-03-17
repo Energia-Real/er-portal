@@ -4,7 +4,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { LayoutModule } from './_shared/components/layout/layout.module';
 import { TokenInterceptor } from './_shared/interceptor/token.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -12,7 +11,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
   ],
   imports: [
     BrowserModule,

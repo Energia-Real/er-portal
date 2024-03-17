@@ -1,41 +1,113 @@
 <app-layout routeActive="/"></app-layout>
-<main>
+<main class="px-10 pt-10 grid md:grid-cols-2 md:gap-4">
     <div>
-        <button>
+        <button
+            class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-2 py-1.5 inline-flex items-center border mr-3">
+            <mat-icon>favorite</mat-icon>
             Chedraui
         </button>
-        <button>
-            Export PDF Report
-        </button>
-    </div>
-    <div>
-        <div>
-            <div class="rounded-lg border-2">
-                <h1>
-                    Solar Coverage & CO2 Savings
-                </h1>
-                <div>
-                    32.6 %
+        <div class="px-8 py-4 mt-4 rounded-3xl border-2">
+            <h2 class="text-er-orange text-base font-normal">
+                Solar Coverage & CO2 Savings
+            </h2>
+            <div>
+                32.6 %
+            </div>
+            <div>
+                11.8 <span>tCO2</span>
+            </div>
+        </div>
+        <div class="px-8 py-4 mt-4 rounded-3xl border-2">
+            <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
+            <div class="grid md:grid-cols-4 gap-4 text-center">
+                <div class="border-r-2 ">
+                    <h1>$102,933</h1>
+                    <p class="text-sm" i18n>Subtotal ER</p>
+                </div>
+                <div class="border-r-2">
+                    <h1>$809,831</h1>
+                    <p class="text-sm" i18n>Subtotal CFE</p>
+                </div>
+                <div class="border-r-2">
+                    <h1>$969,156</h1>
+                    <p class="text-sm" i18n>CFE Cost without Solar</p>
                 </div>
                 <div>
-                    11.8 <span>tCO2</span>
+                    <h1>$56,292</h1>
+                    <p class="text-sm" i18n>Total Saving</p>
                 </div>
             </div>
         </div>
-        <div>
-            <div>
-                <button>
-                    Range
-                </button>
-                <button>
-                    Group View
-                </button>
-            </div>
-            <div>
-                Graph
+        <table mat-table [dataSource]="dataSource" class="mt-4">
 
-                
-            </div>
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="weight">
+                <th mat-header-cell *matHeaderCellDef> Weight </th>
+                <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Symbol </th>
+                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </tr>
+        </table>
+    </div>
+    <div class="h-max">
+        <div class="flex justify-end">
+            <button
+                class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-2 py-1.5 inline-flex items-center border mr-3">
+                Export PDF Report
+                <mat-icon>favorite</mat-icon>
+            </button>
+        </div>
+        <div class="flex items-start mt-4">
+            <mat-form-field appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start date">
+                    <input matEndDate placeholder="End date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker" [disableRipple]="true"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+            <mat-form-field floatLabel="always" appearance="outline" class="ms-3">
+                <mat-select placeholder="Group View">
+                    <mat-option value="one">First option</mat-option>
+                    <mat-option value="two">Second option</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <highcharts-chart 
+                [Highcharts]="Highcharts"
+                [options]="chartOptions"
+                class="h-max w-full block"></highcharts-chart>
         </div>
     </div>
 </main>
