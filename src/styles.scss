@@ -15,3 +15,20 @@
 
 html, body { height: 100%; }
 body { font-family: 'NeueMontreal', "Helvetica Neue", sans-serif; }
+
+
+.div-groups {
+    div {
+        &:first-child {
+            border-right-width: 2px;
+        }
+        &:last-child {
+            border-right-width: 0px !important;
+        }
+    }
+    &:nth-child(even) {
+        div {
+            border-right-width: 2px;
+        }
+    }
+}

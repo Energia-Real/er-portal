@@ -11,6 +11,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
+import { ViewEncapsulation } from '@angular/core';
 
 const materialModules = [
   MatButtonModule,
@@ -50,6 +51,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   imports: [LayoutModule, ...materialModules],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent {
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];

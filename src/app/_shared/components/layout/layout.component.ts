@@ -13,7 +13,7 @@ export class LayoutComponent {
   userInfo: User | null = null;
   @Input() routeActive = '';
 
-  constructor(private location: Location, private accountService: AccountService) {}
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
     this.getInfoUser();
