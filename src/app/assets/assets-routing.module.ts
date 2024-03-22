@@ -6,6 +6,7 @@ import { CreateComponent } from './create/create.component';
 import { DetailsComponent } from './details/details.component';
 import { LayoutComponent } from './layout/layout.component';
 import { ManagementComponent } from './management/management.component';
+import { DetailsContainerComponent } from './details-container/details-container.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
     children: [
       { path: 'create', component: CreateComponent },
       { path: 'edit/:assetId', component: EditComponent },
-      { path: 'details/:assetId', component: DetailsComponent },
+      { path: 'details/:assetId', component: DetailsContainerComponent },
       { path: 'management', component: ManagementComponent },
       { path: '**', redirectTo: 'management' }
     ]
