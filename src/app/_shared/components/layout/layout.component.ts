@@ -25,6 +25,7 @@ export class LayoutComponent {
 
   getInfoUser() {
     this.accountService?.user.subscribe(data => {
+      console.log(data)
       this.userInfo = data;
     })
   }

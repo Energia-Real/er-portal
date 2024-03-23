@@ -17,6 +17,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { DetailsContainerComponent } from './details-container/details-container.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const angularMaterial = [
   MatMenuModule,
@@ -26,7 +28,8 @@ const angularMaterial = [
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatInputModule,
-  MatSelectModule
+  MatSelectModule,
+  MatTabsModule
 ];
 
 @NgModule({
@@ -35,7 +38,8 @@ const angularMaterial = [
     EditComponent,
     ManagementComponent,
     DetailsComponent,
-    LayoutComponent
+    LayoutComponent,
+    DetailsContainerComponent
   ],
   imports: [
     CommonModule,

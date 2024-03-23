@@ -1,1 +1,41 @@
-<p>details works!</p>
+<div class="detail-main-container">
+  <div class="cards-details-container">
+    <div class="card-details-container me-3">
+      <p>Energía producida</p>
+      <h4>76,894</h4>
+    </div>
+    <div class="card-details-container">
+      <p>Consumo de energía (CFE)</p>
+      <h4>134,658</h4>
+    </div>
+    <div class="card-details-container me-3">
+      <p>Emisiones evitadas (tCO2e)</p>
+      <h4>31</h4>
+    </div>
+    <div class="card-details-container">
+      <p>Cobertura energética</p>
+      <h4>37.08%</h4>
+    </div>
+    <div class="card-details-container me-3">
+      <p>Consumo solar</p>
+      <h4>72,727</h4>
+    </div>
+    <div class="card-details-container">
+      <p>Última conexión</p>
+      <h4>01/03/2024 / 5:58 p.m</h4>
+    </div>
+  </div>
+
+  <div class="cards-details-container col-7 text-center">
+    <div class="loader-overlay" *ngIf="loaderMap">
+      <div class="loader"></div>
+    </div>
+    <iframe
+      height="400"
+      frameborder="0" style="border:0; width: 90%; margin: 0 auto;"
+      referrerpolicy="no-referrer-when-downgrade"
+      [src]="urlMap"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
