@@ -29,8 +29,10 @@ export class AssetsService {
     return this.http.get<any>(`${this.API_URL}/projects/${id}`);
   }
 
-  getDataWeather(lat: string, long: string) {
-    return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${lat},${long}&apikey=8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau`);
+  getDataWeather(lat: number, long: number) {
+    let latitude = lat.toString();
+    let longitude = long.toString();
+    return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${latitude},${longitude}&apikey=8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau`);
   }
 
   getLatAndLong() {

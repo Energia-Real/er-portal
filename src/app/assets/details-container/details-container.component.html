@@ -1,6 +1,6 @@
 <div class="home-main-container" *ngIf="!showLoader">
   <div class="home-header-container">
-    <!-- <energiaReal-return-bar urlToGo="/er/assets-management"></energiaReal-return-bar> -->
+    <app-return-bar urlToGo="/assets/management"></app-return-bar>
     <div class="info-asset-container pt-3">
       <h1>{{assetData.siteName}}</h1>
       <p>Direccion: Calle Antonio Díaz Varela, Ximentla, Centro, 90800 Chiautempan, Tlax., Mexico</p>
@@ -30,7 +30,8 @@
 
   <div class="home-tabs-main-container">
 
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
+
       <mat-tab label="Descripción"> Descripción </mat-tab>
 
       <mat-tab label="Detalles">

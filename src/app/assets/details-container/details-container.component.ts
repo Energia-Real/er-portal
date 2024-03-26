@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AssetsService } from '@app/_services/assets.service';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-details-container',
@@ -173,14 +173,14 @@ export class DetailsContainerComponent implements OnInit{
       this.getWeather(this.assetData.latitude, this.assetData.longitude);
     }, err =>{
       this.showLoader = false;
-      // Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
-      // console.log(err);
+      Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
+      console.log(err);
     })
   }
 
   getWeather(lat: number, long: number){
-    // this.assetsService.getDataWeather(lat, long).subscribe((resp: any)=>{
-    //   this.weatherData = resp.data.values;
-    // });
+    this.assetsService.getDataWeather(lat, long).subscribe((resp: any)=>{
+      this.weatherData = resp.data.values;
+    });
   }
 }

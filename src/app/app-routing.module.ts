@@ -9,10 +9,10 @@ const homeComponent = () => import('./home/home.component').then(x => x.HomeComp
 const overviewComponent = () => import('./overview/overview.component').then(x => x.OverviewComponent);
 
 const routes: Routes = [
-  { path: '', loadComponent: homeComponent, canActivate: [authGuard] },
+  { path: 'home', loadComponent: homeComponent, canActivate: [authGuard] },
   { path: 'assets', loadChildren: assetsModule, canActivate: [authGuard] },
   { path: 'overview', loadComponent: overviewComponent, canActivate: [authGuard] },
-  { path: 'account', loadChildren: accountModule },
+  { path: '', loadChildren: accountModule },
   { path: '**', redirectTo: '' }
 ];
 

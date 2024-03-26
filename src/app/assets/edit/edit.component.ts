@@ -1,16 +1,8 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, Validators } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssetsService } from '@app/_services/assets.service';
 import Swal from 'sweetalert2';
-
-// export class MyErrorStateMatcher implements ErrorStateMatcher {
-//   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-//     const isSubmitted = form && form.submitted;
-//     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-//   }
-// }
 
 @Component({
   selector: 'app-edit',
@@ -25,7 +17,6 @@ export class EditComponent {
   showLoader: boolean = true;
   loading: boolean = false;
   buttonDisabled: boolean = false;
-  messageError: string = '';
 
   constructor(private fb: FormBuilder, 
     private assetsService: AssetsService, 
@@ -61,7 +52,6 @@ export class EditComponent {
   }
 
   onSubmit() {
-    this.messageError = '';
     let bodyRequest = {
       clientId: this.editAssetForm.get("clientId")?.value,
       assetStatus: this.editAssetForm.get("assetStatus")?.value,
@@ -74,7 +64,6 @@ export class EditComponent {
       showCancelButton: true,
       cancelButtonText: "Cancelar",
     }).then((result) => {
-      this.loading = false;
       if (result.isConfirmed) {
         this.assetsService.putUpdateAsset(bodyRequest, this.assetId).subscribe(()=>{
           this.loading = false;
@@ -86,7 +75,7 @@ export class EditComponent {
             timer: 2300
           });
           setTimeout(()=>{
-            this.router.navigate(['/er/assets-management']);
+            this.router.navigate(['/assets/management']);
           }, 2400);
         }, err => {
           this.loading = false;

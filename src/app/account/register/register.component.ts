@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountService } from '@app/_services/account.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,8 @@ import { AccountService } from '@app/_services/account.service';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  form!: FormGroup;
+  
+  registerForm!: FormGroup;
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
   successfulCreate: boolean = false;
@@ -23,7 +25,7 @@ export class RegisterComponent {
     private router: Router,
     private accountService: AccountService,
   ) {
-    this.form = this.fb.group({
+    this.registerForm = this.fb.group({
       name: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -36,10 +38,10 @@ export class RegisterComponent {
     this.messageError = '';
     this.errorCreate = false;
     let userData = {
-      email: this.form.get("email")?.value,
-      password: this.form.get("password")?.value,
-      nombres: this.form.get("name")?.value,
-      apellidos: this.form.get("lastname")?.value,
+      email: this.registerForm.get("email")?.value,
+      password: this.registerForm.get("password")?.value,
+      nombres: this.registerForm.get("name")?.value,
+      apellidos: this.registerForm.get("lastname")?.value,
       clientId: [0]
     }
     this.loading = true;
@@ -52,6 +54,7 @@ export class RegisterComponent {
       },
       error: err => {
         console.log(err.error.errors);
+        Swal.fire('Error', err.error.errors[0].descripcion, 'error');
         this.errorCreate = true;
         this.successfulCreate = false;
         this.loading = false;
@@ -75,8 +78,16 @@ export class RegisterComponent {
     return isValid ? null : { invalidPassword: true };
   }
 
+  togglePasswordVisibility(fieldNumber: number): void {
+    if (fieldNumber === 1) {
+      this.showPassword = !this.showPassword;
+    } else if (fieldNumber === 2) {
+      this.showConfirmPassword = !this.showConfirmPassword;
+    }
+  }
+
   private passwordMatchValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-    const password = this.form?.get('password')?.value;
+    const password = this.registerForm?.get('password')?.value;
     const confirmPassword = control.value;
 
     if (password === confirmPassword) {
