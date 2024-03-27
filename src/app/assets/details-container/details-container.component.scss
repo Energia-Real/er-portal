@@ -46,8 +46,11 @@
           }
         }
         .card-weather-center{
-          width: 130px;
+          width: auto;
           vertical-align: top;
+          p:first-child{
+            margin-bottom: 10px;
+          }
         }
       }
     }

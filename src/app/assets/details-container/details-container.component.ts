@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AssetsService } from '@app/_services/assets.service';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -8,7 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './details-container.component.html',
   styleUrl: './details-container.component.scss'
 })
-export class DetailsContainerComponent implements OnInit{
+export class DetailsContainerComponent implements OnInit, OnDestroy {
 
   weatherData: any = {
     "cloudBase": null,
@@ -38,6 +39,11 @@ export class DetailsContainerComponent implements OnInit{
   showLoader: boolean = true;
   assetId: string | null = '';
   assetData: any = {};
+  addressPlace: string = '';
+  timeZonePlace!: Date;
+  timeZoneOffset: any;
+
+  private horaSubscription!: Subscription;
 
   weatherCode: { [key: number]: { text: string, icon: string, background: string } } = {
     1000: {
@@ -164,6 +170,11 @@ export class DetailsContainerComponent implements OnInit{
       this.assetId = params.get('assetId');
       this.getDetailsAsset();
     });
+
+    this.horaSubscription = this.assetsService.obtenerHoraLocal().subscribe(hora => {
+      this.timeZonePlace = new Date(hora + this.timeZoneOffset);
+      console.log(this.timeZonePlace);
+    });
   }
 
   getDetailsAsset(){
@@ -171,6 +182,9 @@ export class DetailsContainerComponent implements OnInit{
       this.showLoader = false;
       this.assetData = data;
       this.getWeather(this.assetData.latitude, this.assetData.longitude);
+      this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
+      this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
+
     }, err =>{
       this.showLoader = false;
       Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
@@ -183,4 +197,24 @@ export class DetailsContainerComponent implements OnInit{
       this.weatherData = resp.data.values;
     });
   }
+
+  getPlaceAddress(lat: number, long: number){
+    this.assetsService.getPlaceAddress(lat, long).subscribe((resp: any)=>{
+      this.addressPlace = resp.results[0].formatted_address;
+    });
+  }
+
+  getLocalTimeOfPlace(lat: number, long: number){
+    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any)=>{
+      console.log(resp);
+      this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
+    }, err =>{
+      Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
+    });
+  }
+
+  ngOnDestroy() {
+    this.horaSubscription.unsubscribe();
+  }
+
 }

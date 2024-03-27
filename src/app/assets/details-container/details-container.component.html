@@ -3,7 +3,7 @@
     <app-return-bar urlToGo="/assets/management"></app-return-bar>
     <div class="info-asset-container pt-3">
       <h1>{{assetData.siteName}}</h1>
-      <p>Direccion: Calle Antonio Díaz Varela, Ximentla, Centro, 90800 Chiautempan, Tlax., Mexico</p>
+      <p>Dirección aproximada: {{addressPlace}}</p>
     </div>
     <div class="info-weather-container">
       <div class="weather-flex-container">
@@ -13,7 +13,7 @@
         </div>
         <div class="card-weather-container card-weather-center">
           <p>Hora local</p>
-          <p class="card-value">9:16 A.M</p>
+          <p class="card-value">{{timeZonePlace | date:'hh:mm aa'}}</p>
         </div>
         <div class="card-weather-container card-weather-center">
           <p>Tamaño del sistema</p>
