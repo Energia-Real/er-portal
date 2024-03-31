@@ -30,19 +30,18 @@
           <label class="search-icon">
             <img src="./assets/icons/search.svg" alt="Icon Search">
           </label>
-          <input class="mt-1 block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder placeholder="Buscar por nombre de sitio"
-            [(ngModel)]="searchValue" [ngModelOptions]="{ standalone: true }" (input)="searchData()">
+          <input class="mt-1 block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
+            placeholder="Buscar por nombre de sitio" [(ngModel)]="searchValue" [ngModelOptions]="{ standalone: true }"
+            (input)="searchData()">
         </form>
       </div>
     </div>
   </div>
   <div>
-    <div class="w-100 text-end">
-      <button class="button-create-asset mb-3">
-        <i class="fa-solid fa-plus me-1"></i>
-        <a routerLink="/assets/create" style="text-decoration: none; color: #000">
-          Agregar planta
-        </a>
+    <div class="flex justify-end">
+      <button mat-stroked-button routerLink="/assets/create">
+        <mat-icon>add</mat-icon>
+        Agregar planta
       </button>
     </div>
     <div>
@@ -97,13 +96,8 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
       </table>
 
-      <mat-paginator
-        [length]="totalItems"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="itemsPerPageOptions"
-        (page)="getServerData($event)" 
-        showFirstLastButtons
-        aria-label="Select page of periodic elements">
+      <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="itemsPerPageOptions"
+        (page)="getServerData($event)" showFirstLastButtons aria-label="Select page of periodic elements">
       </mat-paginator>
     </div>
   </div>

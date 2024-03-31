@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 
 import { AccountService } from '@app/_services/account.service';
 import { User } from '@app/_models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -13,14 +14,15 @@ export class LayoutComponent {
   userInfo: User | null = null;
   @Input() routeActive = '';
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private router: Router) {}
 
   ngOnInit(): void {
     this.getInfoUser();
   }
 
   signOut() {
-    window.location.href = '/';
+    localStorage.removeItem('user');
+    this.router.navigate(['/account/login']);
   }
 
   getInfoUser() {
