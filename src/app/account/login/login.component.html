@@ -1,46 +1,43 @@
-<main
-    class="h-screen bg-[url('assets/svg/background.svg')] bg-no-repeat  bg-center flex justify-center items-center text-center">
-    <div class="text-center w-80">
-        <div class="mb-5">
-            <p class="flex justify-center">
-                <img src="./assets/svg/logo.svg" alt="logo energia real" class="mb-8">
-            </p>
+<div class="main-container">
+    <div class="login-form-container">
+        <div class="login-header-container">
+            <img src="./assets/svg/logo.svg" alt="logo energia real">
             <p>Ingresa tus datos para acceder al sitio</p>
         </div>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <label class="block mb-5">
-                <input type="email" class="mt-1 block w-full rounded-full" formControlName="email" placeholder="Tu email">
-                <p class="text-red-500 text-xs italic text-left" *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)" >
-                    Correo inválido
-                </p>
-            </label>
-            <label class="block mb-6">
-                <input type="password" class="mt-1 block w-full rounded-full" formControlName="password" placeholder="Contraseña">
-                <p class="text-red-500 text-xs italic text-left"
-                    *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
-                    La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres.
-                </p>
-            </label>
-
-            <div class="mb-6">
-                <div *ngIf="loading"
-                    class="inline-block h-8 w-8 animate-[spinner-grow_0.75s_linear_infinite] rounded-full bg-current align-[-0.125em] text-surface opacity-0 motion-reduce:animate-[spinner-grow_1.5s_linear_infinite] dark:text-white"
-                    role="status">
-                    <span
-                        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+        <div class="login-inputs-container">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group-container input-email-container">
+                  <input type="email" id="email" formControlName="email" required placeholder="Correo">
+                  <div class="message-error">
+                    <p *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+                      Correo inválido
+                    </p>
+                  </div>
                 </div>
-                <button *ngIf="!loading" type="submit"
-                    class=" focus:ring-1 px-5 py-2.5 focus:outline-none rounded-full text-white"
-                    [ngClass]="{ 'bg-er-orange': !form.invalid, 'bg-er-disabled': form.invalid  }"
-                    [disabled]="form.invalid">
-                    Entrar al sitio
 
-                </button>
-                <div role="alert" *ngIf="errorLogin">
-                    ¡Hubo un error, revisa tus credenciales por favor!
+                  <div class="form-group-container">
+                    <div class="password-input-container">
+                      <input type="{{ showPassword ? 'text' : 'password' }}" id="password" formControlName="password" required placeholder="Contraseña">
+                      <span class="eye-icon" (click)="togglePasswordVisibility()">
+                        <img *ngIf="showPassword" src="./assets/svg/open-eye.svg" alt="Eye Open">
+                        <img *ngIf="!showPassword" src="../../../assets/svg/closed-eye.svg" alt="Eye Closed">
+                      </span>
+                    </div>
+                    <div class="message-error">
+                      <p *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+                        La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres
+                      </p>
+                    </div>
+                  </div>
+
+                <div class="button-container">
+                  <span class="loader" *ngIf="loading"></span>
+                  <button class="button-primary" *ngIf="!loading" type="submit" [disabled]="loginForm.invalid || buttonDisabled">Entrar al sitio</button>
                 </div>
-            </div>
-        </form>
-        <a routerLink="/account/register" class="text-er-orange">Crear cuenta</a>
+              </form>
+        </div>
+        <div class="login-footer-container">
+            <a routerLink="/register">Crear cuenta</a>
+        </div>
     </div>
-</main>
+</div>

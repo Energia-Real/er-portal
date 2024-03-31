@@ -1,0 +1,40 @@
+.main-container{
+  height: 95vh;
+  background: url('../../../assets/svg/background.svg') no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin-top: 19px;
+  .login-form-container{
+    text-align: center;
+    width: 325px;
+    .login-header-container{
+      img{
+        margin: 0 auto;
+        margin-bottom: 45px;
+      }
+      p{
+        margin-bottom: 30px;
+      }
+    }
+
+    .login-inputs-container{
+      width: 325px;
+      margin-bottom: 30px;
+      input{
+        height: 45px;
+      }
+      .input-email-container{
+        .message-error {
+            padding-top: 10;
+            padding-bottom: 0;
+            margin-bottom: 0;
+          }
+      }
+    }
+
+    .login-footer-container a{
+      color: #EE5427;
+      text-decoration: none;
+    }
+  }
+}

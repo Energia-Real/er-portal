@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
-  userInfo: User | null = null;
+  userInfo: any = {};
   @Input() routeActive = '';
 
   constructor(private accountService: AccountService, private router: Router) {}
@@ -25,10 +25,11 @@ export class LayoutComponent {
     this.router.navigate(['/account/login']);
   }
 
-  getInfoUser() {
-    this.accountService?.user.subscribe(data => {
-      console.log(data)
-      this.userInfo = data;
+  getInfoUser(){
+    this.accountService.getInfoUser().subscribe(data => {
+      this.userInfo = data.persona;
+      console.log(this.userInfo);
     })
   }
+
 }

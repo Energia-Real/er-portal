@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AssetsService } from '@app/_services/assets.service';
-// import Swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create',
@@ -48,32 +48,32 @@ export class CreateComponent {
       longitude: this.assetCreationForm.get("longitude")?.value
     }
     this.loading = true;
-    // Swal.fire({
-    //   title: "¿Estás seguro de que deseas crear ésta planta?",
-    //   confirmButtonText: "Crear",
-    //   showCancelButton: true,
-    //   cancelButtonText: "Cancelar",
-    // }).then((result: any) => {
-    //   this.loading = false;
-    //   if (result.isConfirmed) {
-    //     this.assetsService.postCreateAsset(userData).subscribe(resp => {
-    //       console.log(resp);
-    //       Swal.fire({
-    //         position: "center",
-    //         icon: "success",
-    //         title: "Tu planta se ha creado correctamente.",
-    //         showConfirmButton: false,
-    //         timer: 2500
-    //       });
-    //       setTimeout(()=>{
-    //         this.router.navigate(['/er/assets-management']);
-    //       }, 2600)
-    //     }, err => {
-    //       console.log(err);
-    //       Swal.fire('Error', 'Ha ocurrido un error inesperado, por favor intenta más tarde.', 'error');
-    //     })
-    //   }
-    // });
+    Swal.fire({
+      title: "¿Estás seguro de que deseas crear ésta planta?",
+      confirmButtonText: "Crear",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.assetsService.postCreateAsset(userData).subscribe(resp => {
+          console.log(resp);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Tu planta se ha creado correctamente.",
+            showConfirmButton: false,
+            timer: 2500
+          });
+          setTimeout(()=>{
+            this.router.navigate(['/assets/management']);
+          }, 2600)
+        }, err => {
+          console.log(err);
+          Swal.fire('Error', 'Ha ocurrido un error inesperado, por favor intenta más tarde.', 'error');
+          this.loading = false;
+        })
+      }
+    });
     
   }
   

@@ -4,14 +4,10 @@
       <img src="./assets/svg/logo.svg" alt="Logo" style="width: 120px;">
     </a>
     <ul class="flex">
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive === '/' }">Home</a></li>
-      <li class="mx-5"><a routerLink="/overview" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive === 'overview' }">Overview</a></li>
+      <li class="mx-5"><a routerLink="/home" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">Home</a></li>
       <li class="mx-5"><a routerLink="/assets/management" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('assets') }">Site details</a></li>
-      <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">Site performance</a></li>
+          [ngClass]="{ 'text-er-orange': routeActive.includes('assets') }">Plantas</a></li>
       <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive === 'home' }">FAQ</a></li>
     </ul>
@@ -46,8 +42,7 @@
 
       <button [matMenuTriggerFor]="menu"
         class="font-thin text-sm px-2 py-1.5 text-center inline-flex items-center border rounded-full hover:bg-gray-100">
-        <img src="./assets/svg/profile.png" alt="" srcset="" class="rounded-full mr-2">
-        {{ userInfo?.username }} {{ userInfo?.lastName }}
+        {{ userInfo?.nombres }} {{ userInfo?.apellidos }}
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
           viewBox="0 0 10 6">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

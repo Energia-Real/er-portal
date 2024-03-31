@@ -46,8 +46,11 @@
           }
         }
         .card-weather-center{
-          width: 130px;
+          width: auto;
           vertical-align: top;
+          p:first-child{
+            margin-bottom: 10px;
+          }
         }
       }
     }
@@ -58,12 +61,6 @@
   padding: 2% 4%;
   .nav-tabs{
     border: none;
-    .nav-link{
-      border: none;
-      color: #000;
-      background-color: #F8F8F8;
-      border-radius: 15px;
-    }
     .active{
       background-color: #EE5427;
       color: #FFF;
@@ -73,3 +70,16 @@
     padding-top: 30px;
   }
 }
+
+:host ::ng-deep .mat-mdc-tab  {
+  border: none;
+  color: #000;
+  background-color: #F8F8F8;
+  border-radius: 15px;
+  margin-right: 10px;
+}
+
+// :host ::ng-deep .mdc-tab--active, .mdc-tab-indicator--active, .mat-tab-label.mat-tab-label-active {
+//   background-color: #EE5427;
+//   color: #FFF !important;
+// }

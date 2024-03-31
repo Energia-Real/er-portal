@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { DetailsContainerComponent } from './details-container/details-container.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ReturnBarModule } from '@app/_shared/components/return-bar/return-bar.module';
 
 const angularMaterial = [
   MatMenuModule,
@@ -39,7 +40,7 @@ const angularMaterial = [
     ManagementComponent,
     DetailsComponent,
     LayoutComponent,
-    DetailsContainerComponent
+    DetailsContainerComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +48,7 @@ const angularMaterial = [
     FormsModule,
     ReactiveFormsModule,
     LayoutModule,
+    ReturnBarModule,
     ...angularMaterial
   ]
 })

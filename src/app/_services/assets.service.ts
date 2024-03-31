@@ -1,14 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
-import { Observable } from 'rxjs';
+import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AssetsService {
+export class AssetsService implements OnDestroy{
 
   private API_URL = environment.API_URL_ASSETS_V1;
+  private destroy$ = new Subject<void>();
 
   constructor(private http: HttpClient) { }
 
@@ -29,16 +30,27 @@ export class AssetsService {
     return this.http.get<any>(`${this.API_URL}/projects/${id}`);
   }
 
-  getDataWeather(lat: string, long: string) {
-    return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${lat},${long}&apikey=8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau`);
+  getDataWeather(lat: number, long: number) {
+    let latitude = lat.toString();
+    let longitude = long.toString();
+    return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${latitude},${longitude}&apikey=8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau`);
   }
 
-  getLatAndLong() {
-    const address = 'ChIJeRpOeF67j4AR9ydy_PIzPuM';
+  getPlaceAddress(lat: number, long: number) {
     const params = new HttpParams()
-    .set('place_id', address)
-    .set('key', environment.GOOGLE_API_KEY)
+    .set('latlng', `${lat},${long}`)
+    .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
+
     return this.http.get<any>(`https://maps.googleapis.com/maps/api/geocode/json?`, { params })
+  }
+
+  getLocalTimeOfPlace(lat: number, long: number) {
+    const params = new HttpParams()
+    .set('location', `${lat},${long}`)
+    .set('timestamp', `${Math.floor(Date.now() / 1000)}`)
+    .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
+
+    return this.http.get<any>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params })
   }
 
   postCreateAsset(data: any) {
@@ -48,4 +60,17 @@ export class AssetsService {
   putUpdateAsset(data: any, id: string | null) {
     return this.http.put<any>(`${this.API_URL}/projects/${id}`, data);
   }
+
+  obtenerHoraLocal(): Observable<number> {
+    return interval(1000).pipe(
+      map(() => Date.now()),
+      takeUntil(this.destroy$)
+    );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 }
