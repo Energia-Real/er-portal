@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '@app/_services/account.service';
@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   
   loginForm!: FormGroup;
   showPassword: boolean = false;
@@ -24,10 +24,17 @@ export class LoginComponent {
     private router: Router,
     private accountService: AccountService,
   ) {
+    
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, this.passwordValidator]]
     });
+  }
+
+  ngOnInit(): void {
+    console.log('gdf');
+    console.log(this.accountService?.getDecryptedUser());
+    
   }
   
   onSubmit() {
@@ -35,8 +42,12 @@ export class LoginComponent {
     this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
       .pipe(first())
       .subscribe({
-        next: () => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
+        next: (response:any) => {
+          console.log(response.accessTo == 'backoffice');
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'backoffice' ? '/assets' : '/home'}`;
+          // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `/assets`;
+          console.log(returnUrl);
+          
           this.router.navigateByUrl(returnUrl);
         },
         error: (err) => {
