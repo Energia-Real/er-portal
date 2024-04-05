@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { ViewEncapsulation } from '@angular/core';
+import { AccountService } from '@app/_services/account.service';
 
 const materialModules = [
   MatButtonModule,
@@ -53,7 +54,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
@@ -103,6 +104,19 @@ export class HomeComponent {
       data: [0, 2, 6, 3]
     }] as any
   };
+
+  constructor(
+    private accountService: AccountService,
+
+  ) {
+
+  }
+
+  ngOnInit(): void {
+    console.log('aqui toy');
+    console.log(this.accountService?.getDecryptedUser());
+
+  }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
