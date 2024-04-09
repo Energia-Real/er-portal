@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from '@app/_services/account.service';
+import { AuthService } from '../auth.service';
 
 @Component({ templateUrl: './layout.component.html' })
 export class LayoutComponent {
 
   constructor(
     private router: Router,
-    private accountService: AccountService
+    private accountService: AuthService
   ) {
     if (this.accountService.userValue) {
       this.router.navigate(['/']);

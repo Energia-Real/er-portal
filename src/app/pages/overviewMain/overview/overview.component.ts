@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
-import { LayoutModule } from '@app/_shared/components/layout/layout.module';
+import { LayoutModule } from '@app/shared/components/layout/layout.module';
 
 const materialModules = [
   MatProgressSpinnerModule

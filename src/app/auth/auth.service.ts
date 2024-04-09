@@ -9,7 +9,7 @@ import CryptoJS from 'crypto-js';
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class AuthService {
   public userSubject: BehaviorSubject<User | null>;
   public user: Observable<User | null>;
 

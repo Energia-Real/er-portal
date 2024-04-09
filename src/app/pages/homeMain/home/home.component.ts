@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { LayoutModule } from '@app/_shared/components/layout/layout.module';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -12,7 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { ViewEncapsulation } from '@angular/core';
-import { AccountService } from '@app/_services/account.service';
+import { AuthService } from '@app/auth/auth.service';
+import { LayoutModule } from '@app/shared/components/layout/layout.module';
 
 const materialModules = [
   MatButtonModule,
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit{
   };
 
   constructor(
-    private accountService: AccountService,
+    private accountService: AuthService,
 
   ) {
 

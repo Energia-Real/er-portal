@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { AssetsService } from '@app/_services/assets.service';
+import { AssetsService } from '../assets.service';
 
 @Component({
   selector: 'app-management',

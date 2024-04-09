@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { AccountService } from '@app/_services/account.service';
+// import { AccountService } from '@app/_services/account.service';
 import { User } from '@app/_models/user';
 import { Router } from '@angular/router';
+import { AuthService } from '@app/auth/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -14,7 +15,7 @@ export class LayoutComponent {
   userInfo: any = {};
   @Input() routeActive = '';
 
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(private accountService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.getInfoUser();

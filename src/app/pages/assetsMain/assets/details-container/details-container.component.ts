@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AssetsService } from '@app/_services/assets.service';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AssetsService } from '../assets.service';
 
 @Component({
   selector: 'app-details-container',

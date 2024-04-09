@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AssetsService } from '@app/_services/assets.service';
 import Swal from 'sweetalert2';
+import { AssetsService } from '../assets.service';
 
 @Component({
   selector: 'app-create',
