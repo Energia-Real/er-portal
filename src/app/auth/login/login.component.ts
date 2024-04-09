@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
+import { Subject, first } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
 
@@ -10,8 +10,9 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
-  
+export class LoginComponent implements OnInit, OnDestroy {
+  private onDestroy = new Subject<void>();
+
   loginForm!: FormGroup;
   showPassword: boolean = false;
   buttonDisabled: boolean = false;
@@ -32,9 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('gdf');
     console.log(this.accountService?.getDecryptedUser());
-    
   }
   
   onSubmit() {
@@ -43,11 +42,7 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (response:any) => {
-          console.log(response.accessTo == 'backoffice');
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'backoffice' ? '/assets' : '/home'}`;
-          // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `/assets`;
-          console.log(returnUrl);
-          
           this.router.navigateByUrl(returnUrl);
         },
         error: (err) => {
@@ -74,5 +69,10 @@ export class LoginComponent implements OnInit {
       hasUppercase && hasLowercase && hasNumber && hasSpecialCharacter && isLengthValid;
 
     return isValid ? null : { invalidPassword: true };
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }

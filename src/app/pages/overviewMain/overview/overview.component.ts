@@ -1,17 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
+import { MaterialModule } from '@app/shared/material/material.module';
 
-const materialModules = [
-  MatProgressSpinnerModule
-];
 
 @Component({
   selector: 'app-overview',
   standalone: true,
-  imports: [CommonModule, LayoutModule, ...materialModules],
+  imports: [CommonModule, LayoutModule, MaterialModule],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss'
 })

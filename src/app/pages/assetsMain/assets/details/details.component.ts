@@ -1,12 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })
-export class DetailsComponent implements OnInit{
+export class DetailsComponent implements OnInit, OnDestroy {
+  private onDestroy = new Subject<void>();
 
   @Input() assetData: any;
   urlMap!: SafeResourceUrl;
@@ -22,4 +24,8 @@ export class DetailsComponent implements OnInit{
     }, 100)
   }
 
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
+  }
 }

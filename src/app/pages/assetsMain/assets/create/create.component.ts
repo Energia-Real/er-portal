@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss'
 })
-export class CreateComponent {
+export class CreateComponent implements OnDestroy {
+  private onDestroy = new Subject<void>();
 
   assetCreationForm!: FormGroup;
   assetId: string | null = '';
@@ -110,4 +112,8 @@ export class CreateComponent {
     this.assetCreationForm.reset();
   }
 
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
+  }
 }

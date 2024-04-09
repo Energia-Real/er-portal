@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
 
@@ -10,6 +10,7 @@ import { AssetsService } from '../assets.service';
   styleUrl: './details-container.component.scss'
 })
 export class DetailsContainerComponent implements OnInit, OnDestroy {
+  private onDestroy = new Subject<void>();
 
   weatherData: any = {
     "cloudBase": null,
@@ -42,8 +43,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   addressPlace: string = '';
   timeZonePlace!: Date;
   timeZoneOffset: any;
-
-  private horaSubscription!: Subscription;
 
   weatherCode: { [key: number]: { text: string, icon: string, background: string } } = {
     1000: {
@@ -171,7 +170,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.getDetailsAsset();
     });
 
-    this.horaSubscription = this.assetsService.obtenerHoraLocal().subscribe(hora => {
+    this.assetsService.obtenerHoraLocal().pipe(takeUntil(this.onDestroy)).subscribe(hora => {
       this.timeZonePlace = new Date(hora + this.timeZoneOffset);
       console.log(this.timeZonePlace);
     });
@@ -213,8 +212,10 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.horaSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
+  
 
 }

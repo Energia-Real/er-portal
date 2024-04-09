@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'
 })
-export class EditComponent {
+export class EditComponent implements OnDestroy {
+  private onDestroy = new Subject<void>();
   
   editAssetForm!: FormGroup;
   assetData: any = {};
@@ -119,4 +121,8 @@ export class EditComponent {
     this.editAssetForm.reset();
   }
 
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
+  }
 }

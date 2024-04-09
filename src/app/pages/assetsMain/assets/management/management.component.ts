@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-management',
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss'
 })
-export class ManagementComponent {
+export class ManagementComponent implements OnDestroy {
+  private onDestroy = new Subject<void>();
 
   displayedColumns: string[] = ['siteName', 'clientId', 'commissionDate', 'inverterQty', 'systemSize', 'googleMapAdress', 'actions'];
   dataSource = new MatTableDataSource<any>([]);
@@ -70,5 +72,10 @@ export class ManagementComponent {
     this.pageSize = event?.pageSize ?? 5;
     this.getTableData(event?.pageIndex ?? 1, ' ');
     return event;
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }

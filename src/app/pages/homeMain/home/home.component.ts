@@ -1,38 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { HighchartsChartModule } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { ViewEncapsulation } from '@angular/core';
 import { AuthService } from '@app/auth/auth.service';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
+import { Subject } from 'rxjs';
+import { MaterialModule } from '@app/shared/material/material.module';
+import * as entity from './home-model';
 
-const materialModules = [
-  MatButtonModule,
-  MatIconModule,
-  MatTableModule,
-  MatCheckboxModule,
-  MatFormFieldModule,
-  MatDatepickerModule,
-  MatSelectModule,
-  HighchartsChartModule
-];
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
+const ELEMENT_DATA: entity.PeriodicElement[] = [
   { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
   { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
   { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
@@ -49,15 +27,17 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [LayoutModule, ...materialModules],
+  imports: [LayoutModule, MaterialModule],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit, OnDestroy {
+  private onDestroy = new Subject<void>();
+
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  dataSource = new MatTableDataSource<entity.PeriodicElement>(ELEMENT_DATA);
+  selection = new SelectionModel<entity.PeriodicElement>(true, []);
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {
     chart: {
@@ -107,15 +87,10 @@ export class HomeComponent implements OnInit{
 
   constructor(
     private accountService: AuthService,
-
-  ) {
-
-  }
+  ) { }
 
   ngOnInit(): void {
-    console.log('aqui toy');
     console.log(this.accountService?.getDecryptedUser());
-
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -136,10 +111,15 @@ export class HomeComponent implements OnInit{
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: entity.PeriodicElement): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }

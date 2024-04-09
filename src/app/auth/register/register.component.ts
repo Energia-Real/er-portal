@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
-  
+export class RegisterComponent implements OnDestroy{
+  private onDestroy = new Subject<void>();
+
   registerForm!: FormGroup;
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
@@ -95,5 +97,10 @@ export class RegisterComponent {
     } else {
       return { 'noCoincide': true };
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }
