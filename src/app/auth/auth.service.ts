@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '@app/_models/user';
+import * as entityGeneral from '../shared/models/general-interface';
+
 import { environment } from '@environment/environment';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import CryptoJS from 'crypto-js';
@@ -10,8 +11,8 @@ import CryptoJS from 'crypto-js';
   providedIn: 'root'
 })
 export class AuthService {
-  public userSubject: BehaviorSubject<User | null>;
-  public user: Observable<User | null>;
+  public userSubject: BehaviorSubject<entityGeneral.User | null>;
+  public user: Observable<entityGeneral.User | null>;
 
   constructor(
     private router: Router,

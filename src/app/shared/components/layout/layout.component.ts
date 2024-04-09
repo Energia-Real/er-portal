@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
 
-// import { AccountService } from '@app/_services/account.service';
-import { User } from '@app/_models/user';
+import * as entityGeneral from '../../../shared/models/general-interface';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 
@@ -32,5 +31,4 @@ export class LayoutComponent {
       console.log(this.userInfo);
     })
   }
-
 }

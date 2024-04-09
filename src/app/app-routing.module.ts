@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { authGuard } from './shared/guard/auth.guard';
 
-import { authGuard } from './_helpers/auth.guard';
 
 const authModule = () => import('./auth/auth.module').then(x => x.AuthModule);
 const assetsModule = () => import('./pages/assetsMain/assets/assets.module').then(x => x.AssetsModule);
