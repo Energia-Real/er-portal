@@ -4,9 +4,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LayoutModule } from './_shared/components/layout/layout.module';
-import { TokenInterceptor } from './_shared/interceptor/token.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { TokenInterceptor } from './shared/interceptor/token.interceptor';
+import { LayoutModule } from './shared/components/layout/layout.module';
 
 @NgModule({
   declarations: [
