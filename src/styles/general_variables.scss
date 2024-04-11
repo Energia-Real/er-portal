@@ -1,0 +1,22 @@
+
+
+// COLORS
+.color-57B1B1 {
+    color: #57B1B1;
+}
+
+// INPUTS 
+
+.input-date {
+    height: 40px !important;
+    .mat-mdc-form-field-flex {
+        height: 40px !important;
+        .mdc-text-field--outlined .mdc-notched-outline{
+            height: 40px !important;
+
+            > div .mat-mdc-form-field-infix {
+                padding: 8px 0 !important;
+            }
+        }
+    }
+}

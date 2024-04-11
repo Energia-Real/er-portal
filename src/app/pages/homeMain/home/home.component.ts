@@ -9,18 +9,17 @@ import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { Subject } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import * as entity from './home-model';
+import { Router } from '@angular/router';
 
-const ELEMENT_DATA: entity.PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+const ELEMENT_DATA: any[] = [
+  { id: 1, name: 'Chedraui Capulhuac', siteSavings: '$31,741', zone: 0, solarCoverage : '33%', savings: '6 tCO2 ' },
+  { id: 2, name: 'Chedraui Chamilpa', siteSavings: '$10,259', zone: 0, solarCoverage : '3%', savings: '6 tCO2 ' },
+  { id: 3, name: 'Chedraui Pedregal Selecto', siteSavings: '$6,589', zone: 1, solarCoverage : '23%', savings: '9 tCO2 ' },
+  { id: 4, name: 'Chedraui JB Lobos Veracruz', siteSavings: '$90,122', zone: 1, solarCoverage : '39%', savings: '9 tCO2 ' },
+  { id: 5, name: 'Chedraui Santa Ana', siteSavings: '$1,0811', zone: 0, solarCoverage : '44%', savings: '9 tCO2 ' },
+  { id: 6, name: 'Chedraui Test 3', siteSavings: '$12,0107', zone: 1, solarCoverage : '63%', savings: '22 tCO2 ' },
+  { id: 7, name: 'Chedraui Chamilpa', siteSavings: '140,067', zone: 1, solarCoverage : '12%', savings: '6 tCO2 ' },
+  { id: 8, name: 'Chedraui test 5', siteSavings: '$159,994', zone: 1, solarCoverage : '11%', savings: '9 tCO2 ' },
 ];
 
 @Component({
@@ -35,7 +34,7 @@ const ELEMENT_DATA: entity.PeriodicElement[] = [
 export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['select', 'name', 'siteSavings', 'zone', 'solarCoverage', 'savings'];
   dataSource = new MatTableDataSource<entity.PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
   Highcharts: typeof Highcharts = Highcharts;
@@ -87,6 +86,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private accountService: AuthService,
+    private router : Router,
   ) { }
 
   ngOnInit(): void {
@@ -116,6 +116,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  goDetails(id:string) {
+    this.router.navigateByUrl(`/details-site`)
+    // this.router.navigateByUrl(`details-site/${id}`)
   }
 
   ngOnDestroy(): void {
