@@ -1,0 +1,89 @@
+.c-detail-site {
+
+    .content {
+        h1 {
+            margin-bottom: 8px!important;
+        }
+    }
+
+    .content-2 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 50px;
+
+        h1 {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 16px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 28.63px;
+            text-align: center;
+            margin: 0;
+        }
+
+        > div {
+            background: #E7E7E7;
+            padding: 10px;
+            border: 1px solid #D2D2D2;
+            border-radius: 16px;
+
+        }
+
+        div:nth-child(1),  div:nth-child(4) {
+            width: 84px;
+            height: 84px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            i {
+                font-size: 30px;
+                margin-bottom: 8px;
+            }
+        }
+        div:nth-child(2), div:nth-child(3) {
+            background: none;
+            width: 123px;
+            height: 84px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          
+            h1 {
+                margin-bottom: 8px;
+            }
+     
+        }
+    }
+
+    .header-chart {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        h1 {
+            margin: 0;
+            color: #6E6E6E;
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 13.12px;
+            margin-bottom: 20px;
+        }
+
+        .mdc-text-field--outlined {
+            --mdc-outlined-text-field-container-shape: 28px;
+        }
+        
+        button {
+            border-radius: 9999px !important;
+        }
+    }
+
+    
+}

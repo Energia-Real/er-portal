@@ -43,6 +43,11 @@ body { font-family: 'NeueMontreal', "Helvetica Neue", sans-serif; }
   width: auto;
 }
 
+h1,h2,h3,h4,h5,p,span {
+  margin: 0;
+  padding: 0;
+}
+
 .spinner-container {
     position: fixed;
     top: 0;
@@ -168,5 +173,66 @@ input, select{
   .mdc-checkbox__background {
     border-color: red!important;
     background-color: red!important;
+  }
+}
+
+.content-menu {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 41px;
+ 
+  p {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14.32px;
+    color: #000000;
+    width: Hug (109px)px;
+    padding: 4px 8px 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #EDEDED;
+    background: #F8F8F8;
+  }
+}
+
+.content-menu-selected {
+  background: #EE5427!important;
+  color: #FFFFFF!important;
+}
+
+.c-card-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .card-info {
+    border: 1px solid #D2D2D2;
+    height: 95px;
+    width: 48%;
+    padding: 16px 24px 16px 24px;
+    gap: 10px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h1 {
+      color: #EE5427;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 14.65px;
+      margin-bottom: 16px;
+    }
+    h2, h3 {
+      color: #000000;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 28.63px;
+      margin-bottom: 0;
+    }
+    h3 {
+      font-size: 14px;
+      line-height: 16px;
+    }
   }
 }

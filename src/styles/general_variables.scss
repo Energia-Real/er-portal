@@ -20,3 +20,23 @@
         }
     }
 }
+
+
+// Fonts 
+
+.font-32-400 {
+    font-size: 32px;
+    font-weight: 400;
+    color: #000000;
+    // margin: 0!important;
+}
+
+.font-12-400 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #000000;
+    line-height: 16px;
+    span {
+        font-weight: 400;
+    }
+}
