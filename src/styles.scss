@@ -218,8 +218,8 @@ input, select{
 
     h1 {
       color: #EE5427;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       line-height: 14.65px;
       margin-bottom: 16px;
     }
@@ -235,4 +235,14 @@ input, select{
       line-height: 16px;
     }
   }
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+}
+
+.spinner-center {
+  display: flex!important;
+  align-items: center;
+  justify-content: center;
 }

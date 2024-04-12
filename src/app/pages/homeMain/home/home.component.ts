@@ -119,7 +119,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goDetails(id:string) {
-    this.router.navigateByUrl(`/details-site`)
+    this.router.navigateByUrl(`/assets/details/65ebc49f8b7d729ccd68896c`)
     // this.router.navigateByUrl(`details-site/${id}`)
   }
 

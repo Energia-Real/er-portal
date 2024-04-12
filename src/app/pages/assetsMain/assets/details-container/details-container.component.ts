@@ -161,7 +161,11 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       background: "yellow"
     }
   }
- 
+
+  public loadingWeatherData:boolean = true; 
+  public loadinGtimeZonePlace:boolean = true; 
+  public loadinSystemSize:boolean = true; 
+  
   constructor(private assetsService: AssetsService, private route: ActivatedRoute){}
 
   ngOnInit(): void {
@@ -172,7 +176,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
     this.assetsService.obtenerHoraLocal().pipe(takeUntil(this.onDestroy)).subscribe(hora => {
       this.timeZonePlace = new Date(hora + this.timeZoneOffset);
-      console.log(this.timeZonePlace);
+      // console.log(this.timeZonePlace);
+      this.loadinGtimeZonePlace = false;
     });
   }
 
@@ -181,8 +186,10 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       this.assetData = data;
       this.getWeather(this.assetData.latitude, this.assetData.longitude);
+      this.loadingWeatherData = false
       this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
       this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
+      this.loadinSystemSize = false;
 
     }, err =>{
       this.showLoader = false;
@@ -216,6 +223,4 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     this.onDestroy.next();
     this.onDestroy.unsubscribe();
   }
-  
-
 }

@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<{}>(`${environment.API_URL_AUTH_V1}/${environment.APP}/login`, { email, password })
+    return this.http.post<{}>(`${environment.API_URL_AUTH_V1}/login`, { email, password })
       .pipe(map(user => {
         console.log(user);
         const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user), 'secretKey').toString();

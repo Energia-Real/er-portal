@@ -1,22 +1,19 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { LayoutModule } from '@app/shared/components/layout/layout.module';
-import { MaterialModule } from '@app/shared/material/material.module';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-detail-site-name',
-  standalone: true,
-  templateUrl: './detail-site-name.component.html',
-  styleUrl: './detail-site-name.component.scss',
-  imports: [LayoutModule, MaterialModule],
-  providers: [provideNativeDateAdapter()],
-  encapsulation: ViewEncapsulation.None
-
+  selector: 'app-description',
+  templateUrl: './description.component.html',
+  styleUrl: './description.component.scss'
 })
-export class DetailSiteNameComponent {
-  Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: Highcharts.Options = {
+export class DescriptionComponent implements OnInit, OnDestroy {
+  private onDestroy = new Subject<void>();
+
+  @Input() assetData: any;
+
+  public Highcharts: typeof Highcharts = Highcharts;
+  public chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
     },
@@ -65,4 +62,24 @@ export class DetailSiteNameComponent {
     }
   ] as any
   };
+
+  public loading = true; 
+
+  constructor() {
+
+  }
+
+  ngOnInit(): void {
+
+  console.log('assetData: ', this.assetData);
+    
+    setTimeout(() => {
+      this.loading = false;
+    }, 5000); 
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
+  }
 }

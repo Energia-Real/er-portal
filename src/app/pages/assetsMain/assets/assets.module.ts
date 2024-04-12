@@ -12,6 +12,7 @@ import { DetailsContainerComponent } from './details-container/details-container
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
+import { DescriptionComponent } from './description/description.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MaterialModule } from '@app/shared/material/material.module';
     DetailsComponent,
     LayoutComponent,
     DetailsContainerComponent,
+    DescriptionComponent,
   ],
   imports: [
     CommonModule,
