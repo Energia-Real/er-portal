@@ -9,9 +9,7 @@ import { TokenInterceptor } from './shared/interceptor/token.interceptor';
 import { LayoutModule } from './shared/components/layout/layout.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [ AppComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,

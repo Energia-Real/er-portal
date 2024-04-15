@@ -9,9 +9,12 @@ const homeComponent = () => import('./pages/homeMain/home/home.component').then(
 const overviewComponent = () => import('./pages/overviewMain/overview/overview.component').then(x => x.OverviewComponent);
 
 const routes: Routes = [
-  { path: 'home', loadComponent: homeComponent, canActivate: [authGuard] },
-  { path: 'assets', loadChildren: assetsModule, canActivate: [authGuard] },
-  { path: 'overview', loadComponent: overviewComponent, canActivate: [authGuard] },
+  { path: 'home', loadComponent: homeComponent },
+  { path: 'assets', loadChildren: assetsModule },
+  { path: 'overview', loadComponent: overviewComponent },
+  // { path: 'home', loadComponent: homeComponent, canActivate: [authGuard] },
+  // { path: 'assets', loadChildren: assetsModule, canActivate: [authGuard] },
+  // { path: 'overview', loadComponent: overviewComponent, canActivate: [authGuard] },
   { path: '', loadChildren: authModule },
   { path: '**', redirectTo: '' }
 ];

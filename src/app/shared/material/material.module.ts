@@ -60,7 +60,8 @@ const material = [
 	MatFormFieldModule,
 	MatAutocompleteModule,
 	MatProgressBarModule,
-	HighchartsChartModule
+	HighchartsChartModule,
+	MatDialogModule
 ];
 @NgModule({
 	exports: [...material],

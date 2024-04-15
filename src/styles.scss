@@ -17,7 +17,7 @@
 @import "tailwindcss/utilities";
 
 html, body { height: 100%; }
-body { font-family: 'NeueMontreal', "Helvetica Neue", sans-serif; }
+body { font-family: 'NeueMontreal', "Helvetica Neue", sans-serif!important; }
 
 
 .div-groups {
@@ -245,4 +245,13 @@ input, select{
   display: flex!important;
   align-items: center;
   justify-content: center;
+}
+
+
+// modal 
+.success {
+  background: #DCFCE7 !important;
+  mat-icon {
+    color: #03c046 !important;
+  }
 }
