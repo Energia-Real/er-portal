@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalConfirmationComponent } from '../components/modal-confirmation/modal-confirmation.component';
-// import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 
 @Injectable({
 	providedIn: 'root',
@@ -9,14 +8,14 @@ import { ModalConfirmationComponent } from '../components/modal-confirmation/mod
 export class OpenModalsService {
 	constructor(private dialog: MatDialog) {}
 
-	notificacion(title: string, message: string, type: string, customIcon?:string) {
+	notificacion(message: string, type: string, customIcon?:string) {
 		const data = {
-			title,
+			title : customIcon ? customIcon : type == 'save' ? 'Éxito' : type == 'question' ? '¿Pregunta?': 'Eliminado',
 			message,
 			icon : {
 				show : true,
 				name : customIcon ? customIcon : type == 'save' ? 'save' : type == 'question' ? 'question_mark': 'delete',
-				color : type == 'save' ? 'success' : type == 'question' ? 'accent' : 'warn',
+				color : type == 'save' ? 'success' : type == 'question' ? 'question' : 'error',
 			},
 			actions : {
 				confirm : {
@@ -36,8 +35,6 @@ export class OpenModalsService {
 			data,
 			disableClose: true,
 			panelClass: 'custom-dialog',
-			// maxWidth : '250px'
-			
 		});
 	}
 

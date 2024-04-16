@@ -46,7 +46,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   completionMessage(edit = false) {
     this.notificationService
       .notificacion(
-        'Éxito',
         `¡Restablecimiento de contraseña enviado!`,
         'save',
       )
@@ -57,7 +56,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   deleteData() {
     this.notificationService
       .notificacion(
-        'Pregunta',
         '¿Estás seguro de eliminar el registro?',
         'question',
       )
@@ -65,7 +63,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       .subscribe((_) => {
         this.notificationService
           .notificacion(
-            'Éxito',
             'Registro eliminado.',
             'delete',
           )

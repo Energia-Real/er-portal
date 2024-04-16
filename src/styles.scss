@@ -249,10 +249,24 @@ input, select{
 
 
 // modal 
-.success {
+.modalSuccess {
   background: #DCFCE7 !important;
   mat-icon {
     color: #03c046 !important;
+  }
+}
+
+.modalQuestion {
+  background: #a7a7a760 !important;
+  mat-icon {
+    color: #424242 !important;
+  }
+}
+
+.modalError {
+  background: #91000060 !important;
+  mat-icon {
+    color: #7a0000 !important;
   }
 }
 
