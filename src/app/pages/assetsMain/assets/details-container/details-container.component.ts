@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
+import * as entity from '../assets-model';
 
 @Component({
   selector: 'app-details-container',
@@ -166,9 +168,15 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   public loadinGtimeZonePlace:boolean = true; 
   public loadinSystemSize:boolean = true; 
   
-  constructor(private assetsService: AssetsService, private route: ActivatedRoute){}
+  constructor(
+    private assetsService: AssetsService, 
+    private notificationService: OpenModalsService,
+    private route: ActivatedRoute){}
 
   ngOnInit(): void {
+
+    this.getDataResponseSystem()
+
     this.route.paramMap.subscribe(params => {
       this.assetId = params.get('assetId');
       this.getDetailsAsset();
@@ -195,6 +203,23 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
       console.log(err);
+    })
+  }
+
+  getDataResponseSystem() {
+    let objData :entity.PostDataByPlant = {
+      brand : 'huawei',
+      plantCode : 'NE=33779163'
+    };
+
+    this.assetsService.getDataSystem(objData).subscribe({
+      next: ( response : entity.DataResponseSystem ) => {
+        console.log(response);
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
     })
   }
 

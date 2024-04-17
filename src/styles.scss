@@ -270,6 +270,13 @@ input, select{
   }
 }
 
+.modalAlert {
+  background: #FF8C0060 !important;
+  mat-icon {
+    color: #ff0000 !important;
+  }
+}
+
 
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: 20px !important;

@@ -10,17 +10,17 @@ export class OpenModalsService {
 
 	notificacion(message: string, type: string, customIcon?:string) {
 		const data = {
-			title : customIcon ? customIcon : type == 'save' ? 'Éxito' : type == 'question' ? '¿Pregunta?': 'Eliminado',
+			title : customIcon ? customIcon : type == 'save' ? 'Éxito' : type == 'question' ? '¿Pregunta?': type == 'alert' ? 'Alerta' : 'Eliminado',
 			message,
 			icon : {
 				show : true,
-				name : customIcon ? customIcon : type == 'save' ? 'save' : type == 'question' ? 'question_mark': 'delete',
-				color : type == 'save' ? 'success' : type == 'question' ? 'question' : 'error',
+				name : customIcon ? customIcon : type == 'save' ? 'save' : type == 'question' ? 'question_mark': type == 'alert' ? 'info' : 'delete',
+				color : type == 'save' ? 'success' : type == 'question' ? 'question' :  type == 'alert' ? 'alert' : 'error',
 			},
 			actions : {
 				confirm : {
 				  show  : true,
-				  label : 'Aceptar',
+				  label : type == 'question' ? 'Aceptar' : 'Cerrar',
 				  color : 'accent'
 				},
 				cancel : {

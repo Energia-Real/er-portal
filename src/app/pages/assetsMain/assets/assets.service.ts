@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
 import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
+import * as entity from './assets-model';
+import { Mapper } from './mapper';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +11,29 @@ import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 export class AssetsService implements OnDestroy{
 
   private API_URL = environment.API_URL_ASSETS_V1;
+  private API_URL_PROXY = environment.API_URL_PROXY_V1;
   private destroy$ = new Subject<void>();
 
   constructor(private http: HttpClient) { }
+
+  getDataResponseDescription(data:entity.PostDataByPlant): Observable<entity.DataResponseDescription> {
+		const url = `${this.API_URL}/integrators/proxy/GetOverviewByPlant`;
+
+    return this.http.post<entity.DataResponseDescription>(url, data);
+    // .pipe(//map((response) => Mapper.getDataExample(response))// );
+	}
+ 
+  getDataResponseDetails(data:entity.PostDataByPlant): Observable<entity.DataResponseDetails> {
+		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
+
+    return this.http.post<entity.DataResponseDetails>(url, data);
+	}
+  
+  getDataSystem(data:entity.PostDataByPlant): Observable<entity.DataResponseSystem> {
+		const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;
+
+    return this.http.post<entity.DataResponseSystem>(url, data);
+	}
 
   getDataAssetsmanagement(name: string, pageSize: number, page: number): Observable<any> {
     const params = new HttpParams()

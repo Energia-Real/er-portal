@@ -19,7 +19,7 @@ export interface ConfirmationConfig
     icon?: {
         show?: boolean;
         name?: string;
-        color?: 'success' | 'warning' | 'error' | 'question';
+        color?: 'success' | 'warning' | 'error' | 'question' | 'alert';
     };
     actions?: {
         confirm?: {

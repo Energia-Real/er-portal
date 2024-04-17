@@ -1,6 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { Subject } from 'rxjs';
+import { AssetsService } from '../assets.service';
+import * as entity from '../assets-model';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
 
 @Component({
   selector: 'app-description',
@@ -65,17 +68,36 @@ export class DescriptionComponent implements OnInit, OnDestroy {
 
   public loading = true; 
 
-  constructor() {
-
-  }
+  constructor(
+    private assetsService : AssetsService,
+    private notificationService: OpenModalsService
+  ) { }
 
   ngOnInit(): void {
-
-  console.log('assetData: ', this.assetData);
+    console.log('description');
     
+    this.getDataResponseDescription()
+    console.log('assetData: ', this.assetData);
     setTimeout(() => {
       this.loading = false;
     }, 5000); 
+  }
+
+  getDataResponseDescription() {
+    let objData :entity.PostDataByPlant = {
+      brand : 'huawei',
+      plantCode : 'NE=33779163'
+    };
+
+    this.assetsService.getDataResponseDescription(objData).subscribe({
+      next: ( response : entity.DataResponseDescription ) => {
+        console.log(response);
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    })
   }
 
   ngOnDestroy(): void {
