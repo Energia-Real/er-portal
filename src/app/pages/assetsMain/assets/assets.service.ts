@@ -17,7 +17,7 @@ export class AssetsService implements OnDestroy{
   constructor(private http: HttpClient) { }
 
   getDataResponseDescription(data:entity.PostDataByPlant): Observable<entity.DataResponseDescription> {
-		const url = `${this.API_URL}/integrators/proxy/GetOverviewByPlant`;
+		const url = `${this.API_URL_PROXY}/integrators/proxy/GetOverviewByPlant`;
 
     return this.http.post<entity.DataResponseDescription>(url, data);
     // .pipe(//map((response) => Mapper.getDataExample(response))// );

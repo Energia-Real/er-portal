@@ -6,11 +6,11 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrl: './details.component.scss'
+  selector: 'app-site-details',
+  templateUrl: './site-details.component.html',
+  styleUrl: './site-details.component.scss'
 })
-export class DetailsComponent implements OnInit, OnDestroy {
+export class SiteDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
   @Input() assetData: any;

@@ -6,23 +6,23 @@ import { AssetsRoutingModule } from './assets-routing.module';
 import { CreateComponent } from './create/create.component';
 import { EditComponent } from './edit/edit.component';
 import { ManagementComponent } from './management/management.component';
-import { DetailsComponent } from './details/details.component';
 import { LayoutComponent } from './layout/layout.component';
 import { DetailsContainerComponent } from './details-container/details-container.component';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
-import { DescriptionComponent } from './description/description.component';
+import { OverviewDetailsComponent } from './overview-details/overview-details.component';
+import { SiteDetailsComponent } from './site-details/site-details.component';
 
 @NgModule({
   declarations: [
     CreateComponent,
     EditComponent,
     ManagementComponent,
-    DetailsComponent,
     LayoutComponent,
     DetailsContainerComponent,
-    DescriptionComponent,
+    OverviewDetailsComponent,
+    SiteDetailsComponent,
   ],
   imports: [
     CommonModule,

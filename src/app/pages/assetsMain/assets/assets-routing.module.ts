@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { EditComponent } from './edit/edit.component';
 import { CreateComponent } from './create/create.component';
-import { DetailsComponent } from './details/details.component';
 import { LayoutComponent } from './layout/layout.component';
 import { ManagementComponent } from './management/management.component';
 import { DetailsContainerComponent } from './details-container/details-container.component';

@@ -4,13 +4,12 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-
 @Component({
-  selector: 'app-description',
-  templateUrl: './description.component.html',
-  styleUrl: './description.component.scss'
+  selector: 'app-overview-details',
+  templateUrl: './overview-details.component.html',
+  styleUrl: './overview-details.component.scss'
 })
-export class DescriptionComponent implements OnInit, OnDestroy {
+export class OverviewDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
   @Input() assetData: any;
@@ -76,7 +75,7 @@ export class DescriptionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('description');
     
-    this.getDataResponseDescription()
+    // this.getDataResponseDescription()
     console.log('assetData: ', this.assetData);
     setTimeout(() => {
       this.loading = false;

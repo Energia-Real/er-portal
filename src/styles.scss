@@ -3,66 +3,82 @@
 @import './styles/table.scss';
 
 @font-face {
-    font-family: 'GintoNord';
-    src: url('./assets/fonts/GintoNord-Regular.otf');
+  font-family: 'GintoNord';
+  src: url('./assets/fonts/GintoNord-Regular.otf');
 }
 
 @font-face {
-    font-family: 'NeueMontreal';
-    src: url('./assets/fonts/NeueMontreal-Regular.otf');
+  font-family: 'NeueMontreal';
+  src: url('./assets/fonts/NeueMontreal-Regular.otf');
 }
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-html, body { height: 100%; }
-body { font-family: 'NeueMontreal', "Helvetica Neue", sans-serif!important; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
+}
 
 
 .div-groups {
+  div {
+    &:first-child {
+      border-right-width: 2px;
+    }
+
+    &:last-child {
+      border-right-width: 0px !important;
+    }
+  }
+
+  &:nth-child(even) {
     div {
-        &:first-child {
-            border-right-width: 2px;
-        }
-        &:last-child {
-            border-right-width: 0px !important;
-        }
+      border-right-width: 2px;
     }
-    &:nth-child(even) {
-        div {
-            border-right-width: 2px;
-        }
-    }
+  }
 }
 
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   width: auto;
 }
 
-h1,h2,h3,h4,h5,p,span {
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span {
   margin: 0;
   padding: 0;
 }
 
 .spinner-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
 
 
-.form-group-container{
-  input, select{
+.form-group-container {
+
+  input,
+  select {
     border-radius: 24px;
     border: 1px solid #D2D2D2;
     display: block;
@@ -72,13 +88,14 @@ h1,h2,h3,h4,h5,p,span {
   }
 }
 
-.main-container{
+.main-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-input, select{
+input,
+select {
   border-radius: 24px;
   border: 1px solid #D2D2D2;
   display: block;
@@ -89,6 +106,7 @@ input, select{
 
 .password-input-container {
   position: relative;
+
   .eye-icon {
     position: absolute;
     right: 13px;
@@ -100,20 +118,22 @@ input, select{
   }
 }
 
-.form-group-container{
+.form-group-container {
   .message-error {
     color: #E30613;
     min-height: 30px;
     text-align: left;
-    p{
+
+    p {
       margin: 0;
     }
   }
 }
 
-.button-container{
+.button-container {
   padding-top: 5px;
-  .button-primary{
+
+  .button-primary {
     border-radius: 24px;
     border: 1px solid #E2E2E2;
     background: #EE5427;
@@ -123,7 +143,8 @@ input, select{
     margin: 0 auto;
     border: none;
     cursor: pointer;
-    &:disabled{
+
+    &:disabled {
       background-color: #898D93;
       cursor: not-allowed;
     }
@@ -165,14 +186,19 @@ input, select{
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-::ng-deep .check-color  {
+::ng-deep .check-color {
   .mdc-checkbox__background {
-    border-color: red!important;
-    background-color: red!important;
+    border-color: red !important;
+    background-color: red !important;
   }
 }
 
@@ -180,7 +206,7 @@ input, select{
   display: flex;
   gap: 25px;
   margin-bottom: 41px;
- 
+
   p {
     cursor: pointer;
     font-size: 12px;
@@ -196,8 +222,8 @@ input, select{
 }
 
 .content-menu-selected {
-  background: #EE5427!important;
-  color: #FFFFFF!important;
+  background: #EE5427 !important;
+  color: #FFFFFF !important;
 }
 
 .c-card-info {
@@ -223,13 +249,16 @@ input, select{
       line-height: 14.65px;
       margin-bottom: 16px;
     }
-    h2, h3 {
+
+    h2,
+    h3 {
       color: #000000;
       font-size: 24px;
       font-weight: 400;
       line-height: 28.63px;
       margin-bottom: 0;
     }
+
     h3 {
       font-size: 14px;
       line-height: 16px;
@@ -242,15 +271,15 @@ input, select{
 }
 
 .spinner-center {
-  display: flex!important;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 }
 
-
 // modal 
 .modalSuccess {
   background: #DCFCE7 !important;
+
   mat-icon {
     color: #03c046 !important;
   }
@@ -258,6 +287,7 @@ input, select{
 
 .modalQuestion {
   background: #a7a7a760 !important;
+
   mat-icon {
     color: #424242 !important;
   }
@@ -265,6 +295,7 @@ input, select{
 
 .modalError {
   background: #91000060 !important;
+
   mat-icon {
     color: #7a0000 !important;
   }
@@ -272,12 +303,42 @@ input, select{
 
 .modalAlert {
   background: #FF8C0060 !important;
+
   mat-icon {
     color: #ff0000 !important;
   }
 }
 
-
 .mat-mdc-dialog-container .mdc-dialog__surface {
   border-radius: 20px !important;
+}
+
+.home-tabs-main-container {
+  .mat-mdc-tab.mdc-tab {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #000000 !important;
+    background: #F8F8F8 !important;
+    border: 1px solid #EDEDED !important;
+    height: 25px !important;
+    padding: 0px 10px !important;
+  }
+
+  .mat-mdc-tab.mdc-tab:nth-child(4) {
+    width: 10px !important;
+    min-width: 48px !important;
+  }
+
+  .mdc-tab-indicator {
+    display: none !important;
+  }
+
+  .mat-mdc-tab.mdc-tab--active {
+    color: #FFFFFF !important;
+    background: #EE5427 !important;
+  }
+
+  .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+    color: #FFFFFF !important;
+  }
 }

@@ -5,13 +5,15 @@
       <h1>{{assetData.siteName}}</h1>
       <p>Dirección aproximada: {{addressPlace}}</p>
     </div>
+    
     <div class="info-weather-container">
       <div class="weather-flex-container">
 
         <!-- <div [ngClass]="{'spinner-center': loadingWeatherData}" class="card-weather-container" [ngStyle]="{'background-color': weatherData.color}"> -->
-        <div [ngClass]="{'spinner-center': !loadingWeatherData}" class="card-weather-container" [ngStyle]="{'background-color': weatherData.color}">
-            <!-- <span *ngIf="loadingWeatherData" class="loader" matTooltip="Cargando..."></span> -->
-            <span class="loader" matTooltip="Cargando..."></span>
+        <div [ngClass]="{'spinner-center': !loadingWeatherData}" class="card-weather-container"
+          [ngStyle]="{'background-color': weatherData.color}">
+          <!-- <span *ngIf="loadingWeatherData" class="loader" matTooltip="Cargando..."></span> -->
+          <span class="loader" matTooltip="Cargando..."></span>
 
           <!-- <div *ngIf="!loadingWeatherData">
             <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
@@ -20,9 +22,9 @@
         </div>
 
         <div [ngClass]="{'spinner-center': !loadinGtimeZonePlace}" class="card-weather-container card-weather-center">
-        <!-- <div [ngClass]="{'spinner-center': loadinGtimeZonePlace}" class="card-weather-container card-weather-center"> -->
-            <!-- <span *ngIf="loadinGtimeZonePlace" class="loader" matTooltip="Cargando..."></span> -->
-            <span class="loader" matTooltip="Cargando..."></span>
+          <!-- <div [ngClass]="{'spinner-center': loadinGtimeZonePlace}" class="card-weather-container card-weather-center"> -->
+          <!-- <span *ngIf="loadinGtimeZonePlace" class="loader" matTooltip="Cargando..."></span> -->
+          <span class="loader" matTooltip="Cargando..."></span>
 
 
           <!-- <div *ngIf="!loadinGtimeZonePlace">
@@ -32,9 +34,9 @@
         </div>
 
         <div [ngClass]="{'spinner-center': !loadinSystemSize}" class="card-weather-container card-weather-center">
-        <!-- <div [ngClass]="{'spinner-center': loadinSystemSize}" class="card-weather-container card-weather-center"> -->
-            <!-- <span *ngIf="loadinSystemSize" class="loader" matTooltip="Cargando..."></span> -->
-            <span class="loader" matTooltip="Cargando..."></span>
+          <!-- <div [ngClass]="{'spinner-center': loadinSystemSize}" class="card-weather-container card-weather-center"> -->
+          <!-- <span *ngIf="loadinSystemSize" class="loader" matTooltip="Cargando..."></span> -->
+          <span class="loader" matTooltip="Cargando..."></span>
 
           <!-- <div *ngIf="!loadinSystemSize">
             <p>Tamaño del sistema</p>
@@ -42,7 +44,8 @@
           </div> -->
         </div>
 
-        <div class="card-weather-container card-status-system" [ngClass]="{ 'spinner-center': !loadinSystemSize }" [ngStyle]="{ 'background-color': statusSystem ? '#a1efef' : '#efa1a1' }">
+        <div class="card-weather-container card-status-system" [ngClass]="{ 'spinner-center': !loadinSystemSize }"
+          [ngStyle]="{ 'background-color': !statusSystem ? '#a1efef' : '#efa1a1' }">
           <span class="loader" matTooltip="Cargando..."></span>
 
           <!-- <i *ngIf="statusSystem" class="fa-solid fa-check mb-2"></i>
@@ -56,16 +59,18 @@
   <div class="home-tabs-main-container">
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
 
-      <mat-tab label="Descripción"> 
-        <app-description [assetData]="assetData"></app-description>
+      <mat-tab label="Overview">
+        <app-overview-details [assetData]="assetData"></app-overview-details>
       </mat-tab>
 
-      <mat-tab label="Detalles">
-        <app-details [assetData]="assetData"></app-details>
+      <mat-tab label="Site details">
+        <app-site-details [assetData]="assetData"></app-site-details>
       </mat-tab>
- 
-      <mat-tab label="Rendimiento"> Rendimiento </mat-tab>
+
+      <mat-tab label="Site performance">En desarrollo...</mat-tab>
+      
+      <mat-tab label="FAQ">En desarrollo... </mat-tab>
+
     </mat-tab-group>
-  
   </div>
 </div>
