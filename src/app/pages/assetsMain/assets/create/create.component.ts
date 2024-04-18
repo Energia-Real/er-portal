@@ -13,7 +13,16 @@ import { Subject } from 'rxjs';
 export class CreateComponent implements OnDestroy {
   private onDestroy = new Subject<void>();
 
-  assetCreationForm!: FormGroup;
+  formData = this.fb.group({
+    name: ['', Validators.required],
+    contractType: ['', Validators.required],
+    installationType: ['', [Validators.required]],
+    installedCapacity: [null, [Validators.required]],
+    googleMapsLink: ['', [Validators.required, this.validateUrlPrefix]],
+    latitude: [null, [Validators.required, this.validateLatitude]],
+    longitude: [null, [Validators.required, this.validateLongitude]]
+  });
+
   assetId: string | null = '';
   showLoader: boolean = false;
   loading: boolean = false;
@@ -23,17 +32,7 @@ export class CreateComponent implements OnDestroy {
   constructor(private fb: FormBuilder,
     private assetsService: AssetsService,
     private router: Router
-    ){
-    this.assetCreationForm = this.fb.group({
-      name: ['', Validators.required],
-      contractType: ['', Validators.required],
-      installationType: ['', [Validators.required]],
-      installedCapacity: [null, [Validators.required]],
-      googleMapsLink: ['', [Validators.required, this.validateUrlPrefix]],
-      latitude: [null, [Validators.required, this.validateLatitude]],
-      longitude: [null, [Validators.required, this.validateLongitude]]
-    });
-  }
+  ) { }
   
   ngOnInit(): void {
   }
@@ -41,13 +40,13 @@ export class CreateComponent implements OnDestroy {
   onSubmit() {
     this.errorCreate = false;
     let userData = {
-      nombre: this.assetCreationForm.get("name")?.value,
-      tipoDeContrato: this.assetCreationForm.get("contractType")?.value,
-      tipoDeInstalacion: this.assetCreationForm.get("installationType")?.value,
-      capacidadInstalada: this.assetCreationForm.get("installedCapacity")?.value,
-      linkGoogleMaps: this.assetCreationForm.get("googleMapsLink")?.value,
-      latitude: this.assetCreationForm.get("latitude")?.value,
-      longitude: this.assetCreationForm.get("longitude")?.value
+      nombre: this.formData.get("name")?.value,
+      tipoDeContrato: this.formData.get("contractType")?.value,
+      tipoDeInstalacion: this.formData.get("installationType")?.value,
+      capacidadInstalada: this.formData.get("installedCapacity")?.value,
+      linkGoogleMaps: this.formData.get("googleMapsLink")?.value,
+      latitude: this.formData.get("latitude")?.value,
+      longitude: this.formData.get("longitude")?.value
     }
     this.loading = true;
     Swal.fire({
@@ -109,7 +108,7 @@ export class CreateComponent implements OnDestroy {
   };
 
   clearForm() {
-    this.assetCreationForm.reset();
+    this.formData.reset();
   }
 
   ngOnDestroy(): void {

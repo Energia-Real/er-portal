@@ -6,15 +6,19 @@
       <p>Ingresa los datos para crear una planta</p>
     </div>
     <div class="create-asset-inputs-component">
-      <form [formGroup]="assetCreationForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="formData" (ngSubmit)="onSubmit()">
         <div class="form-group-container">
           <p>Nombre del sitio:</p>
           <input type="text" id="nombre" formControlName="name" required placeholder="Nombre del sitio">
-          <div class="message-error">
-            <p *ngIf="assetCreationForm.get('name')?.value == '' && (assetCreationForm.get('name')?.dirty || assetCreationForm.get('name')?.touched)">Debe agregar un nombre</p>
-          </div>
+          <!-- <div class="message-error">
+            <p *ngIf="formData.get('name')?.value == '' && (formData.get('name')?.dirty || formData.get('name')?.touched)">Debe agregar un nombre</p>
+          </div> -->
+
+          <mat-error *ngIf="formData.get('name')?.invalid && formData.get('name')?.touched">
+            RFC debe tener 12 o 13 caracteres
+          </mat-error>
         </div>
-    
+
         <div class="form-group-container">
           <p>Tipo de contrato:</p>
           <select id="contractType" formControlName="contractType" required placeholder="Tipo de contrato">
@@ -23,10 +27,12 @@
             <option value="Arrendamiento">Arrendamiento</option>
           </select>
           <div class="message-error">
-            <p *ngIf="assetCreationForm.get('contractType')?.value == '' && (assetCreationForm.get('contractType')?.dirty || assetCreationForm.get('contractType')?.touched)">Debe agregar un tipo de contrato</p>
+            <p
+              *ngIf="formData.get('contractType')?.value == '' && (formData.get('contractType')?.dirty || formData.get('contractType')?.touched)">
+              Debe agregar un tipo de contrato</p>
           </div>
         </div>
-    
+
         <div class="form-group-container input-email-container">
           <p>Tipo de instalación:</p>
           <select id="installationType" formControlName="installationType" required placeholder="Tipo de instalación">
@@ -35,24 +41,34 @@
             <option value="BESS">BESS</option>
           </select>
           <div class="message-error">
-            <p *ngIf="assetCreationForm.get('installationType')?.value == '' && (assetCreationForm.get('installationType')?.dirty || assetCreationForm.get('installationType')?.touched)">Debe agregar un tipo de instalación</p>
+            <p
+              *ngIf="formData.get('installationType')?.value == '' && (formData.get('installationType')?.dirty || formData.get('installationType')?.touched)">
+              Debe agregar un tipo de instalación</p>
           </div>
         </div>
-    
+
         <div class="form-group-container">
           <p>Capacidad instalada</p>
-          <input type="number" id="installedCapacity" formControlName="installedCapacity" required placeholder="Capacidad instalada">
+          <input type="number" id="installedCapacity" formControlName="installedCapacity" required
+            placeholder="Capacidad instalada">
           <div class="message-error">
-            <p *ngIf="assetCreationForm.get('installedCapacity')?.value == null && (assetCreationForm.get('installedCapacity')?.dirty || assetCreationForm.get('installedCapacity')?.touched)">Debe agregar la capacidad instalada</p>
+            <p
+              *ngIf="formData.get('installedCapacity')?.value == null && (formData.get('installedCapacity')?.dirty || formData.get('installedCapacity')?.touched)">
+              Debe agregar la capacidad instalada</p>
           </div>
         </div>
-    
+
         <div class="form-group-container">
           <p>Link de Google Maps</p>
-          <input type="text" id="googleMapsLink" formControlName="googleMapsLink" required placeholder="Link de Google Maps">
+          <input type="text" id="googleMapsLink" formControlName="googleMapsLink" required
+            placeholder="Link de Google Maps">
           <div class="message-error pb-3 pt-1">
-            <p *ngIf="assetCreationForm.get('googleMapsLink')?.value == '' && (assetCreationForm.get('googleMapsLink')?.dirty || assetCreationForm.get('googleMapsLink')?.touched)">Debe incluir un link de Google Maps</p>
-            <p *ngIf="assetCreationForm.get('googleMapsLink')?.errors?.['urlPrefix'] && (assetCreationForm.get('googleMapsLink')?.dirty || assetCreationForm.get('googleMapsLink')?.touched)">El url que ingresaste no es valido</p>
+            <p
+              *ngIf="formData.get('googleMapsLink')?.value == '' && (formData.get('googleMapsLink')?.dirty || formData.get('googleMapsLink')?.touched)">
+              Debe incluir un link de Google Maps</p>
+            <p
+              *ngIf="formData.get('googleMapsLink')?.errors?.['urlPrefix'] && (formData.get('googleMapsLink')?.dirty || formData.get('googleMapsLink')?.touched)">
+              El url que ingresaste no es valido</p>
           </div>
         </div>
 
@@ -61,16 +77,24 @@
             <p>Latitud:</p>
             <input type="number" id="latitude" formControlName="latitude" required placeholder="Latitud">
             <div class="message-error pb-3 pt-1">
-              <p *ngIf="assetCreationForm.get('latitude')?.value == null && (assetCreationForm.get('latitude')?.dirty || assetCreationForm.get('latitude')?.touched)">Debe agregar una latitud</p>
-              <p *ngIf="assetCreationForm.get('latitude')?.errors?.['latitudeInvalid'] && (assetCreationForm.get('latitude')?.dirty || assetCreationForm.get('latitude')?.touched)">La latitud debe estar entre -90 y 90</p>
+              <p
+                *ngIf="formData.get('latitude')?.value == null && (formData.get('latitude')?.dirty || formData.get('latitude')?.touched)">
+                Debe agregar una latitud</p>
+              <p
+                *ngIf="formData.get('latitude')?.errors?.['latitudeInvalid'] && (formData.get('latitude')?.dirty || formData.get('latitude')?.touched)">
+                La latitud debe estar entre -90 y 90</p>
             </div>
           </div>
           <div class="coordinates-input-container">
             <p>Longuitud:</p>
             <input type="number" id="longitude" formControlName="longitude" required placeholder="Longitud">
             <div class="message-error pb-3 pt-1">
-              <p *ngIf="assetCreationForm.get('longitude')?.value == null && (assetCreationForm.get('longitude')?.dirty || assetCreationForm.get('longitude')?.touched)">Debe agregar una longitud</p>
-              <p *ngIf="assetCreationForm.get('longitude')?.errors?.['invalidLongitude'] && (assetCreationForm.get('longitude')?.dirty || assetCreationForm.get('longitude')?.touched)">La longitud debe estar entre -180 y 180</p>
+              <p
+                *ngIf="formData.get('longitude')?.value == null && (formData.get('longitude')?.dirty || formData.get('longitude')?.touched)">
+                Debe agregar una longitud</p>
+              <p
+                *ngIf="formData.get('longitude')?.errors?.['invalidLongitude'] && (formData.get('longitude')?.dirty || formData.get('longitude')?.touched)">
+                La longitud debe estar entre -180 y 180</p>
             </div>
           </div>
         </div>
@@ -81,7 +105,8 @@
           </div>
           <div>
             <span class="loader" *ngIf="loading"></span>
-            <button class="button-primary" *ngIf="!loading" type="submit" [disabled]="assetCreationForm.invalid || buttonDisabled">Guardar</button>
+            <button class="button-primary" *ngIf="!loading" type="submit"
+              [disabled]="formData.invalid || buttonDisabled">Guardar</button>
           </div>
         </div>
       </form>
