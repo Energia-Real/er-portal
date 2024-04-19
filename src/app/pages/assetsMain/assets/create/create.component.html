@@ -10,21 +10,16 @@
         <div class="form-group-container">
           <p>Nombre del sitio:</p>
           <input type="text" id="nombre" formControlName="name" required placeholder="Nombre del sitio">
-          <!-- <div class="message-error">
+          <div class="message-error">
             <p *ngIf="formData.get('name')?.value == '' && (formData.get('name')?.dirty || formData.get('name')?.touched)">Debe agregar un nombre</p>
-          </div> -->
-
-          <mat-error *ngIf="formData.get('name')?.invalid && formData.get('name')?.touched">
-            RFC debe tener 12 o 13 caracteres
-          </mat-error>
+          </div>
         </div>
 
         <div class="form-group-container">
           <p>Tipo de contrato:</p>
           <select id="contractType" formControlName="contractType" required placeholder="Tipo de contrato">
             <option value="" disabled>Seleccione uno</option>
-            <option value="PPA">PPA</option>
-            <option value="Arrendamiento">Arrendamiento</option>
+            <option [value]="cat.id" *ngFor="let cat of catContractType"> {{ cat?.description || '-' }}</option>
           </select>
           <div class="message-error">
             <p
@@ -37,8 +32,8 @@
           <p>Tipo de instalación:</p>
           <select id="installationType" formControlName="installationType" required placeholder="Tipo de instalación">
             <option value="" disabled>Seleccione uno</option>
-            <option value="Solar">Solar</option>
-            <option value="BESS">BESS</option>
+            <option [value]="cat.id" *ngFor="let cat of catInstallationType"> {{ cat?.description || '-' }}</option>
+
           </select>
           <div class="message-error">
             <p

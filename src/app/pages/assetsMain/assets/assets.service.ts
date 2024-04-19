@@ -9,10 +9,10 @@ import { Mapper } from './mapper';
   providedIn: 'root'
 })
 export class AssetsService implements OnDestroy{
+  private onDestroy = new Subject<void>();
 
-  private API_URL = environment.API_URL_ASSETS_V1;
+  private API_URL = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
-  private destroy$ = new Subject<void>();
 
   constructor(private http: HttpClient) { }
 
@@ -86,13 +86,13 @@ export class AssetsService implements OnDestroy{
   obtenerHoraLocal(): Observable<number> {
     return interval(1000).pipe(
       map(() => Date.now()),
-      takeUntil(this.destroy$)
+      takeUntil(this.onDestroy)
     );
   }
 
   ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.onDestroy.next();
+    this.onDestroy.complete();
   }
 
 }

@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
 import { Subject } from 'rxjs';
+import { CatalogsService } from '@app/shared/services/catalogs.service';
+import * as entityCatalogs from '../../../../shared/models/catalogs-models';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
 
 @Component({
   selector: 'app-edit',
@@ -20,7 +23,11 @@ export class EditComponent implements OnDestroy {
   loading: boolean = false;
   buttonDisabled: boolean = false;
 
+  catPlantStatus:entityCatalogs.DataCatalogs[] = [];
+
   constructor(private fb: FormBuilder, 
+    private catalogsService: CatalogsService, 
+    private notificationService: OpenModalsService,
     private assetsService: AssetsService, 
     private route: ActivatedRoute, 
     private router: Router
@@ -37,6 +44,21 @@ export class EditComponent implements OnDestroy {
       this.assetId = params.get('assetId');
       this.getDetailsAsset();
     });
+
+    this.getCatalogs()
+  }
+
+  getCatalogs() {
+    this.catalogsService.getCatPlantStatus().subscribe({
+      next: ( response : entityCatalogs.DataCatalogs[] ) => {
+      console.log('getCatPlantStatus', response);
+      this.catPlantStatus = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    })
   }
 
   getDetailsAsset(){

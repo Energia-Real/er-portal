@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
 
-import * as entityGeneral from '../../../shared/models/general-interface';
+import * as entityGeneral from '../../models/general-models';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 

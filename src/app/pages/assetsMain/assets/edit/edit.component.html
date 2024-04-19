@@ -26,9 +26,7 @@
           <p>Estatus:</p>
           <select id="assetStatus" formControlName="assetStatus" required placeholder="Estatus">
             <option value="" disabled>Seleccione uno</option>
-            <option value="Deudor">Deudor</option>
-            <option value="Legalización">Legalización</option>
-            <option value="Activo">Activo</option>
+            <option [value]="cat.id" *ngFor="let cat of catPlantStatus"> {{ cat?.description || '-' }}</option>
           </select>
           <div class="message-error">
             <p *ngIf="editAssetForm.get('assetStatus')?.value == '' && (editAssetForm.get('assetStatus')?.dirty || editAssetForm.get('assetStatus')?.touched)">Debe agregar un estatus</p>
@@ -37,6 +35,7 @@
     
         <div class="form-group-container input-email-container">
           <p>Esquema de operación</p>
+          <!-- cfeZero  -->
           <select id="operationScheme" formControlName="operationScheme" required placeholder="Esquema de operación">
             <option value="" disabled>Seleccione uno</option>
             <option value="Net Zero Export">Net Zero Export</option>

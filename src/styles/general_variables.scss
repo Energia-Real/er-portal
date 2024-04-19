@@ -12,6 +12,7 @@
 .input-date {
     height: 40px !important;
     .mat-mdc-form-field-flex {
+       
         height: 40px !important;
         .mdc-text-field--outlined .mdc-notched-outline{
             height: 40px !important;
@@ -20,6 +21,43 @@
                 padding: 8px 0 !important;
             }
         }
+    }
+}
+
+.inputNewRegister {
+	width: 100%!important;
+    margin-bottom: 20px;
+
+    .mat-focused {
+        background: white!important;
+    }
+
+	.mat-mdc-form-field-flex {
+        border-radius:8px!important;
+		background: white !important;
+
+	}
+
+    mat-label {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 21px;
+        color: #646878;
+    } 
+
+    button {
+        color:  rgb(40 40 40);
+    }
+
+    span {
+        color:  rgb(40 40 40);
+    }
+
+    > div:nth-child(1) {
+        background: white !important;
+        border-radius: 10px;
+        padding: 0 !important;
+        // box-shadow: 4px 4px 4px 0px #00000040!important;
     }
 }
 

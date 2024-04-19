@@ -342,3 +342,275 @@ select {
     color: #FFFFFF !important;
   }
 }
+
+.c-new-register {
+  padding: 0% 4% 4% 4%;
+
+  .c-content {
+    margin-top: 50px;
+    // background: #E2E2E2;
+
+    .header-content {
+      // background: #dd9e9e;
+    }
+  }
+}
+
+.return-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40PX;
+  gap: 15px;
+  color: black;
+
+  p {
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+    margin: 0;
+  }
+
+  mat-icon {
+    color: black;
+    cursor: pointer;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+// .input-default {
+//   mat-label {
+//     font-size: 15px;
+//     font-weight: 700;
+//     line-height: 23px;
+//     color: #646878;
+//   }
+// }
+
+// *[class*=mat-],
+// *[class*=mat-mdc-] {
+//   -webkit-font-smoothing: auto !important;
+//   -moz-osx-font-smoothing: auto !important;
+
+//   * {
+//     -webkit-font-smoothing: auto !important;
+//     -moz-osx-font-smoothing: auto !important;
+//   }
+// }
+
+// .mat-mdc-text-field-wrapper {
+//   padding: 0;
+//   border-radius: 6px;
+//   border-width: 1px;
+//   border-style: solid;
+
+//   &:not(.mdc-text-field--no-label) {
+//     margin-top: 24px;
+//     overflow: visible;
+//   }
+
+//   .mat-mdc-form-field-focus-overlay {
+//     border-radius: 6px;
+//   }
+
+//   .mat-mdc-form-field-flex {
+//     position: relative;
+//     display: flex;
+//     align-items: stretch;
+//     border-radius: 6px;
+//     padding: 0 16px;
+
+//     .mat-mdc-form-field-icon-prefix,
+//     .mat-mdc-form-field-text-prefix {
+//       padding: 0 !important;
+
+//       >.mat-icon {
+//         margin-right: 12px;
+//         padding: 0 !important;
+//       }
+
+//       >.mat-mdc-icon-button {
+//         margin: 0 4px 0 -10px;
+//       }
+
+//       >.mat-mdc-select {
+//         margin-right: 10px;
+//       }
+
+//       >.mat-datepicker-toggle {
+//         margin-left: -8px;
+//       }
+//     }
+
+//     .mat-mdc-form-field-icon-suffix,
+//     .mat-mdc-form-field-text-suffix {
+//       padding: 0 !important;
+
+//       >.mat-icon {
+//         margin-left: 12px;
+//         padding: 0 !important;
+//       }
+
+//       >.mat-mdc-icon-button {
+//         margin: 0 -10px 0 4px;
+//       }
+
+//       >.mat-mdc-select {
+//         margin-left: 10px;
+//       }
+
+//       >.mat-datepicker-toggle {
+//         margin-right: -8px;
+//       }
+//     }
+
+//     .mat-mdc-form-field-icon-prefix,
+//     .mat-mdc-form-field-text-prefix,
+//     .mat-mdc-form-field-icon-suffix,
+//     .mat-mdc-form-field-text-suffix {
+//       display: inline-flex;
+//       align-items: center;
+//       justify-content: center;
+
+//       .mat-mdc-icon-button {
+//         width: 40px;
+//         min-width: 40px;
+//         height: 40px;
+//         min-height: 40px;
+//       }
+
+//       .mat-icon,
+//       .mat-mdc-icon-button:not([disabled]),
+//       .mat-mdc-select-value {}
+
+//       .mat-datepicker-toggle-default-icon {}
+
+//       .mat-mdc-select {
+//         display: flex;
+//         align-items: center;
+
+//         &:focus {
+
+//           .mat-mdc-select-trigger {
+
+//             .mat-mdc-select-value {}
+
+//             .mat-mdc-select-arrow-wrapper {
+//               transform: unset !important;
+
+//               .mat-mdc-select-arrow {
+//                 // margin-top: 13px!important;
+//                 border-top-color: var(--fuse-primary);
+//               }
+//             }
+//           }
+//         }
+
+//         .mat-mdc-select-trigger {
+//           display: flex;
+//           align-items: center;
+
+//           .mat-mdc-select-value {
+//             display: flex;
+//             max-width: none;
+
+//             mat-mdc-select-trigger {
+
+//               .mat-icon {
+//                 margin: 0 !important;
+//               }
+//             }
+//           }
+
+//           .mat-mdc-select-arrow-wrapper {
+//             display: flex;
+//             align-items: center;
+//             transform: unset !important;
+//             transform: none;
+//             margin-left: 4px;
+//             transform: unset !important;
+//             color: #EE5427 !important;
+
+//             .mat-mdc-select-arrow {
+//               color: #EE5427 !important;
+
+//               .mat-mdc-select-arrow svg {
+//                 color: #EE5427 !important;
+
+//               }
+
+//               min-height: 0;
+//               margin-top: 13px !important;
+
+//             }
+//           }
+//         }
+//       }
+//     }
+
+//     /* Infix */
+//     .mat-mdc-form-field-infix {
+//       position: static;
+//       display: flex;
+//       align-items: center;
+//       width: 88px;
+//       min-height: 48px;
+//       padding: 0;
+//       border: 0;
+
+//       /* Floating label - disable floating action */
+//       .mat-mdc-floating-label {
+//         top: -30px !important;
+//         left: 0 !important;
+//         font-size: 17px !important;
+//         width: 100% !important;
+//         transform: none !important;
+//         pointer-events: auto;
+//         font-weight: 500;
+//       }
+
+//       /* Textarea */
+//       textarea.mat-mdc-input-element {
+//         margin: 12px 0;
+//         padding: 0 6px 0 0;
+//       }
+
+//       /* Chips */
+//       .mat-mdc-chip-set {
+//         width: 100%;
+//         margin: 0 -8px;
+//       }
+//     }
+//   }
+
+//   /* Remove the underline */
+//   .mdc-line-ripple {
+//     display: none;
+//   }
+// }
+
+// .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
+//   transform: unset !important;
+//   color: #EE5427 !important;
+
+// }
+
+
+// .mat-mdc-select-arrow {
+//   color: #EE5427 !important;
+
+
+// }
+
+// .mat-mdc-form-field-hint-wrapper,
+// .mat-mdc-form-field-error-wrapper {
+//   padding: 0 !important;
+// }

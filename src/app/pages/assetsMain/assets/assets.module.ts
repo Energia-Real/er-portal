@@ -13,6 +13,7 @@ import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.mo
 import { MaterialModule } from '@app/shared/material/material.module';
 import { OverviewDetailsComponent } from './overview-details/overview-details.component';
 import { SiteDetailsComponent } from './site-details/site-details.component';
+import { Crete2Component } from './crete2/crete2.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SiteDetailsComponent } from './site-details/site-details.component';
     DetailsContainerComponent,
     OverviewDetailsComponent,
     SiteDetailsComponent,
+    Crete2Component,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
 import { Subject } from 'rxjs';
+import { CatalogsService } from '@app/shared/services/catalogs.service';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
+import * as entityCatalogs from '../../../../shared/models/catalogs-models';
 
 @Component({
   selector: 'app-create',
@@ -23,19 +26,62 @@ export class CreateComponent implements OnDestroy {
     longitude: [null, [Validators.required, this.validateLongitude]]
   });
 
+  catContractType:entityCatalogs.DataCatalogs[] = [];
+  catInstallationType:entityCatalogs.DataCatalogs[] = [];
+
   assetId: string | null = '';
   showLoader: boolean = false;
   loading: boolean = false;
   buttonDisabled: boolean = false;
   errorCreate: boolean = false;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private catalogsService: CatalogsService, 
+    private notificationService: OpenModalsService,
+    private fb: FormBuilder,
     private assetsService: AssetsService,
     private router: Router
   ) { }
   
   ngOnInit(): void {
+    this.getCatalogs()
   }
+
+  getCatalogs() {
+    this.catalogsService.getCatContractType().subscribe({
+      next: ( response : entityCatalogs.DataCatalogs[] ) => {
+      console.log('getCatContractType', response);
+      this.catContractType = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    });
+
+    this.catalogsService.getCatInstallationType().subscribe({
+      next: ( response : entityCatalogs.DataCatalogs[] ) => {
+      console.log('InstallationType', response);
+      this.catInstallationType = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    });
+  
+    this.catalogsService.getCatInstallationType().subscribe({
+      next: ( response : entityCatalogs.DataCatalogs[] ) => {
+      console.log('InstallationType', response);
+      this.catInstallationType = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    });
+  }
+
 
   onSubmit() {
     this.errorCreate = false;
