@@ -8,19 +8,19 @@
         <h2 class="text-er-orange text-base font-normal" i18n>Plantas totales</h2>
         <div class="grid md:grid-cols-4 gap-4 text-center">
           <div class="border-r-2 ">
-            <h1>{{ dataSummary.noOfSites }}</h1>
+            <h1>{{ dataSummary?.noOfSites || 0 }}</h1>
             <p class="text-sm" i18n># de sitios</p>
           </div>
           <div class="border-r-2">
-            <h1>{{ dataSummary.noOfInverters }}</h1>
+            <h1>{{ dataSummary?.noOfInverters || 0 }}</h1>
             <p class="text-sm" i18n># de inversores</p>
           </div>
           <div class="border-r-2">
-            <h1>{{ dataSummary.mWhInstalled | number:'1.2-2' }}</h1>
+            <h1>{{ !dataSummary.mWhInstalled ? 0 : dataSummary.mWhInstalled | number:'1.2-2' }}</h1>
             <p class="text-sm" i18n>MW instalados</p>
           </div>
           <div>
-            <h1>{{dataSummary.co2T}}</h1>
+            <h1>{{dataSummary?.co2T || 0}}</h1>
             <p class="text-sm" i18n>Co2 T</p>
           </div>
         </div>
@@ -39,7 +39,7 @@
   </div>
   <div>
     <div class="flex justify-end">
-      <button mat-stroked-button routerLink="/assets/create">
+      <button class="btn-action-add" routerLink="/assets/create">
         <mat-icon>add</mat-icon>
         Agregar planta
       </button>
@@ -96,7 +96,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
       </table>
 
-      <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="itemsPerPageOptions"
+      <mat-paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="itemsPerPageOptions"
         (page)="getServerData($event)" showFirstLastButtons aria-label="Select page of periodic elements">
       </mat-paginator>
     </div>

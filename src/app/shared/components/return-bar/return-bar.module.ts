@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReturnBarComponent } from './return-bar.component';
 import { RouterModule } from '@angular/router';
-import { MatMenuModule } from '@angular/material/menu';
+import { MaterialModule } from '@app/shared/material/material.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
   imports: [
     CommonModule,
     RouterModule,
-    MatMenuModule
+    MaterialModule
   ],
   exports: [
     ReturnBarComponent

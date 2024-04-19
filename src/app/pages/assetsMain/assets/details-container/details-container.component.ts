@@ -201,7 +201,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
     }, err =>{
       this.showLoader = false;
-      Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
+      this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
       console.log(err);
     })
   }
@@ -217,7 +217,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
         console.log(response);
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
         console.error(error)
       }
     })
@@ -240,7 +240,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       console.log(resp);
       this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
     }, err =>{
-      Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
+      this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
     });
   }
 

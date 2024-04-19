@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class ReturnBarComponent {
   @Input() urlToGo: string = "";
+  @Input() title: string = "";
 
   constructor(private router: Router){}
 

@@ -92,28 +92,33 @@
                 <mat-icon>favorite</mat-icon>
             </button>
         </div>
-        <div class="flex items-start mt-4">
-            <mat-form-field appearance="outline">
-            <!-- <mat-form-field appearance="outline" class="input-date"> -->
-                <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate placeholder="Start date">
-                    <input matEndDate placeholder="End date">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker" [disableRipple]="true"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-            <mat-form-field floatLabel="always" appearance="outline" class="ms-3">
-                <mat-select placeholder="Group View">
-                    <mat-option value="one">First option</mat-option>
-                    <mat-option value="two">Second option</mat-option>
-                </mat-select>
-            </mat-form-field>
+
+        <div class="row mt-3 mb-5">
+            <div class="col-md-4">
+                <mat-form-field appearance="outline" class="input-date">
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate placeholder="Start date">
+                        <input matEndDate placeholder="End date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker" [disableRipple]="true"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-3 d-flex justify-content-start">
+                <mat-form-field floatLabel="always" appearance="outline" class="input-select">
+                    <mat-select placeholder="Group View">
+                        <mat-option value="one">First option</mat-option>
+                        <mat-option value="two">Second option</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
         <div>
             <highcharts-chart 
                 [Highcharts]="Highcharts"
                 [options]="chartOptions"
-                class="h-max w-full block"></highcharts-chart>
+                class="h-max w-full block">
+            </highcharts-chart>
         </div>
     </div>
 </main>

@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { CatalogsService } from '@app/shared/services/catalogs.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
+import { CustomValidators } from '@app/shared/validators/custom-validatos';
 
 @Component({
   selector: 'app-create',
@@ -21,9 +22,9 @@ export class CreateComponent implements OnDestroy {
     contractType: ['', Validators.required],
     installationType: ['', [Validators.required]],
     installedCapacity: [null, [Validators.required]],
-    googleMapsLink: ['', [Validators.required, this.validateUrlPrefix]],
-    latitude: [null, [Validators.required, this.validateLatitude]],
-    longitude: [null, [Validators.required, this.validateLongitude]]
+    googleMapsLink: ['', [Validators.required, CustomValidators.validateUrlPrefix]],
+    latitude: [null, [Validators.required, CustomValidators.validateLatitude]],
+    longitude: [null, [Validators.required, CustomValidators.validateLongitude]]
   });
 
   catContractType:entityCatalogs.DataCatalogs[] = [];
@@ -124,35 +125,6 @@ export class CreateComponent implements OnDestroy {
     
   }
   
-  validateLatitude(control: AbstractControl): ValidationErrors | null {
-    const latitude = parseFloat(control.value);
-    if (isNaN(latitude) || latitude < -90 || latitude > 90) {
-      return { 'latitudeInvalid': true };
-    }
-    return null;
-  }
-  
-  validateLongitude(control: AbstractControl): ValidationErrors | null {
-    const longitude = parseFloat(control.value);
-    if (isNaN(longitude) || longitude < -180 || longitude > 180) {
-      return { 'invalidLongitude': true };
-    }
-    return null;
-  }
-
-  validateUrlPrefix(control: AbstractControl): ValidationErrors | null {
-    const value: string = control.value;
-
-    if (value && (value.startsWith('https://goo.gl') || 
-        value.startsWith('https://maps.app.goo.gl') || 
-        value.startsWith('https://www.google.com.mx/maps')
-        )) {
-      return null;
-    }
-
-    return { 'urlPrefix': true };
-  };
-
   clearForm() {
     this.formData.reset();
   }

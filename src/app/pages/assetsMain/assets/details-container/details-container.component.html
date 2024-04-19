@@ -10,7 +10,7 @@
       <div class="weather-flex-container">
 
         <!-- <div [ngClass]="{'spinner-center': loadingWeatherData}" class="card-weather-container" [ngStyle]="{'background-color': weatherData.color}"> -->
-        <div [ngClass]="{'spinner-center': !loadingWeatherData}" class="card-weather-container"
+        <div class="card-weather-container spinner-center"
           [ngStyle]="{'background-color': weatherData.color}">
           <!-- <span *ngIf="loadingWeatherData" class="loader" matTooltip="Cargando..."></span> -->
           <span class="loader" matTooltip="Cargando..."></span>
@@ -21,7 +21,7 @@
           </div> -->
         </div>
 
-        <div [ngClass]="{'spinner-center': !loadinGtimeZonePlace}" class="card-weather-container card-weather-center">
+        <div class="card-weather-container card-weather-center spinner-center">
           <!-- <div [ngClass]="{'spinner-center': loadinGtimeZonePlace}" class="card-weather-container card-weather-center"> -->
           <!-- <span *ngIf="loadinGtimeZonePlace" class="loader" matTooltip="Cargando..."></span> -->
           <span class="loader" matTooltip="Cargando..."></span>
@@ -33,7 +33,7 @@
           </div> -->
         </div>
 
-        <div [ngClass]="{'spinner-center': !loadinSystemSize}" class="card-weather-container card-weather-center">
+        <div class="card-weather-container card-weather-center spinner-center">
           <!-- <div [ngClass]="{'spinner-center': loadinSystemSize}" class="card-weather-container card-weather-center"> -->
           <!-- <span *ngIf="loadinSystemSize" class="loader" matTooltip="Cargando..."></span> -->
           <span class="loader" matTooltip="Cargando..."></span>
@@ -44,8 +44,8 @@
           </div> -->
         </div>
 
-        <div class="card-weather-container card-status-system" [ngClass]="{ 'spinner-center': !loadinSystemSize }"
-          [ngStyle]="{ 'background-color': !statusSystem ? '#a1efef' : '#efa1a1' }">
+        <!-- <div class="card-weather-container card-status-system" [ngClass]="{ 'spinner-center': !loadinSystemSize }" -->
+        <div class="card-weather-container card-status-system spinner-center" [ngStyle]="{ 'background-color': !statusSystem ? '#a1efef' : '#efa1a1' }">
           <span class="loader" matTooltip="Cargando..."></span>
 
           <!-- <i *ngIf="statusSystem" class="fa-solid fa-check mb-2"></i>
