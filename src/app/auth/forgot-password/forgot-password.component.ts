@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ModalConfirmationComponent } from '@app/shared/components/modal-confirmation/modal-confirmation.component';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Subject } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -16,12 +17,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   actionComplete : boolean = false;
 
-  formData = this.formBuilder.group({
-    email: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]],
-  });
+  public email = new FormControl({ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]);
 
   constructor(
     public dialog: MatDialog,
+    private authService: AuthService,
     private notificationService: OpenModalsService,
     private formBuilder: FormBuilder,
     private router: Router
@@ -32,8 +32,19 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   
   actionSave() {
     this.actionComplete = true;
-    this.completionMessage()
+    
+    this.authService.forgotPassword(this.email?.value!).subscribe({
+      next: () => {
+        this.completionMessage()
+      },
+      error: (error) => {
+        this.actionComplete = false;
+        this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
+        console.error(error)
+      }
+    })
   }
+
 
   completionMessage(edit = false) {
     this.notificationService
