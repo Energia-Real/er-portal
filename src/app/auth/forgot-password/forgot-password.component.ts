@@ -45,7 +45,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     })
   }
 
-
   completionMessage(edit = false) {
     this.notificationService
       .notificacion(

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalConfirmationComponent } from '@app/shared/components/modal-confirmation/modal-confirmation.component';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -15,24 +16,47 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   actionComplete : boolean = false;
 
   formData = this.formBuilder.group({
-    password: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]],
-    confirmPassword: [{ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]],
+    password: [{ value: '', disabled: false }, Validators.required],
+    confirmPassword: [{ value: '', disabled: false }, Validators.required],
   });
 
+  email:string = ''
+  code:string = ''
   
   constructor(
     public dialog: MatDialog,
+    private authService: AuthService,
     private notificationService: OpenModalsService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params.pipe(takeUntil(this.onDestroy)).subscribe((params: any) => {
+      this.email = params['email'];
+      this.code = params['code'];
+    });
   }
 
   actionSave() {
     this.actionComplete = true;
-    this.completionMessage()
+    let objData :any = {
+      ...this.formData.value,
+      code : this.code,
+      email: this.email
+    }
+
+    this.authService.resetyPassword(objData).subscribe({
+      next: () => {
+        this.completionMessage()
+      },
+      error: (error) => {
+        this.actionComplete = false;
+        this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
+        console.error(error)
+      }
+    })
   }
 
   completionMessage(edit = false) {
@@ -45,17 +69,11 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       .subscribe((_) => this.toBack());
   }
 
-  // get canSave() {
-  //   return this.formData.get('password')?.value != this.formData.get('confirmPassword')?.value;
-  // }
-
   get canSave() {
     const password = this.formData.get('password')?.value;
     const confirmPassword = this.formData.get('confirmPassword')?.value;
     return password && confirmPassword && password === confirmPassword;
   }
-  
-  
   
   toBack() {
     this.router.navigateByUrl(`/`)
