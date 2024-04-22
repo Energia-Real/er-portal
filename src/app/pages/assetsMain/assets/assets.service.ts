@@ -48,8 +48,8 @@ export class AssetsService implements OnDestroy{
     return this.http.get<any>(`${this.API_URL}/projects/summary`);
   }
 
-  getDetailAsset(id: string | null) {
-    return this.http.get<any>(`${this.API_URL}/projects/${id}`);
+  getDetailAsset(id: string | null) : Observable<entity.DataDetailAsset> {
+    return this.http.get<entity.DataDetailAsset>(`${this.API_URL}/projects/${id}`);
   }
 
   getDataWeather(lat: number, long: number) {

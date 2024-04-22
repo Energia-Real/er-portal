@@ -41,7 +41,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
   showLoader: boolean = true;
   assetId: string | null = '';
-  assetData: any = {};
+  assetData!: entity.DataDetailAsset;
   addressPlace: string = '';
   timeZonePlace!: Date;
   timeZoneOffset: any;
@@ -164,6 +164,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
+  overviewBody! : entity.PostDataByPlant;
+
   public loadingWeatherData:boolean = true; 
   public loadinGtimeZonePlace:boolean = true; 
   public loadinSystemSize:boolean = true; 
@@ -174,45 +176,45 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute){}
 
   ngOnInit(): void {
-
-    // this.getDataResponseSystem()
-
+    this.getDataResponseSystem()
     this.route.paramMap.subscribe(params => {
       this.assetId = params.get('assetId');
       this.getDetailsAsset();
     });
-
-    this.assetsService.obtenerHoraLocal().pipe(takeUntil(this.onDestroy)).subscribe(hora => {
-      this.timeZonePlace = new Date(hora + this.timeZoneOffset);
-      // console.log(this.timeZonePlace);
-      this.loadinGtimeZonePlace = false;
-    });
   }
 
   getDetailsAsset(){
-    this.assetsService.getDetailAsset(this.assetId).subscribe( data => {
-      this.showLoader = false;
-      this.assetData = data;
+    // this.loadingWeatherData = false
+    // this.loadinSystemSize = false;
+    this.assetsService.getDetailAsset(this.assetId).subscribe({
+      next: ( response : entity.DataDetailAsset ) => {
+        console.log('response:', response);
+
+      if (response.plantCode) this.getDataResponseSystem({ brand : response.inverterBrand[0], plantCode : response.plantCode })
+
+      this.assetData = response;
       this.getWeather(this.assetData.latitude, this.assetData.longitude);
-      this.loadingWeatherData = false
       this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
       this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
-      this.loadinSystemSize = false;
-
-    }, err =>{
       this.showLoader = false;
-      this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
-      console.log(err);
-    })
+      },
+      error: (error) => {
+        this.showLoader = false;
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    });
   }
 
-  getDataResponseSystem() {
+  getDataResponseSystem(objBody? : entity.PostDataByPlant) {
     let objData :entity.PostDataByPlant = {
       brand : 'huawei',
       plantCode : 'NE=33779163'
     };
 
+    console.log('getDataResponseSystem');
     this.assetsService.getDataSystem(objData).subscribe({
+    // this.assetsService.getDataSystem(objBody).subscribe({
       next: ( response : entity.DataResponseSystem ) => {
         console.log(response);
       },
@@ -223,24 +225,35 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     })
   }
 
-  getWeather(lat: number, long: number){
+  getWeather(lat: number, long: number) {
+    // NO SE USA LA INFORMACIÓN 
     this.assetsService.getDataWeather(lat, long).subscribe((resp: any)=>{
       this.weatherData = resp.data.values;
     });
   }
 
-  getPlaceAddress(lat: number, long: number){
+  getPlaceAddress(lat: number, long: number) {
+    // NO SE USA LA INFORMACIÓN 
     this.assetsService.getPlaceAddress(lat, long).subscribe((resp: any)=>{
       this.addressPlace = resp.results[0].formatted_address;
     });
   }
 
-  getLocalTimeOfPlace(lat: number, long: number){
+  getLocalTimeOfPlace(lat: number, long: number) {
+    // SI SE USA LA INFORMACIÓN
     this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any)=>{
-      console.log(resp);
       this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
+
+      this.getTimeLocal()
     }, err =>{
       this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
+    });
+  }
+
+  getTimeLocal() {
+    this.assetsService.obtenerHoraLocal().pipe(takeUntil(this.onDestroy)).subscribe(hora => {
+      this.timeZonePlace = new Date(hora + this.timeZoneOffset);
+      this.loadinGtimeZonePlace = false;
     });
   }
 

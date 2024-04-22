@@ -50,3 +50,22 @@ export interface DataResponseSystem {
       total_income: string
     }[]
 }
+
+export interface DataDetailAsset {
+    id: string,
+    siteName: string,
+    systemSize: any,
+    direction: any,
+    longitude: number,
+    contractType: string,
+    installationType: string,
+    commissionDate: string,
+    clientId: any,
+    inverterQty: number,
+    netZero: boolean,
+    assetStatus: string,
+    latitude: number,
+    link: string,
+    plantCode: string ,
+    inverterBrand: string[]
+}

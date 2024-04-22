@@ -13,7 +13,16 @@ import { Subject } from 'rxjs';
 export class ManagementComponent implements OnDestroy {
   private onDestroy = new Subject<void>();
 
-  displayedColumns: string[] = ['siteName', 'clientId', 'commissionDate', 'inverterQty', 'systemSize', 'googleMapAdress', 'actions'];
+  displayedColumns: string[] = [
+    'siteName', 
+    'clientId', 
+    'commissionDate', 
+    'inverterQty', 
+    'systemSize', 
+    'googleMapAdress', 
+    'actions'
+  ];
+
   dataSource = new MatTableDataSource<any>([]);
   totalItems: number = 0;
   dataSummary: any = {};
@@ -37,6 +46,8 @@ export class ManagementComponent implements OnDestroy {
   getTableData(page: number, name: string) {
     this.assetsServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: resp => {
+        console.log('DATOS TABLA', resp.data);
+        
         this.dataSource.data = resp.data;
         if (this.dataSource.paginator) {
           this.dataSource.paginator.pageSize = this.pageSize;
@@ -52,7 +63,6 @@ export class ManagementComponent implements OnDestroy {
 
   getSummary() {
     this.assetsServices.getSummaryProjects().subscribe(data => {
-      console.log(data);
       this.dataSummary = data;
       this.showLoader = false;
     }, err => {
@@ -66,6 +76,13 @@ export class ManagementComponent implements OnDestroy {
 
   public navigate(link: string) {
     this.router.navigateByUrl(link);
+  }
+
+  seeDetails(data:any) {
+    console.log(data);
+    let brand = data.inverterBrand[0]
+    let plantCode = data.plantCode
+    
   }
 
   public getServerData(event?: PageEvent) {

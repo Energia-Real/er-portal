@@ -62,11 +62,11 @@ export class EditComponent implements OnDestroy {
   }
 
   getDetailsAsset(){
-    this.assetsService.getDetailAsset(this.assetId).subscribe( data => {
+    this.assetsService.getDetailAsset(this.assetId).subscribe( (data:any) => {
       this.showLoader = false;
       this.assetData = data;
       this.editAssetForm.patchValue({
-        clientId: data.idClient,
+        clientId: data?.idClient || data.clientId,
       })
     }, err =>{
       this.showLoader = false;
