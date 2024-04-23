@@ -20,7 +20,6 @@ export class AssetsService implements OnDestroy{
 		const url = `${this.API_URL_PROXY}/integrators/proxy/GetOverviewByPlant`;
 
     return this.http.post<entity.DataResponseDescription>(url, data);
-    // .pipe(//map((response) => Mapper.getDataExample(response))// );
 	}
  
   getDataRespSite(data:entity.PostDataByPlant): Observable<entity.DataResponseDetails> {
@@ -52,7 +51,7 @@ export class AssetsService implements OnDestroy{
     return this.http.get<entity.DataDetailAsset>(`${this.API_URL}/projects/${id}`);
   }
 
-  getDataWeather(lat: number, long: number) {
+  getWeatherData(lat: number, long: number) {
     let latitude = lat.toString();
     let longitude = long.toString();
     return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${latitude},${longitude}&apikey=8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau`);

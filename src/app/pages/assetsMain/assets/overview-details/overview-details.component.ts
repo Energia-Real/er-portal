@@ -66,7 +66,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ] as any
   };
 
-  public overviewResponse : any = { title : '', value: '' }
+  public overviewResponse : any = []
 
   constructor(
     private assetsService : AssetsService,

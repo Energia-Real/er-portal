@@ -13,28 +13,30 @@ import * as entity from '../assets-model';
 export class DetailsContainerComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  weatherData: any = {
-    "cloudBase": null,
-    "cloudCeiling": null,
-    "cloudCover": 0,
-    "dewPoint": -0.88,
-    "freezingRainIntensity": 0,
-    "humidity": 38,
-    "precipitationProbability": 0,
-    "pressureSurfaceLevel": 780.68,
-    "rainIntensity": 0,
-    "sleetIntensity": 0,
-    "snowIntensity": 0,
-    "temperature": 13.38,
-    "temperatureApparent": 13.38,
-    "uvHealthConcern": 0,
-    "uvIndex": 0,
-    "visibility": 16,
-    "weatherCode": 8000,
-    "windDirection": 94.38,
-    "windGust": 1.31,
-    "windSpeed": 0.81
-  };
+  weatherData: any = null
+
+  // weatherData: any = {
+  //   "cloudBase": null,
+  //   "cloudCeiling": null,
+  //   "cloudCover": 0,
+  //   "dewPoint": -0.88,
+  //   "freezingRainIntensity": 0,
+  //   "humidity": 38,
+  //   "precipitationProbability": 0,
+  //   "pressureSurfaceLevel": 780.68,
+  //   "rainIntensity": 0,
+  //   "sleetIntensity": 0,
+  //   "snowIntensity": 0,
+  //   "temperature": 13.38,
+  //   "temperatureApparent": 13.38,
+  //   "uvHealthConcern": 0,
+  //   "uvIndex": 0,
+  //   "visibility": 16,
+  //   "weatherCode": 8000,
+  //   "windDirection": 94.38,
+  //   "windGust": 1.31,
+  //   "windSpeed": 0.81
+  // };
 
   weatherCode: { [key: number]: { text: string, icon: string, background: string } } = {
     1000: {
@@ -162,60 +164,59 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   timeZonePlace!: Date;
   timeZoneOffset: any;
 
-  objTest:any = {
-    id: "178fb161-371a-4c3d-bc74-d4b8c910b544",
-    siteName: "Chedraui Durango Francisco Villa",
-    systemSize: null,
-    direction: null,
-    longitude: null,
-    contractType: null,
-    installationType: null,
-    commissionDate: "12/01/2023",
-    clientId: null,
-    inverterQty: 1,
-    netZero: null,
-    assetStatus: null,
-    latitude: null,
-    link: null,
-    plantCode: "NE=33761535",
-    inverterBrand: ["Huawei"]
-  }
+  // Registro 31
+  objTest: any = {
+    "id": "a7602504-2560-4307-b6c4-2893d498ced0",
+    "siteName": "Chedraui, Comalcalco",
+    "systemSize": null,
+    "direction": null,
+    "longitude": -93.2185631881877,
+    "contractType": "PPA",
+    "installationType": "PV",
+    "commissionDate": "10/01/2023",
+    "clientId": null,
+    "inverterQty": 0,
+    "netZero": false,
+    "assetStatus": "Active",
+    "latitude": 18.2673348791128,
+    "link": "https://maps.app.goo.gl/fbsLiBkFTsA1HH7R6",
+    "plantCode": "NE=33749805",
+    "inverterBrand": []
+}
 
-  dataRespoSystem! : entity.DataResponseSystem;
+  dataRespoSystem!: entity.DataResponseSystem;
 
-  public loadingWeatherData:boolean = true; 
-  public loadinGtimeZonePlace:boolean = true; 
-  public loadinSystemSize:boolean = true; 
-  
+  public loadingWeatherData: boolean = true;
+  public loadinGtimeZonePlace: boolean = true;
+  public loadinSystemSize: boolean = true;
+
   constructor(
-    private assetsService: AssetsService, 
+    private assetsService: AssetsService,
     private notificationService: OpenModalsService,
-    private route: ActivatedRoute){}
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.assetId = params.get('assetId');
-      this.getDetailsAsset();
+      let id = params.get('assetId');
+      if (id) this.getDetailsAsset(id);
     });
+
+    console.log('this.weatherData 1', this.weatherData);
   }
 
-  getDetailsAsset(){
-    // this.loadingWeatherData = false
-    // this.loadinSystemSize = false;
-    this.assetsService.getDetailAsset(this.assetId).subscribe({
-      next: ( response : entity.DataDetailAsset ) => {
-        // console.log('response:', response);
-
+  getDetailsAsset(id: string) {
+    this.assetsService.getDetailAsset(id).subscribe({
+      next: (response: entity.DataDetailAsset) => {
+        console.log('response:', response);
+        
         // if (response.plantCode) this.getDataRespSystem({ brand : response.inverterBrand[0], plantCode : response.plantCode })
-      if (this.objTest.plantCode) {
-        this.getDataRespSystem({ brand : this.objTest.inverterBrand[0], plantCode : this.objTest.plantCode })
-      }
-
-      this.assetData = response;
-      this.getWeather(this.assetData.latitude, this.assetData.longitude);
-      this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
-      this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
-      this.showLoader = false;
+        if (this.objTest.plantCode) this.getDataRespSystem({ brand: this.objTest.inverterBrand[0], plantCode: this.objTest.plantCode })
+        this.assetData = response;
+        this.loadingWeatherData = false;
+        this.getWeather(this.assetData.latitude, this.assetData.longitude);
+        this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
+        this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
+        this.showLoader = false;
       },
       error: (error) => {
         this.showLoader = false;
@@ -225,9 +226,9 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDataRespSystem(objBody : entity.PostDataByPlant) {
+  getDataRespSystem(objBody: entity.PostDataByPlant) {
     this.assetsService.getDataSystem(objBody).subscribe({
-      next: ( response : entity.ResponseSystem ) => {
+      next: (response: entity.ResponseSystem) => {
         this.dataRespoSystem = response.data
         console.log('dataRespoSystem', this.dataRespoSystem);
       },
@@ -239,26 +240,23 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   getWeather(lat: number, long: number) {
-    // NO SE USA LA INFORMACIÓN 
-    this.assetsService.getDataWeather(lat, long).subscribe((resp: any)=>{
+    this.assetsService.getWeatherData(lat, long).subscribe((resp: any) => {
       this.weatherData = resp.data.values;
+      console.log('this.weatherData 2', this.weatherData);
     });
   }
 
   getPlaceAddress(lat: number, long: number) {
-    // NO SE USA LA INFORMACIÓN 
-    this.assetsService.getPlaceAddress(lat, long).subscribe((resp: any)=>{
+    this.assetsService.getPlaceAddress(lat, long).subscribe((resp: any) => {
       this.addressPlace = resp.results[0].formatted_address;
     });
   }
 
   getLocalTimeOfPlace(lat: number, long: number) {
-    // SI SE USA LA INFORMACIÓN
-    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any)=> {
+    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any) => {
       this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
-
       this.getTimeLocal()
-    }, err =>{
+    }, err => {
       this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
     });
   }
@@ -266,7 +264,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getTimeLocal() {
     this.assetsService.obtenerHoraLocal().pipe(takeUntil(this.onDestroy)).subscribe(hora => {
       this.timeZonePlace = new Date(hora + this.timeZoneOffset);
-      this.loadinGtimeZonePlace = false;
     });
   }
 

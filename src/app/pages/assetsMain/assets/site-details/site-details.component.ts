@@ -18,8 +18,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   urlMap!: SafeResourceUrl;
   loaderMap: boolean = true;
 
-  public siteResponse : any = { title : '', value: '' }
-
+  siteResponse : any = []
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -31,8 +30,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getDataResponse();
     setTimeout(()=>{
-      this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData.latitude + ',' + this.assetData.longitude + '&zoom=18&maptype=satellite');
       this.loaderMap = false;
+      this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData.latitude + ',' + this.assetData.longitude + '&zoom=18&maptype=satellite');
     }, 100)
   }
 
