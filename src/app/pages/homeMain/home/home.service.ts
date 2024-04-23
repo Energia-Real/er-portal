@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import * as entity from './home-model';
@@ -8,19 +8,22 @@ import { environment } from '@environment/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CatchmentService {
-  // private apiUrl = `${environment.apiURL}catch/`;
-  private apiUrl = ``;
+export class HomeService {
+  private API_URL_CLIENTS = environment.API_URL_CLIENTS_V1;
+
 
   constructor(
     private http: HttpClient
   ) { }
 
-  public getExample(filters?:string): Observable<entity.ExampleMapper[]> {
-		const url = `${this.apiUrl}`;
+  getDataClients(name: string, pageSize: number, page: number): Observable<any> {
+    const url = `${this.API_URL_CLIENTS}/clients`;
 
-    return this.http.get<entity.Example[]>(url).pipe(
-			map((response) => Mapper.getDataExample(response))
-		);
-	}
+    const params = new HttpParams()
+    .set('name', name)
+    .set('pagesize', pageSize)
+    .set('page', page);
+
+    return this.http.get<any>(`${url}`, { params });
+  }
 }

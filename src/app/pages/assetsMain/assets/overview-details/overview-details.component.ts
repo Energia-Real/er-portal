@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
+
 @Component({
   selector: 'app-overview-details',
   templateUrl: './overview-details.component.html',
@@ -12,7 +13,7 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 export class OverviewDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  @Input() assetData: any;
+  @Input() assetData!: entity.DataDetailAsset;
 
   public Highcharts: typeof Highcharts = Highcharts;
   public chartOptions: Highcharts.Options = {
@@ -65,7 +66,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ] as any
   };
 
-  public loading = true; 
+  public overviewResponse : any = { title : '', value: '' }
 
   constructor(
     private assetsService : AssetsService,
@@ -73,24 +74,19 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    console.log('description');
-    
-    // this.getDataResponseDescription()
-    console.log('assetData: ', this.assetData);
-    setTimeout(() => {
-      this.loading = false;
-    }, 5000); 
+    this.getDataResponse()
   }
 
-  getDataResponseDescription() {
+  getDataResponse() {
     let objData :entity.PostDataByPlant = {
-      brand : 'huawei',
-      plantCode : 'NE=33779163'
+      brand : this.assetData.inverterBrand[0],
+      plantCode : this.assetData.plantCode
     };
 
-    this.assetsService.getDataResponseDescription(objData).subscribe({
+    this.assetsService.getDataRespOverview(objData).subscribe({
       next: ( response : entity.DataResponseDescription ) => {
-        console.log(response);
+        console.log('overview response', response);
+        this.overviewResponse = response.data;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')

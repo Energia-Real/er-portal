@@ -8,8 +8,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const user = authService.userValue;
 
-  console.log(state);
-  
   if (user) {
     return true;
   }

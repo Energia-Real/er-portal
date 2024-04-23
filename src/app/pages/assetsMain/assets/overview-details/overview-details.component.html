@@ -1,54 +1,13 @@
 <div class="row c-detail-site">
     <div class="col-md-6">
       <div class="c-card-info">
-        
-        <div class="card-info">
-            <h1>Tamaño del sistema</h1>
-            <h2>367</h2>
-        </div>
-
-        <div class="card-info">
-            <h1>Tipo de financiación</h1>
-            <h3>Lease, PPA Blackrock Opportunity Fund II</h3>
-        </div>
-
-        <div class="card-info">
-            <h1>Tecnología de montaje</h1>
-            <h2>Fixed Tilt</h2>
-        </div>
-        
-        <div class="card-info">
-            <h1>Fecha de instalación</h1>
-            <h2>14 Mar 2023</h2>
-        </div>
-
-        <div class="card-info">
-            <h1>Tamaño del sistema</h1>
-            <h3>545 Wp Trina Solar 917 Mono Crystalline Silicon PV Module</h3>
-        </div>
-            
-        <div class="card-info">
-            <h1>Fecha de interconexión</h1>
-            <h2>20 Mar 2023</h2>
-        </div>
-              
-        <div class="card-info">
-            <h1>Latitud</h1>
-            <h2>18.89826797143507</h2>
-        </div>
-
-        <div class="card-info">
-            <h1>Fecha de comisión</h1>
-            <h2>30 Mar 2023</h2>
-        </div>
-
-        <div class="card-info">
-            <h1>Latitud</h1>
-            <h2>-99.17097220528618</h2>
+        <div class="card-info" *ngFor="let data of overviewResponse">
+            <h1>{{ data?.title || '-'}}</h1>
+            <h2>{{ data?.value | number:'1.2-2' }}</h2>
         </div>
       </div>
-      
     </div>
+    
     <div class="col-md-6">
         <div class="header-chart">
             <h1>Información en vivo</h1>

@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 })
 export class ManagementComponent implements OnDestroy {
   private onDestroy = new Subject<void>();
+  dataSource = new MatTableDataSource<any>([]);
 
   displayedColumns: string[] = [
     'siteName', 
@@ -23,13 +24,12 @@ export class ManagementComponent implements OnDestroy {
     'actions'
   ];
 
-  dataSource = new MatTableDataSource<any>([]);
   totalItems: number = 0;
   dataSummary: any = {};
 
   searchValue: string = '';
 
-  itemsPerPageOptions: number[] = [5, 10, 20, 50];
+  pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize = 5;
 
   showLoader: boolean = true;
@@ -39,20 +39,21 @@ export class ManagementComponent implements OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.getTableData(1, ' ');
+    this.getDataResponse(1, ' ');
     this.getSummary();
   };
 
-  getTableData(page: number, name: string) {
+  getDataResponse(page: number, name: string) {
     this.assetsServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
-      next: resp => {
-        console.log('DATOS TABLA', resp.data);
+      next: response => {
+        console.log('DATOS TABLA', response.data);
         
-        this.dataSource.data = resp.data;
+        this.dataSource.data = response.data;
         if (this.dataSource.paginator) {
           this.dataSource.paginator.pageSize = this.pageSize;
         }
-        this.totalItems = resp.totalItems;
+
+        this.totalItems = response.totalItems;
         this.showLoader = false;
       },
       error: error => {
@@ -71,23 +72,16 @@ export class ManagementComponent implements OnDestroy {
   }
 
   searchData() {
-    this.getTableData(1, this.searchValue);
+    this.getDataResponse(1, this.searchValue);
   }
 
   public navigate(link: string) {
     this.router.navigateByUrl(link);
   }
 
-  seeDetails(data:any) {
-    console.log(data);
-    let brand = data.inverterBrand[0]
-    let plantCode = data.plantCode
-    
-  }
-
   public getServerData(event?: PageEvent) {
     this.pageSize = event?.pageSize ?? 5;
-    this.getTableData(event?.pageIndex ?? 1, ' ');
+    this.getDataResponse(event?.pageIndex ?? 1, ' ');
     return event;
   }
 

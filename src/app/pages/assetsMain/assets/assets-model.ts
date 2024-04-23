@@ -37,18 +37,20 @@ export interface DataResponseDetails {
     }[]
 }
 
-export interface DataResponseSystem {
+export interface ResponseSystem {
   success: true,
   errorMessage: string,
   errorCode: 0,
-  data: {
-      real_health_state: string, //1: disconnected, 2: faulty, 3: healthy
-      day_power: string
-      total_power: string //SystemSize
-      day_income: string
-      month_power: string
-      total_income: string
-    }[]
+  data: DataResponseSystem
+}
+
+export interface DataResponseSystem {
+  real_health_state: string, //1: disconnected, 2: faulty, 3: healthy
+  day_power: string
+  total_power: string //SystemSize
+  day_income: string
+  month_power: string
+  total_income: string
 }
 
 export interface DataDetailAsset {

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
@@ -36,15 +35,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     "windGust": 1.31,
     "windSpeed": 0.81
   };
-
-  statusSystem: boolean = true;
-
-  showLoader: boolean = true;
-  assetId: string | null = '';
-  assetData!: entity.DataDetailAsset;
-  addressPlace: string = '';
-  timeZonePlace!: Date;
-  timeZoneOffset: any;
 
   weatherCode: { [key: number]: { text: string, icon: string, background: string } } = {
     1000: {
@@ -164,7 +154,34 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  overviewBody! : entity.PostDataByPlant;
+  statusSystem: boolean = true;
+  showLoader: boolean = true;
+  assetId: string | null = '';
+  assetData!: entity.DataDetailAsset;
+  addressPlace: string = '';
+  timeZonePlace!: Date;
+  timeZoneOffset: any;
+
+  objTest:any = {
+    id: "178fb161-371a-4c3d-bc74-d4b8c910b544",
+    siteName: "Chedraui Durango Francisco Villa",
+    systemSize: null,
+    direction: null,
+    longitude: null,
+    contractType: null,
+    installationType: null,
+    commissionDate: "12/01/2023",
+    clientId: null,
+    inverterQty: 1,
+    netZero: null,
+    assetStatus: null,
+    latitude: null,
+    link: null,
+    plantCode: "NE=33761535",
+    inverterBrand: ["Huawei"]
+  }
+
+  dataRespoSystem! : entity.DataResponseSystem;
 
   public loadingWeatherData:boolean = true; 
   public loadinGtimeZonePlace:boolean = true; 
@@ -176,7 +193,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute){}
 
   ngOnInit(): void {
-    this.getDataResponseSystem()
     this.route.paramMap.subscribe(params => {
       this.assetId = params.get('assetId');
       this.getDetailsAsset();
@@ -188,9 +204,12 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     // this.loadinSystemSize = false;
     this.assetsService.getDetailAsset(this.assetId).subscribe({
       next: ( response : entity.DataDetailAsset ) => {
-        console.log('response:', response);
+        // console.log('response:', response);
 
-      if (response.plantCode) this.getDataResponseSystem({ brand : response.inverterBrand[0], plantCode : response.plantCode })
+        // if (response.plantCode) this.getDataRespSystem({ brand : response.inverterBrand[0], plantCode : response.plantCode })
+      if (this.objTest.plantCode) {
+        this.getDataRespSystem({ brand : this.objTest.inverterBrand[0], plantCode : this.objTest.plantCode })
+      }
 
       this.assetData = response;
       this.getWeather(this.assetData.latitude, this.assetData.longitude);
@@ -206,17 +225,11 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDataResponseSystem(objBody? : entity.PostDataByPlant) {
-    let objData :entity.PostDataByPlant = {
-      brand : 'huawei',
-      plantCode : 'NE=33779163'
-    };
-
-    console.log('getDataResponseSystem');
-    this.assetsService.getDataSystem(objData).subscribe({
-    // this.assetsService.getDataSystem(objBody).subscribe({
-      next: ( response : entity.DataResponseSystem ) => {
-        console.log(response);
+  getDataRespSystem(objBody : entity.PostDataByPlant) {
+    this.assetsService.getDataSystem(objBody).subscribe({
+      next: ( response : entity.ResponseSystem ) => {
+        this.dataRespoSystem = response.data
+        console.log('dataRespoSystem', this.dataRespoSystem);
       },
       error: (error) => {
         this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
@@ -241,7 +254,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
   getLocalTimeOfPlace(lat: number, long: number) {
     // SI SE USA LA INFORMACIÓN
-    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any)=>{
+    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any)=> {
       this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
 
       this.getTimeLocal()

@@ -86,7 +86,6 @@
             <mat-menu #menu="matMenu">
               <button mat-menu-item (click)="navigate('/assets/edit/' + element.id)" i18n>Editar</button>
               <button mat-menu-item (click)="navigate('/assets/details/' + element.id)" i18n>Detalle</button>
-              <button mat-menu-item (click)="seeDetails(element)" i18n>Detalle2</button>
             </mat-menu>
 
 
@@ -97,7 +96,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
       </table>
 
-      <mat-paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="itemsPerPageOptions"
+      <mat-paginator 
+        class="c-paginator" 
+        [length]="totalItems" 
+        [pageSize]="pageSize" 
+        [pageSizeOptions]="pageSizeOptions"
         (page)="getServerData($event)" showFirstLastButtons aria-label="Select page of periodic elements">
       </mat-paginator>
     </div>
