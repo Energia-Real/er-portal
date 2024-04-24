@@ -44,11 +44,15 @@ export class AssetsService implements OnDestroy{
   }
 
   getSummaryProjects() {
-    return this.http.get<any>(`${this.API_URL}/projects/summary`);
+    const url = `${this.API_URL}/projects/summary`;
+
+    return this.http.get<any>(url);
   }
 
   getDetailAsset(id: string | null) : Observable<entity.DataDetailAsset> {
-    return this.http.get<entity.DataDetailAsset>(`${this.API_URL}/projects/${id}`);
+    const url = `${this.API_URL}/projects/${id}`;
+
+    return this.http.get<entity.DataDetailAsset>(url);
   }
 
   getWeatherData(lat: number, long: number) {
@@ -71,7 +75,9 @@ export class AssetsService implements OnDestroy{
     .set('timestamp', `${Math.floor(Date.now() / 1000)}`)
     .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
 
-    return this.http.get<any>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params })
+    return this.http.get<any>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params }).pipe(
+			map((response) => Mapper.getLocalTimeOfPlaceMapper(response))
+		);
   }
 
   postCreateAsset(data: any) {

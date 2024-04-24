@@ -75,7 +75,6 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    console.log('overview', this.assetData);
     if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
       else this.showAlert = true
   }
@@ -88,7 +87,6 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
 
     this.assetsService.getDataRespOverview(objData).subscribe({
       next: ( response : entity.DataResponseDescription ) => {
-        console.log('overview response', response);
         this.overviewResponse = response.data;
       },
       error: (error) => {

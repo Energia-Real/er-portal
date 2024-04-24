@@ -44,6 +44,7 @@ export interface ResponseSystem {
   data: DataResponseSystem
 }
 
+
 export interface DataResponseSystem {
   real_health_state: string, //1: disconnected, 2: faulty, 3: healthy
   day_power: string
@@ -70,4 +71,21 @@ export interface DataDetailAsset {
     link: string,
     plantCode: string ,
     inverterBrand: string[]
+}
+
+
+export interface DataLocalTime {
+  dstOffset: number;
+  rawOffset: number;
+  status: string;
+  timeZoneId: string;
+  timeZoneName: string;
+}
+
+export interface DataLocalTimeMapper {
+  dstOffset: number;
+  rawOffset: number;
+  status: string;
+  timeZoneId: string;
+  timeZoneName: string;
 }

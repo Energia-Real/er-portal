@@ -15,29 +15,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
   weatherData: any = null
 
-  // weatherData: any = {
-  //   "cloudBase": null,
-  //   "cloudCeiling": null,
-  //   "cloudCover": 0,
-  //   "dewPoint": -0.88,
-  //   "freezingRainIntensity": 0,
-  //   "humidity": 38,
-  //   "precipitationProbability": 0,
-  //   "pressureSurfaceLevel": 780.68,
-  //   "rainIntensity": 0,
-  //   "sleetIntensity": 0,
-  //   "snowIntensity": 0,
-  //   "temperature": 13.38,
-  //   "temperatureApparent": 13.38,
-  //   "uvHealthConcern": 0,
-  //   "uvIndex": 0,
-  //   "visibility": 16,
-  //   "weatherCode": 8000,
-  //   "windDirection": 94.38,
-  //   "windGust": 1.31,
-  //   "windSpeed": 0.81
-  // };
-
   weatherCode: { [key: number]: { text: string, icon: string, background: string } } = {
     1000: {
       text: "Soleado",
@@ -156,41 +133,19 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  statusSystem: boolean = true;
-  showLoader: boolean = true;
-  assetId: string | null = '';
   assetData!: entity.DataDetailAsset;
-  addressPlace: string = '';
-  timeZonePlace!: Date;
-  timeZoneOffset: any;
-
-  objTest: any = {
-    "id": "a7602504-2560-4307-b6c4-2893d498ced0",
-    "siteName": "Chedraui, Comalcalco",
-    "systemSize": null,
-    "direction": null,
-    "longitude": -93.2185631881877,
-    "contractType": "PPA",
-    "installationType": "PV",
-    "commissionDate": "10/01/2023",
-    "clientId": null,
-    "inverterQty": 0,
-    "netZero": false,
-    "assetStatus": "Active",
-    "latitude": null,
-    // "latitude": 18.2673348791128,
-    "link": "https://maps.app.goo.gl/fbsLiBkFTsA1HH7R6",
-    "plantCode": "NE=33749805",
-    "inverterBrand": []
-  }
-
   dataRespoSystem!: entity.DataResponseSystem;
 
   systemShowAlert : boolean = false
-
   loadingWeatherData: boolean = true;
   loadinGtimeZonePlace: boolean = true;
   loadinSystemSize: boolean = true;
+  statusSystem: boolean = true;
+  showLoader: boolean = true;
+
+  assetId: string | null = '';
+  addressPlace: string = '';
+  timeZonePlace : string = '';
 
   constructor(
     private assetsService: AssetsService,
@@ -241,7 +196,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     this.assetsService.getDataSystem(objBody).subscribe({
       next: (response: entity.ResponseSystem) => {
         this.dataRespoSystem = response.data
-        console.log('dataRespoSystem', this.dataRespoSystem);
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
@@ -253,7 +207,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getWeather(lat: number, long: number) {
     this.assetsService.getWeatherData(lat, long).subscribe((resp: any) => {
       this.weatherData = resp.data.values;
-      console.log('this.weatherData 2', this.weatherData);
     });
   }
 
@@ -264,18 +217,16 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   getLocalTimeOfPlace(lat: number, long: number) {
-    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe((resp: any) => {
-      this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
-      this.getTimeLocal()
-    }, err => {
-      this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
-    });
-  }
-
-  getTimeLocal() {
-    this.assetsService.obtenerHoraLocal().pipe(takeUntil(this.onDestroy)).subscribe(hora => {
-      this.timeZonePlace = new Date(hora + this.timeZoneOffset);
-    });
+    this.assetsService.getLocalTimeOfPlace(lat, long).subscribe({
+      next: (response: string) => {
+        console.log('getLocalTimeOfPlace : ', response);
+        this.timeZonePlace = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`No se pudo obtener la información de la zona horaria.`, 'alert')
+        console.error(error)
+      }
+    })
   }
 
   ngOnDestroy(): void {

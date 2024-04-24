@@ -28,7 +28,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log('site details', this.assetData);
     if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
       else this.showAlert = true
 
@@ -46,7 +45,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
     this.assetsService.getDataRespSite(objData).subscribe({
       next: (response: entity.DataResponseDetails) => {
-        console.log('getDataResponse', response);
         this.siteResponse = response.data;
       },
       error: (error) => {
