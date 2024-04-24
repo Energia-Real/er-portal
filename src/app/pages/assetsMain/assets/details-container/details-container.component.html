@@ -3,12 +3,12 @@
     <app-return-bar urlToGo="/assets/management"></app-return-bar>
     <div class="info-asset-container pt-3">
       <h1>{{assetData.siteName}}</h1>
-      <p>Dirección aproximada: {{addressPlace}}</p>
+      <p [matTooltip]="!addressPlace ? 'La información no pudo ser cargada.' : ''">Dirección aproximada: {{addressPlace ? addressPlace : '-'}}</p>
     </div>
     
     <div class="info-weather-container">
       <div class="weather-flex-container">
-        <div [ngClass]="{'spinner-center': !loadingWeatherData}" class="card-weather-container" [ngStyle]="{'background-color': weatherData?.color}">
+        <div [ngClass]="{'spinner-center': loadingWeatherData}" class="card-weather-container" [ngStyle]="{'background-color': weatherData?.color}">
           <span *ngIf="loadingWeatherData" class="loader" matTooltip="Cargando..."></span>
        
           <div *ngIf="weatherData">
@@ -18,18 +18,16 @@
         </div>
 
         <div class="card-weather-container card-weather-center spinner-center">
-          <!-- <div [ngClass]="{'spinner-center': loadinGtimeZonePlace}" class="card-weather-container card-weather-center"> -->
-          <!-- <span *ngIf="loadinGtimeZonePlace" class="loader" matTooltip="Cargando..."></span> -->
-          <span *ngIf="loadinGtimeZonePlace" class="loader" matTooltip="Cargando..."></span>
+          <span *ngIf="!timeZoneOffset" class="loader" [matTooltip]=" !timeZoneOffset ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
 
-          <div *ngIf="!loadinGtimeZonePlace">
+          <div *ngIf="timeZoneOffset">
             <p>Hora local</p>
             <p class="card-value">{{timeZonePlace | date:'hh:mm aa'}}</p>
           </div>
         </div>
 
         <div class="card-weather-container card-weather-center" [ngClass]="{ 'spinner-center': !dataRespoSystem }">
-          <span *ngIf="!dataRespoSystem" class="loader" matTooltip="Cargando..."></span>
+          <span *ngIf="!dataRespoSystem" class="loader" [matTooltip]=" systemShowAlert ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
 
           <div *ngIf="dataRespoSystem">
             <p>Tamaño del sistema</p>
@@ -40,7 +38,8 @@
         <div class="card-weather-container card-status-system" 
           [ngClass]="{ 'spinner-center': !dataRespoSystem }"
           [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? '#a1efef' : '#efa1a1' }">
-          <span *ngIf="!dataRespoSystem" class="loader" matTooltip="Cargando..."></span>
+          
+          <span *ngIf="!dataRespoSystem" class="loader" [matTooltip]=" systemShowAlert ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
       
           <div *ngIf="dataRespoSystem">
             <i *ngIf="dataRespoSystem.real_health_state == 'healthy'" class="fa-solid fa-check mb-2"></i>
@@ -56,13 +55,11 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
 
       <mat-tab label="Overview">
-        <!-- <app-overview-details [assetData]="assetData"></app-overview-details> -->
-        <app-overview-details [assetData]="objTest"></app-overview-details>
+        <app-overview-details [assetData]="assetData"></app-overview-details>
       </mat-tab>
 
       <mat-tab label="Site details">
-        <app-site-details [assetData]="objTest"></app-site-details>
-        <!-- <app-site-details [assetData]="assetData"></app-site-details> -->
+        <app-site-details [assetData]="assetData"></app-site-details>
       </mat-tab>
 
       <mat-tab label="Site performance">En desarrollo...</mat-tab>

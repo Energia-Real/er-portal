@@ -1,4 +1,4 @@
-<div class="row c-detail-site">
+<div class="row c-ovewrview" *ngIf="!showAlert else notData">
     <div class="col-md-6">
       <div class="c-card-info">
         <div class="card-info" *ngFor="let data of overviewResponse">
@@ -26,3 +26,9 @@
         class="h-max w-full block"></highcharts-chart>
     </div>
 </div>
+
+<ng-template #notData>
+    <div class="no-data-alert">
+        La información no pudo ser cargada.
+    </div>
+</ng-template>

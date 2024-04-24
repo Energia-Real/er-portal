@@ -164,7 +164,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   timeZonePlace!: Date;
   timeZoneOffset: any;
 
-  // Registro 31
   objTest: any = {
     "id": "a7602504-2560-4307-b6c4-2893d498ced0",
     "siteName": "Chedraui, Comalcalco",
@@ -178,17 +177,20 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     "inverterQty": 0,
     "netZero": false,
     "assetStatus": "Active",
-    "latitude": 18.2673348791128,
+    "latitude": null,
+    // "latitude": 18.2673348791128,
     "link": "https://maps.app.goo.gl/fbsLiBkFTsA1HH7R6",
     "plantCode": "NE=33749805",
     "inverterBrand": []
-}
+  }
 
   dataRespoSystem!: entity.DataResponseSystem;
 
-  public loadingWeatherData: boolean = true;
-  public loadinGtimeZonePlace: boolean = true;
-  public loadinSystemSize: boolean = true;
+  systemShowAlert : boolean = false
+
+  loadingWeatherData: boolean = true;
+  loadinGtimeZonePlace: boolean = true;
+  loadinSystemSize: boolean = true;
 
   constructor(
     private assetsService: AssetsService,
@@ -208,14 +210,23 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     this.assetsService.getDetailAsset(id).subscribe({
       next: (response: entity.DataDetailAsset) => {
         console.log('response:', response);
-        
-        // if (response.plantCode) this.getDataRespSystem({ brand : response.inverterBrand[0], plantCode : response.plantCode })
-        if (this.objTest.plantCode) this.getDataRespSystem({ brand: this.objTest.inverterBrand[0], plantCode: this.objTest.plantCode })
         this.assetData = response;
-        this.loadingWeatherData = false;
-        this.getWeather(this.assetData.latitude, this.assetData.longitude);
-        this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
-        this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
+
+        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
+        else {
+          this.systemShowAlert = true
+          this.notificationService.notificacion(`La información no incluye el código de planta o la marca del inversor.`, 'alert');
+        }
+
+        if (this.assetData.latitude != null && this.assetData.longitude != null) {
+          this.loadingWeatherData = false;
+          this.getWeather(this.assetData.latitude, this.assetData.longitude);
+          this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
+          this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
+        } else {
+          this.notificationService.notificacion(`La información no incluye coordenadas de latitud o longitud.`, 'alert')
+        }
+
         this.showLoader = false;
       },
       error: (error) => {
@@ -233,7 +244,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
         console.log('dataRespoSystem', this.dataRespoSystem);
       },
       error: (error) => {
-        this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
       }
     })
@@ -257,7 +268,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.timeZoneOffset = resp.rawOffset + resp.dstOffset;
       this.getTimeLocal()
     }, err => {
-      this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
+      this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
     });
   }
 

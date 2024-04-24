@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
@@ -15,8 +15,8 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
 
   @Input() assetData!: entity.DataDetailAsset;
 
-  public Highcharts: typeof Highcharts = Highcharts;
-  public chartOptions: Highcharts.Options = {
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
     },
@@ -66,7 +66,8 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ] as any
   };
 
-  public overviewResponse : any = []
+  overviewResponse : any = []
+  showAlert : boolean = false
 
   constructor(
     private assetsService : AssetsService,
@@ -74,7 +75,9 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.getDataResponse()
+    console.log('overview', this.assetData);
+    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
+      else this.showAlert = true
   }
 
   getDataResponse() {

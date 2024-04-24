@@ -53,7 +53,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.actionComplete = false;
-        this.notificationService.notificacion(`Ha ocurrido un error, por favor intenta más tarde.`, 'alert')
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
       }
     })

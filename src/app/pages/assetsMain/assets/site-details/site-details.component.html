@@ -1,18 +1,25 @@
-<div class="detail-main-container">
-  <div class="cards-details-container">
-    <div class="card-details-container me-3" *ngFor="let data of siteResponse">
-      <p>{{ data?.title || '-'}}</p>
-      <h4>{{ data?.value }}</h4>
+  <div class="c-detail-site row">
+    <div class="col-md-6">
+      <div class="c-card-info" *ngIf="!showAlert else notData">
+        <div class="card-info" *ngFor="let data of siteResponse">
+            <h1>{{ data?.title || '-'}}</h1>
+            <h2>{{ data?.value | number:'1.2-2' }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6  text-center">
+      <div class="loader-overlay" *ngIf="loaderMap">
+        <div class="loader"></div>
+      </div>
+      <iframe *ngIf="!loaderMap" height="400" frameborder="0" style="border:0; width: 90%; margin: 0 auto;"
+        referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
+      </iframe>
     </div>
   </div>
 
-  <div class="cards-details-container col-7 text-center">
-    <div class="loader-overlay" *ngIf="loaderMap">
-      <div class="loader"></div>
+  <ng-template #notData>
+    <div class="no-data-alert">
+        La información no pudo ser cargada.
     </div>
-
-    <iframe *ngIf="!loaderMap" height="400" frameborder="0" style="border:0; width: 90%; margin: 0 auto;"
-      referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
-    </iframe>
-  </div>
-</div>
+  </ng-template> 

@@ -18,31 +18,34 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   urlMap!: SafeResourceUrl;
   loaderMap: boolean = true;
 
-  siteResponse : any = []
+  siteResponse: any = []
+  showAlert: boolean = false
 
   constructor(
     private sanitizer: DomSanitizer,
-    private assetsService : AssetsService,
+    private assetsService: AssetsService,
     private notificationService: OpenModalsService
-  ){
-  }
+  ) { }
 
   ngOnInit() {
-    this.getDataResponse();
-    setTimeout(()=>{
+    console.log('site details', this.assetData);
+    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
+      else this.showAlert = true
+
+    setTimeout(() => {
       this.loaderMap = false;
       this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData.latitude + ',' + this.assetData.longitude + '&zoom=18&maptype=satellite');
     }, 100)
   }
 
   getDataResponse() {
-    let objData :entity.PostDataByPlant = {
-      brand : this.assetData.inverterBrand[0],
-      plantCode : this.assetData.plantCode
+    let objData: entity.PostDataByPlant = {
+      brand: this.assetData.inverterBrand[0],
+      plantCode: this.assetData.plantCode
     };
 
     this.assetsService.getDataRespSite(objData).subscribe({
-      next: ( response : entity.DataResponseDetails ) => {
+      next: (response: entity.DataResponseDetails) => {
         console.log('getDataResponse', response);
         this.siteResponse = response.data;
       },

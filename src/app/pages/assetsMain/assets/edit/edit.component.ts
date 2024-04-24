@@ -70,7 +70,7 @@ export class EditComponent implements OnDestroy {
       })
     }, err =>{
       this.showLoader = false;
-      Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
+      Swal.fire('Error', 'Hable con el administrador.', 'error');
       console.log(err);
     })
   }
@@ -103,7 +103,7 @@ export class EditComponent implements OnDestroy {
           }, 2400);
         }, err => {
           this.loading = false;
-          Swal.fire('Error', 'Ha ocurrido un error, por favor intenta más tarde.', 'error');
+          Swal.fire('Error', 'Hable con el administrador.', 'error');
         })
       }
     });
