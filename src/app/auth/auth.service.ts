@@ -42,27 +42,28 @@ export class AuthService {
   }
 
   getInfoUser(): Observable<any> {
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjQyMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJleHAiOjE3MTE2MTY1MDUsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3QyQHRlc3QuY29tIiwibmFtZWlkIjoiYzFjOWY0M2QtYmQ2My00OGFlLTg1OGMtYWI5NjI2ZmIzMTcwIiwianRpIjoiNzJlNjhmYmEtNmJlYS00NzFmLTgzZWItOGYyYjMxMmZlN2FlIiwiQXBwIjoiYmFja29mZmljZSIsIkNsaWVudGVzIjoiIiwiaWF0IjoxNzExMzU3MzA1LCJuYmYiOjE3MTEzNTczMDV9.BkQvjGAv-NXWGjfCVicz7nO9OIVGaTu6Oi5INbRzr6s";
+    let dataUser = this.getDecryptedUser();
+
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${dataUser.token}`
       })
     };
     return this.http.get<any>(`${environment.API_URL_AUTH_V1}/usuario`, httpOptions);
   }
 
-  forgotPassword(email:string): Observable<any> {
-		const url = `${environment.API_URL_AUTH_V2}/ForgotPassword?email=${email}`;
+  forgotPassword(email: string): Observable<any> {
+    const url = `${environment.API_URL_AUTH_V2}/ForgotPassword?email=${email}`;
 
-		return this.http.post<any>(url, null);
-	}
- 
-  resetyPassword(data:any): Observable<any> {
-		const url = `${environment.API_URL_AUTH_V2}/ResetPassword`;
+    return this.http.post<any>(url, null);
+  }
 
-		return this.http.post<any>(url, data);
-	}
+  resetyPassword(data: any): Observable<any> {
+    const url = `${environment.API_URL_AUTH_V2}/ResetPassword`;
+
+    return this.http.post<any>(url, data);
+  }
 
   getDecryptedUser() {
     const encryptedUser = localStorage.getItem('userEnergiaReal');
@@ -73,5 +74,4 @@ export class AuthService {
       return decryptedUser;
     }
   }
-
 }

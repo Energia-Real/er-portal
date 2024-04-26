@@ -285,7 +285,7 @@ select {
 }
 
 .modalAlert {
-  background: rgb(255 0 0 / 38%) !important;
+  background: rgba(255, 0, 0, 0.18) !important;
   mat-icon {
     color: #df0c0cad !important;
   }
@@ -640,11 +640,21 @@ input[type="number"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   height: 300px;
   letter-spacing: 1px;
   width: 100%;
+}
+
+.no-data-found {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  font-size: 25px;
+  font-weight: 500;
+  cursor: default;
+  color: red;
 }
 
 @media screen and (max-width: 1390px) {
@@ -658,5 +668,4 @@ input[type="number"] {
     padding: 0 25px!important;
   }
 }
-
 

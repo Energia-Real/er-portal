@@ -8,12 +8,17 @@
       display: inline-block;
       width: 26%;
       vertical-align: middle;
-      h1{
+      h1 {
         font-size: 32px;
         font-weight: 400;
-      }
-      p{
+      }  
+
+      p {
         font-size: 12px;
+        font-weight: 600;
+      }
+
+      span {
         font-weight: 400;
       }
     }
@@ -25,9 +30,12 @@
         display: inline-flex;
         align-items: flex-start;
         gap: 40px;
-        .card-weather-container{
+        .card-weather-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           min-width: 84px;
-          display: inline-block;
+          // display: inline-block;
           border-radius: 16px;
           border: 1px solid #D2D2D2;
           text-align: center;

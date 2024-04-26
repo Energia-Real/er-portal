@@ -3,48 +3,54 @@
     <app-return-bar urlToGo="/assets/management"></app-return-bar>
     <div class="info-asset-container pt-3">
       <h1>{{assetData.siteName}}</h1>
-      <p [matTooltip]="!addressPlace ? 'La información no pudo ser cargada.' : ''">Dirección aproximada: {{addressPlace ? addressPlace : '-'}}</p>
+        <p class="fw-medium">Dirección aproximada: <span  *ngIf="addressPlace else notData">{{addressPlace}}</span></p>
     </div>
-    
+
     <div class="info-weather-container">
       <div class="weather-flex-container">
-        <div [ngClass]="{'spinner-center': !weatherData}" class="card-weather-container" [ngStyle]="{'background-color': weatherData?.color}">
-          <span *ngIf="!weatherData" class="loader" [matTooltip]=" !loadingWeatherData ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
-       
-          <div *ngIf="weatherData">
-            <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
-            <p>{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
+
+        <div class="card-weather-container" [ngStyle]="{'background-color': weatherData?.color}">
+          <span *ngIf="loadingWeather" class="loader" matTooltip="Cargando..."></span>
+
+          <div *ngIf="!loadingWeather">
+            <div *ngIf="weatherData else notData">
+              <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
+              <p>{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
+            </div>
           </div>
         </div>
 
-        <div class="card-weather-container card-weather-center" [ngClass]="{ 'spinner-center': !timeZonePlace }">
-          <span *ngIf="!timeZonePlace" class="loader" [matTooltip]=" !loadingWeatherData ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
+        <div class="card-weather-container card-weather-center">
+          <span *ngIf="loadingTimeZone" class="loader" matTooltip="Cargando..."></span>
 
-          <div *ngIf="timeZonePlace">
-            <p>Hora local</p>
-            <p class="card-value">{{timeZonePlace}}</p>
+          <div *ngIf="!loadingTimeZone">
+            <div *ngIf="timeZonePlace else notData">
+              <p>Hora local</p>
+              <p class="card-value">{{ timeZonePlace }}</p>
+            </div>
           </div>
         </div>
 
-        <div class="card-weather-container card-weather-center" [ngClass]="{ 'spinner-center': !dataRespoSystem }">
-          <span *ngIf="!dataRespoSystem" class="loader" [matTooltip]=" systemShowAlert ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
+        <div class="card-weather-container card-weather-center">
+          <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
 
-          <div *ngIf="dataRespoSystem">
-            <p>Tamaño del sistema</p>
-            <p class="card-value">{{ dataRespoSystem.total_power | number:'1.2-2' }}</p>
+          <div *ngIf="!loadingSystem">
+            <div *ngIf="dataRespoSystem else notData">
+              <p>Tamaño del sistema</p>
+              <p class="card-value">{{ dataRespoSystem.total_power | number:'1.2-2' }}</p>
+            </div>
           </div>
         </div>
 
-        <div class="card-weather-container card-status-system" 
-          [ngClass]="{ 'spinner-center': !dataRespoSystem }"
-          [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? '#a1efef' : '#efa1a1' }">
-          
-          <span *ngIf="!dataRespoSystem" class="loader" [matTooltip]=" systemShowAlert ? 'La información no pudo ser cargada.' : 'Cargando...'"></span>
-      
-          <div *ngIf="dataRespoSystem">
-            <i *ngIf="dataRespoSystem.real_health_state == 'healthy'" class="fa-solid fa-check mb-2"></i>
-            <i *ngIf="dataRespoSystem.real_health_state != 'healthy'" class="fa-solid fa-xmark mb-2"></i>
-            <p>Sistema</p>
+        <div class="card-weather-container card-status-system" [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? '#a1efef' : '#efa1a1' }">
+          <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
+
+          <div *ngIf="!loadingSystem">
+            <div *ngIf="dataRespoSystem else notData">
+              <i *ngIf="dataRespoSystem.real_health_state == 'healthy'" class="fa-solid fa-check mb-2"></i>
+              <i *ngIf="dataRespoSystem.real_health_state != 'healthy'" class="fa-solid fa-xmark mb-2"></i>
+              <p>Sistema</p>
+            </div>
           </div>
         </div>
       </div>
@@ -63,9 +69,13 @@
       </mat-tab>
 
       <mat-tab label="Site performance">En desarrollo...</mat-tab>
-      
-      <mat-tab label="FAQ">En desarrollo... </mat-tab>
 
     </mat-tab-group>
   </div>
 </div>
+
+<ng-template #notData>
+  <div class="no-data-found">
+    <span matTooltip="La información no pudo ser cargada.">-</span>
+  </div>
+</ng-template>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -12,17 +12,17 @@ import * as entity from './home-model';
 import { Router } from '@angular/router';
 import { HomeService } from './home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 const ELEMENT_DATA: any[] = [
-  { id: 1, name: 'Chedraui Capulhuac', siteSavings: '$31,741', zone: 0, solarCoverage : '33%', savings: '6 tCO2 ' },
-  { id: 2, name: 'Chedraui Chamilpa', siteSavings: '$10,259', zone: 0, solarCoverage : '3%', savings: '6 tCO2 ' },
-  { id: 3, name: 'Chedraui Pedregal Selecto', siteSavings: '$6,589', zone: 1, solarCoverage : '23%', savings: '9 tCO2 ' },
-  { id: 4, name: 'Chedraui JB Lobos Veracruz', siteSavings: '$90,122', zone: 1, solarCoverage : '39%', savings: '9 tCO2 ' },
-  { id: 5, name: 'Chedraui Santa Ana', siteSavings: '$1,0811', zone: 0, solarCoverage : '44%', savings: '9 tCO2 ' },
-  { id: 6, name: 'Chedraui Test 3', siteSavings: '$12,0107', zone: 1, solarCoverage : '63%', savings: '22 tCO2 ' },
-  { id: 7, name: 'Chedraui Chamilpa', siteSavings: '140,067', zone: 1, solarCoverage : '12%', savings: '6 tCO2 ' },
-  { id: 8, name: 'Chedraui test 5', siteSavings: '$159,994', zone: 1, solarCoverage : '11%', savings: '9 tCO2 ' },
+  { id: 1, name: 'Chedraui Capulhuac', siteSavings: '$31,741', zone: 0, solarCoverage: '33%', savings: '6 tCO2 ' },
+  { id: 2, name: 'Chedraui Chamilpa', siteSavings: '$10,259', zone: 0, solarCoverage: '3%', savings: '6 tCO2 ' },
+  { id: 3, name: 'Chedraui Pedregal Selecto', siteSavings: '$6,589', zone: 1, solarCoverage: '23%', savings: '9 tCO2 ' },
+  { id: 4, name: 'Chedraui JB Lobos Veracruz', siteSavings: '$90,122', zone: 1, solarCoverage: '39%', savings: '9 tCO2 ' },
+  { id: 5, name: 'Chedraui Santa Ana', siteSavings: '$1,0811', zone: 0, solarCoverage: '44%', savings: '9 tCO2 ' },
+  { id: 6, name: 'Chedraui Test 3', siteSavings: '$12,0107', zone: 1, solarCoverage: '63%', savings: '22 tCO2 ' },
+  { id: 7, name: 'Chedraui Chamilpa', siteSavings: '140,067', zone: 1, solarCoverage: '12%', savings: '6 tCO2 ' },
+  { id: 8, name: 'Chedraui test 5', siteSavings: '$159,994', zone: 1, solarCoverage: '11%', savings: '9 tCO2 ' },
 ];
 
 @Component({
@@ -36,17 +36,16 @@ const ELEMENT_DATA: any[] = [
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
+  
   dataSource = new MatTableDataSource<any>([]);
-
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize = 5;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   totalItems: number = 0;
-  pageIndex: number = 0;
-
+  pageIndex : number = 0;
+  pageSize : number  = 5;
   displayedColumns: string[] = ['select', 'name', 'siteSavings', 'zone', 'solarCoverage', 'savings'];
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
-  Highcharts: typeof Highcharts = Highcharts;
 
+  Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
@@ -96,7 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private homeService: HomeService,
-    private router : Router,
+    private router: Router,
     private notificationService: OpenModalsService
   ) { }
 
@@ -107,18 +106,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getDataResponse(page: number, name: string) {
     this.homeService.getDataClients('', this.pageSize, page).subscribe({
-      next: ( response : any ) => {
-        console.log(response);
-        
-      // next: ( response : entity.DataResponseDescription ) => {
-        // this.dataSource.data = response.data;
-
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.pageSize = this.pageSize;
-      }
-
-      this.totalItems = response?.totalItems;
+      next: (response: any) => {
         console.log('home response', response);
+        this.dataSource.data = response?.data || [];
+        this.totalItems = response?.totalItems || 0;
+        if (this.dataSource.paginator) this.dataSource.paginator.pageSize = this.pageSize;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
@@ -149,17 +141,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  goDetails(id:string) {
+  goDetails(id: string) {
     this.router.navigateByUrl(`/assets/details/65ebc49f8b7d729ccd68896c`)
   }
 
-  public getServerData(event?: PageEvent) {
+  getServerData(event?: PageEvent) {
     this.pageSize = event?.pageSize ?? 5;
     this.getDataResponse(event?.pageIndex ?? 1, ' ');
     return event;
   }
 
-  changePage(data:any) {
+  changePage(event:any) {
 
   }
 

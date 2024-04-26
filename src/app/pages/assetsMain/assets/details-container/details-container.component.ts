@@ -136,16 +136,18 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   assetData!: entity.DataDetailAsset;
   dataRespoSystem!: entity.DataResponseSystem;
 
-  systemShowAlert : boolean = false
-  loadingWeatherData: boolean = true;
-  loadinGtimeZonePlace: boolean = true;
-  loadinSystemSize: boolean = true;
-  statusSystem: boolean = true;
-  showLoader: boolean = true;
 
   assetId: string | null = '';
   addressPlace: string = '';
-  timeZonePlace : string = '';
+  timeZonePlace: string = '';
+  modalMessage: string[] = [];
+
+  showLoader: boolean = true;
+  loadingWeather: boolean = true;
+  loadingTimeZone: boolean = true;
+  loadingSystem: boolean = true;
+
+
 
   constructor(
     private assetsService: AssetsService,
@@ -157,8 +159,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       let id = params.get('assetId');
       if (id) this.getDetailsAsset(id);
     });
-
-    console.log('this.weatherData 1', this.weatherData);
   }
 
   getDetailsAsset(id: string) {
@@ -167,22 +167,27 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
         console.log('response:', response);
         this.assetData = response;
 
-        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
+        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length < 1) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
         else {
-          this.systemShowAlert = true
-          this.notificationService.notificacion(`La información no incluye el código de planta o la marca del inversor.`, 'alert');
+          this.loadingSystem = false
+          this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.')
         }
 
-        if (this.assetData.latitude != null && this.assetData.longitude != null) {
-          this.loadingWeatherData = false;
+          if (this.assetData.latitude != null && this.assetData.longitude != null) {
           this.getWeather(this.assetData.latitude, this.assetData.longitude);
           this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
           this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
         } else {
-          this.notificationService.notificacion(`La información no incluye coordenadas de latitud o longitud.`, 'alert')
+          this.loadingWeather = this.loadingTimeZone = false;
+          this.modalMessage.push('La información no incluye coordenadas de latitud o longitud.')
         }
 
         this.showLoader = false;
+        
+        if (this.modalMessage.length) {
+          const formattedMessages = this.modalMessage.map(message => `(${'\u2022'}) ${message}`).map(message => `<div>${message}</div>`).join('\n');
+          this.notificationService.notificacion(formattedMessages, 'alert');
+        }
       },
       error: (error) => {
         this.showLoader = false;
@@ -196,8 +201,10 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     this.assetsService.getDataSystem(objBody).subscribe({
       next: (response: entity.ResponseSystem) => {
         this.dataRespoSystem = response.data
+        this.loadingSystem = false;
       },
       error: (error) => {
+        this.loadingSystem = false;
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
       }
@@ -205,9 +212,17 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   getWeather(lat: number, long: number) {
-    this.assetsService.getWeatherData(lat, long).subscribe((resp: any) => {
-      this.weatherData = resp.data.values;
-    });
+    this.assetsService.getWeatherData(lat, long).subscribe({
+      next: (response: any) => {
+        this.loadingWeather = false;
+        this.weatherData = response.data.values;
+      },
+      error: (error) => {
+        this.loadingWeather = false;
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    })
   }
 
   getPlaceAddress(lat: number, long: number) {
@@ -219,10 +234,11 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getLocalTimeOfPlace(lat: number, long: number) {
     this.assetsService.getLocalTimeOfPlace(lat, long).subscribe({
       next: (response: string) => {
-        console.log('getLocalTimeOfPlace : ', response);
         this.timeZonePlace = response;
+        this.loadingTimeZone = false;
       },
       error: (error) => {
+        this.loadingTimeZone = false;
         this.notificationService.notificacion(`No se pudo obtener la información de la zona horaria.`, 'alert')
         console.error(error)
       }

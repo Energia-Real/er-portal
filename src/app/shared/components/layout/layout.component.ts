@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Location } from '@angular/common';
 
 import * as entityGeneral from '../../models/general-models';
 import { Router } from '@angular/router';

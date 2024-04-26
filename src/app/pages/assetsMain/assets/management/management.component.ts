@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
 import { Subject } from 'rxjs';
+declare let gtag: Function;
 
 @Component({
   selector: 'app-management',
@@ -83,6 +84,13 @@ export class ManagementComponent implements OnDestroy {
     this.pageSize = event?.pageSize ?? 5;
     this.getDataResponse(event?.pageIndex ?? 1, ' ');
     return event;
+  }
+
+  sendEvent() {
+    gtag('event', 'click', {
+      'event_category': 'Botón',
+      'event_label': 'Botón de ejemplo'
+    });
   }
 
   ngOnDestroy(): void {
