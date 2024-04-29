@@ -20,14 +20,13 @@ export class LayoutComponent {
   }
 
   signOut() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('userEnergiaReal');
     this.router.navigate(['/account/login']);
   }
 
   getInfoUser(){
     this.accountService.getInfoUser().subscribe(data => {
       this.userInfo = data.persona;
-      console.log(this.userInfo);
     })
   }
 }

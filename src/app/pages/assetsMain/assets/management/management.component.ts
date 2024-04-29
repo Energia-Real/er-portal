@@ -41,19 +41,13 @@ export class ManagementComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.getDataResponse(1, ' ');
-    this.getSummary();
   };
 
   getDataResponse(page: number, name: string) {
     this.assetsServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: response => {
-        console.log('DATOS TABLA', response.data);
-        
         this.dataSource.data = response.data;
-        if (this.dataSource.paginator) {
-          this.dataSource.paginator.pageSize = this.pageSize;
-        }
-
+        if (this.dataSource.paginator) this.dataSource.paginator.pageSize = this.pageSize;
         this.totalItems = response.totalItems;
         this.showLoader = false;
       },
@@ -62,15 +56,6 @@ export class ManagementComponent implements OnDestroy {
       }
     })
   };
-
-  getSummary() {
-    this.assetsServices.getSummaryProjects().subscribe(data => {
-      this.dataSummary = data;
-      this.showLoader = false;
-    }, err => {
-      this.showLoader = false;
-    })
-  }
 
   searchData() {
     this.getDataResponse(1, this.searchValue);

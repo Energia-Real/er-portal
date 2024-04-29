@@ -16,14 +16,9 @@ export class HomeService {
     private http: HttpClient
   ) { }
 
-  getDataClients(name: string, pageSize: number, page: number): Observable<any> {
-    const url = `${this.API_URL_CLIENTS}/clients`;
+  getDataClients(): Observable<entity.DataRespSavingDetails[]> {
+    const url = `${this.API_URL_CLIENTS}/projects/savingdetails`;
 
-    const params = new HttpParams()
-    .set('name', name)
-    .set('pagesize', pageSize)
-    .set('page', page);
-
-    return this.http.get<any>(`${url}`, { params });
+    return this.http.get<entity.DataRespSavingDetails[]>(url);
   }
 }

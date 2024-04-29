@@ -12,7 +12,6 @@ import * as entity from './home-model';
 import { Router } from '@angular/router';
 import { HomeService } from './home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { PageEvent } from '@angular/material/paginator';
 
 const ELEMENT_DATA: any[] = [
   { id: 1, name: 'Chedraui Capulhuac', siteSavings: '$31,741', zone: 0, solarCoverage : '33%', savings: '6 tCO2 ' },
@@ -38,12 +37,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
 
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize = 5;
-  totalItems: number = 0;
-  pageIndex: number = 0;
+  displayedColumns: string[] = [
+    'select',
+    'name', 
+    'siteSavings', 
+    'zone', 
+    'solarCoverage', 
+    'savings'
+  ];
 
-  displayedColumns: string[] = ['select', 'name', 'siteSavings', 'zone', 'solarCoverage', 'savings'];
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
   Highcharts: typeof Highcharts = Highcharts;
 
@@ -94,31 +96,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   };
 
   constructor(
-    private authService: AuthService,
     private homeService: HomeService,
     private router : Router,
     private notificationService: OpenModalsService
   ) { }
 
   ngOnInit(): void {
-    this.getDataResponse(1, ' ');
-    console.log(this.authService?.getDecryptedUser());
+    this.getDataResponse();
   }
 
-  getDataResponse(page: number, name: string) {
-    this.homeService.getDataClients('', this.pageSize, page).subscribe({
-      next: ( response : any ) => {
-        console.log(response);
-        
-      // next: ( response : entity.DataResponseDescription ) => {
-        // this.dataSource.data = response.data;
-
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.pageSize = this.pageSize;
-      }
-
-      this.totalItems = response?.totalItems;
+  getDataResponse() {
+    this.homeService.getDataClients().subscribe({
+      next: ( response : entity.DataRespSavingDetails[] ) => {
         console.log('home response', response);
+        this.dataSource.data = ELEMENT_DATA
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
@@ -146,21 +137,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
+
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
   goDetails(id:string) {
     this.router.navigateByUrl(`/assets/details/65ebc49f8b7d729ccd68896c`)
-  }
-
-  public getServerData(event?: PageEvent) {
-    this.pageSize = event?.pageSize ?? 5;
-    this.getDataResponse(event?.pageIndex ?? 1, ' ');
-    return event;
-  }
-
-  changePage(data:any) {
-
   }
 
   ngOnDestroy(): void {

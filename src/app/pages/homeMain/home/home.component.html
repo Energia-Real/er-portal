@@ -91,15 +91,6 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
          
         </table>
-        <div class="d-flex justify-content-end c-paginator"> 
-            <mat-paginator class="w-100" #paginator showFirstLastButtons aria-label="Select page of periodic elements"
-                [length]="totalItems"
-                [pageIndex]="pageIndex"
-                [pageSize]="pageSize"
-                [pageSizeOptions]="[5, 10, 25, 50, 100]"
-                (page)="changePage($event)"
-            ></mat-paginator>
-        </div>
     </div>
     
     <div class="h-max">
