@@ -75,7 +75,7 @@ export class AssetsService implements OnDestroy{
     .set('timestamp', `${Math.floor(Date.now() / 1000)}`)
     .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
 
-    return this.http.get<any>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params }).pipe(
+    return this.http.get<entity.DataLocalTime>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params }).pipe(
 			map((response) => Mapper.getLocalTimeOfPlaceMapper(response))
 		);
   }
