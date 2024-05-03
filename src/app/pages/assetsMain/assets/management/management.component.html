@@ -3,10 +3,6 @@
 </div>
 <div class="px-16" *ngIf="!showLoader">
 
-  <!-- <button (click)="sendEvent()">Haz clic aquí</button> -->
-
-
-
   <div class="mb-8">
     <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
       <div class="px-8 py-4 rounded-3xl border-2">
@@ -25,7 +21,7 @@
             <p class="text-sm" i18n># de modulos</p>
           </div>
           <div>
-            <h1>{{ dataSummary.mWpInstalled == 0 ? 0 : dataSummary.mWpInstalled | number:'1.2-2'}}</h1>
+            <h1>{{ !dataSummary?.mWpInstalled ? 0 : dataSummary.mWpInstalled | number:'1.2-2'}}</h1>
             <p class="text-sm" i18n>MW instalados</p>
           </div>
         </div>
