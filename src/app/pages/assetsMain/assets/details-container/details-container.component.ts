@@ -155,6 +155,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.showLoader = false;
+
     this.route.paramMap.subscribe(params => {
       let id = params.get('assetId');
       if (id) this.getDetailsAsset(id);
@@ -167,22 +169,22 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
         console.log('response:', response);
         this.assetData = response;
 
-        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length < 1) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
-        else {
-          this.loadingSystem = false
-          this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.')
-        }
+        // if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
+        // else {
+        //   this.loadingSystem = false
+        //   this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.')
+        // }
 
-          if (this.assetData.latitude != null && this.assetData.longitude != null) {
-          this.getWeather(this.assetData.latitude, this.assetData.longitude);
-          this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
-          this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
-        } else {
-          this.loadingWeather = this.loadingTimeZone = false;
-          this.modalMessage.push('La información no incluye coordenadas de latitud o longitud.')
-        }
+        //   if (this.assetData.latitude != null && this.assetData.longitude != null) {
+        //   this.getWeather(this.assetData.latitude, this.assetData.longitude);
+        //   this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
+        //   this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
+        // } else {
+        //   this.loadingWeather = this.loadingTimeZone = false;
+        //   this.modalMessage.push('La información no incluye coordenadas de latitud o longitud.')
+        // }
 
-        this.showLoader = false;
+        // this.showLoader = false;
         
         if (this.modalMessage.length) {
           const formattedMessages = this.modalMessage.map(message => `(${'\u2022'}) ${message}`).map(message => `<div>${message}</div>`).join('\n');
@@ -200,6 +202,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getDataRespSystem(objBody: entity.PostDataByPlant) {
     this.assetsService.getDataSystem(objBody).subscribe({
       next: (response: entity.ResponseSystem) => {
+        console.log('getDataRespSystem', response);
         this.dataRespoSystem = response.data
         this.loadingSystem = false;
       },
