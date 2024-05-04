@@ -75,7 +75,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
     this.assetsService.getDataRespSite(objData).subscribe({
       next: (response: entity.DataResponseDetailsMapper[]) => {
-        console.log('getDataResponse',response);
         this.siteResponse = response;
       },
       error: (error) => {
