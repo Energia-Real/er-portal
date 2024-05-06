@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "er-backoffice-root-mf-mx": {
+    "er-portal": {
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
@@ -38,7 +38,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "localize": ["es-MX"],
-            "outputPath": "dist/er-backoffice-root-mf-mx",
+            "outputPath": "dist/er-portal",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -96,10 +96,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "er-backoffice-root-mf-mx:build:production"
+              "buildTarget": "er-portal:build:production"
             },
             "development": {
-              "buildTarget": "er-backoffice-root-mf-mx:build:development"
+              "buildTarget": "er-portal:build:development"
             }
           },
           "options": {
@@ -110,7 +110,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "er-backoffice-root-mf-mx:build"
+            "buildTarget": "er-portal:build"
           }
         },
         "test": {

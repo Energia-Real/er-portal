@@ -1,5 +1,5 @@
 {
-  "name": "er-backoffice-root-mf-mx",
+  "name": "er-portal",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

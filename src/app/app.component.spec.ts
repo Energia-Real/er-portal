@@ -25,6 +25,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, er-backoffice-root-mf-mx');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, er-portal');
   });
 });
