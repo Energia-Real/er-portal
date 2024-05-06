@@ -17,7 +17,7 @@ export interface PostDataByPlant {
   plantCode: string;
 }
 
-export interface DataResponseDescription {
+export interface DataResponseDetails {
   success: true,
   errorMessage: string,
   errorCode: 0,
@@ -27,14 +27,14 @@ export interface DataResponseDescription {
     }[]
 }
 
-export interface DataResponseDetails {
-  success: true,
-  errorMessage: string,
-  errorCode: 0,
-  data: {
-      title: string,
-      value: string
-    }[]
+export interface DataDetails {
+    title: string,
+    value: string
+}
+
+export interface DataResponseDetailsMapper {
+  title: string;
+  description: string;
 }
 
 export interface ResponseSystem {

@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-overview-details',
@@ -27,7 +28,6 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     },
     xAxis: {
       categories: []
-      // categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United']
     },
     yAxis: {
       allowDecimals: false,
@@ -69,6 +69,49 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   overviewResponse : any = []
   showAlert : boolean = false
 
+  objTest:any = {
+    "success": true,
+    "errorMessage": null,
+    "errorCode": 200,
+    "data": [
+        {
+            "title": "Install capacity (AC)",
+            "value": "8127.8"
+        },
+        {
+            "title": "Install capacity (DC)",
+            "value": "1717.5"
+        }
+    ]
+}
+
+objTest2 = [
+  {
+      "title": "Last connection timeStamp",
+      "value": "05/03/2024 23:01:16"
+  },
+  {
+      "title": "Life Time Energy Production",
+      "value": "1025.0700000000002"
+  },
+  {
+      "title": "Life Time Energy Consumption (CFE)",
+      "value": "0"
+  },
+  {
+      "title": "Avoided Emmisions (tCO2e)",
+      "value": "0.4489806600000001"
+  },
+  {
+      "title": "Energy Coverage",
+      "value": "Infinity"
+  },
+  {
+      "title": "Coincident Solar Consumption",
+      "value": "0"
+  }
+]
+
   constructor(
     private assetsService : AssetsService,
     private notificationService: OpenModalsService
@@ -86,8 +129,8 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     };
 
     this.assetsService.getDataRespOverview(objData).subscribe({
-      next: ( response : entity.DataResponseDescription ) => {
-        this.overviewResponse = response.data;
+      next: ( response : entity.DataResponseDetailsMapper[] ) => {
+        this.overviewResponse = response;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')

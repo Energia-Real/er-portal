@@ -5,3 +5,40 @@
 button {
     border-radius: 9999px !important;
 }
+
+.table-container-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+
+     thead {
+        position: sticky;
+        margin-bottom: 10px;
+        top: 0;
+        z-index: 1;
+        background-color: white; 
+      }
+      
+       th {
+        height: 65px;
+      }
+      
+      .ms-edge  thead {
+        position: -webkit-sticky;
+      }
+      
+      .mat-table {
+        width: 100%; 
+      }
+      
+      .mat-table td,
+      .mat-table th {
+        padding: 8px;
+      }
+      
+      .header-table {
+        margin: 0;
+      }
+  }
+  
+  
+  

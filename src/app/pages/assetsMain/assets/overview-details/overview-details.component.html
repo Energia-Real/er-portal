@@ -3,7 +3,7 @@
       <div class="c-card-info">
         <div class="card-info" *ngFor="let data of overviewResponse">
             <h1>{{ data?.title || '-'}}</h1>
-            <h2>{{ data?.value | number:'1.2-2' }}</h2>
+            <h2>{{ data?.description }}</h2>
         </div>
       </div>
     </div>
