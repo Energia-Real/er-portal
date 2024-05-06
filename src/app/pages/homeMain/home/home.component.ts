@@ -12,23 +12,13 @@ import * as entity from './home-model';
 import { Router } from '@angular/router';
 import { HomeService } from './home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-
-const ELEMENT_DATA: any[] = [
-  { id: 1, name: 'Chedraui Capulhuac', siteSavings: '$31,741', zone: 0, solarCoverage : '33%', savings: '6 tCO2 ' },
-  { id: 2, name: 'Chedraui Chamilpa', siteSavings: '$10,259', zone: 0, solarCoverage : '3%', savings: '6 tCO2 ' },
-  { id: 3, name: 'Chedraui Pedregal Selecto', siteSavings: '$6,589', zone: 1, solarCoverage : '23%', savings: '9 tCO2 ' },
-  { id: 4, name: 'Chedraui JB Lobos Veracruz', siteSavings: '$90,122', zone: 1, solarCoverage : '39%', savings: '9 tCO2 ' },
-  { id: 5, name: 'Chedraui Santa Ana', siteSavings: '$1,0811', zone: 0, solarCoverage : '44%', savings: '9 tCO2 ' },
-  { id: 6, name: 'Chedraui Test 3', siteSavings: '$12,0107', zone: 1, solarCoverage : '63%', savings: '22 tCO2 ' },
-  { id: 7, name: 'Chedraui Chamilpa', siteSavings: '140,067', zone: 1, solarCoverage : '12%', savings: '6 tCO2 ' },
-  { id: 8, name: 'Chedraui test 5', siteSavings: '$159,994', zone: 1, solarCoverage : '11%', savings: '9 tCO2 ' },
-];
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [LayoutModule, MaterialModule],
+  imports: [CommonModule, LayoutModule, MaterialModule],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None
@@ -39,11 +29,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'select',
-    'name', 
-    'siteSavings', 
-    'zone', 
+    'siteName', 
+    'siteSaving', 
+    'cfeZone', 
     'solarCoverage', 
-    'savings'
+    'co2Saving'
   ];
 
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
@@ -95,6 +85,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }] as any
   };
 
+  showLoader: boolean = true;
+
   constructor(
     private homeService: HomeService,
     private router : Router,
@@ -109,10 +101,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.homeService.getDataClients().subscribe({
       next: ( response : entity.DataRespSavingDetails[] ) => {
         console.log('home response', response);
-        this.dataSource.data = ELEMENT_DATA
+        this.dataSource.data = response
+        this.showLoader = false;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.showLoader = false;
         console.error(error)
       }
     })
@@ -142,7 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goDetails(id:string) {
-    this.router.navigateByUrl(`/assets/details/65ebc49f8b7d729ccd68896c`)
+    this.router.navigateByUrl(`/assets/details/${id}`)
   }
 
   ngOnDestroy(): void {

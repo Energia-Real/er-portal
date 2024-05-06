@@ -46,6 +46,8 @@ export class ManagementComponent implements OnDestroy {
   getDataResponse(page: number, name: string) {
     this.assetsServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: response => {
+        console.log(response);
+        
         this.dataSource.data = response.data;
         if (this.dataSource.paginator) this.dataSource.paginator.pageSize = this.pageSize;
         this.totalItems = response.totalItems;
@@ -69,13 +71,6 @@ export class ManagementComponent implements OnDestroy {
     this.pageSize = event?.pageSize ?? 5;
     this.getDataResponse(event?.pageIndex ?? 1, ' ');
     return event;
-  }
-
-  sendEvent() {
-    gtag('event', 'click', {
-      'event_category': 'Botón',
-      'event_label': 'Botón de ejemplo'
-    });
   }
 
   ngOnDestroy(): void {

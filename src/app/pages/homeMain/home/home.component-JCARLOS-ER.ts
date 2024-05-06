@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getDataResponse(page: number, name: string) {
-    this.homeService.getDataClients('', this.pageSize, page).subscribe({
+    this.homeService.getDataClients().subscribe({
       next: (response: any) => {
         console.log('home response', response);
         this.dataSource.data = response?.data || [];

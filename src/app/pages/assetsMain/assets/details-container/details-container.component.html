@@ -1,8 +1,13 @@
+
+<div class="spinner-container" *ngIf="showLoader">
+  <mat-spinner class="custom-spinner" diameter="60"></mat-spinner>
+</div>
+
 <div class="home-main-container" *ngIf="!showLoader">
   <div class="home-header-container">
-    <app-return-bar urlToGo="/assets/management"></app-return-bar>
+    <app-return-bar></app-return-bar>
     <div class="info-asset-container pt-3">
-      <h1>{{assetData.siteName}}</h1>
+      <h1>{{assetData?.siteName || '-'}}</h1>
         <p class="fw-medium">Dirección aproximada: <span  *ngIf="addressPlace else notData">{{addressPlace}}</span></p>
     </div>
 
@@ -61,11 +66,11 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
 
       <mat-tab label="Overview">
-        <app-overview-details [assetData]="assetData"></app-overview-details>
+        <app-overview-details *ngIf="assetData" [assetData]="assetData"></app-overview-details>
       </mat-tab>
 
       <mat-tab label="Site details">
-        <app-site-details [assetData]="assetData"></app-site-details>
+        <app-site-details *ngIf="assetData" [assetData]="assetData"></app-site-details>
       </mat-tab>
 
       <mat-tab label="Site performance">En desarrollo...</mat-tab>
