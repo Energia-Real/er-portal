@@ -5,7 +5,7 @@
 
 <div class="home-main-container" *ngIf="!showLoader">
   <div class="home-header-container">
-    <app-return-bar urlToGo="/assets/management"></app-return-bar>
+    <app-return-bar></app-return-bar>
     <div class="info-asset-container pt-3">
       <h1>{{assetData?.siteName || '-'}}</h1>
         <p class="fw-medium">Dirección aproximada: <span  *ngIf="addressPlace else notData">{{addressPlace}}</span></p>
