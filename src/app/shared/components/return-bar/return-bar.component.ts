@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-return-bar',
@@ -7,12 +8,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./return-bar.component.scss']
 })
 export class ReturnBarComponent {
-  @Input() urlToGo: string = "";
   @Input() title: string = "";
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private location: Location
+  ){}
 
   returnTo(){
-    this.router.navigate([this.urlToGo]);
+   this.location.back();
   }
 }
