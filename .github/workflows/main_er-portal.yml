@@ -57,5 +57,5 @@ jobs:
         with:
           app-name: 'er-portal'
           slot-name: 'Production'
-          package: ./dist
+          package: ./dist/er-portal/browser/es-MX
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F8713D61321043F19ED3991D48EAB476 }}
