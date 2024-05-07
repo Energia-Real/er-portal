@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Crete2Component } from './crete2.component';
+import { SitePerformanceComponent } from './site-performance.component';
 
-describe('Crete2Component', () => {
-  let component: Crete2Component;
-  let fixture: ComponentFixture<Crete2Component>;
+describe('SitePerformanceComponent', () => {
+  let component: SitePerformanceComponent;
+  let fixture: ComponentFixture<SitePerformanceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Crete2Component]
+      declarations: [SitePerformanceComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(Crete2Component);
+    fixture = TestBed.createComponent(SitePerformanceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

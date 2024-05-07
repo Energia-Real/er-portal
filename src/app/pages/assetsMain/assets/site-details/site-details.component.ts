@@ -22,33 +22,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   siteResponse: any = []
   showAlert: boolean = false
 
-  objTest = [
-    {
-        "title": "Last connection timeStamp",
-        "value": "05/03/2024 23:01:16"
-    },
-    {
-        "title": "Life Time Energy Production",
-        "value": "1025.0700000000002"
-    },
-    {
-        "title": "Life Time Energy Consumption (CFE)",
-        "value": "0"
-    },
-    {
-        "title": "Avoided Emmisions (tCO2e)",
-        "value": "0.4489806600000001"
-    },
-    {
-        "title": "Energy Coverage",
-        "value": "Infinity"
-    },
-    {
-        "title": "Coincident Solar Consumption",
-        "value": "0"
-    }
-]
-
   constructor(
     private sanitizer: DomSanitizer,
     private assetsService: AssetsService,

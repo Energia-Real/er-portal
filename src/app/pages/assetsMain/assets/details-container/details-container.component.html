@@ -63,7 +63,7 @@
   </div>
 
   <div class="home-tabs-main-container">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="2">
 
       <mat-tab label="Overview">
         <app-overview-details *ngIf="assetData" [assetData]="assetData"></app-overview-details>
@@ -72,8 +72,13 @@
       <mat-tab label="Site details">
         <app-site-details *ngIf="assetData" [assetData]="assetData"></app-site-details>
       </mat-tab>
+   
+      <mat-tab label="Site performance">
+        <app-site-performance [assetData]="assetData"></app-site-performance>
+        <!-- <app-site-performance *ngIf="assetData" [assetData]="assetData"></app-site-performance> -->
+      </mat-tab>
 
-      <mat-tab label="Site performance">En desarrollo...</mat-tab>
+      <mat-tab label="FAQ">En desarrollo...</mat-tab>
 
     </mat-tab-group>
   </div>
