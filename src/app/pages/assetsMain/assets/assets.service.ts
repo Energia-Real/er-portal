@@ -47,10 +47,10 @@ export class AssetsService implements OnDestroy{
     return this.http.get<any>(`${this.API_URL}/projects`, { params });
   }
 
-  getSummaryProjects() {
+  getSummaryProjects() : Observable<entity.DataSummaryProjects>{
     const url = `${this.API_URL}/projects/summary`;
 
-    return this.http.get<any>(url);
+    return this.http.get<entity.DataSummaryProjects>(url);
   }
 
   getDetailAsset(id: string | null) : Observable<entity.DataDetailAsset> {

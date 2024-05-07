@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
 import { Subject } from 'rxjs';
 declare let gtag: Function;
+import * as entity from '../assets-model';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
 
 @Component({
   selector: 'app-management',
@@ -26,34 +28,53 @@ export class ManagementComponent implements OnDestroy {
   ];
 
   totalItems: number = 0;
-  dataSummary: any = {};
 
   searchValue: string = '';
+  totalPlants: any;
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize = 5;
 
   showLoader: boolean = true;
+  loadingtotalPlants: boolean = true;
+
 
   constructor(
     private assetsServices: AssetsService,
+    private notificationService: OpenModalsService,
     private router: Router) { }
 
   ngOnInit(): void {
     this.getDataResponse(1, ' ');
+    this.getSummaryProjects();
   };
 
   getDataResponse(page: number, name: string) {
     this.assetsServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: response => {
         console.log(response);
-        
         this.dataSource.data = response.data;
         if (this.dataSource.paginator) this.dataSource.paginator.pageSize = this.pageSize;
         this.totalItems = response.totalItems;
         this.showLoader = false;
       },
       error: error => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.log(error);
+      }
+    })
+  };
+  
+  getSummaryProjects() {
+    this.assetsServices.getSummaryProjects().subscribe({
+      next: (response : entity.DataSummaryProjects) => {
+        console.log(response);
+        this.totalPlants = response;
+        this.loadingtotalPlants = false
+      },
+      error: error => {
+        this.loadingtotalPlants = false;
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.log(error);
       }
     })

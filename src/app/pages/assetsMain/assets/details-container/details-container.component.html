@@ -15,7 +15,7 @@
       <div class="weather-flex-container">
 
         <div class="card-weather-container" [ngStyle]="{'background-color': weatherData?.color}">
-          <span *ngIf="loadingWeather" class="loader" matTooltip="Cargando..."></span>
+          <span *ngIf="loadingWeather" class="loader m-auto" matTooltip="Cargando..."></span>
 
           <div *ngIf="!loadingWeather">
             <div *ngIf="weatherData else notData">

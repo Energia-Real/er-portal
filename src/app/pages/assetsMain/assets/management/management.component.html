@@ -7,22 +7,27 @@
     <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
       <div class="px-8 py-4 rounded-3xl border-2">
         <h2 class="text-er-orange text-base font-normal" i18n>Plantas totales</h2>
-        <div class="grid md:grid-cols-4 gap-4 text-center">
-          <div class="border-r-2 ">
-            <h1>{{ dataSummary?.noOfSites || 0 }}</h1>
-            <p class="text-sm" i18n># de sitios</p>
-          </div>
-          <div class="border-r-2">
-            <h1>{{ dataSummary?.noOfInverters || 0 }}</h1>
-            <p class="text-sm" i18n># de inversores</p>
-          </div>
-          <div class="border-r-2">
-            <h1>{{dataSummary?.noOfModules || 0}}</h1>
-            <p class="text-sm" i18n># de modulos</p>
-          </div>
-          <div>
-            <h1>{{ !dataSummary?.mWpInstalled ? 0 : dataSummary.mWpInstalled | number:'1.2-2'}}</h1>
-            <p class="text-sm" i18n>MW instalados</p>
+
+        <span *ngIf="loadingtotalPlants" class="loader m-auto d-flex" matTooltip="Cargando..."></span>
+
+        <div *ngIf="!loadingtotalPlants">
+          <div class="grid md:grid-cols-4 gap-4 text-center" *ngIf="totalPlants else notData">
+            <div class="border-r-2 ">
+              <h1>{{ totalPlants?.noOfSites || 0 }}</h1>
+              <p class="text-sm" i18n># de sitios</p>
+            </div>
+            <div class="border-r-2">
+              <h1>{{ totalPlants?.noOfInverters || 0 }}</h1>
+              <p class="text-sm" i18n># de inversores</p>
+            </div>
+            <div class="border-r-2">
+              <h1>{{totalPlants?.noOfModules || 0}}</h1>
+              <p class="text-sm" i18n># de modulos</p>
+            </div>
+            <div>
+              <h1>{{ !totalPlants?.mWpInstalled ? 0 : totalPlants.mWpInstalled | number:'1.2-2'}}</h1>
+              <p class="text-sm" i18n>MW instalados</p>
+            </div>
           </div>
         </div>
       </div>
@@ -107,3 +112,9 @@
     </div>
   </div>
 </div>
+
+<ng-template #notData>
+  <div class="no-data-found d-flex justify-center">
+    <span matTooltip="La información no pudo ser cargada.">-</span>
+  </div>
+</ng-template>

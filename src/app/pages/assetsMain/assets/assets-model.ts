@@ -89,3 +89,10 @@ export interface DataLocalTimeMapper {
   timeZoneId: string;
   timeZoneName: string;
 }
+
+export interface DataSummaryProjects {
+  noOfSites: string;
+  noOfModules: string;
+  noOfInverters: string;
+  mWpInstalled: string;
+}
