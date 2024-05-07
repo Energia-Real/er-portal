@@ -37,6 +37,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loaderMap = false;
       this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData.latitude + ',' + this.assetData.longitude + '&zoom=18&maptype=satellite');
+      console.log(this.urlMap);
+      
     }, 100)
   }
 

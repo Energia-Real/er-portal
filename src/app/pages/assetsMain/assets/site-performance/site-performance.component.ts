@@ -51,19 +51,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
       name: '',
       data: [3, 5, 1, 13]
     }, 
-    // {
-    //   name: '08/04',
-    //   data: [14, 8, 8, 12]
-    // }, {
-    //   name: '08/04',
-    //   data: [0, 2, 6, 3]
-    // }, {
-    //   name: '08/04',
-    //   data: [17, 2, 6, 3]
-    // }, {
-    //   name: '08/04',
-    //   data: [0, 2, 6, 3]
-    // }
   ] as any
   };
 
@@ -77,8 +64,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('site-performance');
     this.showAlert = false
-    // console.log('site-performance', this.assetData);
-
   }
 
   ngOnDestroy(): void {

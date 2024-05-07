@@ -154,10 +154,10 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.showLoader = false;
 
-    // this.route.paramMap.subscribe(params => {
-    //   let id = params.get('assetId');
-    //   if (id) this.getDetailsAsset(id);
-    // });
+    this.route.paramMap.subscribe(params => {
+      let id = params.get('assetId');
+      if (id) this.getDetailsAsset(id);
+    });
   }
 
   getDetailsAsset(id: string) {
