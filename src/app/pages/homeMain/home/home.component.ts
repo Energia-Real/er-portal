@@ -4,7 +4,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import * as Highcharts from 'highcharts';
 import { ViewEncapsulation } from '@angular/core';
-import { AuthService } from '@app/auth/auth.service';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { Subject } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
