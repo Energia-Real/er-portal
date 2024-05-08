@@ -1,7 +1,7 @@
-
+<!-- 
 <div class="spinner-container" *ngIf="showLoader">
   <mat-spinner class="custom-spinner" diameter="60"></mat-spinner>
-</div>
+</div> -->
 
 <div class="home-main-container" *ngIf="!showLoader">
   <div class="home-header-container">
@@ -72,8 +72,12 @@
       <mat-tab label="Site details">
         <app-site-details *ngIf="assetData" [assetData]="assetData"></app-site-details>
       </mat-tab>
+   
+      <mat-tab label="Site performance">
+        <app-site-performance [assetData]="assetData"></app-site-performance>
+      </mat-tab>
 
-      <mat-tab label="Site performance">En desarrollo...</mat-tab>
+      <mat-tab label="FAQ">En desarrollo...</mat-tab>
 
     </mat-tab-group>
   </div>

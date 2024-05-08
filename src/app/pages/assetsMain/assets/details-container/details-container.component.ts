@@ -136,7 +136,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   assetData!: entity.DataDetailAsset;
   dataRespoSystem!: entity.DataResponseSystem;
 
-
   assetId: string | null = '';
   addressPlace: string = '';
   timeZonePlace: string = '';
@@ -146,8 +145,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   loadingWeather: boolean = true;
   loadingTimeZone: boolean = true;
   loadingSystem: boolean = true;
-
-
 
   constructor(
     private assetsService: AssetsService,
@@ -175,7 +172,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
           this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.')
         }
 
-          if (this.assetData.latitude != null && this.assetData.longitude != null) {
+        if (this.assetData.latitude != null && this.assetData.longitude != null) {
           this.getWeather(this.assetData.latitude, this.assetData.longitude);
           this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
           this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
@@ -202,7 +199,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getDataRespSystem(objBody: entity.PostDataByPlant) {
     this.assetsService.getDataSystem(objBody).subscribe({
       next: (response: entity.ResponseSystem) => {
-        console.log('getDataRespSystem', response);
         this.dataRespoSystem = response.data
         this.loadingSystem = false;
       },

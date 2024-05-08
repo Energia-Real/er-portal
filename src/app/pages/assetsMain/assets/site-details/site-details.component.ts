@@ -22,33 +22,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   siteResponse: any = []
   showAlert: boolean = false
 
-  objTest = [
-    {
-        "title": "Last connection timeStamp",
-        "value": "05/03/2024 23:01:16"
-    },
-    {
-        "title": "Life Time Energy Production",
-        "value": "1025.0700000000002"
-    },
-    {
-        "title": "Life Time Energy Consumption (CFE)",
-        "value": "0"
-    },
-    {
-        "title": "Avoided Emmisions (tCO2e)",
-        "value": "0.4489806600000001"
-    },
-    {
-        "title": "Energy Coverage",
-        "value": "Infinity"
-    },
-    {
-        "title": "Coincident Solar Consumption",
-        "value": "0"
-    }
-]
-
   constructor(
     private sanitizer: DomSanitizer,
     private assetsService: AssetsService,
@@ -64,6 +37,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loaderMap = false;
       this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData.latitude + ',' + this.assetData.longitude + '&zoom=18&maptype=satellite');
+      console.log(this.urlMap);
+      
     }, 100)
   }
 

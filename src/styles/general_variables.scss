@@ -8,9 +8,27 @@
 }
 
 // INPUTS 
+.input-search {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-60%);
+    cursor: pointer;
+    width: 24px;
+    height: auto;
+}
+
 .input-date {
-    height: 40px !important;
     width: 100%;
+    box-shadow: 3px 3px 4px 0px #00000040;
+    border-radius: 25px;
+    height: 35px !important;
+
+    input {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: .5px;
+    }
 
     .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
         border: none !important;
@@ -22,7 +40,7 @@
     }
 
     .mat-mdc-form-field-infix {
-        height: 41px !important;
+        height: 36px !important;
         min-height: unset !important;
     }
 
@@ -40,9 +58,9 @@
     }
 
     .mat-mdc-form-field-flex {
-        height: 40px !important;
+        height: 35px !important;
         .mdc-text-field--outlined .mdc-notched-outline {
-            height: 40px !important;
+            height: 35px !important;
             > div .mat-mdc-form-field-infix {
                 padding: 8px 0 !important;
             }
@@ -51,60 +69,61 @@
 }
 
 .input-select {
-    height: 40px !important;
+    height: 35px !important;
     width: 100%;
+    border-radius: 25px;
+    box-shadow: 3px 3px 4px 0px #00000040;
 
+    //     font-size: 14px;
+    // font-weight: 500;
+    // letter-spacing: .5px;
+    mat-icon {
+        color: #EE5427 !important;
+        margin-right: 10px;
+    }
+
+    .mat-mdc-select-placeholder {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: .5px;
+    }
 
    .mat-mdc-text-field-wrapper {
+
         padding: 0!important;
         border: none!important;
     }
 
     
     .mat-mdc-form-field-infix {
-        height: 41px !important;
+        height: 36px !important;
         min-height: unset !important;
     }
 }
 
-.inputNewRegister {
-    width: 100% !important;
-    margin-bottom: 20px;
-
-    .mat-focused {
-        background: white !important;
-    }
-
-    .mat-mdc-form-field-flex {
-        border-radius: 8px !important;
-        background: white !important;
-
-    }
-
-    mat-label {
-        font-size: 15px;
-        font-weight: 500;
-        line-height: 21px;
-        color: #646878;
-    }
-
+.input-group-buttons {
+    background: wheat!important;
+    border-radius: 8px!important;
+    height: 40px!important;
+    
     button {
-        color: rgb(40 40 40);
+        height: 40px!important;
+
+        span {
+            height: 40px !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .mat-button-toggle-label-content {
+            height: 40px !important;
+            display: flex;
+            align-items: center;
+        }
     }
 
-    span {
-        color: rgb(40 40 40);
-    }
 
-    >div:nth-child(1) {
-        background: white !important;
-        border-radius: 10px;
-        padding: 0 !important;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 2px 3px 0 rgba(0, 0, 0, .1);
-        // box-shadow: 4px 4px 4px 0px #00000040!important;
-    }
 }
-
 
 // Fonts 
 .font-32-400 {
@@ -133,12 +152,13 @@
     font-weight: 500;
     letter-spacing: .5px;
     padding: 5px 15px !important;
-    box-shadow: 3px 4px 4px 0px #00000040;
+    box-shadow: 3px 3px 4px 0px #00000040;
     border-radius: 100px !important;
     border: none !important;
     display: flex;
     align-items: center;
     gap: 5px;
+    height: 35px;
 
     i {
         font-size: 18px;
@@ -156,7 +176,7 @@
     letter-spacing: .5px;
     font-weight: 500;
     padding: 5px 15px !important;
-    box-shadow: 3px 4px 4px 0px #00000040;
+    box-shadow: 3px 3px 4px 0px #00000040;
     border-radius: 100px !important;
     border: none !important;
 }
