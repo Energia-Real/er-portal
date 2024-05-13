@@ -133,6 +133,38 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
+  objTest = {
+    "success": true,
+    "errorMessage": null,
+    "errorCode": 0,
+    "data": [
+        {
+            "title": "Last connection timeStamp",
+            "value": "05/13/2024 17:33:56"
+        },
+        {
+            "title": "Life Time Energy Production",
+            "value": "0"
+        },
+        {
+            "title": "Life Time Energy Consumption (CFE)",
+            "value": "0"
+        },
+        {
+            "title": "Avoided Emmisions (tCO2e)",
+            "value": "0"
+        },
+        {
+            "title": "Energy Coverage",
+            "value": "NaN"
+        },
+        {
+            "title": "Coincident Solar Consumption",
+            "value": "0"
+        }
+    ]
+}
+
   assetData!: entity.DataDetailAsset;
   dataRespoSystem!: entity.DataResponseSystem;
 
@@ -166,7 +198,11 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
         console.log('response:', response);
         this.assetData = response;
 
-        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
+        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length && this.assetData?.inverterBrand[0] == 'Huawei' ) {
+          console.log('entro if');
+          
+          this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
+        }
         else {
           this.loadingSystem = false
           this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.')
