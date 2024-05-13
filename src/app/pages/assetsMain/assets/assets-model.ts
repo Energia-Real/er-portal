@@ -96,3 +96,21 @@ export interface DataSummaryProjects {
   noOfInverters: string;
   mWpInstalled: string;
 }
+
+export interface DataSummaryProjects {
+  siteName : string;
+  plantCode : string;
+  direction : string;
+  link : string;
+  contractTypeId : string;
+  latitude : number
+  longitude : number
+  installationTypeId : string;
+  commissionDate : string;
+  installedCapacity : string;
+  contractSignatureDate : string;
+  endInstallationDate : string;
+  systemSize : number
+  inverterQty : number
+}
+

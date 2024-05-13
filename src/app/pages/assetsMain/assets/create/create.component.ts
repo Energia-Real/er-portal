@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { AssetsService } from '../assets.service';
 import { Subject } from 'rxjs';
+import { CustomValidators } from '@app/shared/validators/custom-validatos';
 import { CatalogsService } from '@app/shared/services/catalogs.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
+import moment from 'moment';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
-import { CustomValidators } from '@app/shared/validators/custom-validatos';
+import * as entity from '../assets-model';
 
 @Component({
   selector: 'app-create',
@@ -18,13 +19,20 @@ export class CreateComponent implements OnDestroy {
   private onDestroy = new Subject<void>();
 
   formData = this.fb.group({
-    name: ['', Validators.required],
-    contractType: ['', Validators.required],
-    installationType: ['', [Validators.required]],
-    installedCapacity: [null, [Validators.required]],
-    googleMapsLink: ['', [Validators.required, CustomValidators.validateUrlPrefix]],
-    latitude: [null, [Validators.required, CustomValidators.validateLatitude]],
-    longitude: [null, [Validators.required, CustomValidators.validateLongitude]]
+    siteName: ['', Validators.required],
+    plantCode: ['', Validators.required],
+    direction: ['', Validators.required],
+    link: ['', [Validators.required, CustomValidators.validateUrlPrefix]],
+    contractTypeId: ['', Validators.required],
+    latitude: ['', [Validators.required, CustomValidators.validateLatitude]],
+    longitude: ['', [Validators.required, CustomValidators.validateLongitude]],
+    installationTypeId: ['', [Validators.required]],
+    commissionDate: ['', [Validators.required]],
+    installedCapacity: ['', [Validators.required]],
+    contractSignatureDate: ['', [Validators.required]],
+    endInstallationDate: ['', [Validators.required]],
+    systemSize: ['', [Validators.required]],
+    inverterQty: ['', [Validators.required]],
   });
 
   catContractType:entityCatalogs.DataCatalogs[] = [];
@@ -36,6 +44,7 @@ export class CreateComponent implements OnDestroy {
   buttonDisabled: boolean = false;
   errorCreate: boolean = false;
 
+  objEditData:any;
   constructor(
     private catalogsService: CatalogsService, 
     private notificationService: OpenModalsService,
@@ -51,7 +60,6 @@ export class CreateComponent implements OnDestroy {
   getCatalogs() {
     this.catalogsService.getCatContractType().subscribe({
       next: ( response : entityCatalogs.DataCatalogs[] ) => {
-      console.log('getCatContractType', response);
       this.catContractType = response;
       },
       error: (error) => {
@@ -62,7 +70,6 @@ export class CreateComponent implements OnDestroy {
 
     this.catalogsService.getCatInstallationType().subscribe({
       next: ( response : entityCatalogs.DataCatalogs[] ) => {
-      console.log('InstallationType', response);
       this.catInstallationType = response;
       },
       error: (error) => {
@@ -73,7 +80,6 @@ export class CreateComponent implements OnDestroy {
   
     this.catalogsService.getCatInstallationType().subscribe({
       next: ( response : entityCatalogs.DataCatalogs[] ) => {
-      console.log('InstallationType', response);
       this.catInstallationType = response;
       },
       error: (error) => {
@@ -83,46 +89,43 @@ export class CreateComponent implements OnDestroy {
     });
   }
 
-
-  onSubmit() {
-    this.errorCreate = false;
-    let userData = {
-      nombre: this.formData.get("name")?.value,
-      tipoDeContrato: this.formData.get("contractType")?.value,
-      tipoDeInstalacion: this.formData.get("installationType")?.value,
-      capacidadInstalada: this.formData.get("installedCapacity")?.value,
-      linkGoogleMaps: this.formData.get("googleMapsLink")?.value,
-      latitude: this.formData.get("latitude")?.value,
-      longitude: this.formData.get("longitude")?.value
-    }
-    this.loading = true;
-    Swal.fire({
-      title: "¿Estás seguro de que deseas crear ésta planta?",
-      confirmButtonText: "Crear",
-      showCancelButton: true,
-      cancelButtonText: "Cancelar",
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        this.assetsService.postCreateAsset(userData).subscribe(resp => {
-          console.log(resp);
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Tu planta se ha creado correctamente.",
-            showConfirmButton: false,
-            timer: 2500
-          });
-          setTimeout(()=>{
-            this.router.navigate(['/assets/management']);
-          }, 2600)
-        }, err => {
-          console.log(err);
-          Swal.fire('Error', 'Ha ocurrido un error inesperado, por favor intenta más tarde.', 'error');
-          this.loading = false;
-        })
-      }
-    });
     
+  actionSave() {
+    const objData:any = {
+      ...this.formData.value,
+      commissionDate : moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD'),
+      endInstallationDate : moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD'),
+      contractSignatureDate : moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD'),
+    }
+    
+    console.log('OBJETO :', objData);
+    
+    if (this.objEditData) this.saveDataPatch(objData);
+    else this.saveDataPost(objData);
+  }
+
+  saveDataPost(objData:entity.DataSummaryProjects) {
+    // this.assetsService.postCreateAsset(objData).subscribe({
+    //   next: () => {
+    //     this.completionMessage()
+    //   },
+    //   error: (error) => {
+    //     this.notificationService.notificacion('Error', `Hable con el administrador.`, '', 'mat_outline:error')
+    //     console.error(error)
+    //   }
+    // })
+  }
+  
+  saveDataPatch(objData:entity.DataSummaryProjects) {
+    // this.assetsService.patchDataRol(this.objEditData.id, objData).subscribe({
+    //   next: () => {
+    //     this.completionMessage(true)
+    //   },
+    //   error: (error) => {
+    //     this.notificationService.notificacion('Error', `Hable con el administrador.`, '', 'mat_outline:error')
+    //     console.error(error)
+    //   }
+    // })
   }
   
   clearForm() {

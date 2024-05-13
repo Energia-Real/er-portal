@@ -38,29 +38,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
   Highcharts: typeof Highcharts = Highcharts;
 
-
   chartOptions: Highcharts.Options = {
     chart: {
-      type: 'column',
-      width: 800, // Ancho del gráfico en píxeles
-      height: 400 // Altura del gráfico en píxeles
+      type: 'column'
     },
     colors: ['#d9d9d9', '#ee5427', '#57b1b1', '#792430', '#000000'],
     title: {
-      text: 'Comparación de Datos'
+      text: '',
+      align: 'left'
     },
     xAxis: {
-      categories: ['Producto A', 'Producto B', 'Producto C', 'Producto D']
+      categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United']
     },
     yAxis: {
       allowDecimals: false,
       min: 0,
       title: {
-        text: 'Cantidad'
+        text: ''
       }
     },
     tooltip: {
-      format: '<b>{point.category}</b><br/>{series.name}: {point.y}<br/>' +
+      format: '<b>{key}</b><br/>{series.name}: {y}<br/>' +
         'Total: {point.stackTotal}'
     },
     plotOptions: {
@@ -69,23 +67,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     },
     series: [{
-      name: 'Ingresos',
-      data: [5000, 7000, 3000, 9000]
+      name: 'ICO2',
+      data: [3, 5, 1, 13]
     }, {
-      name: 'Gastos',
-      data: [2000, 3000, 4000, 5000]
+      name: 'Subtotal ER',
+      data: [14, 8, 8, 12]
     }, {
-      name: 'Beneficios',
-      data: [3000, 4000, -1000, 4000]
+      name: 'Saving (MXN)',
+      data: [0, 2, 6, 3]
     }, {
-      name: 'Impuestos',
-      data: [-500, -800, -200, -1000]
+      name: 'Subtotal CFE',
+      data: [17, 2, 6, 3]
     }, {
-      name: 'Ganancias netas',
-      data: [2500, 3200, 1000, 3000]
+      name: 'CFE Cost w/o Solar',
+      data: [0, 2, 6, 3]
     }] as any
   };
-  
 
   showLoader: boolean = true;
 

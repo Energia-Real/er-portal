@@ -4,6 +4,8 @@ export class CustomValidators {
   static validateUrlPrefix(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value;
 
+    console.log(value);
+    
     if (value && (value.startsWith('https://goo.gl') || 
         value.startsWith('https://maps.app.goo.gl') || 
         value.startsWith('https://www.google.com.mx/maps')
