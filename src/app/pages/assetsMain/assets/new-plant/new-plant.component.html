@@ -194,9 +194,8 @@
             </div>
             <div>
               <span class="loader" *ngIf="loading"></span>
-              <!-- <button class="button-primary" *ngIf="!loading" type="submit">Guardar</button> -->
               <button class="button-primary" *ngIf="!loading" type="submit"
-                [disabled]="formData.invalid || buttonDisabled">Guardar</button>
+                [disabled]="formData.invalid">Guardar</button>
             </div>
           </div>
         </form>

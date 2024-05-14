@@ -40,13 +40,9 @@ export class NewPlantComponent implements OnInit, AfterViewInit, OnDestroy{
   catInstallationType:entityCatalogs.DataCatalogs[] = [];
   catPlantStatus:entityCatalogs.DataCatalogs[] = [];
 
-  assetId: string | null = '';
   showLoader: boolean = false;
   loading: boolean = false;
-  buttonDisabled: boolean = false;
-  errorCreate: boolean = false;
-
-  objEditData:any;
+  objEditData!:entity.DataPlant;
   
   constructor(
     private catalogsService: CatalogsService, 
