@@ -133,7 +133,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  assetData!: entity.DataDetailAsset;
+  assetData!: entity.DataPlant;
   dataRespoSystem!: entity.DataResponseSystem;
 
   assetId: string | null = '';
@@ -141,6 +141,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   timeZonePlace: string = '';
   modalMessage: string[] = [];
 
+  showNotdata: boolean = false;
+  showOverviewSite: boolean = false;
   showLoader: boolean = true;
   loadingWeather: boolean = true;
   loadingTimeZone: boolean = true;
@@ -161,32 +163,10 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   getDetailsAsset(id: string) {
-    this.assetsService.getDetailAsset(id).subscribe({
-      next: (response: entity.DataDetailAsset) => {
-        console.log('response:', response);
+    this.assetsService.getDataId(id).subscribe({
+      next: (response: entity.DataPlant) => {
         this.assetData = response;
-
-        if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataRespSystem({ brand: this.assetData.inverterBrand[0], plantCode: this.assetData.plantCode })
-        else {
-          this.loadingSystem = false
-          this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.')
-        }
-
-        if (this.assetData.latitude != null && this.assetData.longitude != null) {
-          this.getWeather(this.assetData.latitude, this.assetData.longitude);
-          this.getPlaceAddress(this.assetData.latitude, this.assetData.longitude);
-          this.getLocalTimeOfPlace(this.assetData.latitude, this.assetData.longitude);
-        } else {
-          this.loadingWeather = this.loadingTimeZone = false;
-          this.modalMessage.push('La información no incluye coordenadas de latitud o longitud.')
-        }
-
-        this.showLoader = false;
-        
-        if (this.modalMessage.length) {
-          const formattedMessages = this.modalMessage.map(message => `(${'\u2022'}) ${message}`).map(message => `<div>${message}</div>`).join('\n');
-          this.notificationService.notificacion(formattedMessages, 'alert');
-        }
+        this.verifyInformation(response);
       },
       error: (error) => {
         this.showLoader = false;
@@ -196,11 +176,38 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
+  verifyInformation(assetData : entity.DataPlant) {
+    if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') {
+      this.showNotdata = false
+      this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
+    } else {
+      this.showNotdata = true;
+      if (assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('La información proporcionada incluye un código de planta que aún no ha sido implementado..');
+      else this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.');
+      this.loadingSystem = false;
+    }
+
+    if (assetData.latitude != null && assetData.longitude != null) {
+      this.getWeather(assetData.latitude, assetData.longitude);
+      this.getPlaceAddress(assetData.latitude, assetData.longitude);
+      this.getLocalTimeOfPlace(assetData.latitude, assetData.longitude);
+    } else {
+      this.loadingWeather = this.loadingTimeZone = false;
+      this.modalMessage.push('La información no incluye coordenadas de latitud o longitud.')
+    }
+
+    if (this.modalMessage.length) {
+      const formattedMessages = this.modalMessage.map(message => `(${'\u2022'}) ${message}`).map(message => `<div>${message}</div>`).join('\n');
+      this.notificationService.notificacion(formattedMessages, 'alert');
+    }
+
+    this.loadingSystem = false;
+  }
+
   getDataRespSystem(objBody: entity.PostDataByPlant) {
     this.assetsService.getDataSystem(objBody).subscribe({
       next: (response: entity.ResponseSystem) => {
         this.dataRespoSystem = response.data
-        this.loadingSystem = false;
       },
       error: (error) => {
         this.loadingSystem = false;
@@ -243,6 +250,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+
 
   ngOnDestroy(): void {
     this.onDestroy.next();
