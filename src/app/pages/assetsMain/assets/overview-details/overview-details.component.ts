@@ -14,7 +14,7 @@ import moment from 'moment';
 export class OverviewDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  @Input() assetData!: entity.DataDetailAsset;
+  @Input() assetData!: entity.DataPlant;
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {

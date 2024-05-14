@@ -13,7 +13,7 @@ import * as Highcharts from 'highcharts';
 export class SitePerformanceComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  @Input() assetData!: entity.DataDetailAsset;
+  @Input() assetData!: entity.DataPlant;
 
   Highcharts: typeof Highcharts = Highcharts;
 

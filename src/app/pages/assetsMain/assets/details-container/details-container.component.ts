@@ -133,7 +133,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  assetData!: entity.DataDetailAsset;
+  assetData!: entity.DataPlant;
   dataRespoSystem!: entity.DataResponseSystem;
 
   assetId: string | null = '';
@@ -161,8 +161,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   getDetailsAsset(id: string) {
-    this.assetsService.getDetailAsset(id).subscribe({
-      next: (response: entity.DataDetailAsset) => {
+    this.assetsService.getDataId(id).subscribe({
+      next: (response: entity.DataPlant) => {
         console.log('response:', response);
         this.assetData = response;
         this.verifyInformation(response);
@@ -175,7 +175,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  verifyInformation(assetData : entity.DataDetailAsset) {
+  verifyInformation(assetData : entity.DataPlant) {
     console.log('verifyInformation', assetData);
     
     if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })

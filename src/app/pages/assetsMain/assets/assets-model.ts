@@ -46,24 +46,25 @@ export interface ResponseSystem {
 
 
 export interface DataResponseSystem {
-  real_health_state: string, //1: disconnected, 2: faulty, 3: healthy
+  real_health_state: string
   day_power: string
-  total_power: string //SystemSize
+  total_power: string 
   day_income: string
   month_power: string
   total_income: string
 }
 
-export interface DataDetailAsset {
-    id: string,
-    siteName: string,
-    systemSize: any,
-    direction: any,
+export interface DataPlant {
+    id: string;
+    clientId: string;
+    siteName: string;
+    subClientId :string;
+    systemSize: number,
+    direction: string;
     longitude: number,
     contractType: string,
     installationType: string,
     commissionDate: string,
-    clientId: any,
     inverterQty: number,
     netZero: boolean,
     assetStatus: string,
@@ -71,6 +72,7 @@ export interface DataDetailAsset {
     link: string,
     plantCode: string ,
     inverterBrand: string[]
+    contractSignatureDate : string
 }
 
 
