@@ -141,6 +141,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   timeZonePlace: string = '';
   modalMessage: string[] = [];
 
+  showNotdata: boolean = false;
+  showOverviewSite: boolean = false;
   showLoader: boolean = true;
   loadingWeather: boolean = true;
   loadingTimeZone: boolean = true;
@@ -163,7 +165,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getDetailsAsset(id: string) {
     this.assetsService.getDataId(id).subscribe({
       next: (response: entity.DataPlant) => {
-        console.log('response:', response);
         this.assetData = response;
         this.verifyInformation(response);
       },
@@ -176,10 +177,11 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   verifyInformation(assetData : entity.DataPlant) {
-    console.log('verifyInformation', assetData);
-    
-    if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
-    else {
+    if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') {
+      this.showNotdata = false
+      this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
+    } else {
+      this.showNotdata = true;
       if (assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('La información proporcionada incluye un código de planta que aún no ha sido implementado..');
       else this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.');
       this.loadingSystem = false;

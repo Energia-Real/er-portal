@@ -45,7 +45,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         stacking: 'normal'
       }
     },
-    // series: []
     series: [
       {
       name: '',
@@ -62,7 +61,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    console.log('site-performance');
     this.showAlert = false
   }
 
