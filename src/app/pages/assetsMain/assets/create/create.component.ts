@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { CustomValidators } from '@app/shared/validators/custom-validatos';
 import { CatalogsService } from '@app/shared/services/catalogs.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -33,10 +33,13 @@ export class CreateComponent implements OnDestroy {
     endInstallationDate: ['', [Validators.required]],
     systemSize: ['', [Validators.required]],
     inverterQty: ['', [Validators.required]],
+    assetStatus: ['', [Validators.required]],
+    netZero: ['', [Validators.required]],
   });
 
   catContractType:entityCatalogs.DataCatalogs[] = [];
   catInstallationType:entityCatalogs.DataCatalogs[] = [];
+  catPlantStatus:entityCatalogs.DataCatalogs[] = [];
 
   assetId: string | null = '';
   showLoader: boolean = false;
@@ -49,15 +52,46 @@ export class CreateComponent implements OnDestroy {
     private catalogsService: CatalogsService, 
     private notificationService: OpenModalsService,
     private fb: FormBuilder,
-    private assetsService: AssetsService,
+    private activatedRoute: ActivatedRoute,
+    private moduleServices: AssetsService,
     private router: Router
   ) { }
   
   ngOnInit(): void {
     this.getCatalogs()
   }
+  
+  getId() {
+    this.activatedRoute.params.pipe(takeUntil(this.onDestroy)).subscribe((params: any) => {
+      if (params.id) this.getDataById(params.id);
+    });
+  }
+
+  getDataById(id: string) {
+    this.moduleServices.getDataId(id).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.objEditData = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    })
+  }
 
   getCatalogs() {
+    this.catalogsService.getCatPlantStatus().subscribe({
+      next: ( response : entityCatalogs.DataCatalogs[] ) => {
+      console.log('getCatPlantStatus', response);
+      this.catPlantStatus = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        console.error(error)
+      }
+    })
+
     this.catalogsService.getCatContractType().subscribe({
       next: ( response : entityCatalogs.DataCatalogs[] ) => {
       this.catContractType = response;
@@ -87,6 +121,8 @@ export class CreateComponent implements OnDestroy {
         console.error(error)
       }
     });
+
+    this.getId();
   }
 
     

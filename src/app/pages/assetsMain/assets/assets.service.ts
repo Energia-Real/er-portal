@@ -23,6 +23,16 @@ export class AssetsService implements OnDestroy{
 			map((response) => Mapper.getDataRespSiteMapper(response.data))
 		);
 	}
+
+  public getDataId(id:string): Observable<any> {
+		const url = `${this.API_URL_PROXY}quote/${id}/`;
+
+    return this.http.get<any>(url)
+    // .pipe(
+		// 	map((response) => Mapper.GetDataTableCompanyMapper(response))
+		// );
+	}
+
  
   getDataRespSite(data:entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
