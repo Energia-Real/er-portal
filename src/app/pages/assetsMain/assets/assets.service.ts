@@ -23,7 +23,7 @@ export class AssetsService implements OnDestroy{
 			map((response) => Mapper.getDataRespSiteMapper(response.data))
 		);
 	}
- 
+
   getDataRespSite(data:entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
 
@@ -53,10 +53,10 @@ export class AssetsService implements OnDestroy{
     return this.http.get<entity.DataSummaryProjects>(url);
   }
 
-  getDetailAsset(id: string | null) : Observable<entity.DataDetailAsset> {
+  getDataId(id: string | null) : Observable<entity.DataPlant> {
     const url = `${this.API_URL}/projects/${id}`;
 
-    return this.http.get<entity.DataDetailAsset>(url);
+    return this.http.get<entity.DataPlant>(url);
   }
 
   getWeatherData(lat: number, long: number) {
@@ -84,9 +84,15 @@ export class AssetsService implements OnDestroy{
 		);
   }
 
-  postCreateAsset(data: any) {
+  postDataPlant(data: any) {
     return this.http.post<any>(`${this.API_URL}/projects`, data);
   }
+
+  patchDataPlant(id:string, data:entity.DataPlant): Observable<any> {
+		const url = `${this.API_URL}projects/${id}/`;
+
+    return this.http.patch<any>(url, data);
+	}
 
   putUpdateAsset(data: any, id: string | null) {
     return this.http.put<any>(`${this.API_URL}/projects/${id}`, data);
