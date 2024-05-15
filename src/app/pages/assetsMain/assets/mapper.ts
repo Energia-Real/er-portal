@@ -38,7 +38,7 @@ export class Mapper {
 		  });
 		  dataList.push({
 			title: 'Age of the site',
-			description: 'NA'
+			description: 'N/A'
 		  });
 		  dataList.push({
 			title: 'Mounting Technology',
@@ -50,15 +50,15 @@ export class Mapper {
 		  });
 		  dataList.push({
 			title: 'Modules',
-			description: 'NA'
+			description: 'N/A'
 		  });
 		  dataList.push({
 			title: 'COD',
-			description: 'NA'
+			description:response.contractSignatureDate
 		  });
 		  dataList.push({
 			title: 'Roof Type',
-			description: response.contractSignatureDate
+			description: 'N/A'
 		  });
 		  dataList.push({
 			title: 'Commission Date',
