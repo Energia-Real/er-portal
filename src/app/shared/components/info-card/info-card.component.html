@@ -1,4 +1,7 @@
 <div >
-    <h1>{{ info?.title || '-'}}</h1>
+    <div class="card-info-header">
+        <h1>{{ info?.title || '-'}}</h1>
+        <mat-icon (click)="executeFunction()" matTooltip="{{ tooltipText }}">{{materialIconName}}</mat-icon>
+    </div>
     <h2>{{ info?.description }}</h2>
 </div>

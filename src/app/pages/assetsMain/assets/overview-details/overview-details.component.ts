@@ -20,6 +20,8 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
 
   Highcharts: typeof Highcharts = Highcharts;
   private id =''
+  public infoTooltip='Info';
+  public materialIcon='help_outline'
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
@@ -99,6 +101,10 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     })
+  }
+
+  someFunction() {
+    console.log('Function executed from the icon click!');
   }
 
   ngOnDestroy(): void {

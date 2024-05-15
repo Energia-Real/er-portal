@@ -2,8 +2,7 @@
     <div class="col-md-6">
       <div class="c-card-info" *ngIf="!showAlert else notData">
         <div class="card-info" *ngFor="let data of siteResponse">
-            <h1>{{ data?.title || '-'}}</h1>
-            <h2>{{ data?.description }}</h2>
+          <app-info-card  [info]="data" [materialIconName]="materialIcon"></app-info-card>
         </div>
       </div>
     </div>
