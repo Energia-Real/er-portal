@@ -18,22 +18,22 @@ export class NewPlantComponent implements OnInit, AfterViewInit, OnDestroy{
   private onDestroy = new Subject<void>();
 
   formData = this.fb.group({
-    siteName: ['', Validators.required],
-    plantCode: ['', Validators.required],
-    direction: ['', Validators.required],
-    link: ['', [Validators.required, CustomValidators.validateUrlPrefix]],
-    contractTypeId: ['', Validators.required],
-    latitude: ['', [Validators.required, CustomValidators.validateLatitude]],
-    longitude: ['', [Validators.required, CustomValidators.validateLongitude]],
-    installationTypeId: ['', [Validators.required]],
-    commissionDate: ['', [Validators.required]],
-    installedCapacity: ['', [Validators.required]],
-    contractSignatureDate: ['', [Validators.required]],
-    endInstallationDate: ['', [Validators.required]],
-    systemSize: ['', [Validators.required]],
-    inverterQty: ['', [Validators.required]],
-    assetStatus: ['', [Validators.required]],
-    netZero: ['', [Validators.required]],
+    siteName: [''],
+    plantCode: [''],
+    direction: [''],
+    link: ['', CustomValidators.validateUrlPrefix],
+    contractTypeId: [''],
+    latitude: ['', CustomValidators.validateLatitude],
+    longitude: ['', CustomValidators.validateLongitude],
+    installationTypeId: [''],
+    commissionDate: [''],
+    installedCapacity: [''],
+    contractSignatureDate: [''],
+    endInstallationDate: [''],
+    systemSize: [''],
+    inverterQty: [''],
+    assetStatus: [''],
+    netZero: [''],
   });
 
   catContractType:entityCatalogs.DataCatalogs[] = [];

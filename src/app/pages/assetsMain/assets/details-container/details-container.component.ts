@@ -182,7 +182,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
     } else {
       this.showNotdata = true;
-      if (assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('La información proporcionada incluye un código de planta que aún no ha sido implementado..');
+      if (assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('La información proporcionada incluye una marca del inversor que aún no ha sido implementado.');
       else this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.');
       this.loadingSystem = false;
     }
