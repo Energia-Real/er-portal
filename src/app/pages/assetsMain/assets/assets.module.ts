@@ -13,7 +13,7 @@ import { OverviewDetailsComponent } from './overview-details/overview-details.co
 import { SiteDetailsComponent } from './site-details/site-details.component';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
 import { NewPlantComponent } from './new-plant/new-plant.component';
-
+import {InfoCardComponent} from '../../../shared/components/info-card/info-card.component'
 @NgModule({
   declarations: [
     ManagementComponent,
@@ -31,7 +31,8 @@ import { NewPlantComponent } from './new-plant/new-plant.component';
     ReactiveFormsModule,
     LayoutModule,
     ReturnBarModule,
-    MaterialModule
-  ]
+    MaterialModule,
+    InfoCardComponent
+    ]
 })
 export class AssetsModule { }
