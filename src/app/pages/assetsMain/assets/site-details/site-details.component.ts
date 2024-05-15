@@ -14,7 +14,8 @@ import moment from 'moment';
 export class SiteDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  @Input() assetData!: entity.DataDetailAsset;
+  @Input() assetData!: entity.DataPlant;
+  @Input() notData! : boolean;
 
   urlMap!: SafeResourceUrl;
   loaderMap: boolean = true;
@@ -31,14 +32,12 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('site-details', this.assetData);
     
-    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
-      else this.showAlert = true
+    if (this.notData) this.showAlert = true
+     else this.getDataResponse()
     
     setTimeout(() => {
       this.loaderMap = false;
-      this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData.latitude + ',' + this.assetData.longitude + '&zoom=18&maptype=satellite');
-      console.log(this.urlMap);
-      
+      this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData?.latitude + ',' + this.assetData?.longitude + '&zoom=18&maptype=satellite');
     }, 100)
   }
 

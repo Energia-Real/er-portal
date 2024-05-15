@@ -14,7 +14,8 @@ import moment from 'moment';
 export class OverviewDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  @Input() assetData!: entity.DataDetailAsset;
+  @Input() assetData!: entity.DataPlant;
+  @Input() notData! : boolean;
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {
@@ -69,57 +70,14 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   overviewResponse : any = []
   showAlert : boolean = false
 
-  objTest:any = {
-    "success": true,
-    "errorMessage": null,
-    "errorCode": 200,
-    "data": [
-        {
-            "title": "Install capacity (AC)",
-            "value": "8127.8"
-        },
-        {
-            "title": "Install capacity (DC)",
-            "value": "1717.5"
-        }
-    ]
-}
-
-objTest2 = [
-  {
-      "title": "Last connection timeStamp",
-      "value": "05/03/2024 23:01:16"
-  },
-  {
-      "title": "Life Time Energy Production",
-      "value": "1025.0700000000002"
-  },
-  {
-      "title": "Life Time Energy Consumption (CFE)",
-      "value": "0"
-  },
-  {
-      "title": "Avoided Emmisions (tCO2e)",
-      "value": "0.4489806600000001"
-  },
-  {
-      "title": "Energy Coverage",
-      "value": "Infinity"
-  },
-  {
-      "title": "Coincident Solar Consumption",
-      "value": "0"
-  }
-]
-
   constructor(
     private assetsService : AssetsService,
     private notificationService: OpenModalsService
   ) { }
 
   ngOnInit(): void {
-    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
-      else this.showAlert = true
+    if (this.notData) this.showAlert = true
+     else this.getDataResponse()
   }
 
   getDataResponse() {

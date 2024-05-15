@@ -46,6 +46,7 @@
             </div>
           </div>
         </div>
+        
 
         <div class="card-weather-container card-status-system" [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? '#a1efef' : '#efa1a1' }">
           <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
@@ -66,15 +67,15 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
 
       <mat-tab label="Overview">
-        <app-overview-details *ngIf="assetData" [assetData]="assetData"></app-overview-details>
+        <app-overview-details *ngIf="assetData" [notData]="showNotdata" [assetData]="assetData"></app-overview-details>
       </mat-tab>
 
       <mat-tab label="Site details">
-        <app-site-details *ngIf="assetData" [assetData]="assetData"></app-site-details>
+        <app-site-details *ngIf="assetData" [notData]="showNotdata" [assetData]="assetData"></app-site-details>
       </mat-tab>
    
       <mat-tab label="Site performance">
-        <app-site-performance [assetData]="assetData"></app-site-performance>
+        <app-site-performance *ngIf="assetData" [assetData]="assetData"></app-site-performance>
       </mat-tab>
 
       <mat-tab label="FAQ">En desarrollo...</mat-tab>

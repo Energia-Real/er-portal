@@ -13,7 +13,7 @@ import * as Highcharts from 'highcharts';
 export class SitePerformanceComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
-  @Input() assetData!: entity.DataDetailAsset;
+  @Input() assetData!: entity.DataPlant;
 
   Highcharts: typeof Highcharts = Highcharts;
 
@@ -45,7 +45,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         stacking: 'normal'
       }
     },
-    // series: []
     series: [
       {
       name: '',
@@ -62,7 +61,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    console.log('site-performance');
     this.showAlert = false
   }
 
