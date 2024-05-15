@@ -16,11 +16,10 @@ export class AssetsService implements OnDestroy{
 
   constructor(private http: HttpClient) { }
 
-  getDataRespOverview(data:entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
-		const url = `${this.API_URL_PROXY}/integrators/proxy/GetOverviewByPlant`;
-
-    return this.http.post<entity.DataResponseDetails>(url, data).pipe(
-			map((response) => Mapper.getDataRespSiteMapper(response.data))
+  getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
+		const url = `${this.API_URL}/projects/${assetId}`;
+    return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
+			map((response) => Mapper.getDataRespOverviewMapper(response))
 		);
 	}
  

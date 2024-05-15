@@ -14,6 +14,7 @@ import { MaterialModule } from '@app/shared/material/material.module';
 import { OverviewDetailsComponent } from './overview-details/overview-details.component';
 import { SiteDetailsComponent } from './site-details/site-details.component';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
+import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { SitePerformanceComponent } from './site-performance/site-performance.co
     ReactiveFormsModule,
     LayoutModule,
     ReturnBarModule,
-    MaterialModule
+    MaterialModule,
+    InfoCardComponent
   ]
 })
 export class AssetsModule { }

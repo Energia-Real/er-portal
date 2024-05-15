@@ -17,6 +17,28 @@ export interface PostDataByPlant {
   plantCode: string;
 }
 
+export interface DataResponseDetailsClient {
+  id: string
+  siteName: string
+  systemSize: number
+  direction: any
+  longitude: number
+  contractType: string
+  installationType: string
+  commissionDate: string
+  clientId: any
+  inverterQty: number
+  netZero: any
+  assetStatus: string
+  latitude: number
+  link: string
+  plantCode: any
+  inverterBrand: string[]
+  subClientId: number
+  endInstallationDate: any
+  contractSignatureDate: string
+}
+
 export interface DataResponseDetails {
   success: true,
   errorMessage: string,
@@ -27,6 +49,7 @@ export interface DataResponseDetails {
     }[]
 }
 
+
 export interface DataDetails {
     title: string,
     value: string
@@ -36,6 +59,8 @@ export interface DataResponseDetailsMapper {
   title: string;
   description: string;
 }
+
+
 
 export interface ResponseSystem {
   success: true,
