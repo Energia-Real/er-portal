@@ -31,7 +31,7 @@ import { NewPlantComponent } from './new-plant/new-plant.component';
     ReactiveFormsModule,
     LayoutModule,
     ReturnBarModule,
-    MaterialModule
-  ]
+    MaterialModule,
+    ]
 })
 export class AssetsModule { }

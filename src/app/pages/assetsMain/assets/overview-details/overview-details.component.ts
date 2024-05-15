@@ -5,6 +5,7 @@ import { AssetsService } from '../assets.service';
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import moment from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-overview-details',
@@ -18,6 +19,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   @Input() notData! : boolean;
 
   Highcharts: typeof Highcharts = Highcharts;
+  private id =''
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
@@ -72,12 +74,14 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetsService : AssetsService,
-    private notificationService: OpenModalsService
+    private notificationService: OpenModalsService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    if (this.notData) this.showAlert = true
-     else this.getDataResponse()
+    this.id = this.route.snapshot.paramMap.get('assetId')!;
+    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
+      else this.showAlert = true
   }
 
   getDataResponse() {
@@ -86,7 +90,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
       plantCode : this.assetData.plantCode
     };
 
-    this.assetsService.getDataRespOverview(objData).subscribe({
+    this.assetsService.getDataRespOverview(this.id).subscribe({
       next: ( response : entity.DataResponseDetailsMapper[] ) => {
         this.overviewResponse = response;
       },
