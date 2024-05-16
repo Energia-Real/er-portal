@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       align: 'left'
     },
     xAxis: {
-      categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United']
+      categories: []
     },
     yAxis: {
       allowDecimals: false,
