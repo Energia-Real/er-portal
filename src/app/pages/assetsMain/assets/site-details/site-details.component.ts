@@ -19,6 +19,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   urlMap!: SafeResourceUrl;
   loaderMap: boolean = true;
+  materialIcon:string = 'help_outline'
 
   siteResponse: any = []
   showAlert: boolean = false
