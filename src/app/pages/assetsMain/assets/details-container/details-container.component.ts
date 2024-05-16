@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
@@ -206,9 +206,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
   getDataRespSystem(objBody: entity.PostDataByPlant) {
     this.assetsService.getDataSystem(objBody).subscribe({
-      next: (response: entity.ResponseSystem) => {
-        this.dataRespoSystem = response.data
-      },
+      next: (response: entity.ResponseSystem) => { this.dataRespoSystem = response.data },
       error: (error) => {
         this.loadingSystem = false;
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
@@ -250,8 +248,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       }
     })
   }
-
-
 
   ngOnDestroy(): void {
     this.onDestroy.next();

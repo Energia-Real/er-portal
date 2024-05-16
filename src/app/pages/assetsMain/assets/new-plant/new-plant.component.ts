@@ -67,7 +67,6 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   getDataById(id: string) {
     this.moduleServices.getDataId(id).subscribe({
       next: (response: entity.DataPlant | any) => {
-        console.log(response);
         this.objEditData = response;
         this.formData.patchValue(response)
       },
@@ -115,32 +114,19 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   actionSave() {
-    const objData: any = {
-      ...this.formData.value,
-    }
+    const objData: any = { ...this.formData.value }
 
-    if (this.formData.get('commissionDate')?.value) {
-      objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
-    }
+    if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
+    if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
+    if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
 
-    if (this.formData.get('endInstallationDate')?.value) {
-      objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
-    }
-
-    if (this.formData.get('contractSignatureDate')?.value) {
-      objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
-    }
-
-    console.log('OBJETO :', objData);
     if (this.objEditData) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
 
   saveDataPost(objData: entity.DataPlant) {
     this.moduleServices.postDataPlant(objData).subscribe({
-      next: () => {
-        this.completionMessage()
-      },
+      next: () => { this.completionMessage() },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
@@ -150,9 +136,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   saveDataPatch(objData: entity.DataPlant) {
     this.moduleServices.patchDataPlant(this.objEditData.id, objData).subscribe({
-      next: () => {
-        this.completionMessage(true)
-      },
+      next: () => { this.completionMessage(true) },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
@@ -162,10 +146,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   completionMessage(edit = false) {
     this.notificationService
-      .notificacion(
-        `Registro ${edit ? 'editado' : 'guardado'}.`,
-        'save',
-      )
+      .notificacion(`Registro ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
       .subscribe((_) => this.toBack());
   }
