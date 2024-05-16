@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
-import moment from 'moment';
 
 @Component({
   selector: 'app-site-details',
@@ -26,15 +25,13 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private assetsService: AssetsService,
+    private moduleServices: AssetsService,
     private notificationService: OpenModalsService
   ) { }
 
   ngOnInit() {
-    console.log('site-details', this.assetData);
-    
-    if (this.notData) this.showAlert = true
-     else this.getDataResponse()
+    if (this.notData) this.showAlert = true;
+     else this.getDataResponse();
     
     setTimeout(() => {
       this.loaderMap = false;
@@ -48,12 +45,10 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
       plantCode: this.assetData.plantCode
     };
 
-    this.assetsService.getDataRespSite(objData).subscribe({
-      next: (response: entity.DataResponseDetailsMapper[]) => {
-        this.siteResponse = response;
-      },
+    this.moduleServices.getDataRespSite(objData).subscribe({
+      next: (response: entity.DataResponseDetailsMapper[]) => { this.siteResponse = response },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
       }
     })

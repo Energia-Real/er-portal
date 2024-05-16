@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -22,7 +22,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
   @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
 
   ngAfterViewChecked() {
-    
       if (this.paginator) {
         this.paginator.pageIndex = this.pageIndex - 1; 
       } else {
@@ -30,7 +29,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
       }
   }
   
-
   displayedColumns: string[] = [
     'siteName', 
     'clientId', 
@@ -57,7 +55,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
   pageIndexSub: Subscription;
 
 
-  constructor(private store: Store, private assetsServices: AssetsService, private notificationService: OpenModalsService, private router: Router) {
+  constructor(private store: Store, private moduleServices: AssetsService, private notificationService: OpenModalsService, private router: Router) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
       if (this.paginator) {
@@ -82,17 +80,13 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
     this.getDataResponse(event.pageIndex + 1, this.searchValue);
   }
 
-
-
   getDataResponse(page: number, name: string) {
     this.showLoader = true;
-    this.assetsServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
+    this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: response => {
-        console.log(response);
         this.dataSource.data = response.data;
         this.totalItems = response.totalItems;
         this.pageIndex = page
-
         this.showLoader = false;
       },
       error: error => {
@@ -103,11 +97,9 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
     });
   }
   
-  
   getSummaryProjects() {
-    this.assetsServices.getSummaryProjects().subscribe({
+    this.moduleServices.getSummaryProjects().subscribe({
       next: (response : entity.DataSummaryProjects) => {
-        console.log(response);
         this.totalPlants = response;
         this.loadingtotalPlants = false
       },
@@ -123,11 +115,9 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
     this.getDataResponse(1, this.searchValue);
   }
 
-  public navigate(link: string) {
+  navigate(link: string) {
     this.router.navigateByUrl(link);
   }
-
-  
 
   ngOnDestroy(): void {
     this.onDestroy.next();
