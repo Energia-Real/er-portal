@@ -15,6 +15,9 @@
         <div class="form-group-container">
           <p>Nombre del sitio:</p>
           <input type="text" formControlName="siteName" placeholder="Nombre del sitio">
+          <div class="message-error" *ngIf="formData.get('siteName')?.invalid && formData.get('siteName')?.touched">
+            <p >Debe agregar nombre del sitio</p>
+          </div>
         </div>
 
         <div class="form-group-container">
@@ -46,6 +49,21 @@
         <div class="form-group-container">
           <p>Capacidad instalada</p>
           <input type="number" formControlName="installedCapacity" placeholder="Capacidad instalada">
+        </div>
+
+        <div class="form-group-container">
+          <p>Relación calidad</p>
+          <input type="number" formControlName="performanceRatio" placeholder="Relación calidad">
+        </div>
+
+        <div class="form-group-container">
+          <p>Rendimiento anual</p>
+          <input type="number" formControlName="yearlyYield" placeholder="Rendimiento anual">
+        </div>
+
+        <div class="form-group-container">
+          <p>Potencia nominal mAC</p>
+          <input type="number" formControlName="nominalPowerAC" placeholder="Potencia nominal mAC">
         </div>
 
         <div class="form-group-container">

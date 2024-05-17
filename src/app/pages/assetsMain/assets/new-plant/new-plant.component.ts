@@ -27,6 +27,9 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     latitude: ['', CustomValidators.validateLatitude],
     longitude: ['', CustomValidators.validateLongitude],
     installationTypeId: [''],
+    performanceRatio: [''],
+    yearlyYield: [''],
+    nominalPowerAC: [''],
     commissionDate: [''],
     installedCapacity: [''],
     contractSignatureDate: [''],
@@ -114,8 +117,26 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   actionSave() {
-    const objData: any = { ...this.formData.value }
+    // const objData: any = { ...this.formData.value }
+    const objData: any = {}
 
+    if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
+    if (this.formData.get('plantCode')?.value) objData.plantCode = this.formData.get('plantCode')?.value;
+    if (this.formData.get('direction')?.value) objData.direction = this.formData.get('direction')?.value;
+    if (this.formData.get('link')?.value) objData.link = this.formData.get('link')?.value;
+    if (this.formData.get('performanceRatio')?.value) objData.performanceRatio = this.formData.get('performanceRatio')?.value;
+    if (this.formData.get('yearlyYield')?.value) objData.yearlyYield = this.formData.get('yearlyYield')?.value;
+    if (this.formData.get('nominalPowerAC')?.value) objData.nominalPowerAC = this.formData.get('nominalPowerAC')?.value;
+    if (this.formData.get('contractTypeId')?.value) objData.contractTypeId = this.formData.get('contractTypeId')?.value;
+    if (this.formData.get('latitude')?.value) objData.latitude = this.formData.get('latitude')?.value;
+    if (this.formData.get('longitude')?.value) objData.longitude = this.formData.get('longitude')?.value;
+    if (this.formData.get('installationTypeId')?.value) objData.installationTypeId = this.formData.get('installationTypeId')?.value;
+    if (this.formData.get('commissionDate')?.value) objData.commissionDate = this.formData.get('commissionDate')?.value;
+    if (this.formData.get('installedCapacity')?.value) objData.installedCapacity = this.formData.get('installedCapacity')?.value;
+    if (this.formData.get('systemSize')?.value) objData.systemSize = this.formData.get('systemSize')?.value;
+    if (this.formData.get('inverterQty')?.value) objData.inverterQty = this.formData.get('inverterQty')?.value;
+    if (this.formData.get('statusPlantId')?.value) objData.statusPlantId = this.formData.get('statusPlantId')?.value;
+    if (this.formData.get('netZero')?.value) objData.netZero = this.formData.get('netZero')?.value;
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
