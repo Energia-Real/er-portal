@@ -1,25 +1,28 @@
-import { AfterViewChecked, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, debounceTime, takeUntil } from 'rxjs';
 declare let gtag: Function;
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-management',
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss'
 })
-export class ManagementComponent implements OnDestroy, AfterViewChecked {
+export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
+
+  searchBar = new FormControl('')
 
   ngAfterViewChecked() {
       if (this.paginator) {
@@ -75,6 +78,12 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
     this.getSummaryProjects();
   };
 
+  ngAfterViewInit(): void {
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
+     if (content?.trim()) this.getDataResponse(1, content);
+    })
+  }
+
   public getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     this.getDataResponse(event.pageIndex + 1, this.searchValue);
@@ -84,8 +93,8 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
     this.showLoader = true;
     this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: response => {
-        this.dataSource.data = response.data;
-        this.totalItems = response.totalItems;
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
         this.pageIndex = page
         this.showLoader = false;
       },
@@ -110,10 +119,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked {
       }
     })
   };
-
-  searchData() {
-    this.getDataResponse(1, this.searchValue);
-  }
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
