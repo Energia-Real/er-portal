@@ -84,13 +84,13 @@ export class AssetsService implements OnDestroy{
   }
 
   postDataPlant(data: any) {
-    const url = `${this.API_URL}projects`;
+    const url = `${this.API_URL}/projects`;
 
     return this.http.post<any>(url, data);
   }
 
   patchDataPlant(id:string, data:entity.DataPlant): Observable<any> {
-		const url = `${this.API_URL}projects/${id}/`;
+		const url = `${this.API_URL}/projects/${id}/`;
 
     return this.http.patch<any>(url, data);
 	}
