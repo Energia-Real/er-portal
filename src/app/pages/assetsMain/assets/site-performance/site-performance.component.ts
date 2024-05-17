@@ -61,10 +61,11 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.showAlert = false
+    this.showAlert = false;
   }
 
   ngOnDestroy(): void {
-
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }

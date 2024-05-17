@@ -75,29 +75,22 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   showAlert : boolean = false
 
   constructor(
-    private assetsService : AssetsService,
+    private moduleServices : AssetsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('assetId')!;
-    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse()
-      else this.showAlert = true
+    if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse();
+      else this.showAlert = true;
   }
 
   getDataResponse() {
-    let objData :entity.PostDataByPlant = {
-      brand : this.assetData.inverterBrand[0],
-      plantCode : this.assetData.plantCode
-    };
-
-    this.assetsService.getDataRespOverview(this.id).subscribe({
-      next: ( response : entity.DataResponseDetailsMapper[] ) => {
-        this.overviewResponse = response;
-      },
+    this.moduleServices.getDataRespOverview(this.id).subscribe({
+      next: ( response : entity.DataResponseDetailsMapper[] ) => { this.overviewResponse = response },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
       }
     })

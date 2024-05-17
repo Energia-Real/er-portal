@@ -34,8 +34,7 @@
             <img src="./assets/icons/search.svg" alt="Icon Search">
           </label>
           <input class="mt-1 block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
-            placeholder="Buscar por nombre de sitio" [(ngModel)]="searchValue" [ngModelOptions]="{ standalone: true }"
-            (input)="searchData()">
+            placeholder="Buscar por nombre de sitio" [formControl]="searchBar">
         </form>
       </div>
     </div>
@@ -90,10 +89,14 @@
               <button mat-menu-item (click)="navigate('/assets/edit/' + element.id)" i18n>Editar</button>
               <button mat-menu-item (click)="navigate('/assets/details/' + element.id)" i18n>Detalle</button>
             </mat-menu>
-
-
           </td>
         </ng-container>
+            
+        <tr *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+              <h5 class="text-center my-5">No se encontraron resultados.</h5>
+          </td>
+      </tr>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
