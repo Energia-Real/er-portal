@@ -91,8 +91,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataRespOverview(this.id).subscribe({
       next: ( response : entity.DataResponseDetailsMapper[] ) => { 
         this.overviewResponse = response
-        this.eliminarSystemSize();
-      },
+            },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
@@ -100,12 +99,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  eliminarSystemSize() {
-    const index = this.overviewResponse.findIndex((item: { title: string; }) => item.title === 'System Size');
-    if (index !== -1) {
-      this.overviewResponse.splice(index, 1);
-    }
-  }
+ 
   someFunction() {
     console.log('Function executed from the icon click!');
   }
