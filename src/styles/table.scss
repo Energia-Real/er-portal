@@ -17,3 +17,17 @@
 .column-ipervinculo:hover {
     font-weight: 500;
 }
+
+.c-table {
+	max-width: 100%;
+	overflow-y: auto;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+  }
