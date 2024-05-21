@@ -37,7 +37,7 @@
           <div *ngIf="!loadingSystem">
             <div *ngIf="dataRespoSystem else notData">
               <p>Tamaño del sistema</p>
-              <p class="card-value">{{ dataRespoSystem.total_power | number:'1.2-2' }}</p>
+              <p class="card-value">{{ assetData.systemSize }}</p>
             </div>
           </div>
         </div>

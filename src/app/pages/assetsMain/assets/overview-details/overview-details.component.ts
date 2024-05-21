@@ -1,4 +1,4 @@
- import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
@@ -17,6 +17,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
 
   @Input() assetData!: entity.DataPlant;
   @Input() notData! : boolean;
+  @Output() systemSizeValue = new EventEmitter<string>();
 
   Highcharts: typeof Highcharts = Highcharts;
   private id =''
@@ -88,7 +89,9 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
 
   getDataResponse() {
     this.moduleServices.getDataRespOverview(this.id).subscribe({
-      next: ( response : entity.DataResponseDetailsMapper[] ) => { this.overviewResponse = response },
+      next: ( response : entity.DataResponseDetailsMapper[] ) => { 
+        this.overviewResponse = response
+            },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
@@ -96,6 +99,7 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
+ 
   someFunction() {
     console.log('Function executed from the icon click!');
   }

@@ -32,10 +32,7 @@ export class Mapper {
 			  });
 		}); */
 
-		dataList.push({
-			title: 'System Size',
-			description: response.systemSize.toString()
-		  });
+		
 		  dataList.push({
 			title: 'Age of the site',
 			description: 'N/A'
