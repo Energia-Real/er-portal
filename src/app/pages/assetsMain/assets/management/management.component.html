@@ -46,38 +46,49 @@
         Add new plant
       </button>
     </div>
-    <div>
+    
+    <div class="c-table">
       <table mat-table [dataSource]="dataSource" class="table-assets">
 
         <ng-container matColumnDef="siteName">
           <th mat-header-cell *matHeaderCellDef i18n> Nombre del sitio </th>
-          <td mat-cell *matCellDef="let element" class="font-semibold"> {{ element.siteName }} </td>
+          <td mat-cell *matCellDef="let element" class="font-semibold"> {{ element?.siteName }} </td>
         </ng-container>
 
         <ng-container matColumnDef="clientId">
           <th mat-header-cell *matHeaderCellDef> ID cliente </th>
-          <td mat-cell *matCellDef="let element"> {{ element.clientId || '-' }} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="commissionDate">
           <th mat-header-cell *matHeaderCellDef i18n> Fecha de comisión </th>
-          <td mat-cell *matCellDef="let element"> {{element.commissionDate}} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.commissionDate else notDataTable"> {{ element.commissionDate }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="inverterQty">
           <th mat-header-cell *matHeaderCellDef i18n> # de inversores </th>
-          <td mat-cell *matCellDef="let element"> {{ element.inverterQty }} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.inverterQty else notDataTable"> {{ element.inverterQty }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="systemSize">
           <th mat-header-cell *matHeaderCellDef i18n> Tamaño de sistema </th>
-          <td mat-cell *matCellDef="let element"> {{ element?.systemSize || '-'}} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.systemSize else notDataTable"> {{ element.systemSize }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="googleMapAdress">
           <th mat-header-cell *matHeaderCellDef i18n> Dirección </th>
-          <td mat-cell *matCellDef="let element">
-            <a [href]="element?.link" target="_blank">{{ element?.link || '-' }}</a>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.link else notDataTable"> 
+              <a [href]="element.link" target="_blank" class="truncate">{{ element.link }}</a>
+            </div>
           </td>
         </ng-container>
 
@@ -91,24 +102,20 @@
             </mat-menu>
           </td>
         </ng-container>
-            
+
         <tr *matNoDataRow>
           <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-              <h5 class="text-center my-5">No se encontraron resultados.</h5>
+            <h5 class="text-center my-5">No se encontraron resultados.</h5>
           </td>
-      </tr>
+        </tr>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
       </table>
 
-      <mat-paginator 
-        #paginator
-        class="c-paginator" 
-        [length]="totalItems" 
-        [pageSize]="pageSize" 
-        [pageSizeOptions]="pageSizeOptions"
-        (page)="getServerData($event)" showFirstLastButtons aria-label="Select page of periodic elements">
+      <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
       </mat-paginator>
     </div>
   </div>
@@ -117,5 +124,11 @@
 <ng-template #notData>
   <div class="no-data-found d-flex justify-center">
     <span matTooltip="La información no pudo ser cargada.">-</span>
+  </div>
+</ng-template>
+
+<ng-template #notDataTable>
+  <div class="no-data-found d-flex justify-center">
+    <span matTooltip="No se dispone de la información solicitada.">-</span>
   </div>
 </ng-template>

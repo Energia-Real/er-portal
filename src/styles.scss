@@ -1,7 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@import './styles/general_variables.scss';
-@import './styles/table.scss';
-@import './styles/styles.scss';
+// @import './styles/general_variables.scss';
+// @import './styles/table.scss';
+// @import './styles/styles.scss';
+
+@import url('./styles/general_variables.scss');
+@import url('./styles/table.scss');
+@import url('./styles/styles.scss');
 
 @font-face {
   font-family: 'GintoNord';
