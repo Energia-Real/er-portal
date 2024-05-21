@@ -52,37 +52,43 @@
 
         <ng-container matColumnDef="siteName">
           <th mat-header-cell *matHeaderCellDef i18n> Nombre del sitio </th>
-          <td mat-cell *matCellDef="let element" class="font-semibold"> {{ element.siteName }} </td>
+          <td mat-cell *matCellDef="let element" class="font-semibold"> {{ element?.siteName }} </td>
         </ng-container>
 
         <ng-container matColumnDef="clientId">
           <th mat-header-cell *matHeaderCellDef> ID cliente </th>
           <td mat-cell *matCellDef="let element"> 
-            <div *ngIf="element?.clientId else notDataTable">
-              {{ element.clientId || '-' }} 
-            </div>
+            <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="commissionDate">
           <th mat-header-cell *matHeaderCellDef i18n> Fecha de comisión </th>
-          <td mat-cell *matCellDef="let element"> {{element.commissionDate}} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.commissionDate else notDataTable"> {{ element.commissionDate }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="inverterQty">
           <th mat-header-cell *matHeaderCellDef i18n> # de inversores </th>
-          <td mat-cell *matCellDef="let element"> {{ element.inverterQty }} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.inverterQty else notDataTable"> {{ element.inverterQty }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="systemSize">
           <th mat-header-cell *matHeaderCellDef i18n> Tamaño de sistema </th>
-          <td mat-cell *matCellDef="let element"> {{ element?.systemSize || '-'}} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.systemSize else notDataTable"> {{ element.systemSize }} </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="googleMapAdress">
           <th mat-header-cell *matHeaderCellDef i18n> Dirección </th>
-          <td mat-cell *matCellDef="let element">
-            <a [href]="element?.link" target="_blank" class="truncate">{{ element?.link || '-' }}</a>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="element?.link else notDataTable"> 
+              <a [href]="element.link" target="_blank" class="truncate">{{ element.link }}</a>
+            </div>
           </td>
         </ng-container>
 
