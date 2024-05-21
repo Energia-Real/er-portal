@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="login-form-container">
         <div class="login-header-container">
-            <img src="./assets/svg/logo.svg" alt="logo energia real">
+            <img src="../../../assets/svg/logo.svg" alt="logo energia real">
             <p>Ingresa tus datos para acceder al sitio</p>
         </div>
         <div class="login-inputs-container">
@@ -19,7 +19,7 @@
                     <div class="password-input-container">
                       <input type="{{ showPassword ? 'text' : 'password' }}" id="password" formControlName="password" required placeholder="Contraseña">
                       <span class="eye-icon" (click)="togglePasswordVisibility()">
-                        <img *ngIf="showPassword" src="./assets/svg/open-eye.svg" alt="Eye Open">
+                        <img *ngIf="showPassword" src="../../../assets/svg/open-eye.svg" alt="Eye Open">
                         <img *ngIf="!showPassword" src="../../../assets/svg/closed-eye.svg" alt="Eye Closed">
                       </span>
                     </div>
