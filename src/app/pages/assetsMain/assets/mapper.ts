@@ -1,3 +1,4 @@
+import * as moment from 'moment-timezone';
 import * as entity from './assets-model';
 
 export class Mapper {
@@ -74,8 +75,8 @@ export class Mapper {
 
 
 	static getLocalTimeOfPlaceMapper(response: entity.DataLocalTime): string {
-		const timeZoneOffset = response.rawOffset + response.dstOffset;
-		const localTime = new Date(Date.now() + timeZoneOffset * 1000);
-		return localTime.toLocaleTimeString('en-US', { hour12: true });
-	}
+		const utcTime = moment.utc();
+		const localTime = utcTime.tz(response.timeZoneId); 
+		return localTime.format('hh:mm A'); 
+	  }
 }
