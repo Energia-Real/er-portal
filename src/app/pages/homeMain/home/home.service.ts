@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import * as entity from './home-model';
@@ -11,12 +11,11 @@ import { environment } from '@environment/environment';
 export class HomeService {
   private API_URL_CLIENTS = environment.API_URL_CLIENTS_V1;
 
-
   constructor(
     private http: HttpClient
   ) { }
 
-  getDataClients(): Observable<entity.DataRespSavingDetails[]> {
+  getDataClients(): Observable<entity.DataRespSavingDetailsMapper> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -25,6 +24,8 @@ export class HomeService {
     };
     const url = `${this.API_URL_CLIENTS}/projects/savingdetails`;
 
-    return this.http.get<entity.DataRespSavingDetails[]>(url, httpOptions);
+    return this.http.get<entity.DataRespSavingDetails[]>(url, httpOptions).pipe(
+			map((response) => Mapper.getDataClientsMapper(response))
+		);
   }
 }

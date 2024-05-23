@@ -12,4 +12,14 @@ export interface DataRespSavingDetails {
   cfeZone: number;
   solarCoverage: number;
   co2Saving: number;
+  energyProduction: string;
+  energyConsumption: string;
+}
+
+export interface DataRespSavingDetailsMapper {
+  data: DataRespSavingDetails[];
+  savingDetails : {
+    totalEnergyConsumption: number;
+    totalEnergyProduction: number;
+  }
 }
