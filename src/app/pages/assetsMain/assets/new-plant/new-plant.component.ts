@@ -58,7 +58,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // this.getCatalogs()
+    this.getCatalogs()
   }
 
   getId() {
