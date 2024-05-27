@@ -1,15 +1,36 @@
 import * as entity from './home-model';
 
 export class Mapper {
-	// static getDataExample(response: entity.Example[]) : entity.ExampleMapper[] {
-	// 	let dataList : entity.ExampleMapper[] = [];
+	static getDataClientsMapper(response: entity.DataRespSavingDetails[]) : entity.DataRespSavingDetailsMapper {
+		let totalEnergyConsumption:number = 0;
+		let totalEnergyProduction:number = 0;
 
-	// 	response.forEach((data: entity.Example): void => {
-	// 		dataList.push({
-	// 			name: data.name,
-	// 		});
-	// 	});
+		let dataList: entity.DataRespSavingDetails[] = [];
 
-	// 	return dataList
-	// }
+		response.forEach((data: entity.DataRespSavingDetails): void => {
+			const energyConsumption = parseFloat(data?.energyConsumption);
+			totalEnergyConsumption += energyConsumption;
+			const energyProduction = parseFloat(data?.energyProduction);
+			totalEnergyProduction += energyProduction;
+
+			dataList.push({
+				siteId : data?.siteId || '-',
+				siteName : data?.siteName || '-',
+				siteSaving : data?.siteSaving,
+				cfeZone : data?.cfeZone,
+				solarCoverage : data?.solarCoverage,
+				co2Saving : data?.co2Saving,
+				energyConsumption : data?.energyConsumption || '-',
+				energyProduction : data?.energyProduction || '-'
+			})
+		});
+
+		return {
+			data : dataList,
+			savingDetails : {
+				totalEnergyConsumption,
+				totalEnergyProduction,
+			}
+		}
+	}
 }

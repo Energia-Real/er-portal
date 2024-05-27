@@ -12,118 +12,139 @@
           <h3>{{objEditData.siteName}}</h3>
         </div>
 
-        <div class="form-group-container">
+        <div class="c-input">
           <p>Nombre del sitio:</p>
-          <input type="text" formControlName="siteName" placeholder="Nombre del sitio">
-          <div class="message-error" *ngIf="formData.get('siteName')?.invalid && formData.get('siteName')?.touched">
-            <p >Debe agregar nombre del sitio</p>
-          </div>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="siteName" placeholder="Nombre del sitio" matInput>
+            <mat-error *ngIf="formData.get('siteName')?.hasError('required')">Debe agregar nombre del sitio</mat-error>
+          </mat-form-field>
         </div>
-
-        <div class="form-group-container">
+       
+        <div class="c-input">
           <p>Codigó de planta:</p>
-          <input type="text" formControlName="plantCode" placeholder="Codigó de planta">
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="plantCode" placeholder="Codigó de planta" matInput>
+          </mat-form-field>
         </div>
-
-        <div class="form-group-container">
+     
+        <div class="c-input">
           <p>Dirección:</p>
-          <input type="text" formControlName="direction" placeholder="Dirección">
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="direction" placeholder="Dirección" matInput>
+          </mat-form-field>
         </div>
 
-        <div class="form-group-container">
+        <div class="c-input">
           <p>Tipo de contrato:</p>
-          <select formControlName="contractTypeId" placeholder="Tipo de contrato">
-            <option value="" disabled>Seleccione uno</option>
-            <option [value]="cat.id" *ngFor="let cat of catContractType"> {{ cat?.description || '-' }}</option>
-          </select>
+          <mat-form-field class="select-ER" appearance="outline">
+            <mat-select formControlName="contractTypeId" placeholder="Tipo de contrato">
+              <mat-option value="" disabled>Seleccione uno</mat-option>
+              <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
-        <div class="form-group-container input-email-container">
+        <div class="c-input">
           <p>Tipo de instalación:</p>
-          <select formControlName="installationTypeId" placeholder="Tipo de instalación">
-            <option value="" disabled>Seleccione uno</option>
-            <option [value]="cat.id" *ngFor="let cat of catInstallationType"> {{ cat?.description || '-' }}</option>
-          </select>
+          <mat-form-field class="select-ER" appearance="outline">
+            <mat-select formControlName="installationTypeId" placeholder="Tipo de instalación">
+              <mat-option value="" disabled>Seleccione uno</mat-option>
+              <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
-        <div class="form-group-container">
-          <p>Capacidad instalada</p>
-          <input type="number" formControlName="installedCapacity" placeholder="Capacidad instalada">
+        <div class="c-input">
+          <p>Capacidad instalada:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="installedCapacity" placeholder="Capacidad instalada" matInput>
+          </mat-form-field>
+        </div>
+  
+        <div class="c-input">
+          <p>Relación calidad:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="installedCapacity" placeholder="Relación calidad" matInput>
+          </mat-form-field>
         </div>
 
-        <div class="form-group-container">
-          <p>Relación calidad</p>
-          <input type="number" formControlName="performanceRatio" placeholder="Relación calidad">
+        <div class="c-input">
+          <p>Rendimiento anual:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="yearlyYield" placeholder="Rendimiento anual" matInput>
+          </mat-form-field>
         </div>
-
-        <div class="form-group-container">
-          <p>Rendimiento anual</p>
-          <input type="number" formControlName="yearlyYield" placeholder="Rendimiento anual">
-        </div>
-
-        <div class="form-group-container">
-          <p>Potencia nominal mAC</p>
-          <input type="number" formControlName="nominalPowerAC" placeholder="Potencia nominal mAC">
+  
+        <div class="c-input">
+          <p>Potencia nominal mAC:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="nominalPowerAC" placeholder="Potencia nominal mAC" matInput>
+          </mat-form-field>
         </div>
 
         <div class="form-group-container">
           <p>Estatus:</p>
-          <select formControlName="statusPlantId" placeholder="Estatus">
-            <option value="" disabled>Seleccione uno</option>
-            <option [value]="cat.id" *ngFor="let cat of catPlantStatus"> {{ cat?.description || '-' }}</option>
-          </select>
+          <mat-form-field class="select-ER" appearance="outline">
+            <mat-select formControlName="statusPlantId" placeholder="Estatus">
+              <mat-option value="" disabled>Seleccione uno</mat-option>
+              <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-' }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <div class="form-group-container input-email-container">
           <p>Esquema de operación</p>
-          <select formControlName="netZero" placeholder="Esquema de operación">
-            <option value="" disabled>Seleccione uno</option>
-            <option [ngValue]="true">Net Zero Export</option>
-            <option [ngValue]="false">Normal</option>
-          </select>
+          <mat-form-field class="select-ER" appearance="outline">
+            <mat-select formControlName="netZero" placeholder="Esquema de operación">
+              <mat-option value="" disabled>Seleccione uno</mat-option>
+              <mat-option [value]="true">Net Zero Export</mat-option>
+              <mat-option [value]="false">Normal</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
-        <div class="form-group-container">
-          <p>Link de mapas</p>
-          <input type="text" id="link" formControlName="link" placeholder="Link de mapas">
-          <div class="message-error pb-3 pt-1"
-            *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">
-            <p>
-              El url que ingresaste no es valido</p>
-          </div>
+        <div class="c-input">
+          <p>Link de mapas:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="link" placeholder="Link de mapas" matInput>
+            <mat-error *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">Debe agregar link de mapas valido</mat-error>
+          </mat-form-field>
         </div>
 
-        <div class="form-group-container coordinates-container">
-          <div class="coordinates-input-container">
+        <div class="c-input-group">
+          <div class="c-input">
             <p>Tamaño del sistema:</p>
-            <input type="number" formControlName="systemSize" placeholder="Tamaño del sistema">
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input type="number" formControlName="systemSize" placeholder="Tamaño del sistema" matInput>
+            </mat-form-field>
           </div>
-
-          <div class="coordinates-input-container">
+         
+          <div class="c-input">
             <p>Cantidad de inversor:</p>
-            <input type="number" formControlName="inverterQty" placeholder="Cantidad de inversor">
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input type="number" formControlName="inverterQty" placeholder="Cantidad de inversor" matInput>
+            </mat-form-field>
           </div>
         </div>
-
-        <div class="form-group-container coordinates-container">
-          <div class="coordinates-input-container">
+      
+        <div class="c-input-group">
+          <div class="c-input">
             <p>Latitud:</p>
-            <input type="number" formControlName="latitude" placeholder="Latitud">
-            <div class="message-error"
-              *ngIf="formData.get('latitude')?.errors?.['latitudeInvalid'] && formData.get('latitude')?.touched">
-              <p>
-                La latitud debe estar entre -90 y 90</p>
-            </div>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input type="number" formControlName="latitude" placeholder="Latitud" matInput>
+              <mat-error *ngIf="formData.get('latitude')?.errors?.['latitudeInvalid'] && formData.get('latitude')?.touched">La latitud debe estar entre -90 y 90</mat-error>
+            </mat-form-field>
           </div>
-
-          <div class="coordinates-input-container">
+         
+          <div class="c-input">
             <p>Longuitud:</p>
-            <input formControlName="longitude" type="number" placeholder="Longitud">
-            <div class="message-error"
-              *ngIf="formData.get('longitude')?.errors?.['invalidLongitude'] && formData.get('longitude')?.touched">
-              <p>
-                La longitud debe estar entre -180 y 180</p>
-            </div>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input type="number" formControlName="longitude" placeholder="Longitud" matInput>
+              <mat-error *ngIf="formData.get('longitude')?.errors?.['invalidLongitude'] && formData.get('longitude')?.touched">La longitud debe estar entre -180 y 180</mat-error>
+
+            </mat-form-field>
           </div>
         </div>
 
