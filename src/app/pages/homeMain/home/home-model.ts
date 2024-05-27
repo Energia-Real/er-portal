@@ -19,7 +19,7 @@ export interface DataRespSavingDetails {
 export interface DataRespSavingDetailsMapper {
   data: DataRespSavingDetails[];
   savingDetails : {
-    totalEnergyConsumption: number;
-    totalEnergyProduction: number;
+    totalEnergyConsumption: string;
+    totalEnergyProduction: string;
   }
 }
