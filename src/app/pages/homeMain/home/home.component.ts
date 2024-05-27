@@ -29,8 +29,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'select',
     'siteName', 
-    'siteSaving', 
-    'cfeZone', 
+    'energyConsumption', 
+    'energyProduction', 
     'solarCoverage', 
     'co2Saving'
   ];
@@ -86,6 +86,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   showLoader: boolean = true;
 
+  savingsDetails:any = {
+    totalEnergyConsumption : 0,
+    totalEnergyProduction : 0
+  }
+
   constructor(
     private homeService: HomeService,
     private router : Router,
@@ -98,10 +103,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getDataResponse() {
     this.homeService.getDataClients().subscribe({
-      next: ( response : entity.DataRespSavingDetails[] ) => {
+      next: ( response : entity.DataRespSavingDetailsMapper ) => {
         console.log('home response', response);
-        this.dataSource.data = response
+        this.dataSource.data = response.data
+        this.savingsDetails = response.savingDetails;
         this.showLoader = false;
+
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
