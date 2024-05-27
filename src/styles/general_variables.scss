@@ -18,11 +18,35 @@
     height: auto;
 }
 
+.select-ER {
+    width: 100%!important;
+    .mat-mdc-text-field-wrapper {
+      padding: 0 !important;
+      border: none !important;
+    }
+  }
+  
+  .input-ER {
+    width: 100%!important;
+    .mat-mdc-text-field-wrapper {
+      padding: 0 !important;
+      border: none !important;
+    }
+  
+    mat-error {
+      margin-left: 15px!important;
+    }
+  
+    input {
+      padding: 0!important;
+    }
+  }
+
 .input-date-new {
     width: 100%;
 
     .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__notch, .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
-        border-color : #D2D2D2!important
+        // border-color : #D2D2D2!important
     }
     input {
         padding: 0!important;
