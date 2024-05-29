@@ -5,3 +5,32 @@ h1 {
     font-weight: 400;
     line-height: 13.12px;
 }
+
+ .card-info-buttons-confirm {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #FFFFFF !important;
+    background: #EE5427 !important;
+    border: 1px solid #EDEDED !important;
+    height: 27px !important;
+    padding: 0px 10px !important;
+    border-radius: 40px;
+  
+    &:hover {
+      background-color: darken(#EE5427, 10%); 
+    }
+  }
+  
+  .card-info-buttons-cancel {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #000000 !important;
+    background: #F8F8F8 !important;
+    border: 1px solid #EDEDED !important;
+    height: 27px !important;
+    padding: 0px 10px !important;
+    border-radius: 40px;
+    &:hover {
+      background-color: darken(#F8F8F8, 10%); 
+    }
+  }
