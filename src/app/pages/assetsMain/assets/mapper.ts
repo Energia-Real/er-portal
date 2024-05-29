@@ -21,19 +21,6 @@ export class Mapper {
 
 	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
 		let dataList: entity.DataResponseDetailsMapper[] = [];
-
-		/* response.forEach((data: any): void => {
-			let formattedValue: string = data.value;
-		
-			if (data.value.includes('.') || data.value === '0') formattedValue = parseFloat(data.value).toFixed(2);
-		
-			dataList.push({
-				title: data.title,
-				description: formattedValue
-			  });
-		}); */
-
-		
 		  dataList.push({
 			title: 'Age of the site',
 			description: 'N/A'
@@ -44,7 +31,7 @@ export class Mapper {
 		  });
 		  dataList.push({
 			title: 'Install Date',
-			description: response.endInstallationDate
+			description: response.endInstallationDate?? "N/A"
 		  });
 		  dataList.push({
 			title: 'Modules',
@@ -52,7 +39,7 @@ export class Mapper {
 		  });
 		  dataList.push({
 			title: 'COD',
-			description:response.contractSignatureDate
+			description:response.contractSignatureDate?? ""
 		  });
 		  dataList.push({
 			title: 'Roof Type',
@@ -60,7 +47,7 @@ export class Mapper {
 		  });
 		  dataList.push({
 			title: 'Commission Date',
-			description: response.commissionDate
+			description: response.commissionDate?? ""
 		  });
 		  dataList.push({
 			title: 'Payment Due Date',
@@ -71,6 +58,26 @@ export class Mapper {
 			description: 'NA'
 		  });
 		return dataList
+	}
+
+	static mapToClientData(mapperData: entity.DataResponseDetailsMapper): Partial<entity.DataResponseDetailsClient> {
+		const clientData: Partial<entity.
+		DataResponseDetailsClient> = {};
+	
+		switch (mapperData.title) {
+		  case 'Install Date':
+			clientData.endInstallationDate = mapperData.description;
+			break;
+		  case 'COD':
+			clientData.contractSignatureDate = mapperData.description;
+			break;
+		  case 'Commission Date':
+			clientData.commissionDate = mapperData.description;
+			break;
+		  default:
+			break;
+		}
+		return clientData;
 	}
 
 

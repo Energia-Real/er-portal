@@ -6,6 +6,8 @@ import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '@app/auth/auth.service';
+import { Mapper } from '../mapper';
 
 @Component({
   selector: 'app-overview-details',
@@ -22,7 +24,8 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   Highcharts: typeof Highcharts = Highcharts;
   private id =''
   public infoTooltip='Info';
-  public materialIcon='help_outline'
+  public materialIcon='edit'
+  canEdit= false;
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
@@ -78,13 +81,15 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private moduleServices : AssetsService,
     private notificationService: OpenModalsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private accountService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('assetId')!;
     if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse();
       else this.showAlert = true;
+    this.getLocalS();
   }
 
   getDataResponse() {
@@ -107,5 +112,16 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.onDestroy.next();
     this.onDestroy.unsubscribe();
+  }
+
+  getLocalS(){
+    this.accountService.getDecryptedUser().accessTo=='BackOffice' ?  this.canEdit=true: this.canEdit=false; 
+  }
+
+  updateCardInfo(event :any){
+    let updateData =Mapper.mapToClientData(event)
+    this.moduleServices.patchDataPlantOverview(this.id,updateData).subscribe(resp=>{
+      console.log(resp.status)
+    })
   }
 }

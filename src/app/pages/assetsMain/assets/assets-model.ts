@@ -25,7 +25,7 @@ export interface DataResponseDetailsClient {
   longitude: number
   contractType: string
   installationType: string
-  commissionDate: string
+  commissionDate: any
   clientId: any
   inverterQty: number
   netZero: any
@@ -36,7 +36,7 @@ export interface DataResponseDetailsClient {
   inverterBrand: string[]
   subClientId: number
   endInstallationDate: any
-  contractSignatureDate: string
+  contractSignatureDate: any
 }
 
 export interface DataResponseDetails {
@@ -57,7 +57,7 @@ export interface DataDetails {
 
 export interface DataResponseDetailsMapper {
   title: string;
-  description: string;
+  description: string | Date;
 }
 
 

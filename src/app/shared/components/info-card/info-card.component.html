@@ -1,7 +1,18 @@
-<div >
+<div>
     <div class="card-info-header">
-        <h1>{{ info?.title || '-'}}</h1>
-        <mat-icon (click)="executeFunction()" matTooltip="{{ tooltipText }}">{{materialIconName}}</mat-icon>
+      <h1>{{ info?.title || '-' }}</h1>
+      <mat-icon (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
     </div>
-    <h2>{{ info?.description }}</h2>
-</div>
+    <h2 #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
+    <div *ngIf="isSpecialTitle() && isEditing">
+        <mat-form-field *ngIf="isSpecialTitle() && isEditing">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="info.description" (dateChange)="onDateChange($event.value)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div *ngIf="isEditing" class="card-info-buttons">
+      <button mat-flat-button class="card-info-buttons-cancel" (click)="cancelEdit()">Cancelar</button>
+      <button mat-flat-button class="card-info-buttons-confirm" (click)="confirmEdit()">Confirmar</button>
+    </div>
+  </div>
