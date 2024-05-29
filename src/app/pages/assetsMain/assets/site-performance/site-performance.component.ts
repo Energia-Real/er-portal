@@ -4,6 +4,7 @@ import * as entity from '../assets-model';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as Highcharts from 'highcharts';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-site-performance',
@@ -53,15 +54,25 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ] as any
   };
 
-  showAlert: boolean = false
+
+  fechaHoy = new Date();
+
+  formFilters = this.formBuilder.group({
+    start: [{ value: '', disabled: false }],
+    end: [{ value: '', disabled: false }],
+  });
+
+  showAlert: boolean = false;
 
   constructor(
+    private formBuilder: FormBuilder,
     private assetsService: AssetsService,
     private notificationService: OpenModalsService
   ) { }
 
   ngOnInit(): void {
     this.showAlert = false;
+    this.fechaHoy = new Date(this.fechaHoy.getFullYear(), 0, 1);
   }
 
   ngOnDestroy(): void {

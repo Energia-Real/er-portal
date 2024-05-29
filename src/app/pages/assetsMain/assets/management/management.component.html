@@ -52,7 +52,7 @@
 
         <ng-container matColumnDef="siteName">
           <th mat-header-cell *matHeaderCellDef i18n> Nombre del sitio </th>
-          <td mat-cell *matCellDef="let element" class="font-semibold"> {{ element?.siteName }} </td>
+          <td  mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo" (click)="navigate('/assets/details/' + element.id)"> {{ element?.siteName }} </td>
         </ng-container>
 
         <ng-container matColumnDef="clientId">

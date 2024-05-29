@@ -396,7 +396,7 @@ select {
   justify-content: space-between;
   text-align: left;
   margin-bottom: 8px;
-  
+
   .c-input {
     width: 48%;
   }
@@ -414,6 +414,12 @@ select {
 *[class*=mat-mdc-select-panel] {
   border-radius: 24px !important;
   margin-top: 5px;
+}
+
+*[class*=mat-mdc-menu-content] {
+  button {
+    border-radius: 0 !important;
+  }
 }
 
 
@@ -445,6 +451,10 @@ input[type="number"] {
     -webkit-font-smoothing: auto !important;
     -moz-osx-font-smoothing: auto !important;
   }
+}
+
+input[type="number"]:focus {
+  box-shadow: none;
 }
 
 .mat-mdc-text-field-wrapper {
@@ -522,10 +532,7 @@ input[type="number"] {
       justify-content: center;
 
       .mat-mdc-icon-button {
-        width: 40px;
-        min-width: 40px;
-        height: 40px;
-        min-height: 40px;
+        margin-top: 10px;
       }
 
       .mat-icon,
@@ -542,7 +549,6 @@ input[type="number"] {
 
           .mat-mdc-select-trigger {
 
-            .mat-mdc-select-value {}
 
             .mat-mdc-select-arrow-wrapper {
               transform: unset !important;
@@ -631,6 +637,10 @@ input[type="number"] {
   }
 }
 
+
+
+// **********
+
 .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
   transform: unset !important;
   color: #EE5427 !important;
@@ -695,10 +705,11 @@ input[type="number"] {
 }
 
 
-.mat-mdc-icon-button .mat-mdc-button-ripple, .mat-mdc-icon-button .mat-mdc-button-persistent-ripple, .mat-mdc-icon-button .mat-mdc-button-persistent-ripple::before {
-  top: 4px!important;
-  left: 4px!important;
-}
+// .mat-mdc-icon-button .mat-mdc-button-ripple, .mat-mdc-icon-button .mat-mdc-button-persistent-ripple, .mat-mdc-icon-button .mat-mdc-button-persistent-ripple::before {
+//   top: 4px!important;
+//   left: 4px!important;
+// }
+
 @media screen and (max-width: 1390px) {
   .form-padding {
     padding: 0 160px !important;
