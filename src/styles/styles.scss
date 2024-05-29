@@ -221,6 +221,16 @@ select {
   color: #FFFFFF !important;
 }
 
+.canEdit{
+  h1{
+    color: #EE5427;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 14.65px;
+    margin-bottom: 16px;
+  }
+}
+
 .c-card-info {
   display: flex;
   flex-wrap: wrap;
@@ -228,7 +238,7 @@ select {
 
   .card-info {
     border: 1px solid #D2D2D2;
-    height: 95px;
+    height: auto;
     width: 48%;
     padding: 16px 24px 16px 24px;
     gap: 10px;

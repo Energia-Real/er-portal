@@ -95,6 +95,12 @@ export class AssetsService implements OnDestroy{
     return this.http.patch<any>(url, data);
 	}
 
+  patchDataPlantOverview(id:string, data:Partial<entity.DataResponseDetailsClient>): Observable<any> {
+		const url = `${this.API_URL}/projects/${id}/`;
+
+    return this.http.patch<any>(url, data);
+	}
+
   putUpdateAsset(data: any, id: string | null) {
     return this.http.put<any>(`${this.API_URL}/projects/${id}`, data);
   }
