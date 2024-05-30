@@ -1,41 +1,51 @@
-.mdc-text-field--outlined {
+.c-home {
+  .mdc-text-field--outlined {
     --mdc-outlined-text-field-container-shape: 28px;
-}
+  }
 
+  .c-client-list {
+    padding-bottom: 10px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-.table-container-scroll {
+    button {
+      min-width: 120px;
+    }
+  }
+  
+  .table-container-scroll {
     max-height: 400px;
     overflow-y: auto;
 
-     thead {
-        position: sticky;
-        margin-bottom: 10px;
-        top: 0;
-        z-index: 1;
-        background-color: white; 
-      }
-      
-       th {
-        height: 65px;
-      }
-      
-      .ms-edge  thead {
-        position: -webkit-sticky;
-      }
-      
-      .mat-table {
-        width: 100%; 
-      }
-      
-      .mat-table td,
-      .mat-table th {
-        padding: 8px;
-      }
-      
-      .header-table {
-        margin: 0;
-      }
+    thead {
+      position: sticky;
+      margin-bottom: 10px;
+      top: 0;
+      z-index: 1;
+      background-color: white;
+    }
+
+    th {
+      height: 65px;
+    }
+
+    .ms-edge thead {
+      position: -webkit-sticky;
+    }
+
+    .mat-table {
+      width: 100%;
+    }
+
+    .mat-table td,
+    .mat-table th {
+      padding: 8px;
+    }
+
+    .header-table {
+      margin: 0;
+    }
   }
-  
-  
-  
+}

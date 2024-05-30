@@ -1,12 +1,14 @@
 <app-layout routeActive="/"></app-layout>
-<main *ngIf="!showLoader" class="px-10 pt-10 grid md:grid-cols-2 md:gap-4">
+<main *ngIf="!showLoader" class="px-10 pt-10 grid md:grid-cols-2 md:gap-4 c-home">
     <div>
-        <div class="flex justify-start">
-            <button mat-stroked-button>
-                <mat-icon>favorite</mat-icon>
-                Chedraui
+        <div class="c-client-list">
+
+            <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
+                <mat-icon *ngIf="first">favorite</mat-icon>
+                {{ client.nombre }}
             </button>
         </div>
+
         <div class="px-8 py-4 mt-4 rounded-3xl border-2">
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">

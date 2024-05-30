@@ -18,16 +18,16 @@ export class HomeService {
   ) { }
 
   getDataClients(): Observable<entity.DataRespSavingDetailsMapper> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      })
-    };
     const url = `${this.API_URL_CLIENTS}/projects/savingdetails`;
 
-    return this.http.get<entity.DataRespSavingDetails[]>(url, httpOptions).pipe(
+    return this.http.get<entity.DataRespSavingDetails[]>(url).pipe(
 			map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
 		);
+  }
+
+  getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
+    const url = `${this.API_URL_CLIENTS}/clients/list`;
+
+    return this.http.get<entity.DataRespSavingDetailsList[]>(url)
   }
 }
