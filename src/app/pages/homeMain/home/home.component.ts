@@ -86,6 +86,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   showLoader: boolean = true;
 
+  dataClientsList : entity.DataRespSavingDetailsList[] = []
+
   savingsDetails:any = {
     totalEnergyConsumption : 0,
     totalEnergyProduction : 0
@@ -102,10 +104,30 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getDataResponse() {
+    this.getDataClients();
+    this.getDataClientsList();
+  }
+
+  getDataClients() {
     this.homeService.getDataClients().subscribe({
       next: ( response : entity.DataRespSavingDetailsMapper ) => {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
+        this.showLoader = false;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.showLoader = false;
+        console.error(error)
+      }
+    })
+  }
+ 
+  getDataClientsList() {
+    this.homeService.getDataClientsList().subscribe({
+      next: ( response : entity.DataRespSavingDetailsList[] ) => {
+        console.log(response);
+        this.dataClientsList = response;
         this.showLoader = false;
       },
       error: (error) => {

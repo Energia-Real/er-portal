@@ -23,3 +23,9 @@ export interface DataRespSavingDetailsMapper {
     totalEnergyProduction: string;
   }
 }
+
+export interface DataRespSavingDetailsList {
+  id: string;
+  clientId: number;
+  nombre: string;
+}
