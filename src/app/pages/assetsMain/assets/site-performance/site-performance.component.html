@@ -6,27 +6,19 @@
                 Refresh Data
             </button>
 
-            <mat-form-field floatLabel="always" appearance="outline" class="input-select">
-                <mat-icon>download</mat-icon>
-
-                <mat-select placeholder="Export Data">
-                    <mat-option value="one">First option</mat-option>
-                    <mat-option value="two">Second option</mat-option>
-                </mat-select>
-            </mat-form-field>
         </div>
     </div>
 
     <div class="col-md-7">
         <div class="row">
             <div class="col-md-3 mb-sm-3">
-                <mat-button-toggle-group class="input-group-buttons">
-                    <mat-button-toggle value="energy">Energy</mat-button-toggle>
-                    <mat-button-toggle value="power">Power</mat-button-toggle>
+                <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
+                    <mat-button-toggle value="bars">Bars</mat-button-toggle>
+                    <mat-button-toggle value="pie">Pie</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
 
-            <div class="col-md-9 mb-sm-3">
+           <!--  <div class="col-md-9 mb-sm-3">
                 <div class="c-data-graph">
                     <div>
                         <h1>Solar production</h1>
@@ -55,11 +47,39 @@
                     </div>
                 </div>
             </div>
-
+ -->
             <div class="col-md-12 mt-5">
                 <div class="highcharts">
-                    <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block">
-                    </highcharts-chart>
+                    <!-- <highcharts-chart *ngIf="displayChart" [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block">
+                    </highcharts-chart> -->
+                    <div class="charts">
+
+                      
+                       <!--  <highcharts-chart
+                            *ngIf="chartOptions"
+                            [Highcharts]="highcharts"
+                            [options]="chartOptions"
+                            style="height: 100%; width: 100%; display: block;">
+                        </highcharts-chart> -->
+                        <div *ngIf="displayChart && graphicsType=='pie' ">
+                            <highcharts-chart 
+                              [Highcharts]="Highcharts" 
+                              [options]="chartOptions" 
+                              style="width: 100%; height: 400px; display: block;">
+                            </highcharts-chart>
+                          </div>
+                             
+                        <div *ngIf="displayChart && graphicsType=='bars'" style="display: block;">
+                            <canvas baseChart width="800" height="400"
+                              [type]="'bar'"
+                              [data]="lineChartData"
+                              [options]="lineChartOptions"
+                              [legend]="lineChartLegend">
+                            </canvas>
+                          </div>                     
+                        
+                      </div>
+                    
                 </div>
             </div>
         </div>
