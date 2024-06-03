@@ -141,3 +141,31 @@ export interface DataSummaryProjects {
   inverterQty : number
 }
 
+export interface ProyectResume {
+  _id: Id
+  brandName: string
+  stationCode: string
+  repliedDateTime: string
+  monthresume: Monthresume[]
+}
+
+export interface Id {
+  timestamp: number
+  machine: number
+  pid: number
+  increment: number
+  creationTime: string
+}
+
+export interface Monthresume {
+  installedCapacity: number
+  usePower: number
+  inverterPower: number
+  selfUsePower: number
+  reductionTotalCoal: number
+  reductionTotalCo2: number
+  onGridPower: number
+  buyPower: number
+  selfProvide: number
+  perPowerRatio?: number
+}

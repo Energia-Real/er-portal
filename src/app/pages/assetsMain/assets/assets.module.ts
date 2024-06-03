@@ -14,6 +14,12 @@ import { SiteDetailsComponent } from './site-details/site-details.component';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
 import { NewPlantComponent } from './new-plant/new-plant.component';
 import {InfoCardComponent} from '../../../shared/components/info-card/info-card.component'
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ChartModule } from 'angular-highcharts';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { NgChartsModule } from 'ng2-charts';
+
+
 @NgModule({
   declarations: [
     ManagementComponent,
@@ -32,7 +38,11 @@ import {InfoCardComponent} from '../../../shared/components/info-card/info-card.
     LayoutModule,
     ReturnBarModule,
     MaterialModule,
-    InfoCardComponent
+    InfoCardComponent,
+    HighchartsChartModule,
+    ChartModule,
+    NgApexchartsModule,
+    NgChartsModule
     ]
 })
 export class AssetsModule { }
