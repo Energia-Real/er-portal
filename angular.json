@@ -55,7 +55,8 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/highcharts/highcharts.js"
+              "node_modules/highcharts/highcharts.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {

@@ -144,3 +144,22 @@
 .table-alert {
     background: #E30613;
 }
+
+.charts{
+
+    display: flex;
+    margin: 20px;
+}
+
+.pie{
+
+    flex: 1;
+    box-shadow: 10px 10px 5px #aaaaaa;
+
+    margin-right: 20px;
+}
+
+.line{
+    flex: 1;
+    box-shadow: 10px 10px 5px #aaaaaa;
+}
