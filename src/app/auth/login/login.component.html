@@ -1,43 +1,48 @@
 <div class="main-container">
-    <div class="login-form-container">
-        <div class="login-header-container">
-            <img src="../../../assets/svg/logo.svg" alt="logo energia real">
-            <p>Ingresa tus datos para acceder al sitio</p>
-        </div>
-        <div class="login-inputs-container">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <div class="form-group-container input-email-container">
-                  <input type="email" id="email" formControlName="email" required placeholder="Correo">
-                  <div class="message-error">
-                    <p *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
-                      Correo inválido
-                    </p>
-                  </div>
-                </div>
-
-                  <div class="form-group-container">
-                    <div class="password-input-container">
-                      <input type="{{ showPassword ? 'text' : 'password' }}" id="password" formControlName="password" required placeholder="Contraseña">
-                      <span class="eye-icon" (click)="togglePasswordVisibility()">
-                        <img *ngIf="showPassword" src="../../../assets/svg/open-eye.svg" alt="Eye Open">
-                        <img *ngIf="!showPassword" src="../../../assets/svg/closed-eye.svg" alt="Eye Closed">
-                      </span>
-                    </div>
-                    <div class="message-error">
-                      <p *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
-                        La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres
-                      </p>
-                    </div>
-                  </div>
-
-                <div class="button-container">
-                  <span class="loader" *ngIf="loading"></span>
-                  <button class="button-primary" *ngIf="!loading" type="submit" [disabled]="loginForm.invalid || buttonDisabled">Entrar al sitio</button>
-                </div>
-              </form>
-        </div>
-        <div class="login-footer-container d-flex justify-content-center">
-            <a routerLink="/forgotPassword">¿Has olvidado tu contraseña?</a>
-        </div>
+  <div class="login-form-container">
+    <div class="login-header-container">
+      <img src="../../../assets/svg/logo.svg" alt="logo energia real">
+      <p>Ingresa tus datos para acceder al sitio</p>
     </div>
+    <div class="login-inputs-container">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="c-input">
+          <p>Nombre del sitio:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="email" placeholder="Correo" matInput>
+            <mat-error
+              *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">Correo
+              inválido</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="c-input">
+          <div class="password-input-container">
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password" placeholder="Contraseña"
+                matInput>
+              <mat-error
+                *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">La
+                contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial, con una
+                longitud mínima de 8 caracteres</mat-error>
+            </mat-form-field>
+            <span class="eye-icon" (click)="togglePasswordVisibility()">
+              <img *ngIf="showPassword" src="../../../assets/svg/open-eye.svg" alt="Eye Open">
+              <img *ngIf="!showPassword" src="../../../assets/svg/closed-eye.svg" alt="Eye Closed">
+            </span>
+          </div>
+        </div>
+
+        <div class="button-container"
+          [ngClass]="{'mt-5': loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)}">
+          <span class="loader" *ngIf="loading"></span>
+          <button class="button-primary" *ngIf="!loading" type="submit"
+            [disabled]="loginForm.invalid || buttonDisabled">Entrar al sitio</button>
+        </div>
+      </form>
+    </div>
+    <div class="login-footer-container d-flex justify-content-center">
+      <a routerLink="/forgotPassword">¿Has olvidado tu contraseña?</a>
+    </div>
+  </div>
 </div>
