@@ -1,14 +1,15 @@
 import * as moment from 'moment-timezone';
 import * as entity from './assets-model';
+import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
-	static getDataRespSiteMapper(response: entity.DataDetails[]): entity.DataResponseDetailsMapper[] {
+	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
 		response.forEach((data: any): void => {
 			let formattedValue: string = data.value;
 		
-			if (data.value.includes('.') || data.value === '0') formattedValue = parseFloat(data.value).toFixed(2);
+			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
 		
 			dataList.push({
 				title: data.title,
