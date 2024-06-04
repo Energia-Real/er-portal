@@ -80,7 +80,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
-     if (content) this.getDataResponse(1, content);
+     this.getDataResponse(1, content!);
     })
   }
 

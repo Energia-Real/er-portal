@@ -4,6 +4,7 @@ import { environment } from '@environment/environment';
 import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 import * as entity from './assets-model';
 import { Mapper } from './mapper';
+import { FormatsService } from '@app/shared/services/formats.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AssetsService implements OnDestroy{
   private API_URL = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
   getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL}/projects/${assetId}`;
@@ -27,7 +28,7 @@ export class AssetsService implements OnDestroy{
 		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
 
     return this.http.post<entity.DataResponseDetails>(url, data).pipe(
-			map((response) => Mapper.getDataRespSiteMapper(response.data))
+			map((response) => Mapper.getDataRespSiteMapper(response.data, this.formatsService))
 		);
 	}
   
