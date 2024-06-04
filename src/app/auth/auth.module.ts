@@ -8,6 +8,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { MaterialModule } from '@app/shared/material/material.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     CommonModule,
     ReactiveFormsModule,
     AuthRoutingModule,
-    FormsModule
+    FormsModule,
+    MaterialModule
   ]
 })
 export class AuthModule { }
