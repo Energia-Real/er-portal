@@ -60,16 +60,39 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
+    let dates = this.getFormattedDates();
+    this.getMonthResume( dates.fourMonthsAgo,dates.today,);
+    this.formFilters.valueChanges.subscribe(values => {
+      this.onFormValuesChanged(values);
+    });
     this.showAlert = false;
     this.fechaHoy = new Date(this.fechaHoy.getFullYear(), 0, 1);
-    this.assetsService.getProyectResume(this.assetData.inverterBrand[0],this.assetData.plantCode).subscribe(response =>{
-      console.log(response); // Añadir esto para verificar la estructura de los datos
-      
-     
-     
+   
+  }
+  
+ 
+  ngAfterViewInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
+  }
 
 
-      // Verificar si la respuesta contiene la propiedad monthresume
+  onFormValuesChanged(values: any) {
+    console.log('Valores del formulario cambiaron:', values);
+    if(values.end!='' && values.start!=''){
+      console.log('send values');
+      this.getMonthResume(values.start, values.end);
+    }
+    
+  }
+
+  getMonthResume(startDate:Date, endDate:Date){
+    this.assetsService.getProyectResume(this.assetData.inverterBrand[0],this.assetData.plantCode,startDate,endDate).subscribe(response =>{
+      console.log(response);
+
       const monthResume = response[0]?.monthresume;
       if (!monthResume) {
         console.error('monthresume is undefined');
@@ -79,12 +102,12 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
      
 
       //HighChartsPIE
-      const seriesData = monthResume.map((item, index) => {
-        const month = `Month ${index + 1}`;
-        return { name: month, y: item.inverterPower };
+      const seriesData = monthResume.map((item) => {
+        let date = new Date(item.collectTime);
+        let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+        return { name: monthName, y: item.inverterPower };
       });
   
-      console.log(seriesData, 'inverter mapped');
       this.chartOptions = {
         chart: {
           type: 'pie'
@@ -108,7 +131,11 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
       };
 
       this.lineChartData={
-        labels:monthResume.map((_, index) => `Month ${index + 1}`),
+        labels:monthResume.map((item) =>{
+          let date = new Date(item.collectTime);
+          let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+          return monthName
+        }),
         datasets:[
           {
             data:inverterPowerData,
@@ -123,16 +150,18 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     } 
     )
   }
-  
- 
-  ngAfterViewInit(): void {
-    
-  }
 
-  ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+   getFormattedDates() {
+    const today = new Date();
+    const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), - 1);
+    const fourMonthsAgo = new Date(today.setMonth(today.getMonth() - 5));
+    const firstDayOfFourMonthsAgo = new Date(fourMonthsAgo.getFullYear(), fourMonthsAgo.getMonth(), 1);
+    return {
+      today: firstDayOfCurrentMonth,
+      fourMonthsAgo: firstDayOfFourMonthsAgo
+    };
   }
+  
 
  
 }
