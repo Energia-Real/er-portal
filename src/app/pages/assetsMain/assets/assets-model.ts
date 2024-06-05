@@ -158,6 +158,7 @@ export interface Id {
 }
 
 export interface Monthresume {
+  collectTime: string
   installedCapacity: number
   usePower: number
   inverterPower: number

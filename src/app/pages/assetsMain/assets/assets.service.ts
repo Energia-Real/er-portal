@@ -113,13 +113,13 @@ export class AssetsService implements OnDestroy{
     );
   }
 
-  getProyectResume(brand: string, plantCode: string) {
+  getProyectResume(brand: string, plantCode: string, startDate:Date, endDate:Date) {
     const url = `${this.API_URL_PROXY}/integrators/proxy/GetMonthProyectResume`;
     const jsonObject = {
       "brand": brand,
       "plantCode": plantCode,
-      "startDate": "2024-01-01T22:32:44.256Z",
-      "endDate": "2024-05-31T22:32:44.256Z"
+      "startDate": startDate,
+      "endDate": endDate
     };
     return this.http.post<entity.ProyectResume[]>(url,jsonObject )
   }
