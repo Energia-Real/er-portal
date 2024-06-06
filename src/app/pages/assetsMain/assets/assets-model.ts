@@ -83,6 +83,7 @@ export interface DataPlant {
     id: string;
     clientId: string;
     siteName: string;
+    clientName: string;
     subClientId :string;
     systemSize: number,
     direction: string;
@@ -98,6 +99,11 @@ export interface DataPlant {
     plantCode: string ,
     inverterBrand: string[]
     contractSignatureDate : string
+    endInstallationDate : string
+    mountingTechnology : string
+    nominalPower : string
+    roofType : string
+    rpu : string
 }
 
 
