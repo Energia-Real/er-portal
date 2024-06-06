@@ -24,6 +24,11 @@ export class AssetsService implements OnDestroy{
 		);
 	}
 
+  getDataRespUnauthorized(): Observable<any> {
+		const url = `${this.API_URL}/pruebas/unauthorized`;
+    return this.http.get<any>(url);
+	}
+
   getDataRespSite(data:entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
 
