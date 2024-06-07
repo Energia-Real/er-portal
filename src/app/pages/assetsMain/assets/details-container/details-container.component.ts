@@ -165,6 +165,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getDetailsAsset(id: string) {
     this.assetsService.getDataId(id).subscribe({
       next: (response: entity.DataPlant) => {
+        console.log('información:', response);
         this.assetData = response;
         this.verifyInformation(response);
       },

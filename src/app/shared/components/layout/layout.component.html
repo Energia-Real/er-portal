@@ -5,11 +5,11 @@
     </a>
     <ul class="flex titles-header">
       <li class="mx-5"><a routerLink="/home" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">Home</a></li>
+          [ngClass]="{ 'text-er-orange': routeActive.includes('home') }">Home</a></li>
       <li class="mx-5"><a routerLink="/assets/management" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('assets') }">Plantas</a></li>
-      <li class="mx-5"><a matTooltip="En desarrollo..." class="hover:text-gray-300 cursor-pointer"
-          >FAQ</a></li>
+      <!-- <li class="mx-5"><a matTooltip="En desarrollo..." class="hover:text-gray-300 cursor-pointer"
+          >FAQ</a></li> -->
       <!-- <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive === 'home' }">FAQ</a></li> -->
     </ul>

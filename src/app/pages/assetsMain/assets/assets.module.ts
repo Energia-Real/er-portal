@@ -18,6 +18,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { ChartModule } from 'angular-highcharts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgChartsModule } from 'ng2-charts';
+import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { NgChartsModule } from 'ng2-charts';
     HighchartsChartModule,
     ChartModule,
     NgApexchartsModule,
-    NgChartsModule
+    NgChartsModule,
+    MessageNoDataComponent
     ]
 })
 export class AssetsModule { }
