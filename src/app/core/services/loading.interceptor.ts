@@ -8,12 +8,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
+  private activeRequests = 0;
 
-  constructor(private loadingService: LoadingService,private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    private loadingService: LoadingService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.loadingService.show();
-    
+    if (this.activeRequests === 0) {
+      this.loadingService.show();
+    }
+    this.activeRequests++;
+
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
@@ -24,7 +32,12 @@ export class LoadingInterceptor implements HttpInterceptor {
         }
         return throwError(error);
       }),
-      finalize(() => this.loadingService.hide())
+      finalize(() => {
+        this.activeRequests--;
+        if (this.activeRequests === 0) {
+          this.loadingService.hide();
+        }
+      })
     );
   }
 }
