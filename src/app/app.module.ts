@@ -24,7 +24,6 @@ import { environment } from '../environments/environment';
     CoreModule,
     StoreModule.forRoot({ paginator: paginatorReducer }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
-
   ],
   providers: [
     {

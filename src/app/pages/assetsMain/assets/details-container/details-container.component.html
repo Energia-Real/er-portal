@@ -1,8 +1,10 @@
 <div class="home-main-container" *ngIf="!showLoader">
   <div class="home-header-container">
     <app-return-bar></app-return-bar>
+    
     <div class="info-asset-container pt-3">
-      <h1 *ngIf="assetData?.clientName else notData">{{assetData?.clientName || '-'}}</h1>
+      <h1 class="mb-2" *ngIf="assetData?.siteName else notData">{{ assetData.siteName }}</h1>
+      <h2 class="mb-0" *ngIf="assetData?.clientName else notData">{{ assetData.clientName }}</h2>
         <p class="fw-medium">Dirección aproximada: <span  *ngIf="addressPlace else notData">{{addressPlace}}</span></p>
     </div>
 
@@ -63,7 +65,6 @@
             </div>
           </div>
         </div>
-        
 
         <div class="card-weather-container card-status-system" [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? '#a1efef' : '#efa1a1' }">
           <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
@@ -96,13 +97,10 @@
       </mat-tab>
 
       <!-- <mat-tab label="FAQ">En desarrollo...</mat-tab> -->
-
     </mat-tab-group>
   </div>
 </div>
 
 <ng-template #notData>
-  <div class="no-data-found">
-    <span matTooltip="La información no pudo ser cargada.">-</span>
-  </div>
+  <app-message-no-data [message]="'La información no pudo ser cargada.'"></app-message-no-data>
 </ng-template>

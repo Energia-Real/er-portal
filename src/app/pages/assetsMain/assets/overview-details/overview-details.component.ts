@@ -1,4 +1,4 @@
- import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
@@ -18,14 +18,14 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
   @Input() assetData!: entity.DataPlant;
-  @Input() notData! : boolean;
+  @Input() notData!: boolean;
   @Output() systemSizeValue = new EventEmitter<string>();
 
   Highcharts: typeof Highcharts = Highcharts;
-  private id =''
-  public infoTooltip='Info';
-  public materialIcon='edit'
-  canEdit= false;
+  private id = ''
+  public infoTooltip = 'Info';
+  public materialIcon = 'edit'
+  canEdit = false;
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'column'
@@ -57,29 +57,29 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     },
     series: [
       {
-      name: '',
-      data: [3, 5, 1, 13]
-    }, {
-      name: '',
-      data: [14, 8, 8, 12]
-    }, {
-      name: '',
-      data: [0, 2, 6, 3]
-    }, {
-      name: '',
-      data: [17, 2, 6, 3]
-    }, {
-      name: '',
-      data: [0, 2, 6, 3]
-    }
-  ] as any
+        name: '',
+        data: [3, 5, 1, 13]
+      }, {
+        name: '',
+        data: [14, 8, 8, 12]
+      }, {
+        name: '',
+        data: [0, 2, 6, 3]
+      }, {
+        name: '',
+        data: [17, 2, 6, 3]
+      }, {
+        name: '',
+        data: [0, 2, 6, 3]
+      }
+    ] as any
   };
 
-  overviewResponse : any = []
-  showAlert : boolean = false
+  overviewResponse: any = []
+  showAlert: boolean = false
 
   constructor(
-    private moduleServices : AssetsService,
+    private moduleServices: AssetsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
     private accountService: AuthService
@@ -88,15 +88,16 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('assetId')!;
     if (this.assetData?.plantCode && this.assetData?.inverterBrand?.length) this.getDataResponse();
-      else this.showAlert = true;
+    else this.showAlert = true;
     this.getLocalS();
   }
 
   getDataResponse() {
     this.moduleServices.getDataRespOverview(this.id).subscribe({
-      next: ( response : entity.DataResponseDetailsMapper[] ) => { 
+      next: (response: entity.DataResponseDetailsMapper[]) => {
+        console.log('OVERVIEW:', response);
         this.overviewResponse = response
-            },
+      },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
@@ -104,24 +105,26 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
- 
+
   someFunction() {
     console.log('Function executed from the icon click!');
+  }
+
+ 
+
+  getLocalS() {
+    this.accountService.getDecryptedUser().accessTo == 'BackOffice' ? this.canEdit = true : this.canEdit = false;
+  }
+
+  updateCardInfo(event: any) {
+    let updateData = Mapper.mapToClientData(event)
+    this.moduleServices.patchDataPlantOverview(this.id, updateData).subscribe(resp => {
+      console.log(resp.status)
+    })
   }
 
   ngOnDestroy(): void {
     this.onDestroy.next();
     this.onDestroy.unsubscribe();
-  }
-
-  getLocalS(){
-    this.accountService.getDecryptedUser().accessTo=='BackOffice' ?  this.canEdit=true: this.canEdit=false; 
-  }
-
-  updateCardInfo(event :any){
-    let updateData =Mapper.mapToClientData(event)
-    this.moduleServices.patchDataPlantOverview(this.id,updateData).subscribe(resp=>{
-      console.log(resp.status)
-    })
   }
 }

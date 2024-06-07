@@ -34,10 +34,14 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   
   displayedColumns: string[] = [
     'siteName', 
+    'rpu', 
+    'clientName', 
     'clientId', 
     'commissionDate', 
     'inverterQty', 
     'systemSize', 
+    'nominalPower', 
+    'assetStatus', 
     'googleMapAdress', 
     'actions'
   ];
@@ -80,7 +84,8 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
-     this.getDataResponse(1, content!);
+      // this.showLoader = true;
+      this.getDataResponse(1, content!);
     })
   }
 
@@ -90,18 +95,18 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   }
 
   getDataResponse(page: number, name: string) {
-    this.showLoader = true;
     this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: response => {
+        console.log('TABLA',response?.data);
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.pageIndex = page
-        this.showLoader = false;
+        // this.showLoader = false;
       },
       error: error => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.log(error);
-        this.showLoader = false;
+        // this.showLoader = false;
       }
     });
   }

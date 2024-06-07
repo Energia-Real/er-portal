@@ -19,7 +19,13 @@ export interface PostDataByPlant {
 
 export interface DataResponseDetailsClient {
   id: string
+  subClientId: number
   siteName: string
+  clientName: string
+  mountingTechnology: string
+  nominalPower: string
+  rpu: string
+  roofType: string
   systemSize: number
   direction: any
   longitude: number
@@ -32,9 +38,8 @@ export interface DataResponseDetailsClient {
   assetStatus: string
   latitude: number
   link: string
-  plantCode: any
+  plantCode: string
   inverterBrand: string[]
-  subClientId: number
   endInstallationDate: any
   contractSignatureDate: any
 }
@@ -49,7 +54,6 @@ export interface DataResponseDetails {
     }[]
 }
 
-
 export interface DataDetails {
     title: string,
     value: string
@@ -59,8 +63,6 @@ export interface DataResponseDetailsMapper {
   title: string;
   description: string | Date;
 }
-
-
 
 export interface ResponseSystem {
   success: true,
