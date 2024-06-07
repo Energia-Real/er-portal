@@ -17,6 +17,8 @@ export class LayoutComponent {
 
   ngOnInit(): void {
     this.getInfoUser();
+    console.log('routeActive', this.routeActive);
+    
   }
 
   signOut() {
@@ -26,7 +28,11 @@ export class LayoutComponent {
 
   getInfoUser(){
     this.accountService.getInfoUser().subscribe(data => {
+      console.log(data);
+      
       this.userInfo = data.persona;
+      console.log(this.userInfo);
+      
     })
   }
 }

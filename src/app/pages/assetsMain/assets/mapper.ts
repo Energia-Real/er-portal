@@ -20,43 +20,43 @@ export class Mapper {
 		return dataList
 	}
 
-	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
+	static getDataRespOverviewMapper(response: any): entity.DataResponseDetailsMapper[] {
+	// static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
+
+		console.log(response);
+		
 		let dataList: entity.DataResponseDetailsMapper[] = [];
+		  dataList.push({
+			title: 'RPU',
+			description: response.rpu ?? "N/A"
+		  });
 		  dataList.push({
 			title: 'Age of the site',
 			description: 'N/A'
 		  });
 		  dataList.push({
 			title: 'Mounting Technology',
-			description: 'NA'
+			description: response.mountingTechnology ?? "N/A"
 		  });
 		  dataList.push({
 			title: 'Install Date',
 			description: response.endInstallationDate?? "N/A"
 		  });
 		  dataList.push({
-			title: 'Modules',
-			description: 'N/A'
-		  });
-		  dataList.push({
 			title: 'COD',
-			description:response.contractSignatureDate?? ""
+			description:response.contractSignatureDate?? 'N/A'
 		  });
 		  dataList.push({
 			title: 'Roof Type',
-			description: 'N/A'
+			description: response.roofType ?? "N/A"
 		  });
 		  dataList.push({
 			title: 'Commission Date',
-			description: response.commissionDate?? ""
+			description: response.commissionDate?? 'N/A'
 		  });
 		  dataList.push({
 			title: 'Payment Due Date',
-			description: 'NA'
-		  });
-		  dataList.push({
-			title: 'Estimated Payment Amount',
-			description: 'NA'
+			description: 'N/A'
 		  });
 		return dataList
 	}

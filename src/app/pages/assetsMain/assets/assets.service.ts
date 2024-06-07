@@ -19,7 +19,8 @@ export class AssetsService implements OnDestroy{
 
   getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL}/projects/${assetId}`;
-    return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
+    // return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
+    return this.http.get<any>(url).pipe(
 			map((response) => Mapper.getDataRespOverviewMapper(response))
 		);
 	}
