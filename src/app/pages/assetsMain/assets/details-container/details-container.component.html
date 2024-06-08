@@ -38,7 +38,7 @@
 
           <div *ngIf="assetData">
             <p>Capacidad de AC</p>
-            <div *ngIf="assetData.nominalPower else notData">
+            <div *ngIf="assetData.nominalPower else notDataOne">
               <p class="card-value">{{ assetData.nominalPower }}</p>
             </div>
           </div>
@@ -56,11 +56,11 @@
         </div>
 
         <div class="card-weather-container card-weather-center">
-          <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
+          <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
 
-          <div *ngIf="!loadingSystem">
+          <div *ngIf="assetData">
             <p>Tamaño del sistema</p>
-            <div *ngIf="dataRespoSystem else notData">
+            <div *ngIf="assetData.systemSize else notDataOne">
               <p class="card-value">{{ assetData.systemSize }}</p>
             </div>
           </div>
@@ -103,4 +103,8 @@
 
 <ng-template #notData>
   <app-message-no-data [message]="'La información no pudo ser cargada.'"></app-message-no-data>
+</ng-template>
+
+<ng-template #notDataOne>
+  <app-message-no-data [message]="'No se dispone de la información solicitada.'"></app-message-no-data>
 </ng-template>
