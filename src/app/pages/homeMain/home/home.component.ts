@@ -126,7 +126,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   getDataClientsList() {
     this.homeService.getDataClientsList().subscribe({
       next: ( response : entity.DataRespSavingDetailsList[] ) => {
-        console.log(response);
         this.dataClientsList = response;
         // this.showLoader = false;
       },
