@@ -6,7 +6,7 @@
     <ul class="flex titles-header">
       <li class="mx-5"><a routerLink="/home" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('home') }">Home</a></li>
-      <li class="mx-5"><a routerLink="/assets/management" class="hover:text-gray-300 cursor-pointer"
+      <li *ngIf="userInfo?.accessTo == 'BackOffice'" class="mx-5"><a routerLink="/assets/management" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('assets') }">Plantas</a></li>
       <!-- <li class="mx-5"><a matTooltip="En desarrollo..." class="hover:text-gray-300 cursor-pointer"
           >FAQ</a></li> -->
@@ -44,7 +44,7 @@
 
       <button [matMenuTriggerFor]="menu"
         class="font-thin text-sm px-2 py-1.5 text-center inline-flex items-center border rounded-full hover:bg-gray-100">
-        {{ userInfo?.nombres }} {{ userInfo?.apellidos }}
+        {{ userInfo?.persona?.nombres }} {{ userInfo?.persona?.apellidos }}
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
           viewBox="0 0 10 6">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
