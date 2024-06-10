@@ -178,3 +178,12 @@ export interface Monthresume {
   selfProvide: number
   perPowerRatio?: number
 }
+
+
+export interface ProjectStatus {
+  endInstallationDate: string
+  systemSize: number
+  siteName: string
+  siteId: string
+  estatusDeLaPlantaId: number
+}
