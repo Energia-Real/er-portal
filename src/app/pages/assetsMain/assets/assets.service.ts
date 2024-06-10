@@ -25,6 +25,11 @@ export class AssetsService implements OnDestroy{
 		);
 	}
 
+  getDataRespStatus(): Observable<entity.ProjectStatus[]> {
+		const url = `${this.API_URL}/projects/projectstate`;
+    return this.http.get<any>(url)
+	}
+
   getDataRespUnauthorized(): Observable<any> {
 		const url = `${this.API_URL}/pruebas/unauthorized`;
     return this.http.get<any>(url);

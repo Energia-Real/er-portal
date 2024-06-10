@@ -113,55 +113,38 @@
                 </div>
             </form>
 
-            <div class="table-content">
-                <div>
+            <div class="table-content" *ngIf="projectStatus">
+                <div *ngFor="let project of projectStatus">
                     <div class="info">
-                        <h1>Chedraui Jiutepec </h1>
-                        <h2>Installed Capacity: <span>500kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-01</span></h2>
+                        <h1>{{project.siteName}} </h1>
+                        <h2>Installed Capacity: <span>{{project.systemSize}} kW</span></h2>
+                        <h2>Monitoring Start Date: <span>{{project.endInstallationDate}}</span></h2>
                     </div>
 
-                    <div class="table-icon">
-                        <mat-icon class="table-check">check</mat-icon>
+                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==1">
+                        <mat-icon matTooltip="Activer" class="table-check">check</mat-icon>
                     </div>
+
+                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==2">
+                        <mat-icon matTooltip="Defaulter" class="table-alert">error</mat-icon>
+                    </div>
+                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==3">
+                        <mat-icon matTooltip="Under Construction" class="table-builder">build</mat-icon>
+                    </div>
+                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==4">
+                        <mat-icon matTooltip="Under Permitting Process" class="table-under-construction">assignment</mat-icon>
+                    </div>
+                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==5">
+                        <mat-icon matTooltip="Without Off-Taker" class="table-whitout-off-tacker">highlight_off</mat-icon>
+                    </div>
+                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==null">
+                        <mat-icon matTooltip="Default status" >help_outline</mat-icon>
+                    </div>
+
+
                 </div>
 
-                <div>
-                    <div class="info">
-                        <h1>Chedraui Selecto Pedregal</h1>
-                        <h2>Installed Capacity: <span>270kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-snow">cloudy_snowing</mat-icon>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="info">
-                        <h1>Super Chedraui Jb Lobos Veracruz</h1>
-                        <h2>Installed Capacity: <span>220kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-05-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-alert">info</mat-icon>
-                    </div>
-                </div>
-                <div>
-                    <div class="info">
-                        <h1>Chedraui Jiutepec </h1>
-                        <h2>Installed Capacity: <span>500kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-01</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-check">check</mat-icon>
-                    </div>
-                </div>
-
-                <div>
+<!--                 <div>
                     <div class="info">
                         <h1>Chedraui Selecto Pedregal</h1>
                         <h2>Installed Capacity: <span>270kW</span></h2>
@@ -219,6 +202,41 @@
                         <mat-icon class="table-alert">info</mat-icon>
                     </div>
                 </div>
+                <div>
+                    <div class="info">
+                        <h1>Chedraui Jiutepec </h1>
+                        <h2>Installed Capacity: <span>500kW</span></h2>
+                        <h2>Monitoring Start Date: <span>2023-03-01</span></h2>
+                    </div>
+
+                    <div class="table-icon">
+                        <mat-icon class="table-check">check</mat-icon>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info">
+                        <h1>Chedraui Selecto Pedregal</h1>
+                        <h2>Installed Capacity: <span>270kW</span></h2>
+                        <h2>Monitoring Start Date: <span>2023-03-07</span></h2>
+                    </div>
+
+                    <div class="table-icon">
+                        <mat-icon class="table-snow">cloudy_snowing</mat-icon>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info">
+                        <h1>Super Chedraui Jb Lobos Veracruz</h1>
+                        <h2>Installed Capacity: <span>220kW</span></h2>
+                        <h2>Monitoring Start Date: <span>2023-05-07</span></h2>
+                    </div>
+
+                    <div class="table-icon">
+                        <mat-icon class="table-alert">info</mat-icon>
+                    </div>
+                </div> -->
 
 
             </div>

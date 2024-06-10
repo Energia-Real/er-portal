@@ -28,10 +28,11 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
   graphicsType: 'pie' | 'bars'= 'bars';
 
+  projectStatus!: entity.ProjectStatus[];
+
 
 
   private onDestroy = new Subject<void>();
- // @ViewChild('chart') chart: any;
   @Input() assetData!: entity.DataPlant;
 
 
@@ -67,6 +68,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     });
     this.showAlert = false;
     this.fechaHoy = new Date(this.fechaHoy.getFullYear(), 0, 1);
+    this.getStatus();
    
   }
   
@@ -160,6 +162,12 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
       today: firstDayOfCurrentMonth,
       fourMonthsAgo: firstDayOfFourMonthsAgo
     };
+  }
+
+  getStatus() {
+    this.assetsService.getDataRespStatus().subscribe(resp =>{
+      this.projectStatus = resp 
+    })
   }
   
 
