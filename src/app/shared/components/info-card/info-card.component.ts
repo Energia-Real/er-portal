@@ -3,6 +3,7 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { FormsModule } from '@angular/forms';
+import { MessageNoDataComponent } from '../message-no-data/message-no-data.component';
 
 @Component({
   selector: 'app-info-card',
@@ -12,7 +13,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     MaterialModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    MessageNoDataComponent
   ]
 })
 export class InfoCardComponent {

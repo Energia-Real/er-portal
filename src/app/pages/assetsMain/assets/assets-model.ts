@@ -21,6 +21,7 @@ export interface DataResponseDetailsClient {
   id: string
   subClientId: number
   siteName: string
+  ageOfTheSite: string
   clientName: string
   mountingTechnology: string
   nominalPower: string
@@ -61,7 +62,7 @@ export interface DataDetails {
 
 export interface DataResponseDetailsMapper {
   title: string;
-  description: string | Date;
+  description: string | Date | null;
 }
 
 export interface ResponseSystem {

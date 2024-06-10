@@ -37,6 +37,17 @@
           <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
 
           <div *ngIf="assetData">
+            <p>Tamaño del sistema</p>
+            <div *ngIf="assetData.systemSize else notDataOne">
+              <p class="card-value">{{ assetData.systemSize }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-weather-container card-weather-center">
+          <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
+
+          <div *ngIf="assetData">
             <p>Capacidad de AC</p>
             <div *ngIf="assetData.nominalPower else notDataOne">
               <p class="card-value">{{ assetData.nominalPower }}</p>
@@ -51,17 +62,6 @@
             <p>Estatus</p>
             <div *ngIf="assetData.assetStatus else notData">
               <p class="card-value">{{ assetData.assetStatus }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-weather-container card-weather-center">
-          <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
-
-          <div *ngIf="assetData">
-            <p>Tamaño del sistema</p>
-            <div *ngIf="assetData.systemSize else notDataOne">
-              <p class="card-value">{{ assetData.systemSize }}</p>
             </div>
           </div>
         </div>

@@ -110,8 +110,6 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     console.log('Function executed from the icon click!');
   }
 
- 
-
   getLocalS() {
     this.accountService.getDecryptedUser().accessTo == 'BackOffice' ? this.canEdit = true : this.canEdit = false;
   }

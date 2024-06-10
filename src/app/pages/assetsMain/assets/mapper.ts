@@ -13,50 +13,49 @@ export class Mapper {
 		
 			dataList.push({
 				title: data.title,
-				description: formattedValue
+				description: formattedValue ?? null
 			  });
 		});
 
 		return dataList
 	}
 
-	static getDataRespOverviewMapper(response: any): entity.DataResponseDetailsMapper[] {
-	// static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
+	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
 
 		console.log(response);
 		
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 		  dataList.push({
 			title: 'RPU',
-			description: response.rpu ?? "N/A"
+			description: response.rpu ?? null
 		  });
 		  dataList.push({
 			title: 'Age of the site',
-			description: 'N/A'
+			description: response.ageOfTheSite ?? null
 		  });
 		  dataList.push({
 			title: 'Mounting Technology',
-			description: response.mountingTechnology ?? "N/A"
+			description: response.mountingTechnology ?? null
 		  });
 		  dataList.push({
 			title: 'Install Date',
-			description: response.endInstallationDate?? "N/A"
+			description: response.endInstallationDate?? null
 		  });
 		  dataList.push({
 			title: 'COD',
-			description:response.contractSignatureDate?? 'N/A'
+			description:response.contractSignatureDate?? null
 		  });
 		  dataList.push({
 			title: 'Roof Type',
-			description: response.roofType ?? "N/A"
+			description: response.roofType ?? null
 		  });
 		  dataList.push({
 			title: 'Commission Date',
-			description: response.commissionDate?? 'N/A'
+			description: response.commissionDate?? null
 		  });
 		  dataList.push({
 			title: 'Payment Due Date',
-			description: 'N/A'
+			description: null
 		  });
 		return dataList
 	}
