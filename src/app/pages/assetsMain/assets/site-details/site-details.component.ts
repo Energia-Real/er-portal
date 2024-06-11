@@ -46,7 +46,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     };
 
     this.moduleServices.getDataRespSite(objData).subscribe({
-      next: (response: entity.DataResponseDetailsMapper[]) => { this.siteResponse = response },
+      next: (response: entity.DataResponseDetailsMapper[]) => { this.siteResponse = response, console.log(this.assetData);
+       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
