@@ -58,6 +58,10 @@ export class Mapper {
 			title: 'Payment Due Date',
 			description: 'N/A'
 		  });
+		  dataList.push({
+			title: 'Plant Code',
+			description: response.plantCode??'N/A'
+		  });
 		return dataList
 	}
 
