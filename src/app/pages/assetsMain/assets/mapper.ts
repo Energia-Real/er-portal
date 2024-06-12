@@ -8,87 +8,94 @@ export class Mapper {
 
 		response.forEach((data: any): void => {
 			let formattedValue: string = data.value;
-		
+
 			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
-		
+
 			dataList.push({
 				title: data.title,
-				description: formattedValue
-			  });
+				description: formattedValue ?? null
+			});
 		});
 
 		return dataList
 	}
 
-	static getDataRespOverviewMapper(response: any): entity.DataResponseDetailsMapper[] {
-	// static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
-
-		console.log(response);
-		
+	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
 		let dataList: entity.DataResponseDetailsMapper[] = [];
-		  dataList.push({
+		dataList.push({
 			title: 'RPU',
-			description: response.rpu ?? "N/A"
-		  });
-		  dataList.push({
+			description: response.rpu ?? null
+		});
+		dataList.push({
 			title: 'Age of the site',
-			description: 'N/A'
-		  });
-		  dataList.push({
+			description: response.ageOfTheSite ?? null
+		});
+		dataList.push({
 			title: 'Mounting Technology',
-			description: response.mountingTechnology ?? "N/A"
-		  });
-		  dataList.push({
+			description: response.mountingTechnology ?? null
+		});
+		dataList.push({
 			title: 'Install Date',
-			description: response.endInstallationDate?? "N/A"
-		  });
-		  dataList.push({
+			description: response.endInstallationDate ?? null
+		});
+		dataList.push({
 			title: 'COD',
-			description:response.contractSignatureDate?? 'N/A'
-		  });
-		  dataList.push({
+			description: response.contractSignatureDate ?? null
+		});
+		dataList.push({
 			title: 'Roof Type',
-			description: response.roofType ?? "N/A"
-		  });
-		  dataList.push({
+			description: response.roofType ?? null
+		});
+		dataList.push({
 			title: 'Commission Date',
-			description: response.commissionDate?? 'N/A'
-		  });
-		  dataList.push({
+			description: response.commissionDate ?? null
+		});
+		dataList.push({
 			title: 'Payment Due Date',
 			description: 'N/A'
-		  });
-		  dataList.push({
+		});
+		dataList.push({
 			title: 'Plant Code',
-			description: response.plantCode??'N/A'
-		  });
+			description: response.plantCode ?? 'N/A'
+		});
 		return dataList
 	}
 
 	static mapToClientData(mapperData: entity.DataResponseDetailsMapper): Partial<entity.DataResponseDetailsClient> {
-		const clientData: Partial<entity.
-		DataResponseDetailsClient> = {};
-	
+		const clientData: Partial<entity.DataResponseDetailsClient> = {};
+
 		switch (mapperData.title) {
-		  case 'Install Date':
-			clientData.endInstallationDate = mapperData.description;
-			break;
-		  case 'COD':
-			clientData.contractSignatureDate = mapperData.description;
-			break;
-		  case 'Commission Date':
-			clientData.commissionDate = mapperData.description;
-			break;
-		  default:
-			break;
+			case 'Install Date':
+				clientData.endInstallationDate = mapperData.description;
+				break;
+			case 'COD':
+				clientData.contractSignatureDate = mapperData.description;
+				break;
+			case 'Commission Date':
+				clientData.commissionDate = mapperData.description;
+				break;
+			default:
+				break;
 		}
 		return clientData;
 	}
 
 
+	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
+		return {
+			...response,
+			assetStatusIcon: response.assetStatus.toLowerCase().includes('active') ? 'radio_button_checked'
+				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
+					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'
+						: response.assetStatus.toLowerCase().includes('under permitting process') ? 'assignment'
+							: 'person_off'
+		}
+
+	}
+
 	static getLocalTimeOfPlaceMapper(response: entity.DataLocalTime): string {
 		const utcTime = moment.utc();
-		const localTime = utcTime.tz(response.timeZoneId); 
-		return localTime.format('hh:mm A'); 
-	  }
+		const localTime = utcTime.tz(response.timeZoneId);
+		return localTime.format('hh:mm A');
+	}
 }
