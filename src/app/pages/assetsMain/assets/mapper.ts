@@ -56,7 +56,7 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Plant Code',
-			description: response.plantCode ?? 'N/A'
+			description: response.plantCode??'N/A'
 		});
 		return dataList
 	}
