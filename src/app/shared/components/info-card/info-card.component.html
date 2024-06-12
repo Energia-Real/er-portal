@@ -3,7 +3,7 @@
       <h1>{{ info?.title || '-' }}</h1>
       <mat-icon (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
     </div>
-    <h2 #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
+    <h2 *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
     <div *ngIf="isSpecialTitle() && isEditing">
         <mat-form-field *ngIf="isSpecialTitle() && isEditing">
             <input matInput [matDatepicker]="picker" [(ngModel)]="info.description" (dateChange)="onDateChange($event.value)">
@@ -16,3 +16,8 @@
       <button mat-flat-button class="card-info-buttons-confirm" (click)="confirmEdit()">Confirmar</button>
     </div>
   </div>
+
+
+  <ng-template #notDataOne>
+    <app-message-no-data [message]="'No se dispone de la información solicitada.'"></app-message-no-data>
+  </ng-template>

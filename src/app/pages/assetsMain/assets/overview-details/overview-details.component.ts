@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import moment from 'moment';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 import { Mapper } from '../mapper';
@@ -95,7 +94,6 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
   getDataResponse() {
     this.moduleServices.getDataRespOverview(this.id).subscribe({
       next: (response: entity.DataResponseDetailsMapper[]) => {
-        console.log('OVERVIEW:', response);
         this.overviewResponse = response
       },
       error: (error) => {
@@ -105,12 +103,9 @@ export class OverviewDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-
   someFunction() {
     console.log('Function executed from the icon click!');
   }
-
- 
 
   getLocalS() {
     this.accountService.getDecryptedUser().accessTo == 'BackOffice' ? this.canEdit = true : this.canEdit = false;

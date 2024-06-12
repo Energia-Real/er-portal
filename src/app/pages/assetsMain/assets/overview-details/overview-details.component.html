@@ -4,16 +4,13 @@
             <h1> Doble click en texto para editar</h1>
         </div>
         <div class="c-card-info">
-        <div class="card-info"  *ngFor="let data of overviewResponse">
-            <app-info-card  [info]="data"            
-                            [executeFunction]="someFunction.bind(this)"
-                            [canEditCard]="canEdit"
-                            (infoEdited)="updateCardInfo($event)"
-                            ></app-info-card>
+            <div class="card-info" *ngFor="let data of overviewResponse">
+                <app-info-card [info]="data" [executeFunction]="someFunction.bind(this)" [canEditCard]="canEdit"
+                    (infoEdited)="updateCardInfo($event)"></app-info-card>
+            </div>
         </div>
-      </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 c-graph">
         <div class="header-chart">
             <h1 class="mb-0">Información en vivo</h1>
             <div class="flex items-start">
@@ -25,10 +22,12 @@
                 </mat-form-field>
             </div>
         </div>
+
         <highcharts-chart 
-        [Highcharts]="Highcharts"
-        [options]="chartOptions"
-        class="h-max w-full block"></highcharts-chart>
+            class="h-max w-full block graph" 
+            [Highcharts]="Highcharts" 
+            [options]="chartOptions">
+        </highcharts-chart>
     </div>
 </div>
 
