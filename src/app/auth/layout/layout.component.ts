@@ -9,9 +9,7 @@ export class LayoutComponent {
     private router: Router,
     private accountService: AuthService
   ) {
-    if (this.accountService.userValue) {
-      this.router.navigate(['/']);
-    }
+    if (this.accountService.userValue) this.router.navigate(['/']);
   }
 
 }

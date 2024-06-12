@@ -13,7 +13,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
   templateUrl: './site-performance.component.html',
   styleUrl: './site-performance.component.scss'
 })
-export class SitePerformanceComponent implements OnInit, OnDestroy {
+export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy = new Subject<void>();
   @Input() assetData!: entity.DataPlant;
   
