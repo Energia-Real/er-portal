@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import moment from 'moment';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Subject } from 'rxjs';
 export class FormatsService {
 
   dateFormat(content: string) {
-
+    return moment(content).format('D MMM YYYY')
   }
 
   energyFormat(content: number) :string {
@@ -23,7 +24,4 @@ export class FormatsService {
     return parseInt(content.toString(), 10)
   }
 
-  moneyFormat(content: string) {
-
-  }
 }
