@@ -2,21 +2,32 @@
     <div class="col-md-12">
 
         <div class="c-data">
-            <button class="btn-action-add">
-                Refresh Data
-            </button>
-
-        </div>
-    </div>
-
-    <div class="col-md-7">
-        <div class="row">
-            <div class="col-md-3">
+            <div class="">
                 <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
                     <mat-button-toggle value="bars">Bars</mat-button-toggle>
                     <mat-button-toggle value="pie">Pie</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
+
+            <button class="btn-action-add">
+                Refresh Data
+            </button>
+        </div>
+        <!-- <div class="c-data">
+            <button class="btn-action-add">
+                Refresh Data
+            </button>
+        </div> -->
+    </div>
+
+    <div class="col-md-7">
+        <div class="row">
+            <!-- <div class="col-md-3">
+                <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
+                    <mat-button-toggle value="bars">Bars</mat-button-toggle>
+                    <mat-button-toggle value="pie">Pie</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div> -->
 
             <!--  <div class="col-md-9 mb-sm-3">
                 <div class="c-data-graph">
@@ -48,13 +59,11 @@
                 </div>
             </div>
  -->
-            <div class="col-md-12 mt-3 c-graph">
+            <div class="col-md-12 c-graph">
                 <div class="highcharts">
                     <!-- <highcharts-chart *ngIf="displayChart" [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block">
                     </highcharts-chart> -->
                     <div class="charts">
-
-
                         <!--  <highcharts-chart
                             *ngIf="chartOptions"
                             [Highcharts]="highcharts"
@@ -68,7 +77,7 @@
                         </div>
 
                         <div class="graph" *ngIf="displayChart && graphicsType=='bars' && lineChartData" style="display: block;">
-                            <canvas baseChart width="800" height="400" [type]="'bar'" [data]="lineChartData"
+                            <canvas baseChart width="740" height="400" [type]="'bar'" [data]="lineChartData"
                                 [options]="lineChartOptions" [legend]="lineChartLegend">
                             </canvas>
                         </div>
@@ -117,14 +126,14 @@
                     </div>
 
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==1">
-                        <mat-icon matTooltip="Activer" class="table-check">check</mat-icon>
+                        <mat-icon matTooltip="Activer" class="table-check">radio_button_checked</mat-icon>
                     </div>
 
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==2">
-                        <mat-icon matTooltip="Defaulter" class="table-alert">error</mat-icon>
+                        <mat-icon matTooltip="Defaulter" class="table-alert">warning</mat-icon>
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==3">
-                        <mat-icon matTooltip="Under Construction" class="table-builder">build</mat-icon>
+                        <mat-icon matTooltip="Under Construction" class="table-builder">engineering</mat-icon>
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==4">
                         <mat-icon matTooltip="Under Permitting Process"
@@ -132,7 +141,7 @@
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==5">
                         <mat-icon matTooltip="Without Off-Taker"
-                            class="table-whitout-off-tacker">highlight_off</mat-icon>
+                            class="table-whitout-off-tacker">person_off</mat-icon>
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==null">
                         <mat-icon matTooltip="Default status">help_outline</mat-icon>

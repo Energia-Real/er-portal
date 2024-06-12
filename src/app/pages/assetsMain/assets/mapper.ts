@@ -88,7 +88,8 @@ export class Mapper {
 				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
 					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'
 						: response.assetStatus.toLowerCase().includes('under permitting process') ? 'assignment'
-							: 'person_off'
+						: response.assetStatus.toLowerCase().includes('without Off-taker') ? 'person_off'
+							: 'help_outline'
 		}
 
 	}
