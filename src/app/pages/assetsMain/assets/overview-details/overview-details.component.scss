@@ -1,8 +1,19 @@
 .c-ovewrview {
+    .col-md-6:nth-child(1) {
+        padding-top: 11px;
+    }
+
     .header-chart {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        margin-bottom: 10px;
+
+        h1 {
+            font-size: 11px;
+            font-weight: 400;
+            color: #6E6E6E;
+        }
        
         .mdc-text-field--outlined {
             --mdc-outlined-text-field-container-shape: 28px;

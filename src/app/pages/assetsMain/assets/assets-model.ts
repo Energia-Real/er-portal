@@ -107,6 +107,8 @@ export interface DataPlant {
     nominalPower : string
     roofType : string
     rpu : string
+    assetStatusIcon : string
+    assetStatusIconTest : string
 }
 
 
@@ -188,3 +190,5 @@ export interface ProjectStatus {
   siteId: string
   estatusDeLaPlantaId: number
 }
+
+

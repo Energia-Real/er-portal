@@ -13,8 +13,8 @@
 
     .input-group-buttons {
         .mat-button-toggle-appearance-standard.mat-button-toggle-checked {
-            background: #57B1B1!important;
-            color: white!important;
+            background: #57B1B1 !important;
+            color: white !important;
         }
     }
 
@@ -81,7 +81,7 @@
             height: 500px;
             overflow-x: auto;
 
-            > div {
+            >div {
                 background: #FFFFFF;
                 padding: 10px;
                 border-radius: 16px;
@@ -112,13 +112,15 @@
 
                 .info {
                     width: 85%;
-                    h1, h2 {
+
+                    h1,
+                    h2 {
                         margin-bottom: 7px;
                         line-height: 10px;
                         font-size: 13px;
                         font-weight: 600;
                     }
-                    
+
                     h2 {
                         font-weight: 500;
 
@@ -136,35 +138,37 @@
 .table-check {
     background: #57B1B1;
 }
+
 .table-builder {
     background: #FFEB3B;
 }
+
 .table-alert {
     background: #E30613;
 }
 
-.table-under-construction{
+.table-under-construction {
     background: #FF9800;
 }
-.table-whitout-off-tacker{
+
+.table-whitout-off-tacker {
     background: #9E9E9E;
 }
 
-.charts{
-
+.charts {
     display: flex;
+    justify-content: center;
     margin: 20px;
 }
 
-.pie{
-
+.pie {
     flex: 1;
     box-shadow: 10px 10px 5px #aaaaaa;
 
     margin-right: 20px;
 }
 
-.line{
+.line {
     flex: 1;
     box-shadow: 10px 10px 5px #aaaaaa;
 }

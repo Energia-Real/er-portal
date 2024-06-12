@@ -19,7 +19,10 @@ export class FormatsService {
     } else return ''
   }
 
-  
+  graphFormat(content: number) {
+    return parseInt(content.toString(), 10)
+  }
+
   moneyFormat(content: string) {
 
   }

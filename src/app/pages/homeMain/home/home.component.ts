@@ -113,11 +113,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: ( response : entity.DataRespSavingDetailsMapper ) => {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
-        // this.showLoader = false;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
-        // this.showLoader = false;
         console.error(error)
       }
     })

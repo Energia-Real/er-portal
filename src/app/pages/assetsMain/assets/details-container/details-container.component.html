@@ -61,7 +61,7 @@
           <div *ngIf="assetData">
             <p>Estatus</p>
             <div *ngIf="assetData.assetStatus else notData">
-              <p class="card-value">{{ assetData.assetStatus }}</p>
+              <mat-icon [matTooltip]="assetData.assetStatus">{{ assetData.assetStatusIcon }} </mat-icon>
             </div>
           </div>
         </div>
