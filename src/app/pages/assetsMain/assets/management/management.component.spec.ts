@@ -3,6 +3,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ManagementComponent } from './management.component';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatPaginatorModule } from '@angular/material/paginator';  // Importa MatPaginatorModule
 
 
 describe('ManagementComponent', () => {
@@ -13,6 +16,9 @@ describe('ManagementComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ManagementComponent],
       imports:[ HttpClientTestingModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatPaginatorModule,
         StoreModule.forRoot({}) ],
         providers: [
           provideMockStore({}) 
