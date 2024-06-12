@@ -19,8 +19,18 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   
   public lineChartData!: ChartConfiguration<'bar'>['data'];
   public lineChartOptions: ChartOptions<'bar'> = {
-    responsive: false
+    responsive: false,
+    scales: {
+      y: {
+        ticks: {
+          callback: function(value, index, values) {
+            return value + ' kW'; 
+          }
+        }
+      }
+    }
   };
+  
   
   public lineChartLegend = true;
 
@@ -83,30 +93,23 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
 
   onFormValuesChanged(values: any) {
-    console.log('Valores del formulario cambiaron:', values);
     if(values.end!='' && values.start!=''){
-      console.log('send values');
       this.getMonthResume(values.start, values.end);
     }
-    
   }
 
   getMonthResume(startDate:Date, endDate:Date){
     this.assetsService.getProyectResume(this.assetData.inverterBrand[0],this.assetData.plantCode,startDate,endDate).subscribe(response =>{
-      console.log(response);
-
       const monthResume = response[0]?.monthresume;
       if (!monthResume) {
         console.error('monthresume is undefined');
         return;
       }
       const inverterPowerData = monthResume.map(item => item.inverterPower);
-     
-
-      //HighChartsPIE
-      const seriesData = monthResume.map((item) => {
+           const seriesData = monthResume.map((item) => {
         let date = new Date(item.collectTime);
         let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+        monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
         return { name: monthName, y: item.inverterPower };
       });
   
@@ -136,6 +139,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         labels:monthResume.map((item) =>{
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+          monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
           return monthName
         }),
         datasets:[
