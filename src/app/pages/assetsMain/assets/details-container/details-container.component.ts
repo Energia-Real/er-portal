@@ -179,7 +179,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   verifyInformation(assetData: entity.DataPlant) {
     if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') {
       this.showNotdata = false
-      // this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
+      this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
     } else {
       this.showNotdata = true;
       if (assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('La información proporcionada incluye una marca del inversor que aún no ha sido implementado.');
@@ -187,14 +187,14 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.loadingSystem = false;
     }
 
-    // if (assetData.latitude != null && assetData.longitude != null) {
-    //   this.getWeather(assetData.latitude, assetData.longitude);
-    //   this.getPlaceAddress(assetData.latitude, assetData.longitude);
-    //   this.getLocalTimeOfPlace(assetData.latitude, assetData.longitude);
-    // } else {
-    //   this.loadingWeather = this.loadingTimeZone = false;
-    //   this.modalMessage.push('La información proporcionada no incluye coordenadas de latitud o longitud, por lo que no es posible cargar el mapa.')
-    // }
+    if (assetData.latitude != null && assetData.longitude != null) {
+      this.getWeather(assetData.latitude, assetData.longitude);
+      this.getPlaceAddress(assetData.latitude, assetData.longitude);
+      this.getLocalTimeOfPlace(assetData.latitude, assetData.longitude);
+    } else {
+      this.loadingWeather = this.loadingTimeZone = false;
+      this.modalMessage.push('La información proporcionada no incluye coordenadas de latitud o longitud, por lo que no es posible cargar el mapa.')
+    }
 
     if (this.modalMessage.length) {
       const formattedMessages = this.modalMessage.map(message => `(${'\u2022'}) ${message}`).map(message => `<div>${message}</div>`).join('\n');
