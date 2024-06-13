@@ -42,14 +42,15 @@
         <span>Chat</span>
       </button> -->
 
-      <button [matMenuTriggerFor]="menu"
-        class="font-thin text-sm px-2 py-1.5 text-center inline-flex items-center border rounded-full hover:bg-gray-100">
-        {{ userInfo?.persona?.nombres }} {{ userInfo?.persona?.apellidos }}
+      <button [matMenuTriggerFor]="menu" mat-icon-button
+        >
+        <!-- {{ userInfo?.persona?.nombres }} {{ userInfo?.persona?.apellidos }}
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
           viewBox="0 0 10 6">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="m1 1 4 4 4-4" />
-        </svg>
+        </svg> -->
+        <mat-icon class="custom-icon-color">account_circle</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="signOut()">Sign out</button>
