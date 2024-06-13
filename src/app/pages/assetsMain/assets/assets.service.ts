@@ -19,8 +19,7 @@ export class AssetsService implements OnDestroy{
 
   getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL}/projects/${assetId}`;
-    // return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
-    return this.http.get<any>(url).pipe(
+    return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
 			map((response) => Mapper.getDataRespOverviewMapper(response))
 		);
 	}
@@ -67,7 +66,10 @@ export class AssetsService implements OnDestroy{
   getDataId(id: string | null) : Observable<entity.DataPlant> {
     const url = `${this.API_URL}/projects/${id}`;
 
-    return this.http.get<entity.DataPlant>(url);
+    // return this.http.get<entity.DataPlant>(url);
+    return this.http.get<entity.DataPlant>(url).pipe(
+			map((response) => Mapper.getDataIdMapper(response))
+		);
   }
 
   getWeatherData(lat: number, long: number) {

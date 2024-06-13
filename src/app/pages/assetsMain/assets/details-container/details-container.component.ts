@@ -165,7 +165,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   getDetailsAsset(id: string) {
     this.assetsService.getDataId(id).subscribe({
       next: (response: entity.DataPlant) => {
-        console.log('información:', response);
         this.assetData = response;
         this.verifyInformation(response);
       },
@@ -177,7 +176,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  verifyInformation(assetData : entity.DataPlant) {
+  verifyInformation(assetData: entity.DataPlant) {
     if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') {
       this.showNotdata = false
       this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
@@ -194,7 +193,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       this.getLocalTimeOfPlace(assetData.latitude, assetData.longitude);
     } else {
       this.loadingWeather = this.loadingTimeZone = false;
-      this.modalMessage.push('La información no incluye coordenadas de latitud o longitud.')
+      this.modalMessage.push('La información proporcionada no incluye coordenadas de latitud o longitud, por lo que no es posible cargar el mapa.')
     }
 
     if (this.modalMessage.length) {
@@ -218,7 +217,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
 
   getWeather(lat: number, long: number) {
     this.assetsService.getWeatherData(lat, long).subscribe({
-      next: (response: any) => {
+      next: (response) => {
         this.loadingWeather = false;
         this.weatherData = response.data.values;
       },
@@ -231,9 +230,15 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
   }
 
   getPlaceAddress(lat: number, long: number) {
-    this.assetsService.getPlaceAddress(lat, long).subscribe((resp: any) => {
-      this.addressPlace = resp.results[0].formatted_address;
-    });
+    this.assetsService.getPlaceAddress(lat, long).subscribe({
+      next: (response) => {
+        if (response.results.length) {
+          this.addressPlace = response.results[0].formatted_address;
+        } else {
+          this.notificationService.notificacion(`La dirección no pudo ser cargada correctamente.`, 'alert')
+        }
+      },
+    })
   }
 
   getLocalTimeOfPlace(lat: number, long: number) {
@@ -244,7 +249,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.loadingTimeZone = false;
-        this.notificationService.notificacion(`No se pudo obtener la información de la zona horaria.`, 'alert')
+        this.notificationService.notificacion(`No fue posible obtener la información de la zona horaria.`, 'alert')
         console.error(error)
       }
     })
