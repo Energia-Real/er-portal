@@ -1,0 +1,49 @@
+<div class="c-global c-detail-site row">
+    <div class="col-md-6">
+        <div class="c-card-info" *ngIf="!showAlert else notData">
+            <div class="card-info" >
+                <div>
+                    <div class="card-info-header">
+                    <h1>Plant Code  </h1>
+                    </div>
+                    <h2 *ngIf=" assetData?.plantCode">{{  assetData.plantCode }}</h2>
+                </div>
+            </div>
+            <div class="card-info" >
+                <div>
+                    <div class="card-info-header">
+                    <h1>Inverter Brand  </h1>
+                    </div>
+                    <h2 *ngIf=" assetData?.inverterBrand">{{  assetData.inverterBrand[0] }}</h2>
+                </div>
+            </div>
+            <div class="card-info-instalation" *ngFor="let instalacion of assetData.instalaciones; let i = index">
+                <div>
+                    <div class="card-info-header">
+                    <h1> Instalacion {{i+1}} </h1>
+                    </div>
+                    <h2 >({{  instalacion.moduloQty }}) {{instalacion.moduloBrand}} {{instalacion.moduloModel}}</h2>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-md-6 c-graph">
+        <div class="header-chart">
+            <h1 class="mb-0">Información en vivo</h1>
+            
+        </div>
+
+        <highcharts-chart 
+            class="h-max w-full block graph" 
+            [Highcharts]="Highcharts" 
+            [options]="chartOptions">
+        </highcharts-chart>
+    </div>
+</div>
+
+<ng-template #notData>
+    <div class="no-data-alert">
+        La información no pudo ser cargada.
+    </div>
+</ng-template>

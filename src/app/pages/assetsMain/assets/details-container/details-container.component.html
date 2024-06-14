@@ -97,6 +97,10 @@
         <app-site-performance *ngIf="assetData" [assetData]="assetData"></app-site-performance>
       </mat-tab>
 
+      <mat-tab label="Instalation details">
+        <app-instalation-details *ngIf="assetData" [assetData]="assetData" [notData]="showNotdata"></app-instalation-details>
+      </mat-tab>
+
       <!-- <mat-tab label="FAQ">En desarrollo...</mat-tab> -->
     </mat-tab-group>
   </div>
