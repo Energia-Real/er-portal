@@ -96,17 +96,14 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   getDataResponse(page: number, name: string) {
     this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
-      next: response => {
-        console.log('TABLA',response?.data);
+      next: (response : entity.DataManagementTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.pageIndex = page
-        // this.showLoader = false;
       },
       error: error => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.log(error);
-        // this.showLoader = false;
       }
     });
   }

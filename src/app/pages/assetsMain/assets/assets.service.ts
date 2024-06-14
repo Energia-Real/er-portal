@@ -20,13 +20,16 @@ export class AssetsService implements OnDestroy{
   getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
 		const url = `${this.API_URL}/projects/${assetId}`;
     return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
-			map((response) => Mapper.getDataRespOverviewMapper(response))
+			map((response) => Mapper.getDataRespOverviewMapper(response, this.formatsService))
 		);
 	}
 
   getDataRespStatus(): Observable<entity.ProjectStatus[]> {
 		const url = `${this.API_URL}/projects/projectstate`;
-    return this.http.get<any>(url)
+
+    return this.http.get<entity.ProjectStatus[]>(url).pipe(
+			map((response) => Mapper.getDataRespStatusMapper(response, this.formatsService))
+		);
 	}
 
   getDataRespUnauthorized(): Observable<any> {
@@ -54,7 +57,9 @@ export class AssetsService implements OnDestroy{
     .set('pagesize', pageSize)
     .set('page', page);
 
-    return this.http.get<any>(`${this.API_URL}/projects`, { params });
+    return this.http.get<entity.DataManagementTableResponse>(`${this.API_URL}/projects`, { params }).pipe(
+			map((response) => Mapper.getDataAssetsmanagementMapper(response, this.formatsService))
+		);
   }
 
   getSummaryProjects() : Observable<entity.DataSummaryProjects>{
