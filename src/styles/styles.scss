@@ -279,6 +279,45 @@ select {
 
     }
   }
+  .card-info-instalation {
+    border: 1px solid #D2D2D2;
+    height: auto;
+    width: 99%;
+    padding: 16px 24px 16px 24px;
+    gap: 10px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .card-info-header {
+      display: flex;
+      justify-content: space-between;
+
+      h1 {
+        color: #EE5427;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 14.65px;
+        margin-bottom: 16px;
+      }
+
+      h2,
+      h3 {
+        color: #000000;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 28.63px;
+        margin-bottom: 0;
+      }
+
+      h3 {
+        font-size: 14px;
+        line-height: 16px;
+      }
+
+    }
+  }
 }
 
 .mdc-text-field--outlined {
@@ -338,7 +377,7 @@ select {
     padding: 0px 10px !important;
   }
 
-  .mat-mdc-tab.mdc-tab:nth-child(4) {
+  .mat-mdc-tab.mdc-tab:nth-child(5) {
     width: 10px !important;
     min-width: 48px !important;
   }

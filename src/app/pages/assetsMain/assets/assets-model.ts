@@ -109,6 +109,7 @@ export interface DataPlant {
     rpu : string
     assetStatusIcon : string
     assetStatusIconTest : string
+    instalaciones : Module[]
 }
 
 
@@ -189,6 +190,13 @@ export interface ProjectStatus {
   siteName: string
   siteId: string
   estatusDeLaPlantaId: number
+}
+
+export interface Module {
+  instalacionId: number
+  moduloQty: number
+  moduloBrand: string
+  moduloModel: string
 }
 
 
