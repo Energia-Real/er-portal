@@ -17,6 +17,11 @@ export interface PostDataByPlant {
   plantCode: string;
 }
 
+export interface PostDataByPlant {
+  brand: string;
+  plantCode: string;
+}
+
 export interface DataResponseDetailsClient {
   id: string
   subClientId: number
@@ -58,6 +63,51 @@ export interface DataResponseDetails {
 export interface DataDetails {
     title: string,
     value: string
+}
+
+export interface DataManagementTableResponse {
+  page:number;
+  pageSize:number;
+  totalItems:number;
+  data : DataManagementTable[]
+}
+
+export interface DataManagementTable {
+    id: string;
+    siteName: string;
+    systemSize: number;
+    direction: string;
+    longitude: number
+    contractType: string;
+    installationType: string;
+    commissionDate: string;
+    clientId: number;
+    inverterQty: number;
+    netZero: boolean
+    assetStatus: string;
+    latitude: boolean
+    link: string;
+    plantCode: string;
+    inverterBrand: string[],
+    subClientId: number
+    endInstallationDate: string;
+    contractSignatureDate: string;
+    rpu: string;
+    clientName: string;
+    nominalPower: number
+    mountingTechnology: string;
+    roofType: string;
+    ageOfTheSite: number;
+    instalaciones: {
+      instalacionId: number;
+      moduloQty: number;
+      moduloBrand: any;
+      moduloModel: any;
+    }[];
+}
+
+export interface DataManagementTableMapper {
+
 }
 
 export interface DataResponseDetailsMapper {
