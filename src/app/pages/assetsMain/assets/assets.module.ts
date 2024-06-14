@@ -19,6 +19,7 @@ import { ChartModule } from 'angular-highcharts';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgChartsModule } from 'ng2-charts';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
+import { InstalationDetailsComponent } from './instalation-details/instalation-details.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
     SiteDetailsComponent,
     SitePerformanceComponent,
     NewPlantComponent,
+    InstalationDetailsComponent,
   ],
   imports: [
     CommonModule,
