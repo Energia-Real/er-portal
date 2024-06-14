@@ -10,6 +10,7 @@ export class Mapper {
 			let formattedValue: string = data.value;
 
 			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
+			else formattedValue = formatsService.dateFormat(data.value);
 
 			dataList.push({
 				title: data.title,
@@ -20,8 +21,43 @@ export class Mapper {
 		return dataList
 	}
 
-	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient): entity.DataResponseDetailsMapper[] {
+	static getDataAssetsmanagementMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
+		let dataList: entity.DataManagementTable[] = [];
+
+		response.data.forEach((data: entity.DataManagementTable): void => {
+
+			dataList.push({
+				...data,
+				commissionDate: formatsService.dateFormat(data.commissionDate),
+				contractSignatureDate: formatsService.dateFormat(data.contractSignatureDate),
+				endInstallationDate: formatsService.dateFormat(data.endInstallationDate)
+			});
+		});
+
+		return {
+			...response,
+			data: dataList
+		}
+	}
+
+	static getDataRespStatusMapper(response: entity.ProjectStatus[], formatsService: FormatsService) : entity.ProjectStatus[] {
+		let dataList: entity.ProjectStatus[] = [];
+
+		response.forEach((data: entity.ProjectStatus): void => {
+			console.log(data);
+			
+			dataList.push({
+				...data,
+				endInstallationDate: formatsService.dateFormat(data.endInstallationDate),
+			});
+		});
+
+		return dataList
+	}
+
+	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient, formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
 		let dataList: entity.DataResponseDetailsMapper[] = [];
+
 		dataList.push({
 			title: 'RPU',
 			description: response.rpu ?? null
@@ -36,11 +72,11 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Install Date',
-			description: response.endInstallationDate ?? null
+			description: formatsService.dateFormat(response.endInstallationDate) ?? null
 		});
 		dataList.push({
 			title: 'COD',
-			description: response.contractSignatureDate ?? null
+			description: formatsService.dateFormat(response.contractSignatureDate) ?? null
 		});
 		dataList.push({
 			title: 'Roof Type',
@@ -48,7 +84,7 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Commission Date',
-			description: response.commissionDate ?? null
+			description: formatsService.dateFormat(response.commissionDate) ?? null
 		});
 		dataList.push({
 			title: 'Payment Due Date',
@@ -56,8 +92,9 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Plant Code',
-			description: response.plantCode??'N/A'
+			description: response.plantCode ?? 'N/A'
 		});
+
 		return dataList
 	}
 
@@ -88,8 +125,8 @@ export class Mapper {
 				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
 					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'
 						: response.assetStatus.toLowerCase().includes('under permitting process') ? 'assignment'
-						: response.assetStatus.toLowerCase().includes('without Off-taker') ? 'person_off'
-							: 'help_outline'
+							: response.assetStatus.toLowerCase().includes('without Off-taker') ? 'person_off'
+								: 'help_outline'
 		}
 
 	}
