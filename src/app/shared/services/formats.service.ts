@@ -7,17 +7,18 @@ import { Subject } from 'rxjs';
 })
 export class FormatsService {
 
-  dateFormat(content: string) {
-    return moment(content).format('D MMM YYYY')
+  dateFormat(content?: string) {
+    if (content) return moment(content).format('D MMM YYYY')
+     else return '-'
   }
 
-  energyFormat(content: number) :string {
+  energyFormat(content: number): string {
     if (content) {
       return content.toLocaleString('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
       })
-    } else return ''
+    } else return '-'
   }
 
   graphFormat(content: number) {
