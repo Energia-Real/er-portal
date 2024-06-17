@@ -231,6 +231,7 @@ export interface Monthresume {
   buyPower: number
   selfProvide: number
   perPowerRatio?: number
+  dataRecovery : number
 }
 
 
