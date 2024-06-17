@@ -25,12 +25,17 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     scales: {
+      x: {
+        stacked: true,
+      },
       y: {
         ticks: {
           callback: function(value, index, values) {
             return value + ' kW'; 
-          }
-        }
+          },
+        },
+        stacked: true,
+
       }
     }
   };
@@ -84,10 +89,14 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
   
         const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
-  
+        const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery*1000));
+        console.log(monthResume)
+        console.log(dataRecoveryData)
+        console.log(inverterPowerData)
         const seriesData = monthResume.map((item) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+          monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
           return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
         });
   
@@ -122,17 +131,24 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           labels: monthResume.map((item) => {
             let date = new Date(item.collectTime);
             let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
-            return monthName
+            monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+            return monthName;
           }),
-  
           datasets: [
             {
               data: inverterPowerData,
               label: 'Inverter Power',
-              backgroundColor: 'rgba(238, 84, 39, 0.4)'
+              backgroundColor: 'rgba(238, 84, 39, 0.4)',
+              borderColor: 'rgba(238, 84, 39, 1)',
+            },
+            {
+              data: dataRecoveryData,
+              label: 'Data Recovery',
+              backgroundColor: 'rgba(39, 84, 238, 0.4)',
+              borderColor: 'rgba(39, 84, 238, 1)',
             }
           ]
-        }
+        };
   
         this.displayChart = true;
       },
