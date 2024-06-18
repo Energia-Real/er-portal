@@ -1,27 +1,32 @@
-  <div class="c-global c-detail-site row">
-    <div class="col-md-6">
+<div class="c-global c-detail-site">
+  <div class="row">
+    <div class="col-md-6 mb-3 mb-lg-0">
       <div class="c-card-info" *ngIf="!showAlert else notData">
         <div class="card-info" *ngFor="let data of siteResponse">
-          <app-info-card  [info]="data" [materialIconName]="materialIcon"></app-info-card>
+          <app-info-card [info]="data" [materialIconName]="materialIcon"></app-info-card>
         </div>
       </div>
     </div>
 
-    
 
     <div class="col-md-6 text-center">
-      <p *ngIf="assetData.latitude">Mapa cargado utilizando las siguientes coordenadas: <br> Latitud: <span class="color-EE5427">{{ assetData.latitude }}</span>, Longitud: <span class="color-EE5427">{{ assetData.longitude }}</span></p>
-      <p *ngIf="!assetData.latitude">No es posible cargar el mapa debido a la falta de coordenadas de latitud y longitud.</p>
-     
+      <p *ngIf="assetData.latitude">Mapa cargado utilizando las siguientes coordenadas: <br> Latitud: <span
+          class="color-EE5427">{{ assetData.latitude }}</span>, Longitud: <span class="color-EE5427">{{
+          assetData.longitude }}</span></p>
+      <p *ngIf="!assetData.latitude">No es posible cargar el mapa debido a la falta de coordenadas de latitud y
+        longitud.</p>
+
       <div class="loader-overlay" *ngIf="loaderMap">
         <div class="loader"></div>
       </div>
- 
+
       <iframe *ngIf="!loaderMap" height="400" frameborder="0" style="border:0; width: 90%; margin: 0 auto;"
         referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
       </iframe>
     </div>
   </div>
+
+</div>
 
 <ng-template #notData>
   <div class="no-data-alert">
