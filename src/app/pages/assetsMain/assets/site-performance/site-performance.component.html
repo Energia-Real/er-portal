@@ -2,6 +2,15 @@
     <div class="col-md-12">
 
         <div class="c-data">
+            
+            <div class="">
+                <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
+                    <mat-button-toggle value="bars">Bars</mat-button-toggle>
+                    <mat-button-toggle value="pie">Pie</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+
+            
             <button class="btn-action-add">
                 Refresh Data
             </button>
@@ -11,12 +20,12 @@
 
     <div class="col-md-7">
         <div class="row">
-            <div class="col-md-3 mb-sm-3">
+            <!-- <div class="col-md-3 mb-sm-3">
                 <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
                     <mat-button-toggle value="bars">Bars</mat-button-toggle>
                     <mat-button-toggle value="pie">Pie</mat-button-toggle>
                 </mat-button-toggle-group>
-            </div>
+            </div> -->
 
            <!--  <div class="col-md-9 mb-sm-3">
                 <div class="c-data-graph">

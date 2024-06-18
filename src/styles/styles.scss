@@ -51,7 +51,7 @@ span {
 }
 
 .p-top-main {
-  padding-top: 120px!important;
+  padding-top: 75px!important;
 }
 
 
@@ -85,11 +85,7 @@ span {
   }
 }
 
-.main-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 
 input,
 select {
@@ -366,7 +362,11 @@ select {
   border-radius: 20px !important;
 }
 
-.home-tabs-main-container {
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
   .mat-mdc-tab.mdc-tab {
     font-size: 12px !important;
     font-weight: 400 !important;
@@ -689,16 +689,16 @@ input[type="number"]:focus {
 
 .c-graph {
   .graph {
-    // height: 700px;
-    background: #F9F9F9;
     padding: 10px;
     border-radius: 16px;
     border: 1px solid #E2E2E2;
+    
+    highcharts-chart {
+      background: #F9F9F9;
+    }
   }
 
   highcharts-chart {
-    // height: 700px;
-
     .highcharts-credits{
       opacity: 0!important;
     }
@@ -708,11 +708,9 @@ input[type="number"]:focus {
 .c-paginator {
   .mat-mdc-text-field-wrapper {
     border: none;
-    /* width: 50px; */
     height: 34px;
     width: 79% !important;
     padding: 0 18px;
-    /* padding-bottom: 22px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -761,30 +759,6 @@ input[type="number"]:focus {
 
 * {
   scrollbar-width: thin !important;
-}
-
-.color-status-active {
-  color: #0fbd0f;
-}
-
-.color-status-warning {
-  color: #ff4322;
-  // color: #FFC107;
-}
-
-.color-status-engineering {
-  color: #FF6600;
-  // color: #FF6600;
-}
-
-.color-status-assignment {
-  color: #6C757D;
-  // color: #FF6600;
-}
-
-.color-status-person_off {
-  color: #0056b3;
-  // color: #FF6600;
 }
 
 @media screen and (max-width: 1390px) {
