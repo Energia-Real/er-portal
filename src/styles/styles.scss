@@ -51,7 +51,8 @@ span {
 }
 
 .p-top-main {
-  padding-top: 75px!important;
+  padding-top: 80px!important;
+  // padding-top: 75px!important;
 }
 
 .c-global {
@@ -686,14 +687,26 @@ input[type="number"]:focus {
 .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
   transform: unset !important;
   color: #EE5427 !important;
+}
 
+.c-version { 
+  position: relative;
+  .version {
+    position: absolute;
+    // left: 47px;
+    bottom: -5px;
+    right: 0;
+    text-align: center;
+    font-size: 10px;
+    color: #777;
+  }
 }
 
 .c-graph {
   .graph {
     padding: 10px;
     border-radius: 16px;
-    border: 1px solid #E2E2E2;
+    border: 2px solid #E2E2E2;
     
     highcharts-chart {
       background: #F9F9F9;

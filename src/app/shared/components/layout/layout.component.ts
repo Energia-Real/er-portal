@@ -24,6 +24,8 @@ export class LayoutComponent {
   userInfo: any = {};
   @Input() routeActive = '';
 
+  version : string = '1.0.0'
+
   constructor(private accountService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
