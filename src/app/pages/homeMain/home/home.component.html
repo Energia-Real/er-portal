@@ -9,7 +9,7 @@
             </button>
         </div>
 
-        <div class="px-8 py-4 mt-4 rounded-3xl border-2">
+        <div class="px-8 py-4 mt-1 rounded-3xl border-2">
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
@@ -44,7 +44,7 @@
         </div>
         
         <div class="table-container-scroll mt-4 mb-5">
-            <table mat-table [dataSource]="dataSource">
+            <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
     
                 <ng-container matColumnDef="select">
@@ -62,27 +62,27 @@
                 </ng-container>
     
                 <ng-container matColumnDef="siteName">
-                    <th mat-header-cell *matHeaderCellDef ><p class="header-table">Site name</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header ><p class="header-table">Site name</p></th>
                     <td mat-cell *matCellDef="let element" class="column-ipervinculo" (click)="goDetails(element.siteId)"> {{ element.siteName }} </td>
                 </ng-container>
     
                 <ng-container matColumnDef="energyConsumption">
-                    <th mat-header-cell *matHeaderCellDef><p class="header-table">Energy Production</p> </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header><p class="header-table">Energy Production</p> </th>
                     <td mat-cell *matCellDef="let element"> {{ element.energyProduction }} </td>
                 </ng-container>
     
                 <ng-container matColumnDef="energyProduction">
-                    <th mat-header-cell *matHeaderCellDef> <p class="header-table">Energy Consumption</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">Energy Consumption</p></th>
                     <td mat-cell *matCellDef="let element"> {{ element.energyConsumption }} </td>
                 </ng-container>
     
                 <ng-container matColumnDef="solarCoverage">
-                    <th mat-header-cell *matHeaderCellDef> <p class="header-table">% Solar Coverage</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">% Solar Coverage</p></th>
                     <td mat-cell *matCellDef="let element">%{{ element.solarCoverage }} </td>
                 </ng-container>
                 
                 <ng-container matColumnDef="co2Saving">
-                    <th mat-header-cell *matHeaderCellDef> <p class="header-table">tCO2 Savings</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">tCO2 Savings</p></th>
                     <td mat-cell *matCellDef="let element"> {{ element.co2Saving }} </td>
                 </ng-container>
     
@@ -98,7 +98,7 @@
         </div>
     </div>
     
-    <div class="c-graph">
+    <div class="c-graph ">
         <!-- <div class="flex justify-end">
             <button mat-stroked-button>
                 Export PDF Report

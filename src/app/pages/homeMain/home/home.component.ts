@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { HomeService } from './home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { CommonModule } from '@angular/common';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   displayedColumns: string[] = [
     'select',
@@ -113,6 +115,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: ( response : entity.DataRespSavingDetailsMapper ) => {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
+        this.dataSource.sort = this.sort;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
@@ -125,11 +128,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.homeService.getDataClientsList().subscribe({
       next: ( response : entity.DataRespSavingDetailsList[] ) => {
         this.dataClientsList = response;
-        // this.showLoader = false;
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
-        // this.showLoader = false;
         console.error(error)
       }
     })
