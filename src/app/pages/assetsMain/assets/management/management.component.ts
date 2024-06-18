@@ -4,13 +4,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
 import { Subject, Subscription, debounceTime, takeUntil } from 'rxjs';
-declare let gtag: Function;
 import * as entity from '../assets-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { FormControl } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-management',
@@ -20,9 +20,9 @@ import { FormControl } from '@angular/forms';
 export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
 
-  searchBar = new FormControl('')
+  @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   ngAfterViewChecked() {
       if (this.paginator) {
@@ -46,14 +46,14 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
     'actions'
   ];
 
-  totalItems: number = 0;
+  totalPlants!: entity.DataSummaryProjects;
 
   searchValue: string = '';
-  totalPlants: any;
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize = 5;
-  pageIndex = 1 ;
+  pageSize: number = 5;
+  pageIndex: number = 1 ;
+  totalItems: number = 0;
 
   showLoader: boolean = true;
   loadingtotalPlants: boolean = true;
@@ -61,6 +61,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   pageSizeSub: Subscription;
   pageIndexSub: Subscription;
 
+  searchBar = new FormControl('');
 
   constructor(private store: Store, private moduleServices: AssetsService, private notificationService: OpenModalsService, private router: Router) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
@@ -84,7 +85,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
-      // this.showLoader = true;
       this.getDataResponse(1, content!);
     })
   }
@@ -99,9 +99,12 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
       next: (response : entity.DataManagementTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
         this.pageIndex = page
       },
       error: error => {
+        console.log('entro aqui');
+        
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.log(error);
       }

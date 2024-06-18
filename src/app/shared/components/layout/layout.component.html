@@ -1,6 +1,10 @@
-<nav class="c-header py-4 border-b-2 mb-4">
+<nav class="c-header border-b-2">
+<!-- <nav class="c-header py-4 border-b-2 mb-2"> -->
   <div class="mx-10 flex justify-between items-center">
-    <a href="/" class="text-white text-sm font-semibold">
+    <a href="/home" class="text-white text-sm font-semibold c-version">
+      <div class="version">
+        Versión: {{ version }}
+      </div>
       <img src="../../../../assets/svg/logo.svg" alt="Logo" style="width: 120px;">
     </a>
     <ul class="flex titles-header">
@@ -13,6 +17,7 @@
       <!-- <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive === 'home' }">FAQ</a></li> -->
     </ul>
+
     <div class="flex">
      <!--  <button
         class="rounded-full font-thin hover:bg-gray-100 text-gray-800 px-2 py-1.5 inline-flex items-center border mr-3"
@@ -42,8 +47,7 @@
         <span>Chat</span>
       </button> -->
 
-      <button [matMenuTriggerFor]="menu" mat-icon-button
-        >
+      <button [matMenuTriggerFor]="menu" mat-icon-button >
         <!-- {{ userInfo?.persona?.nombres }} {{ userInfo?.persona?.apellidos }}
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
           viewBox="0 0 10 6">
