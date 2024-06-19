@@ -81,7 +81,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
       y: {
         ticks: {
           callback: function(value, index, values) {
-            return value + ' MW'; 
+            return value + ' MWh'; 
           },
         },
         stacked: true,
@@ -141,6 +141,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
   
         const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower+item.dataRecovery));
+        console.log(inverterPowerData)
         //const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery));
         const seriesData = monthResume.map((item) => {
           let date = new Date(item.collectTime);
