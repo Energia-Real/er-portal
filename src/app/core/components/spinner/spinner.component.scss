@@ -10,4 +10,14 @@
     align-items: center;
     z-index: 1000;
   }
+  .logo-container svg {
+    width: 300px; 
+    height: 300px;
+  }
+  
+  .logo-container svg path {
+
+    stroke-width: 4;
+  }
+  
   

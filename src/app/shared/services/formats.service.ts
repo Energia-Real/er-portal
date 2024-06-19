@@ -21,8 +21,8 @@ export class FormatsService {
     } else return '-'
   }
 
-  graphFormat(content: number) {
-    return parseInt(content.toString(), 10)
+  graphFormat(content: number): number {
+    return parseFloat(content.toFixed(2));
   }
-
+  
 }
