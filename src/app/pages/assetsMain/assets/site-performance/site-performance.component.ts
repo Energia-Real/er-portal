@@ -81,7 +81,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
       y: {
         ticks: {
           callback: function(value, index, values) {
-            return value + ' kW'; 
+            return value + ' MWh'; 
           },
         },
         stacked: true,
@@ -140,8 +140,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           return;
         }
   
-        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
-        const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery));
+        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower+item.dataRecovery));
+        console.log(inverterPowerData)
+        //const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery));
         const seriesData = monthResume.map((item) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
@@ -188,11 +189,6 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
               data: inverterPowerData,
               label: 'Inverter Power',
               backgroundColor: 'rgba(121, 36, 48, 1)',
-            },
-            {
-              data: dataRecoveryData,
-              label: 'Data Recovery',
-              backgroundColor: 'rgba(238, 84, 39, 1)',
             }
           ]
         };
