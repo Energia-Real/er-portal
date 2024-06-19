@@ -17,14 +17,16 @@
 
   .c-graph {
     > .row {
-      margin-bottom: 35px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: flex-end;
     }
     .graph {
       height: 670px;
     }
   
     highcharts-chart {
-      height: 700px;
+      height: 650px;
     }
   }
   

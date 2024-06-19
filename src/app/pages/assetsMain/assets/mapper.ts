@@ -24,7 +24,7 @@ export class Mapper {
 	static getDataAssetsmanagementMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
 		let dataList: entity.DataManagementTable[] = [];
 
-		response.data.forEach((data: entity.DataManagementTable): void => {
+		response?.data.forEach((data: entity.DataManagementTable): void => {
 
 			dataList.push({
 				...data,
@@ -40,7 +40,7 @@ export class Mapper {
 		}
 	}
 
-	static getDataRespStatusMapper(response: entity.ProjectStatus[], formatsService: FormatsService) : entity.ProjectStatus[] {
+	static getDataRespStatusMapper(response: entity.ProjectStatus[], formatsService: FormatsService): entity.ProjectStatus[] {
 		let dataList: entity.ProjectStatus[] = [];
 
 		response.forEach((data: entity.ProjectStatus): void => {			
