@@ -21,8 +21,8 @@
     
               <div *ngIf="!loadingWeather">
                 <div *ngIf="weatherData else notData">
+                  <p class="">{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
                   <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
-                  <p>{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
                 </div>
               </div>
             </div>

@@ -71,11 +71,13 @@
           }
 
           p {
-            margin-bottom: 0;
+            margin-bottom: 10px;
+            height: 25px;
+
           }
 
           i {
-            font-size: 35px;
+            font-size: 24px;
           }
         }
 
@@ -85,6 +87,7 @@
 
           p:first-child {
             margin-bottom: 10px;
+            height: 25px;
           }
         }
       }
