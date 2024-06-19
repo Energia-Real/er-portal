@@ -4,14 +4,14 @@ import * as entity from '../assets-model';
 import { AssetsService } from '../assets.service';
 import * as Highcharts from 'highcharts';
 import { FormBuilder } from '@angular/forms';
-import { ChartConfiguration, ChartOptions } from "chart.js";
+import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { FormatsService } from '@app/shared/services/formats.service';
 
 @Component({
   selector: 'app-site-performance',
   templateUrl: './site-performance.component.html',
-  styleUrl: './site-performance.component.scss'
+  styleUrls: ['./site-performance.component.scss']
 })
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy = new Subject<void>();
@@ -22,11 +22,61 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   Highcharts: typeof Highcharts = Highcharts;
   graphicsType: 'pie' | 'bars' = 'bars';
   lineChartData!: ChartConfiguration<'bar'>['data'];
+  showSitePerformance = false;
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: false,
+    animation: {
+      onComplete: () => {
+      },
+      delay: (context) => {
+        let delay = 0;
+        if (context.type === 'data' && context.mode === 'default') {
+          delay = context.dataIndex * 300 + context.datasetIndex * 100;
+        }
+        return delay;
+      },
+    },
+    plugins: {
+      tooltip: {
+        usePointStyle: true,
+      },
+      
+      legend: {
+        labels: {
+          usePointStyle: true,
+        },
+        position:"bottom",
+        onHover: (event, legendItem, legend) => {
+          const index = legendItem.datasetIndex;
+          const chart = legend.chart;
+
+          chart.data.datasets.forEach((dataset, i) => {
+            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
+          });
+
+          chart.update();
+        },
+        onLeave: (event, legendItem, legend) => {
+          const chart = legend.chart;
+
+          chart.data.datasets.forEach((dataset, i) => {
+            if (i === 0) {
+              dataset.backgroundColor = 'rgba(121, 36, 48, 1)'; // Color original para el primer dataset
+            } else {
+              dataset.backgroundColor = 'rgba(238, 84, 39, 1)'; // Color original para el segundo dataset
+            }
+          });
+
+          chart.update();
+        }
+      }
+    },
     scales: {
       x: {
         stacked: true,
+        grid: {
+          display: false, 
+        },
       },
       y: {
         ticks: {
@@ -35,9 +85,12 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           },
         },
         stacked: true,
-
+        grid: {
+          display: false,
+        },
       }
-    }
+    },
+    backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
   formFilters = this.formBuilder.group({
@@ -62,7 +115,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnInit(): void {
     let dates = this.getFormattedDates();
-    this.getMonthResume(dates.fourMonthsAgo, dates.today,);
+    this.getMonthResume(dates.fourMonthsAgo, dates.today);
     this.showAlert = false;
     this.fechaHoy = new Date(this.fechaHoy.getFullYear(), 0, 1);
     this.getStatus();
@@ -79,7 +132,6 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getMonthResume(startDate: Date, endDate: Date) {
-
     this.moduleServices.getProyectResume(this.assetData.inverterBrand[0], this.assetData.plantCode, startDate, endDate).subscribe({
       next: (response) => {
         const monthResume = response[0]?.monthresume;
@@ -89,10 +141,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
   
         const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
-        const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery*1000));
-        console.log(monthResume)
-        console.log(dataRecoveryData)
-        console.log(inverterPowerData)
+        const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery));
         const seriesData = monthResume.map((item) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
@@ -138,19 +187,18 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             {
               data: inverterPowerData,
               label: 'Inverter Power',
-              backgroundColor: 'rgba(238, 84, 39, 0.4)',
-              borderColor: 'rgba(238, 84, 39, 1)',
+              backgroundColor: 'rgba(121, 36, 48, 1)',
             },
             {
               data: dataRecoveryData,
               label: 'Data Recovery',
-              backgroundColor: 'rgba(39, 84, 238, 0.4)',
-              borderColor: 'rgba(39, 84, 238, 1)',
+              backgroundColor: 'rgba(238, 84, 39, 1)',
             }
           ]
         };
   
         this.displayChart = true;
+        this.initChart();
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
@@ -186,4 +234,24 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     this.onDestroy.next();
     this.onDestroy.unsubscribe();
   }
+  refreshChart(index?:number): void {
+    if (index==2) {
+      this.showSitePerformance=true
+    }
+    else{
+      this.showSitePerformance=false
+    }
+    
+  }
+  initChart(): void {
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    if (ctx) {
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: this.lineChartData,
+        options: this.lineChartOptions
+      });
+    }
+  }
+
 }

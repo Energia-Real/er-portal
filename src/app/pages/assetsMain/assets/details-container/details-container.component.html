@@ -89,8 +89,8 @@
     </div>
   </div>
 
-  <div class="main-container mb-3 mb-lg-0">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
+  <div class="home-tabs-main-container">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1" (selectedTabChange)="onTabChange($event)">
 
       <mat-tab label="Overview">
         <app-overview-details *ngIf="assetData" [notData]="showNotdata" [assetData]="assetData"></app-overview-details>

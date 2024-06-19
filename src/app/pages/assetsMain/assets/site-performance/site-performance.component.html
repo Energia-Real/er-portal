@@ -77,8 +77,8 @@
                             </highcharts-chart>
                           </div>
                              
-                        <div *ngIf="displayChart && graphicsType=='bars'" style="display: block;">
-                            <canvas  baseChart width="800" height="400"
+                        <div class="table-performance" *ngIf="displayChart && graphicsType=='bars'" style="display: block;">
+                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart width="800" height="400"
                               [type]="'bar'"
                               [data]="lineChartData"
                               [options]="lineChartOptions"
