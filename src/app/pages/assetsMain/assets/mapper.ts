@@ -43,9 +43,7 @@ export class Mapper {
 	static getDataRespStatusMapper(response: entity.ProjectStatus[], formatsService: FormatsService) : entity.ProjectStatus[] {
 		let dataList: entity.ProjectStatus[] = [];
 
-		response.forEach((data: entity.ProjectStatus): void => {
-			console.log(data);
-			
+		response.forEach((data: entity.ProjectStatus): void => {			
 			dataList.push({
 				...data,
 				endInstallationDate: formatsService.dateFormat(data.endInstallationDate),

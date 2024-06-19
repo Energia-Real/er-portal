@@ -1,16 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
+import { SitePerformanceComponent } from '../site-performance/site-performance.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-details-container',
   templateUrl: './details-container.component.html',
   styleUrl: './details-container.component.scss'
 })
-export class DetailsContainerComponent implements OnInit, OnDestroy {
+export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewInit{
   private onDestroy = new Subject<void>();
 
   weatherData: any = null
@@ -152,6 +154,19 @@ export class DetailsContainerComponent implements OnInit, OnDestroy {
     private assetsService: AssetsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute) { }
+  
+  @ViewChild(SitePerformanceComponent) sitePerformanceComponent!: SitePerformanceComponent;
+
+  ngAfterViewInit() {
+    if (this.sitePerformanceComponent && this.sitePerformanceComponent.assetData) {
+      this.sitePerformanceComponent.refreshChart();
+    }
+  }
+
+  onTabChange(event: MatTabChangeEvent) {
+    
+      this.sitePerformanceComponent.refreshChart(event.index);
+  }
 
   ngOnInit(): void {
     this.showLoader = false;
