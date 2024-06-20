@@ -11,8 +11,8 @@ export interface DataRespSavingDetails {
   siteName: string;
   siteSaving: number;
   cfeZone: number;
-  solarCoverage: number;
-  co2Saving: number;
+  solarCoverage: number | string;
+  co2Saving: number | string;
   energyProduction: string;
   energyConsumption: string;
 }
