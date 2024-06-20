@@ -1,19 +1,16 @@
 <div class="row c-global c-site-performance" *ngIf="!showAlert else notData">
     <div class="col-md-12">
-
         <div class="c-data">
-            
-            <div class="">
+            <div>
                 <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
                     <mat-button-toggle value="bars">Bars</mat-button-toggle>
                     <mat-button-toggle value="pie">Pie</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
-            
+
             <button class="btn-action-add">
                 Refresh Data
             </button>
-
         </div>
     </div>
 
@@ -26,7 +23,7 @@
                 </mat-button-toggle-group>
             </div> -->
 
-           <!--  <div class="col-md-9 mb-sm-3">
+            <!--  <div class="col-md-9 mb-sm-3">
                 <div class="c-data-graph">
                     <div>
                         <h1>Solar production</h1>
@@ -54,40 +51,32 @@
                         <span></span>
                     </div>
                 </div>
-            </div>
- -->
+            </div> -->
             <div class="col-md-12 mt-5">
                 <div class="highcharts">
                     <!-- <highcharts-chart *ngIf="displayChart" [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block">
                     </highcharts-chart> -->
                     <div class="charts">
-
-                      
-                       <!--  <highcharts-chart
+                        <!--  <highcharts-chart
                             *ngIf="chartOptions"
                             [Highcharts]="highcharts"
                             [options]="chartOptions"
                             style="height: 100%; width: 100%; display: block;">
                         </highcharts-chart> -->
                         <div *ngIf="displayChart && graphicsType=='pie' ">
-                            <highcharts-chart 
-                              [Highcharts]="Highcharts" 
-                              [options]="chartOptions" 
-                              style="width: 100%; height: 400px; display: block;">
+                            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+                                style="width: 100%; height: 400px; display: block;">
                             </highcharts-chart>
-                          </div>
-                             
-                        <div class="table-performance" *ngIf="displayChart && graphicsType=='bars'" style="display: block;">
-                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart width="800" height="400"
-                              [type]="'bar'"
-                              [data]="lineChartData"
-                              [options]="lineChartOptions"
-                              [legend]="lineChartLegend">
+                        </div>
+
+                        <div class="table-performance" *ngIf="displayChart && graphicsType=='bars'"
+                            style="display: block;">
+                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart width="740" height="400"
+                                [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"
+                                [legend]="lineChartLegend">
                             </canvas>
-                        </div>                     
-                        
-                      </div>
-                    
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,131 +129,21 @@
                         <mat-icon matTooltip="Under Construction" class="table-builder">build</mat-icon>
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==4">
-                        <mat-icon matTooltip="Under Permitting Process" class="table-under-construction">assignment</mat-icon>
+                        <mat-icon matTooltip="Under Permitting Process"
+                            class="table-under-construction">assignment</mat-icon>
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==5">
-                        <mat-icon matTooltip="Without Off-Taker" class="table-whitout-off-tacker">highlight_off</mat-icon>
+                        <mat-icon matTooltip="Without Off-Taker"
+                            class="table-whitout-off-tacker">highlight_off</mat-icon>
                     </div>
                     <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==null">
-                        <mat-icon matTooltip="Default status" >help_outline</mat-icon>
-                    </div>
-
-
-                </div>
-
-<!--                 <div>
-                    <div class="info">
-                        <h1>Chedraui Selecto Pedregal</h1>
-                        <h2>Installed Capacity: <span>270kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-snow">cloudy_snowing</mat-icon>
+                        <mat-icon matTooltip="Default status">help_outline</mat-icon>
                     </div>
                 </div>
-
-                <div>
-                    <div class="info">
-                        <h1>Super Chedraui Jb Lobos Veracruz</h1>
-                        <h2>Installed Capacity: <span>220kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-05-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-alert">info</mat-icon>
-                    </div>
-                </div>
-                <div>
-                    <div class="info">
-                        <h1>Chedraui Jiutepec </h1>
-                        <h2>Installed Capacity: <span>500kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-01</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-check">check</mat-icon>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="info">
-                        <h1>Chedraui Selecto Pedregal</h1>
-                        <h2>Installed Capacity: <span>270kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-snow">cloudy_snowing</mat-icon>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="info">
-                        <h1>Super Chedraui Jb Lobos Veracruz</h1>
-                        <h2>Installed Capacity: <span>220kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-05-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-alert">info</mat-icon>
-                    </div>
-                </div>
-                <div>
-                    <div class="info">
-                        <h1>Chedraui Jiutepec </h1>
-                        <h2>Installed Capacity: <span>500kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-01</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-check">check</mat-icon>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="info">
-                        <h1>Chedraui Selecto Pedregal</h1>
-                        <h2>Installed Capacity: <span>270kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-03-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-snow">cloudy_snowing</mat-icon>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="info">
-                        <h1>Super Chedraui Jb Lobos Veracruz</h1>
-                        <h2>Installed Capacity: <span>220kW</span></h2>
-                        <h2>Monitoring Start Date: <span>2023-05-07</span></h2>
-                    </div>
-
-                    <div class="table-icon">
-                        <mat-icon class="table-alert">info</mat-icon>
-                    </div>
-                </div> -->
-
-
             </div>
-
-
-
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 <ng-template #notData>
     <div class="no-data-alert">

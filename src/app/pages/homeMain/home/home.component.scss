@@ -3,6 +3,14 @@
     --mdc-outlined-text-field-container-shape: 28px;
   }
 
+  .div-groups {
+    >div {
+      h1 {
+        height: 30px;
+      }
+    }
+  }
+
   .c-client-list {
     padding-bottom: 10px;
     display: flex;
@@ -16,20 +24,21 @@
   }
 
   .c-graph {
-    > .row {
+    >.row {
       margin-bottom: 15px;
       display: flex;
       justify-content: flex-end;
     }
+
     .graph {
       height: 670px;
     }
-  
+
     highcharts-chart {
       height: 650px;
     }
   }
-  
+
   .table-container-scroll {
     max-height: 400px;
     overflow-y: auto;

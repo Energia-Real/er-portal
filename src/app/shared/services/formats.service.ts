@@ -18,7 +18,7 @@ export class FormatsService {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
       })
-    } else return '-'
+    } else return ''
   }
 
   graphFormat(content: number): number {

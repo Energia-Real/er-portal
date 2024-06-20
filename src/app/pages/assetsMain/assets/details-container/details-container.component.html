@@ -5,31 +5,32 @@
       <div class="row">
         <div class="c-header-details col-md-4 col-12">
           <app-return-bar></app-return-bar>
-    
+
           <div class="info-asset-container">
             <h1 class="mb-2" *ngIf="assetData?.siteName else notData">{{ assetData.siteName }}</h1>
             <h2 class="mb-0" *ngIf="assetData?.clientName else notData">{{ assetData.clientName }}</h2>
-            <p class="fw-medium">Dirección aproximada: <span *ngIf="addressPlace else notData">{{addressPlace}}</span></p>
+            <p class="fw-medium">Dirección aproximada: <span *ngIf="addressPlace else notData">{{addressPlace}}</span>
+            </p>
           </div>
         </div>
-    
+
         <div class="info-weather-container col-md-8 col-12" style="display: flex; align-items: center;">
           <div class="weather-flex-container">
-    
+
             <div class="card-weather-container" [ngStyle]="{'background-color': weatherData?.color}">
               <span *ngIf="loadingWeather" class="loader m-auto" matTooltip="Cargando..."></span>
-    
+
               <div *ngIf="!loadingWeather">
+                <p class="">{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
                 <div *ngIf="weatherData else notData">
                   <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
-                  <p>{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
                 </div>
               </div>
             </div>
-    
+
             <div class="card-weather-container card-weather-center">
               <span *ngIf="loadingTimeZone" class="loader" matTooltip="Cargando..."></span>
-    
+
               <div *ngIf="!loadingTimeZone">
                 <p>Hora local</p>
                 <div *ngIf="timeZonePlace else notData">
@@ -37,10 +38,10 @@
                 </div>
               </div>
             </div>
-    
+
             <div class="card-weather-container card-weather-center">
               <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
-    
+
               <div *ngIf="assetData">
                 <p>Tamaño del sistema</p>
                 <div *ngIf="assetData.systemSize else notDataOne">
@@ -48,10 +49,10 @@
                 </div>
               </div>
             </div>
-    
+
             <div class="card-weather-container card-weather-center">
               <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
-    
+
               <div *ngIf="assetData">
                 <p>Capacidad de AC</p>
                 <div *ngIf="assetData.nominalPower else notDataOne">
@@ -59,10 +60,10 @@
                 </div>
               </div>
             </div>
-    
+
             <div class="card-weather-container card-weather-center">
               <span *ngIf="!assetData" class="loader" matTooltip="Cargando..."></span>
-    
+
               <div *ngIf="assetData">
                 <p>Estatus</p>
                 <div *ngIf="assetData.assetStatus else notData">
@@ -70,11 +71,11 @@
                 </div>
               </div>
             </div>
-    
+
             <div class="card-weather-container card-status-system"
               [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? '#a1efef' : '#efa1a1' }">
               <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
-    
+
               <div *ngIf="!loadingSystem">
                 <p>Sistema</p>
                 <div *ngIf="dataRespoSystem else notData">
@@ -89,8 +90,9 @@
     </div>
   </div>
 
-  <div class="home-tabs-main-container">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1" (selectedTabChange)="onTabChange($event)">
+  <div class="main-container ">
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1"
+      (selectedTabChange)="onTabChange($event)">
 
       <mat-tab label="Overview">
         <app-overview-details *ngIf="assetData" [notData]="showNotdata" [assetData]="assetData"></app-overview-details>
