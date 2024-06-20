@@ -13,12 +13,13 @@ import { HomeService } from './home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { CommonModule } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
+import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [CommonModule, LayoutModule, MaterialModule],
+  imports: [CommonModule, LayoutModule, MaterialModule, MessageNoDataComponent],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None

@@ -15,12 +15,12 @@ export class Mapper {
 			totalEnergyProduction += energyProduction;
 
 			dataList.push({
-				siteId: data?.siteId || '-',
-				siteName: data?.siteName || '-',
+				siteId: data?.siteId || '',
+				siteName: data?.siteName || '',
 				siteSaving: data?.siteSaving,
 				cfeZone: data?.cfeZone,
-				solarCoverage: data?.solarCoverage,
-				co2Saving: data?.co2Saving,
+				solarCoverage: data?.solarCoverage || '',
+				co2Saving: data?.co2Saving  || '',
 				energyConsumption: formatsService.energyFormat(parseFloat(data?.energyConsumption)),
 				energyProduction: formatsService.energyFormat(parseFloat(data?.energyProduction)),
 			});
