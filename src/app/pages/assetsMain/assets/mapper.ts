@@ -84,14 +84,14 @@ export class Mapper {
 			title: 'Commission Date',
 			description: formatsService.dateFormat(response.commissionDate) ?? null
 		});
-		dataList.push({
+		/* dataList.push({
 			title: 'Payment Due Date',
 			description: 'N/A'
 		});
 		dataList.push({
 			title: 'Plant Code',
 			description: response.plantCode ?? 'N/A'
-		});
+		}); */
 
 		return dataList
 	}

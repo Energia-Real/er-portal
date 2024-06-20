@@ -16,6 +16,8 @@
     thead tr, th {
       border: none;
       color: #792430;
+      border-color: none!important;
+
       vertical-align: top;
     }
   }
@@ -59,5 +61,10 @@
     border-radius: 24px;
     padding: 10px 24px;
   }
+  
+}
+
+tbody, td, tfoot, th, thead, tr {
+  border-color:  #D2D2D2; /* O el color que prefieras */
   
 }
