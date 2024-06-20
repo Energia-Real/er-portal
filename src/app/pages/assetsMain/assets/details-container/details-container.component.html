@@ -21,14 +21,9 @@
               <span *ngIf="loadingWeather" class="loader m-auto" matTooltip="Cargando..."></span>
 
               <div *ngIf="!loadingWeather">
+                <p class="">{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
                 <div *ngIf="weatherData else notData">
-<<<<<<< Updated upstream
-=======
-                  <p class="">{{weatherData.temperature | number:'1.1-1'}}°C
-                    {{weatherCode[weatherData.weatherCode].text}}</p>
->>>>>>> Stashed changes
                   <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
-                  <p>{{weatherData.temperature | number:'1.1-1'}}°C {{weatherCode[weatherData.weatherCode].text}}</p>
                 </div>
               </div>
             </div>
