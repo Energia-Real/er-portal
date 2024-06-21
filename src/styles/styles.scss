@@ -260,6 +260,7 @@ select {
         font-weight: 600;
         line-height: 14.65px;
         margin-bottom: 16px;
+        width: 88%;
       }
 
       h2,
@@ -274,6 +275,13 @@ select {
       h3 {
         font-size: 14px;
         line-height: 16px;
+      }
+
+      mat-icon {
+        // width: 30px;
+        width: 12%;
+        display: flex;
+        justify-content: end;
       }
 
     }
@@ -314,7 +322,6 @@ select {
         font-size: 14px;
         line-height: 16px;
       }
-
     }
   }
 }
