@@ -155,11 +155,11 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             type: 'pie'
           },
           title: {
-            text: 'Inverter Power Data'
+            text: 'Energy Production'
           },
           series: [{
             type: 'pie',
-            name: 'Inverter Power',
+            name: 'Energy Production',
             data: seriesData,
             colors: colors
 
@@ -189,7 +189,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           datasets: [
             {
               data: inverterPowerData,
-              label: 'Inverter Power',
+              label: 'Energy Production',
               backgroundColor: 'rgba(121, 36, 48, 1)',
               
             }
@@ -234,7 +234,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     this.onDestroy.unsubscribe();
   }
   refreshChart(index?:number): void {
-    if (index==2) {
+    if (index==1) {
       this.showSitePerformance=true
     }
     else{
