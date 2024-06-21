@@ -35,7 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     'energyConsumption', 
     'energyProduction', 
     'solarCoverage', 
-    'co2Saving'
+    'co2Saving',
+    'siteStatus'
   ];
 
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
@@ -117,6 +118,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
         this.dataSource.sort = this.sort;
+        console.log(this.dataSource)
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')

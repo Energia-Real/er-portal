@@ -23,6 +23,7 @@ export class Mapper {
 				co2Saving: data?.co2Saving  || '',
 				energyConsumption: formatsService.energyFormat(parseFloat(data?.energyConsumption)),
 				energyProduction: formatsService.energyFormat(parseFloat(data?.energyProduction)),
+				siteStatus: data?.siteStatus
 			});
 		});
 
