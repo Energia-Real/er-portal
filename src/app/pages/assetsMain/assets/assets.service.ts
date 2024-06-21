@@ -38,7 +38,7 @@ export class AssetsService implements OnDestroy{
 	}
 
   getDataRespSite(data:entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
-		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
+		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlants`;
 
     return this.http.post<entity.DataResponseDetails>(url, data).pipe(
 			map((response) => Mapper.getDataRespSiteMapper(response.data, this.formatsService))

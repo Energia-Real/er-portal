@@ -22,7 +22,6 @@
                     <mat-button-toggle value="pie">Pie</mat-button-toggle>
                 </mat-button-toggle-group>
             </div> -->
-
             <!--  <div class="col-md-9 mb-sm-3">
                 <div class="c-data-graph">
                     <div>
@@ -54,20 +53,7 @@
             </div> -->
             <div class="col-md-12 mt-5">
                 <div class="highcharts">
-                    <!-- <highcharts-chart *ngIf="displayChart" [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block">
-                    </highcharts-chart> -->
                     <div class="charts">
-                        <!--  <highcharts-chart
-                            *ngIf="chartOptions"
-                            [Highcharts]="highcharts"
-                            [options]="chartOptions"
-                            style="height: 100%; width: 100%; display: block;">
-                        </highcharts-chart> -->
-                        <div *ngIf="displayChart && graphicsType=='pie' ">
-                            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
-                                style="width: 100%; height: 400px; display: block;">
-                            </highcharts-chart>
-                        </div>
 
                         <div class="table-performance" *ngIf="displayChart && graphicsType=='bars'"
                             style="display: block;">
@@ -76,13 +62,21 @@
                                 [legend]="lineChartLegend">
                             </canvas>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-5 ps-lg-5">
+    <div class="col-md-5 ps-lg-5" *ngIf="displayChart">
+        <div >
+            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+                style="width: 100%; height: 400px; display: block;">
+            </highcharts-chart>
+        </div>
+    </div>
+    <!-- <div class="col-md-5 ps-lg-5">
         <div class="table-performance">
             <form [formGroup]="formFilters">
                 <div class="header">
@@ -142,7 +136,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <ng-template #notData>

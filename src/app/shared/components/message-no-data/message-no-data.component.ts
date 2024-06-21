@@ -15,6 +15,7 @@ export class MessageNoDataComponent implements OnDestroy {
   private onDestroy = new Subject<void>();
 
   @Input() message : string = '';
+  @Input() type : string = 'line';
   
   ngOnDestroy(): void {
     this.onDestroy.next();
