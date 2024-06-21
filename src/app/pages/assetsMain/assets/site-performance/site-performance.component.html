@@ -4,7 +4,7 @@
             <button class="btn-action-add">
                 Refresh Data
             </button>
-            <form [formGroup]="formFilters">
+            <!-- <form [formGroup]="formFilters">
                 <div class="header">
                     <mat-form-field appearance="outline" class="input-date">
                         <mat-date-range-input [min]="fechaHoy" [rangePicker]="picker"
@@ -18,19 +18,17 @@
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
                 </div>
-            </form>
-
+            </form> -->
         </div>
     </div>
     <div class="col-md-5 col-sm-12 col-lg-6">
         <div class="row">
-            <div class="col-md-6 col-lg-12 mt-5">
+            <div class="col-md-6 col-lg-12 mt-2">
                 <div class="highcharts">
                     <div class="charts">
-                        <div class="graphic-performance" *ngIf="displayChart" style="display: block;">
-                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart
-                                [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"
-                                [legend]="lineChartLegend">
+                        <div class="graphic-performance" *ngIf="displayChart" style="display: flex; height: 433px;">
+                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'"
+                                [data]="lineChartData" [options]="lineChartOptions" [legend]="lineChartLegend">
                             </canvas>
                         </div>
                     </div>
@@ -38,24 +36,22 @@
             </div>
         </div>
     </div>
-    
-    
+
+
 
     <div class="col-md-5 col-sm-12 col-lg-6 ">
         <div class="row">
-            <div class="col-md-12 col-lg-12 mt-5">
+            <div class="col-md-12 col-lg-12 mt-2">
                 <div class="highcharts">
                     <div class="charts">
-                        <div class="graphic-performance" *ngIf="displayChart  ">
-                            <highcharts-chart    [Highcharts]="Highcharts" [options]="chartOptions"
-                                >
-                            </highcharts-chart>
+                        <div class="graphic-performance" *ngIf="displayChart">
+                            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </div>
 
 <ng-template #notData>
