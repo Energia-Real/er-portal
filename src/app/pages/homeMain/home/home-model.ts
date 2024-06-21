@@ -15,6 +15,7 @@ export interface DataRespSavingDetails {
   co2Saving: number | string;
   energyProduction: string;
   energyConsumption: string;
+  siteStatus: string; 
 }
 
 export interface DataRespSavingDetailsMapper {
