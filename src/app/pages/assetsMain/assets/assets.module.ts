@@ -9,7 +9,6 @@ import { DetailsContainerComponent } from './details-container/details-container
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
-import { OverviewDetailsComponent } from './overview-details/overview-details.component';
 import { SiteDetailsComponent } from './site-details/site-details.component';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
 import { NewPlantComponent } from './new-plant/new-plant.component';
@@ -27,7 +26,6 @@ import { InstalationDetailsComponent } from './instalation-details/instalation-d
     ManagementComponent,
     LayoutComponent,
     DetailsContainerComponent,
-    OverviewDetailsComponent,
     SiteDetailsComponent,
     SitePerformanceComponent,
     NewPlantComponent,

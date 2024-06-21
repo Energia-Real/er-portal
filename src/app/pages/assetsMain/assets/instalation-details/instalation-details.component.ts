@@ -66,7 +66,5 @@ export class InstalationDetailsComponent implements OnInit{
   
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-
   }
-
 }
