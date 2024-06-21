@@ -1,83 +1,9 @@
 <div class="row c-global c-site-performance" *ngIf="!showAlert else notData">
     <div class="col-md-12">
         <div class="c-data">
-            <div>
-                <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
-                    <mat-button-toggle value="bars">Bars</mat-button-toggle>
-                    <mat-button-toggle value="pie">Pie</mat-button-toggle>
-                </mat-button-toggle-group>
-            </div>
-
             <button class="btn-action-add">
                 Refresh Data
             </button>
-        </div>
-    </div>
-
-    <div class="col-md-7">
-        <div class="row">
-            <!-- <div class="col-md-3 mb-sm-3">
-                <mat-button-toggle-group [(ngModel)]="graphicsType" class="input-group-buttons">
-                    <mat-button-toggle value="bars">Bars</mat-button-toggle>
-                    <mat-button-toggle value="pie">Pie</mat-button-toggle>
-                </mat-button-toggle-group>
-            </div> -->
-            <!--  <div class="col-md-9 mb-sm-3">
-                <div class="c-data-graph">
-                    <div>
-                        <h1>Solar production</h1>
-                        <h2>73.8 kWh</h2>
-                        <span></span>
-                    </div>
-                    <div>
-                        <h1>Consumption</h1>
-                        <h2>49.6 kWh</h2>
-                        <span></span>
-                    </div>
-                    <div>
-                        <h1>Net Grid Usage</h1>
-                        <h2>4 kWh</h2>
-                        <span></span>
-                    </div>
-                    <div>
-                        <h1>Net Storage Usage</h1>
-                        <h2>20.2 kWh</h2>
-                        <span></span>
-                    </div>
-                    <div>
-                        <h1>Net Storage Usage</h1>
-                        <h2>20.2 kWh</h2>
-                        <span></span>
-                    </div>
-                </div>
-            </div> -->
-            <div class="col-md-12 mt-5">
-                <div class="highcharts">
-                    <div class="charts">
-
-                        <div class="table-performance" *ngIf="displayChart && graphicsType=='bars'"
-                            style="display: block;">
-                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart width="740" height="400"
-                                [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"
-                                [legend]="lineChartLegend">
-                            </canvas>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-5 ps-lg-5" *ngIf="displayChart">
-        <div >
-            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
-                style="width: 100%; height: 400px; display: block;">
-            </highcharts-chart>
-        </div>
-    </div>
-    <!-- <div class="col-md-5 ps-lg-5">
-        <div class="table-performance">
             <form [formGroup]="formFilters">
                 <div class="header">
                     <mat-form-field appearance="outline" class="input-date">
@@ -91,52 +17,45 @@
                             [disableRipple]="true"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-
-                    <div>
-                        <form class="relative ms-auto">
-                            <label class="input-search">
-                                <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                            </label>
-                            <input class="mt-1 block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
-                                placeholder="Buscar por nombre de sitio">
-                        </form>
-                    </div>
                 </div>
             </form>
 
-            <div class="table-content" *ngIf="projectStatus">
-                <div *ngFor="let project of projectStatus">
-                    <div class="info">
-                        <h1>{{project.siteName}} </h1>
-                        <h2>Installed Capacity: <span>{{project.systemSize}} kW</span></h2>
-                        <h2>Monitoring Start Date: <span>{{project.endInstallationDate}}</span></h2>
-                    </div>
-
-                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==1">
-                        <mat-icon matTooltip="Activer" class="table-check">check</mat-icon>
-                    </div>
-
-                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==2">
-                        <mat-icon matTooltip="Defaulter" class="table-alert">error</mat-icon>
-                    </div>
-                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==3">
-                        <mat-icon matTooltip="Under Construction" class="table-builder">build</mat-icon>
-                    </div>
-                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==4">
-                        <mat-icon matTooltip="Under Permitting Process"
-                            class="table-under-construction">assignment</mat-icon>
-                    </div>
-                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==5">
-                        <mat-icon matTooltip="Without Off-Taker"
-                            class="table-whitout-off-tacker">highlight_off</mat-icon>
-                    </div>
-                    <div class="table-icon" *ngIf="project.estatusDeLaPlantaId==null">
-                        <mat-icon matTooltip="Default status">help_outline</mat-icon>
+        </div>
+    </div>
+    <div class="col-md-5 col-sm-12 col-lg-6">
+        <div class="row">
+            <div class="col-md-6 col-lg-12 mt-5">
+                <div class="highcharts">
+                    <div class="charts">
+                        <div class="graphic-performance" *ngIf="displayChart" style="display: block;">
+                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart
+                                [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"
+                                [legend]="lineChartLegend">
+                            </canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
+    
+    
+
+    <div class="col-md-5 col-sm-12 col-lg-6 ">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 mt-5">
+                <div class="highcharts">
+                    <div class="charts">
+                        <div class="graphic-performance" *ngIf="displayChart  ">
+                            <highcharts-chart    [Highcharts]="Highcharts" [options]="chartOptions"
+                                >
+                            </highcharts-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
 </div>
 
 <ng-template #notData>
