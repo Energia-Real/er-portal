@@ -4,8 +4,9 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
-import { SitePerformanceComponent } from '../site-performance/site-performance.component';
+//import { SitePerformanceComponent } from '../site-performance/site-performance.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { SitePerformanceComponent } from '../site-performance/site-performance.component';
 
 @Component({
   selector: 'app-details-container',
@@ -164,7 +165,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    
       this.sitePerformanceComponent.refreshChart(event.index);
   }
 
