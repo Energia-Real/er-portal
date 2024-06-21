@@ -12,13 +12,13 @@
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="In coming." >
+                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
                         hourglass_top
                     </span>
                     <!-- <h1 class="m-0 important">N/A</h1> -->
                 </div>
                 <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="In coming." >
+                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
                         hourglass_top
                     </span>
                     <!-- <h1 class="m-0">N/A <span class="text-sm" i18n></span></h1> -->
@@ -39,7 +39,7 @@
                 <div>
                     <!-- <h1>N/A</h1> -->
                     <div style="height: 30px; margin-bottom: 15px; border: none !important;">
-                        <span class="material-symbols-outlined color-EE5427" matTooltip="In coming." >
+                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
                             hourglass_top
                         </span>
                     </div>
@@ -49,7 +49,7 @@
                 <div>
                     <!-- <h1 class="color-57B1B1">N/A</h1> -->
                     <div style="height: 30px; margin-bottom: 15px;border: none !important;">
-                        <span class="material-symbols-outlined color-EE5427" matTooltip="In coming." >
+                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
                             hourglass_top
                         </span>
                     </div>
@@ -113,22 +113,22 @@
                 <ng-container matColumnDef="siteStatus">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">Site Status</p></th>
                     <td mat-cell *matCellDef="let element">
-                        <div class="table-icon" *ngIf="element.siteStatus=='Active' ">
-                            <mat-icon matTooltip="Activer" class="table-check">check</mat-icon>
+                        <div class="table-icon" *ngIf="element.siteStatus=='Active'">
+                            <mat-icon matTooltip="Active" class="table-check">radio_button_checked</mat-icon>
                         </div>
-                        <div class="table-icon" *ngIf="element.siteStatus=='Defaulter' ">
-                            <mat-icon matTooltip="Defaulter" class="table-alert">error</mat-icon>
+                        <div class="table-icon" *ngIf="element.siteStatus=='Defaulter'">
+                            <mat-icon matTooltip="Defaulter" class="table-alert">warning</mat-icon>
                         </div>
-                        <div class="table-icon" *ngIf="element.siteStatus=='Under Construction' ">
-                            <mat-icon matTooltip="Under Construction" class="table-builder">build</mat-icon>
+                        <div class="table-icon" *ngIf="element.siteStatus=='Under Construction'">
+                            <mat-icon matTooltip="Under Construction" class="table-builder">engineering</mat-icon>
                         </div>
-                        <div class="table-icon" *ngIf="element.siteStatus=='Under Permitting Process' ">
+                        <div class="table-icon" *ngIf="element.siteStatus=='Under Permitting Process'">
                             <mat-icon matTooltip="Under Permitting Process"
                                 class="table-under-construction">assignment</mat-icon>
                         </div>
-                        <div class="table-icon" *ngIf="element.siteStatus=='Without Off-Taker' ">
+                        <div class="table-icon" *ngIf="element.siteStatus=='Without Off-Taker'">
                             <mat-icon matTooltip="Without Off-Taker"
-                                class="table-whitout-off-tacker">highlight_off</mat-icon>
+                                class="table-whitout-off-tacker">person_off</mat-icon>
                         </div>
                         <div class="table-icon" *ngIf="element.siteStatus==null">
                             <mat-icon matTooltip="Unknown status">help_outline</mat-icon>

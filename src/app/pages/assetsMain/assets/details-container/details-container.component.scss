@@ -94,7 +94,8 @@
 
 .main-container {
   padding: 1% 4%;
-
+  display: flex;
+  justify-content: start;
   .mat-tab {
     background-color: #EE5427 !important;
 
