@@ -61,9 +61,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
           chart.data.datasets.forEach((dataset, i) => {
             if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)'; // Color original para el primer dataset
+              dataset.backgroundColor = 'rgba(121, 36, 48, 1)'; 
             } else {
-              dataset.backgroundColor = 'rgba(238, 84, 39, 1)'; // Color original para el segundo dataset
+              dataset.backgroundColor = 'rgba(238, 84, 39, 1)'; 
             }
           });
 
@@ -71,6 +71,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
       }
     },
+    
     scales: {
       x: {
         stacked: true,
@@ -140,16 +141,15 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           return;
         }
   
-        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower+item.dataRecovery));
-        console.log(inverterPowerData)
-        //const dataRecoveryData = monthResume.map(item => this.formatsService.graphFormat(item.dataRecovery));
+        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
         const seriesData = monthResume.map((item) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
           monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
           return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
         });
-  
+        const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
+
         this.chartOptions = {
           chart: {
             type: 'pie'
@@ -160,7 +160,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           series: [{
             type: 'pie',
             name: 'Inverter Power',
-            data: seriesData
+            data: seriesData,
+            colors: colors
+
           }],
           plotOptions: {
             pie: {
@@ -168,9 +170,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
                 enabled: true,
                 formatter: function() {
                   return `<b>${this.point.name}</b>: ${this.y!.toLocaleString('en-US', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                  })}`;
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}</b> MWh`;
                 }
               }
             }
@@ -189,6 +191,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
               data: inverterPowerData,
               label: 'Inverter Power',
               backgroundColor: 'rgba(121, 36, 48, 1)',
+              
             }
           ]
         };
