@@ -29,11 +29,11 @@
             <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <h1>{{ savingsDetails.totalEnergyConsumption}}</h1>
+                    <h1>{{ savingsDetails.totalEnergyConsumption}} kWh</h1>
                     <p class="text-sm" i18n>Total Energy Consumption</p>
                 </div>
                 <div>
-                    <h1>{{ savingsDetails.totalEnergyProduction}}</h1>
+                    <h1>{{ savingsDetails.totalEnergyProduction}} kWh</h1>
                     <p class="text-sm" i18n>Energy Production</p>
                 </div>
                 <div>
@@ -85,14 +85,14 @@
                 <ng-container matColumnDef="energyConsumption">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header><p class="header-table">Energy Production</p> </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }} </div>
+                        <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }} kWh</div>
                     </td>
                 </ng-container>
     
                 <ng-container matColumnDef="energyProduction">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">Energy Consumption</p></th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} </div>
+                        <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} kWh </div>
                     </td>
                 </ng-container>
     
