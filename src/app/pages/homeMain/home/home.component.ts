@@ -116,6 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: ( response : entity.DataRespSavingDetailsMapper ) => {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
+        console.log(this.savingsDetails)
         this.dataSource.sort = this.sort;
         console.log(this.dataSource)
       },
