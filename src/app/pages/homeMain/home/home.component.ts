@@ -30,7 +30,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   displayedColumns: string[] = [
-    'select',
     'siteName', 
     'energyConsumption', 
     'energyProduction', 
