@@ -29,11 +29,11 @@
             <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <h1>{{ savingsDetails.totalEnergyConsumption}} kWh</h1>
+                    <h1>{{ savingsDetails.totalEnergyConsumption !== "" ? savingsDetails.totalEnergyConsumption + ' kWh' : '' }}</h1>
                     <p class="text-sm" i18n>Total Energy Consumption</p>
                 </div>
                 <div>
-                    <h1>{{ savingsDetails.totalEnergyProduction}} kWh</h1>
+                    <h1>{{ savingsDetails.totalEnergyProduction !== "" ? savingsDetails.totalEnergyProduction + ' kWh' : '' }}</h1>
                     <p class="text-sm" i18n>Energy Production</p>
                 </div>
                 <div>
