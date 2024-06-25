@@ -6,11 +6,12 @@ export class Mapper {
 	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
-		response.forEach((data: any): void => {
+		response.forEach((data: entity.DataDetails): void => {
 			let formattedValue: string = data.value;
 
 			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
 			else formattedValue = formatsService.dateFormat(data.value);
+			if (data.title.includes('Coverage')) formattedValue += '%';
 
 			dataList.push({
 				title: data.title,
@@ -62,7 +63,7 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Age of the site',
-			description: response.ageOfTheSite ?? null
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'year' }` ?? null
 		});
 		dataList.push({
 			title: 'Mounting Technology',

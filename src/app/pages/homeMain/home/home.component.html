@@ -62,8 +62,19 @@
         <div class="table-container-scroll mt-4 mb-5">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
-    
-                
+                <!-- <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox class="check-color" (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox class="check-color" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container> -->
     
                 <ng-container matColumnDef="siteName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header ><p class="header-table">Site name</p></th>
@@ -87,7 +98,7 @@
                 <ng-container matColumnDef="solarCoverage">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">% Solar Coverage</p></th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.solarCoverage else notDataTable"> {{ element.solarCoverage }} </div>
+                        <div *ngIf="element?.solarCoverage else notDataTable"> {{ element.solarCoverage }}% </div>
                     </td>
                 </ng-container>
                 
@@ -175,5 +186,7 @@
 </main>
 
 <ng-template #notDataTable>
-    <app-message-no-data [message]="'No se dispone de la información solicitada.'"></app-message-no-data>
+    <span class="material-symbols-outlined icon-soon" matTooltip="Comming soon." >
+        hourglass_top
+    </span>
 </ng-template>
