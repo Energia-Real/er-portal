@@ -26,7 +26,7 @@ export interface DataResponseDetailsClient {
   id: string
   subClientId: number
   siteName: string
-  ageOfTheSite: string
+  ageOfTheSite: number
   clientName: string
   mountingTechnology: string
   nominalPower: string
