@@ -1,25 +1,25 @@
 <div class="p-top-main px-16 c-management">
-  <div class="mb-8">
+  <div class="mb-2">
     <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
-      <div class="px-8 py-4 rounded-3xl border-2">
+      <div class="c-card-section">
         <h2 class="text-er-orange text-base font-normal" i18n>Plantas totales</h2>
           <div >
           <div class="plant-cards grid md:grid-cols-4 gap-4 text-center">
             <div class="border-r-2 ">
-              <h1 *ngIf="totalPlants?.noOfSites else notData">{{ totalPlants.noOfSites }}</h1>
+              <h2 *ngIf="totalPlants?.noOfSites else notData">{{ totalPlants.noOfSites }}</h2>
               <p class="text-sm" i18n># de sitios</p>
             </div>
             <div class="border-r-2">
-              <h1 *ngIf="totalPlants?.noOfInverters else notData">{{ totalPlants?.noOfInverters || 0 }}</h1>
+              <h2 *ngIf="totalPlants?.noOfInverters else notData">{{ totalPlants?.noOfInverters || 0 }}</h2>
               <p class="text-sm" i18n># de inversores</p>
             </div>
             <div class="border-r-2">
-              <h1 *ngIf="totalPlants?.noOfModules else notData">{{ totalPlants?.noOfModules || 0 }}</h1>
+              <h2 *ngIf="totalPlants?.noOfModules else notData">{{ totalPlants?.noOfModules || 0 }}</h2>
               <p class="text-sm" i18n># de modulos</p>
             </div>
             <div>
-              <h1 *ngIf="totalPlants?.mWpInstalled else notData">{{ !totalPlants?.mWpInstalled ? 0 :
-                totalPlants.mWpInstalled | number:'1.2-2' }}</h1>
+              <h2 *ngIf="totalPlants?.mWpInstalled else notData">{{ !totalPlants?.mWpInstalled ? 0 :
+                totalPlants.mWpInstalled | number:'1.2-2' }}</h2>
               <p class="text-sm" i18n>MW instalados</p>
             </div>
           </div>
@@ -39,7 +39,7 @@
   </div>
 
   <div>
-    <div class="flex justify-end mb-5">
+    <div class="flex justify-end mb-2">
       <button class="btn-action-add" routerLink="/assets/create">
         <mat-icon>add</mat-icon>
         Add new plant
@@ -132,7 +132,7 @@
       
         <tr *matNoDataRow>
           <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-            <h5 class="text-center my-5">No se encontraron resultados.</h5>
+            <h5 class="text-center my-5">No results found.</h5>
           </td>
         </tr>
       
@@ -151,10 +151,10 @@
 
 <ng-template #notData>
   <div class="no-data-found d-flex justify-center">
-    <app-message-no-data [message]="'La información no pudo ser cargada.'"></app-message-no-data>
+    <app-message-no-data [message]="'The information could not be loaded.'"></app-message-no-data>
   </div>
 </ng-template>
 
 <ng-template #notDataTable>
-  <app-message-no-data [message]="'No se dispone de la información solicitada.'"></app-message-no-data>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
 </ng-template>
