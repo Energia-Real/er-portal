@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -19,6 +19,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgChartsModule } from 'ng2-charts';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 import { InstalationDetailsComponent } from './instalation-details/instalation-details.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxImageZoomModule } from 'ngx-image-zoom';
 
 
 @NgModule({
@@ -44,7 +46,11 @@ import { InstalationDetailsComponent } from './instalation-details/instalation-d
     ChartModule,
     NgApexchartsModule,
     NgChartsModule,
-    MessageNoDataComponent
-    ]
+    MessageNoDataComponent,
+    PdfViewerModule,
+    NgxImageZoomModule
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
 })
 export class AssetsModule { }

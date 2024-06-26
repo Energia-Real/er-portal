@@ -29,12 +29,34 @@
 
     </div>
     <div class="col-md-6 c-graph">
-        <div class="header-chart">
-            <h1 class="mb-0">Información en vivo</h1>
-        </div>
-
-        <highcharts-chart class="h-max w-full block graph" [Highcharts]="Highcharts" [options]="chartOptions">
-        </highcharts-chart>
+       
+        <div *ngIf="showAlert" class="alert alert-warning">
+            No data available!
+          </div>
+          
+        <pdf-viewer *ngIf="pdfSrc" 
+            class="pdf"
+            [src]="pdfSrc"
+            [render-text]="true"
+            [original-size]="false"
+            [zoom-scale]="'page-fit'"
+            [show-borders]="true"
+            (page-rendered)="onPageRendered($event)"
+            style="width: 90vw; height: 65vh;z-index: 9999; margin:0px;">
+        </pdf-viewer> 
+        <div *ngIf="renderedImage">
+            <ngx-image-zoom 
+              [thumbImage]="renderedImage"
+              [fullImage]="renderedImage"
+              [zoomMode]="'hover'"
+              [magnification]="2"
+              [enableScrollZoom]="true"
+              [scrollStep]="0.1"
+              [zoomLevel]="1"
+              style="display: block; width: 100%; height: auto;">
+            </ngx-image-zoom>
+          </div>      
+        
     </div>
 </div>
 
