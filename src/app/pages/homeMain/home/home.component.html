@@ -8,7 +8,7 @@
             </button>
         </div>
 
-        <div class="c-card-header">
+        <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
@@ -39,16 +39,21 @@
             </div>
         </div> -->
         <!-- <div class="px-8 py-4 mt-4 rounded-3xl border-2"> -->
-        <div class="c-card-header">
+        <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <h1>{{ savingsDetails.totalEnergyConsumption !== "" ? savingsDetails.totalEnergyConsumption + ' kWh' : '' }}</h1>
+                    <!-- <h1>{{ savingsDetails.totalEnergyConsumption !== "" ? savingsDetails.totalEnergyConsumption + ' kWh' : '' }}</h1> -->
+
+                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{ savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
+
                     <p class="text-sm" i18n>Total Energy <br> Consumption</p>
                 </div>
                 <div>
-                    <h1>{{ savingsDetails.totalEnergyProduction !== "" ? savingsDetails.totalEnergyProduction + ' kWh' : '' }}</h1>
-                    <p class="text-sm" i18n>Energy Production</p>
+                    <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{ savingsDetails.totalEnergyProduction }} <br> kWh</h2>
+
+                    <!-- <h1>{{ savingsDetails.totalEnergyProduction !== "" ? savingsDetails.totalEnergyProduction + ' kWh' : '' }}</h1> -->
+                    <p class="text-sm" i18n>Energy <br> Production</p>
                 </div>
                 <div>
                     <div class="c-comming-soon">
@@ -66,7 +71,7 @@
                         </span>
                     </div>
 
-                    <p class="text-sm" i18n>Total Saving</p>
+                    <p class="text-sm" i18n>Total <br> Saving</p>
                 </div>
             </div>
         </div>

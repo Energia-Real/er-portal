@@ -1,12 +1,17 @@
-h1 {
+  h1 {
     margin: 0;
     color: #6E6E6E;
     font-size: 11px;
     font-weight: 400;
     line-height: 13.12px;
-}
+  }
 
- .card-info-buttons-confirm {
+  h2 {
+    margin-bottom: 0;
+    font-size: 18px;
+  }
+
+  .card-info-buttons-confirm {
     font-size: 12px !important;
     font-weight: 400 !important;
     color: #FFFFFF !important;
@@ -15,12 +20,12 @@ h1 {
     height: 27px !important;
     padding: 0px 10px !important;
     border-radius: 40px;
-  
+
     &:hover {
-      background-color: darken(#EE5427, 10%); 
+      background-color: darken(#EE5427, 10%);
     }
   }
-  
+
   .card-info-buttons-cancel {
     font-size: 12px !important;
     font-weight: 400 !important;
@@ -30,7 +35,8 @@ h1 {
     height: 27px !important;
     padding: 0px 10px !important;
     border-radius: 40px;
+
     &:hover {
-      background-color: darken(#F8F8F8, 10%); 
+      background-color: darken(#F8F8F8, 10%);
     }
   }

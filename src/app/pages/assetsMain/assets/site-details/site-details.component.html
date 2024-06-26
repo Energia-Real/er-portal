@@ -19,8 +19,7 @@
         <div class="loader"></div>
       </div>
 
-      <iframe *ngIf="!loaderMap" height="400" frameborder="0" style="border:0; width: 90%; margin: 0 auto;"
-        referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
+      <iframe class="iframe" *ngIf="!loaderMap" height="460" frameborder="0" referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
       </iframe>
     </div>
   </div>

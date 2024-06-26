@@ -3,18 +3,7 @@
     --mdc-outlined-text-field-container-shape: 28px;
   }
 
-  .div-groups {
-    >div {
-      span {
-        font-size: 20px;
-      }
-      h1 {
-        height: 30px;
-        font-size: 1.2em;
-        line-height: 20px;
-      }
-    }
-  }
+  
 
   .c-client-list {
     display: flex;
@@ -77,14 +66,5 @@
     }
   }
 
-  .c-card-header {
-    border: 2px solid #E5E7EB;
-    border-radius: 20px;
-    padding: 10px 15px 10px 15px;
-    margin-top: 10px;
 
-    h2 {
-      font-size: 18px;
-    }
-  }
 }

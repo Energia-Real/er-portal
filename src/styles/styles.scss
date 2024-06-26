@@ -767,6 +767,25 @@ input[type="number"]:focus {
   padding: 0 200px !important;
 }
 
+.c-card-section {
+  border: 2px solid #E5E7EB;
+  border-radius: 20px;
+  padding: 10px 15px 10px 15px;
+  margin-top: 10px;
+
+    >div {
+      span {
+        font-size: 20px;
+      }
+      
+      h2 {
+        height: 30px;
+        font-size: 20px;
+        line-height: 20px;
+      }
+  }
+}
+
 .no-data-alert {
   display: flex;
   align-items: center;
