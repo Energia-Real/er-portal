@@ -132,7 +132,7 @@
       
         <tr *matNoDataRow>
           <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-            <h5 class="text-center my-5">No se encontraron resultados.</h5>
+            <h5 class="text-center my-5">No results found.</h5>
           </td>
         </tr>
       
@@ -151,10 +151,10 @@
 
 <ng-template #notData>
   <div class="no-data-found d-flex justify-center">
-    <app-message-no-data [message]="'La información no pudo ser cargada.'"></app-message-no-data>
+    <app-message-no-data [message]="'The information could not be loaded.'"></app-message-no-data>
   </div>
 </ng-template>
 
 <ng-template #notDataTable>
-  <app-message-no-data [message]="'No se dispone de la información solicitada.'"></app-message-no-data>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
 </ng-template>

@@ -11,7 +11,9 @@ export class Mapper {
 
 			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
 			else formattedValue = formatsService.dateFormat(data.value);
-			if (data.title.includes('Coverage')) formattedValue += '%';
+			if (data?.title?.toLocaleLowerCase()?.includes('coverage')) formattedValue += '%';
+			else if(data?.title?.toLocaleLowerCase()?.includes('energy production')
+			 || data?.title?.toLocaleLowerCase()?.includes('energy consumption')) formattedValue += ' kWh';
 
 			dataList.push({
 				title: data.title,

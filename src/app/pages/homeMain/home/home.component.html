@@ -8,48 +8,60 @@
             </button>
         </div>
 
-        <div class="px-8 py-4 mt-1 rounded-3xl border-2">
+        <div class="c-card-header">
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
+                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
                         hourglass_top
                     </span>
-                    <!-- <h1 class="m-0 important">N/A</h1> -->
                 </div>
                 <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
+                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
                         hourglass_top
                     </span>
-                    <!-- <h1 class="m-0">N/A <span class="text-sm" i18n></span></h1> -->
                 </div>
             </div>
         </div>
-        <div class="px-8 py-4 mt-4 rounded-3xl border-2">
+        <!-- <div class="px-8 py-4 mt-1 rounded-3xl border-2">
+            <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
+            <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
+                <div>
+                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
+                        hourglass_top
+                    </span>
+                </div>
+                <div>
+                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
+                        hourglass_top
+                    </span>
+                </div>
+            </div>
+        </div> -->
+        <!-- <div class="px-8 py-4 mt-4 rounded-3xl border-2"> -->
+        <div class="c-card-header">
             <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
                     <h1>{{ savingsDetails.totalEnergyConsumption !== "" ? savingsDetails.totalEnergyConsumption + ' kWh' : '' }}</h1>
-                    <p class="text-sm" i18n>Total Energy Consumption</p>
+                    <p class="text-sm" i18n>Total Energy <br> Consumption</p>
                 </div>
                 <div>
                     <h1>{{ savingsDetails.totalEnergyProduction !== "" ? savingsDetails.totalEnergyProduction + ' kWh' : '' }}</h1>
                     <p class="text-sm" i18n>Energy Production</p>
                 </div>
                 <div>
-                    <!-- <h1>N/A</h1> -->
-                    <div style="height: 30px; margin-bottom: 15px; border: none !important;">
-                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
+                    <div class="c-comming-soon">
+                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
                             hourglass_top
                         </span>
                     </div>
 
-                    <p class="text-sm" i18n>CFE Cost without Solar</p>
+                    <p class="text-sm" i18n>CFE <br> Cost without Solar</p>
                 </div>
                 <div>
-                    <!-- <h1 class="color-57B1B1">N/A</h1> -->
-                    <div style="height: 30px; margin-bottom: 15px;border: none !important;">
-                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon." >
+                    <div class="c-comming-soon">
+                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
                             hourglass_top
                         </span>
                     </div>
@@ -59,7 +71,7 @@
             </div>
         </div>
         
-        <div class="table-container-scroll mt-4 mb-5">
+        <div class="table-container-scroll mt-3 mb-5">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
                 <!-- <ng-container matColumnDef="select">
@@ -137,7 +149,7 @@
     
                 <tr *matNoDataRow>
                     <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                        <h5 class="text-center my-5">No se encontraron resultados.</h5>
+                        <h5 class="text-center my-5">No results found.</h5>
                     </td>
                 </tr>
     
@@ -166,14 +178,14 @@
                     <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
             </div>
-            <div class="col-md-3 d-flex justify-content-start">
+            <!-- <div class="col-md-3 d-flex justify-content-start">
                 <mat-form-field floatLabel="always" appearance="outline" class="input-select">
                     <mat-select placeholder="Group View">
                         <mat-option value="one">First option</mat-option>
                         <mat-option value="two">Second option</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
+            </div> -->
         </div>
         <div class="graph">
             <highcharts-chart 
@@ -186,7 +198,5 @@
 </main>
 
 <ng-template #notDataTable>
-    <span class="material-symbols-outlined icon-soon" matTooltip="Comming soon." >
-        hourglass_top
-    </span>
+    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
 </ng-template>

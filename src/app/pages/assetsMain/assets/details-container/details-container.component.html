@@ -103,7 +103,7 @@
         <app-site-performance *ngIf="assetData" [assetData]="assetData"></app-site-performance>
       </mat-tab>
 
-      <mat-tab label="Instalation details">
+      <mat-tab label="Inverter details">
         <app-instalation-details *ngIf="assetData" [assetData]="assetData"
           [notData]="showNotdata"></app-instalation-details>
       </mat-tab>
@@ -114,9 +114,9 @@
 </div>
 
 <ng-template #notData>
-  <app-message-no-data [message]="'La información no pudo ser cargada.'"></app-message-no-data>
+  <app-message-no-data [message]="'The information could not be loaded.'"></app-message-no-data>
 </ng-template>
 
 <ng-template #notDataOne>
-  <app-message-no-data [message]="'No se dispone de la información solicitada.'"></app-message-no-data>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
 </ng-template>

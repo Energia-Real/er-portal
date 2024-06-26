@@ -5,14 +5,18 @@
 
   .div-groups {
     >div {
+      span {
+        font-size: 20px;
+      }
       h1 {
         height: 30px;
+        font-size: 1.2em;
+        line-height: 20px;
       }
     }
   }
 
   .c-client-list {
-    padding-bottom: 10px;
     display: flex;
     gap: 10px;
     overflow-x: auto;
@@ -25,17 +29,17 @@
 
   .c-graph {
     >.row {
-      margin-bottom: 15px;
+      margin-bottom: 11px;
       display: flex;
       justify-content: flex-end;
     }
 
     .graph {
-      height: 770px;
+      height: 690px;
     }
 
     highcharts-chart {
-      height: 750px;
+      height: 670px;
     }
   }
 
@@ -70,6 +74,17 @@
 
     .header-table {
       margin: 0;
+    }
+  }
+
+  .c-card-header {
+    border: 2px solid #E5E7EB;
+    border-radius: 20px;
+    padding: 10px 15px 10px 15px;
+    margin-top: 10px;
+
+    h2 {
+      font-size: 18px;
     }
   }
 }

@@ -51,8 +51,7 @@ span {
 }
 
 .p-top-main {
-  padding-top: 80px!important;
-  // padding-top: 75px!important;
+  padding-top: 80px !important;
 }
 
 .c-global {
@@ -87,7 +86,8 @@ span {
 }
 
 .width-100 {
-  width: 100%;;
+  width: 100%;
+  ;
 }
 
 input,
@@ -286,6 +286,7 @@ select {
 
     }
   }
+
   .card-info-instalation {
     border: 1px solid #D2D2D2;
     height: auto;
@@ -373,9 +374,9 @@ select {
 }
 
 .main-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .mat-mdc-tab.mdc-tab {
     font-size: 12px !important;
@@ -412,7 +413,7 @@ select {
   .c-content {
     margin-top: 50px;
 
-    
+
   }
 }
 
@@ -478,7 +479,7 @@ select {
 }
 
 *[class*=mat-mdc-tab-group] {
-  width: 100%!important;
+  width: 100% !important;
 }
 
 
@@ -700,8 +701,9 @@ input[type="number"]:focus {
   color: #EE5427 !important;
 }
 
-.c-version { 
+.c-version {
   position: relative;
+
   .version {
     position: absolute;
     // left: 47px;
@@ -718,14 +720,14 @@ input[type="number"]:focus {
     padding: 10px;
     border-radius: 16px;
     border: 2px solid #E2E2E2;
-    
+
     highcharts-chart {
       background: #F9F9F9;
     }
   }
 
   highcharts-chart {
-    .highcharts-credits{
+    .highcharts-credits {
       // opacity: 0!important;
     }
   }
@@ -776,6 +778,12 @@ input[type="number"]:focus {
   width: 100%;
 }
 
+.c-comming-soon {
+  height: 30px;
+  margin-bottom: 15px;
+  border: none !important;
+}
+
 .no-data-found {
   font-size: 25px;
   font-weight: 500;
@@ -797,7 +805,7 @@ input[type="number"]:focus {
   .form-padding {
     padding: 0 25px !important;
   }
-  
+
   .c-global {
     padding-top: 3%;
   }
