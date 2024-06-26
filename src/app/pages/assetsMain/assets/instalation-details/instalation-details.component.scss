@@ -10,3 +10,17 @@
         }
     }
 }
+
+::ng-deep .pdfViewer .page {
+    margin: 0 !important;
+}
+
+div {
+    margin-bottom: 20px;
+  }
+  
+  ngx-image-zoom {
+    width: 100%;
+    height: auto;
+  }
+  
