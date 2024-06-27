@@ -2,8 +2,8 @@
   <app-return-bar></app-return-bar>
   <div class="create-asset-form-container">
     <div class="create-asset-header-container" *ngIf="objEditData">
-      <h2>{{!objEditData ? 'Crear' : 'Editar'}} planta</h2>
-      <p> {{!objEditData ? 'Ingresa los datos para crear una planta' : 'Modifica los datos para editar la planta'}}</p>
+      <h2>{{!objEditData ? 'Create' : 'Edit'}} plant</h2>
+      <p> {{!objEditData ? 'Enter the data to create a plant' : 'Modify the data to edit the plant'}}</p>
     </div>
 
     <div class="create-asset-inputs-component">
@@ -13,32 +13,32 @@
         </div>
 
         <div class="c-input">
-          <p>Nombre del sitio:</p>
+          <p>Name of the site:</p>
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="siteName" placeholder="Nombre del sitio" matInput>
-            <mat-error *ngIf="formData.get('siteName')?.hasError('required')">Debe agregar nombre del sitio</mat-error>
-          </mat-form-field>
-        </div>
-       
-        <div class="c-input">
-          <p>Codigó de planta:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="plantCode" placeholder="Codigó de planta" matInput>
-          </mat-form-field>
-        </div>
-     
-        <div class="c-input">
-          <p>Dirección:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="direction" placeholder="Dirección" matInput>
+            <input formControlName="siteName" placeholder="Name of the site" matInput>
+            <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error>
           </mat-form-field>
         </div>
 
         <div class="c-input">
-          <p>Tipo de contrato:</p>
+          <p>Plant code:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="plantCode" placeholder="Plant code" matInput>
+          </mat-form-field>
+        </div>
+
+        <div class="c-input">
+          <p>Address:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="direction" placeholder="Address" matInput>
+          </mat-form-field>
+        </div>
+
+        <div class="c-input">
+          <p>Type of contract:</p>
           <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="contractTypeId" placeholder="Tipo de contrato">
-              <mat-option value="" disabled>Seleccione uno</mat-option>
+            <mat-select formControlName="contractTypeId" placeholder="Type of contract">
+              <mat-option value="" disabled>Choose one</mat-option>
               <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
                 }}</mat-option>
             </mat-select>
@@ -46,10 +46,10 @@
         </div>
 
         <div class="c-input">
-          <p>Tipo de instalación:</p>
+          <p>Installation type:</p>
           <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="installationTypeId" placeholder="Tipo de instalación">
-              <mat-option value="" disabled>Seleccione uno</mat-option>
+            <mat-select formControlName="installationTypeId" placeholder="Installation type">
+              <mat-option value="" disabled>Choose one</mat-option>
               <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
                 }}</mat-option>
             </mat-select>
@@ -57,48 +57,48 @@
         </div>
 
         <div class="c-input">
-          <p>Capacidad instalada:</p>
+          <p>Installed capacity:</p>
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="installedCapacity" placeholder="Capacidad instalada" matInput>
-          </mat-form-field>
-        </div>
-  
-        <div class="c-input">
-          <p>Relación calidad:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="installedCapacity" placeholder="Relación calidad" matInput>
+            <input formControlName="installedCapacity" placeholder="Installed capacity" matInput>
           </mat-form-field>
         </div>
 
         <div class="c-input">
-          <p>Rendimiento anual:</p>
+          <p>Quality ratio:</p>
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="yearlyYield" placeholder="Rendimiento anual" matInput>
+            <input formControlName="installedCapacity" placeholder="Quality ratio" matInput>
           </mat-form-field>
         </div>
-  
+
         <div class="c-input">
-          <p>Potencia nominal mAC:</p>
+          <p>Annual performance:</p>
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="nominalPowerAC" placeholder="Potencia nominal mAC" matInput>
+            <input formControlName="yearlyYield" placeholder="Annual performance" matInput>
+          </mat-form-field>
+        </div>
+
+        <div class="c-input">
+          <p>Rated power mAC:</p>
+          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+            <input formControlName="nominalPowerAC" placeholder="Rated power mAC" matInput>
           </mat-form-field>
         </div>
 
         <div class="form-group-container">
-          <p>Estatus:</p>
+          <p>Status:</p>
           <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="statusPlantId" placeholder="Estatus">
-              <mat-option value="" disabled>Seleccione uno</mat-option>
+            <mat-select formControlName="statusPlantId" placeholder="Status">
+              <mat-option value="" disabled>Choose one</mat-option>
               <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-' }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
 
         <div class="form-group-container input-email-container">
-          <p>Esquema de operación</p>
+          <p>Operation scheme:</p>
           <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="netZero" placeholder="Esquema de operación">
-              <mat-option value="" disabled>Seleccione uno</mat-option>
+            <mat-select formControlName="netZero" placeholder="Operation scheme">
+              <mat-option value="" disabled>Choose one</mat-option>
               <mat-option [value]="true">Net Zero Export</mat-option>
               <mat-option [value]="false">Normal</mat-option>
             </mat-select>
@@ -106,43 +106,49 @@
         </div>
 
         <div class="c-input">
-          <p>Link de mapas:</p>
+          <p>Map link:</p>
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="link" placeholder="Link de mapas" matInput>
-            <mat-error *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">Debe agregar link de mapas valido</mat-error>
+            <input formControlName="link" placeholder="Map link" matInput>
+            <mat-error
+              *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
+              must add a valid map link</mat-error>
           </mat-form-field>
         </div>
 
         <div class="c-input-group">
           <div class="c-input">
-            <p>Tamaño del sistema:</p>
+            <p>System size:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-              <input type="number" formControlName="systemSize" placeholder="Tamaño del sistema" matInput>
+              <input type="number" formControlName="systemSize" placeholder="System size" matInput>
             </mat-form-field>
           </div>
-         
+
           <div class="c-input">
-            <p>Cantidad de inversor:</p>
+            <p>Inverter quantity:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-              <input type="number" formControlName="inverterQty" placeholder="Cantidad de inversor" matInput>
+              <input type="number" formControlName="inverterQty" placeholder="Inverter quantity" matInput>
             </mat-form-field>
           </div>
         </div>
-      
+
         <div class="c-input-group">
           <div class="c-input">
-            <p>Latitud:</p>
+            <p>Latitude:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-              <input type="number" formControlName="latitude" placeholder="Latitud" matInput>
-              <mat-error *ngIf="formData.get('latitude')?.errors?.['latitudeInvalid'] && formData.get('latitude')?.touched">La latitud debe estar entre -90 y 90</mat-error>
+              <input type="number" formControlName="latitude" placeholder="Latitude" matInput>
+              <mat-error
+                *ngIf="formData.get('latitude')?.errors?.['latitudeInvalid'] && formData.get('latitude')?.touched">The
+                latitude must be between -90 y 90</mat-error>
             </mat-form-field>
           </div>
-         
+
           <div class="c-input">
-            <p>Longuitud:</p>
+            <p>Length:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-              <input type="number" formControlName="longitude" placeholder="Longitud" matInput>
-              <mat-error *ngIf="formData.get('longitude')?.errors?.['invalidLongitude'] && formData.get('longitude')?.touched">La longitud debe estar entre -180 y 180</mat-error>
+              <input type="number" formControlName="longitude" placeholder="Length" matInput>
+              <mat-error
+                *ngIf="formData.get('longitude')?.errors?.['invalidLongitude'] && formData.get('longitude')?.touched">The
+                length must be between -180 y 180</mat-error>
 
             </mat-form-field>
           </div>
@@ -150,18 +156,18 @@
 
         <div class="form-group-container coordinates-container ">
           <div class="coordinates-input-container">
-            <p>Fecha de comisión</p>
+            <p>Commission date:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
-              <input formControlName="commissionDate" placeholder="Fecha de comisió" matInput [matDatepicker]="picker1">
+              <input formControlName="commissionDate" placeholder="Commission date" matInput [matDatepicker]="picker1">
               <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
               <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
           </div>
 
           <div class="coordinates-input-container">
-            <p>Fecha de contrato de firma</p>
+            <p>Signing contract date:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
-              <input formControlName="contractSignatureDate" placeholder="Fecha de contrato de firma" matInput
+              <input formControlName="contractSignatureDate" placeholder="Signing contract date" matInput
                 [matDatepicker]="picker2">
               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
               <mat-datepicker #picker2></mat-datepicker>
@@ -171,9 +177,9 @@
 
         <div class="form-group-container coordinates-container mb-3">
           <div class="coordinates-input-container">
-            <p>Fecha de instalación</p>
+            <p>Instalation date:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
-              <input formControlName="endInstallationDate" placeholder="Fecha de instalación" matInput
+              <input formControlName="endInstallationDate" placeholder="Instalation date" matInput
                 [matDatepicker]="picker3">
               <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
               <mat-datepicker #picker3></mat-datepicker>
@@ -183,11 +189,11 @@
 
         <div class="button-container d-flex justify-content-between pt-3">
           <div>
-            <button class="button-cancel" (click)="toBack()" type="button">Cancelar</button>
+            <button class="button-cancel" (click)="toBack()" type="button">Cancel</button>
           </div>
           <div>
             <span class="loader" *ngIf="loading"></span>
-            <button class="button-primary" [disabled]="formData.invalid" *ngIf="!loading" type="submit">Guardar</button>
+            <button class="button-primary" [disabled]="formData.invalid" *ngIf="!loading" type="submit">Save</button>
           </div>
         </div>
       </form>

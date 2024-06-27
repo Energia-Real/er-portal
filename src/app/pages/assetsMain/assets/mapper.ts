@@ -12,12 +12,13 @@ export class Mapper {
 			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
 			else formattedValue = formatsService.dateFormat(data.value);
 			if (data?.title?.toLocaleLowerCase()?.includes('coverage')) formattedValue += '%';
-			else if(data?.title?.toLocaleLowerCase()?.includes('energy production')
-			 || data?.title?.toLocaleLowerCase()?.includes('energy consumption')) formattedValue += ' kWh';
+			else if (data?.title?.toLocaleLowerCase()?.includes('energy production')
+				|| data?.title?.toLocaleLowerCase()?.includes('energy consumption')) formattedValue += ' kWh';
 
 			dataList.push({
 				title: data.title,
-				description: formattedValue ?? null
+				description: formattedValue ?? null,
+				tooltip: data?.title?.toLocaleLowerCase()?.includes('life time energy consumptio') ? 'Energy consumption since the solar installation was commissioned.' : ''
 			});
 		});
 
@@ -46,7 +47,7 @@ export class Mapper {
 	static getDataRespStatusMapper(response: entity.ProjectStatus[], formatsService: FormatsService): entity.ProjectStatus[] {
 		let dataList: entity.ProjectStatus[] = [];
 
-		response.forEach((data: entity.ProjectStatus): void => {			
+		response.forEach((data: entity.ProjectStatus): void => {
 			dataList.push({
 				...data,
 				endInstallationDate: formatsService.dateFormat(data.endInstallationDate),
@@ -65,12 +66,9 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Age of the site',
-			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'year' }` ?? null
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'year'}` ?? null
 		});
-		dataList.push({
-			title: 'Mounting Technology',
-			description: response.mountingTechnology ?? null
-		});
+	
 		dataList.push({
 			title: 'Install Date',
 			description: formatsService.dateFormat(response.endInstallationDate) ?? null
@@ -79,22 +77,11 @@ export class Mapper {
 			title: 'COD',
 			description: formatsService.dateFormat(response.contractSignatureDate) ?? null
 		});
-		dataList.push({
-			title: 'Roof Type',
-			description: response.roofType ?? null
-		});
+	
 		dataList.push({
 			title: 'Commission Date',
 			description: formatsService.dateFormat(response.commissionDate) ?? null
 		});
-		/* dataList.push({
-			title: 'Payment Due Date',
-			description: 'N/A'
-		});
-		dataList.push({
-			title: 'Plant Code',
-			description: response.plantCode ?? 'N/A'
-		}); */
 
 		return dataList
 	}
@@ -122,6 +109,16 @@ export class Mapper {
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
 		return {
 			...response,
+			instalaciones: response.instalaciones.map((data: entity.Module, i: number) => {
+				return {
+					instalacionId: data.instalacionId,
+					moduloQty: data.moduloQty,
+					moduloBrand: data.moduloBrand,
+					moduloModel: data.moduloModel,
+					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
+					description: `${data.moduloQty}  ${data.moduloModel}`,
+				}
+			}),
 			assetStatusIcon: response.assetStatus.toLowerCase().includes('active') ? 'radio_button_checked'
 				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
 					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'

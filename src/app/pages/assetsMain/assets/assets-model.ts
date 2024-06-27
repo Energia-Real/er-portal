@@ -55,55 +55,55 @@ export interface DataResponseDetails {
   errorMessage: string,
   errorCode: 0,
   data: {
-      title: string,
-      value: string
-    }[]
+    title: string,
+    value: string
+  }[]
 }
 
 export interface DataDetails {
-    title: string,
-    value: string
+  title: string,
+  value: string
 }
 
 export interface DataManagementTableResponse {
-  page:number;
-  pageSize:number;
-  totalItems:number;
-  data : DataManagementTable[]
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  data: DataManagementTable[]
 }
 
 export interface DataManagementTable {
-    id: string;
-    siteName: string;
-    systemSize: number;
-    direction: string;
-    longitude: number
-    contractType: string;
-    installationType: string;
-    commissionDate: string;
-    clientId: number;
-    inverterQty: number;
-    netZero: boolean
-    assetStatus: string;
-    latitude: boolean
-    link: string;
-    plantCode: string;
-    inverterBrand: string[],
-    subClientId: number
-    endInstallationDate: string;
-    contractSignatureDate: string;
-    rpu: string;
-    clientName: string;
-    nominalPower: number
-    mountingTechnology: string;
-    roofType: string;
-    ageOfTheSite: number;
-    instalaciones: {
-      instalacionId: number;
-      moduloQty: number;
-      moduloBrand: any;
-      moduloModel: any;
-    }[];
+  id: string;
+  siteName: string;
+  systemSize: number;
+  direction: string;
+  longitude: number
+  contractType: string;
+  installationType: string;
+  commissionDate: string;
+  clientId: number;
+  inverterQty: number;
+  netZero: boolean
+  assetStatus: string;
+  latitude: boolean
+  link: string;
+  plantCode: string;
+  inverterBrand: string[],
+  subClientId: number
+  endInstallationDate: string;
+  contractSignatureDate: string;
+  rpu: string;
+  clientName: string;
+  nominalPower: number
+  mountingTechnology: string;
+  roofType: string;
+  ageOfTheSite: number;
+  instalaciones: {
+    instalacionId: number;
+    moduloQty: number;
+    moduloBrand: any;
+    moduloModel: any;
+  }[];
 }
 
 export interface DataManagementTableMapper {
@@ -113,6 +113,7 @@ export interface DataManagementTableMapper {
 export interface DataResponseDetailsMapper {
   title: string;
   description: string | Date | null;
+  tooltip?: string
 }
 
 export interface ResponseSystem {
@@ -126,40 +127,45 @@ export interface ResponseSystem {
 export interface DataResponseSystem {
   real_health_state: string
   day_power: string
-  total_power: string 
+  total_power: string
   day_income: string
   month_power: string
   total_income: string
 }
 
 export interface DataPlant {
-    id: string;
-    clientId: string;
-    siteName: string;
-    clientName: string;
-    subClientId :string;
-    systemSize: number,
-    direction: string;
-    longitude: number,
-    contractType: string,
-    installationType: string,
-    commissionDate: string,
-    inverterQty: number,
-    netZero: boolean,
-    assetStatus: string,
-    latitude: number,
-    link: string,
-    plantCode: string ,
-    inverterBrand: string[]
-    contractSignatureDate : string
-    endInstallationDate : string
-    mountingTechnology : string
-    nominalPower : string
-    roofType : string
-    rpu : string
-    assetStatusIcon : string
-    assetStatusIconTest : string
-    instalaciones : Module[]
+  id: string;
+  clientId: string;
+  siteName: string;
+  clientName: string;
+  subClientId: string;
+  systemSize: number,
+  direction: string;
+  longitude: number,
+  contractType: string,
+  installationType: string,
+  commissionDate: string,
+  inverterQty: number,
+  netZero: boolean,
+  assetStatus: string,
+  latitude: number,
+  link: string,
+  plantCode: string,
+  inverterBrand: string[]
+  contractSignatureDate: string
+  endInstallationDate: string
+  mountingTechnology: string
+  nominalPower: string
+  roofType: string
+  rpu: string
+  assetStatusIcon: string
+  assetStatusIconTest: string
+  instalaciones: {
+    instalacionId: number;
+    moduloQty: number;
+    moduloBrand: any;
+    moduloModel: any;
+  }[];
 }
 
 
@@ -187,20 +193,20 @@ export interface DataSummaryProjects {
 }
 
 export interface DataSummaryProjects {
-  siteName : string;
-  plantCode : string;
-  direction : string;
-  link : string;
-  contractTypeId : string;
-  latitude : number
-  longitude : number
-  installationTypeId : string;
-  commissionDate : string;
-  installedCapacity : string;
-  contractSignatureDate : string;
-  endInstallationDate : string;
-  systemSize : number
-  inverterQty : number
+  siteName: string;
+  plantCode: string;
+  direction: string;
+  link: string;
+  contractTypeId: string;
+  latitude: number
+  longitude: number
+  installationTypeId: string;
+  commissionDate: string;
+  installedCapacity: string;
+  contractSignatureDate: string;
+  endInstallationDate: string;
+  systemSize: number
+  inverterQty: number
 }
 
 export interface ProyectResume {
@@ -231,7 +237,7 @@ export interface Monthresume {
   buyPower: number
   selfProvide: number
   perPowerRatio?: number
-  dataRecovery : number
+  dataRecovery: number
 }
 
 

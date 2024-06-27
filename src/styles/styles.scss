@@ -249,6 +249,7 @@ select {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 0;
 
     .card-info-header {
       display: flex;
@@ -260,7 +261,7 @@ select {
         font-weight: 600;
         line-height: 14.65px;
         margin-bottom: 16px;
-        width: 88%;
+        width: 86%;
       }
 
       h2,
@@ -279,7 +280,7 @@ select {
 
       mat-icon {
         // width: 30px;
-        width: 12%;
+        width: 14%;
         display: flex;
         justify-content: end;
       }
@@ -773,16 +774,16 @@ input[type="number"]:focus {
   padding: 10px 15px 10px 15px;
   margin-top: 10px;
 
-    >div {
-      span {
-        font-size: 20px;
-      }
-      
-      h2 {
-        height: 35px;
-        font-size: 18px;
-        line-height: 20px;
-      }
+  >div {
+    span {
+      font-size: 20px;
+    }
+
+    h2 {
+      height: 35px;
+      font-size: 18px;
+      line-height: 20px;
+    }
   }
 }
 
@@ -820,7 +821,27 @@ input[type="number"]:focus {
   }
 }
 
+@media screen and (max-width: 1190px) {
+  .form-padding {
+    padding: 0 160px !important;
+  }
+
+  .c-card-info .card-info {
+    width: 100%!important;
+  }
+}
+
 @media screen and (max-width: 875px) {
+
+  .c-install  {
+    .pdf {
+      height: 450px!important;
+    }
+  }
+
+  .c-card-info .card-info {
+    width: 100%!important;
+  }
   .form-padding {
     padding: 0 25px !important;
   }
