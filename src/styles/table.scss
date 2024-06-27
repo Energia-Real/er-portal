@@ -21,6 +21,10 @@
 .c-table {
     max-width: 100%;
     overflow-y: auto;
+    .header-table {
+        margin: 0;
+        line-height: 15px;
+      }
 }
 
 .truncate {
