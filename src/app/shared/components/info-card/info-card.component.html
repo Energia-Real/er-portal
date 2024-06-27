@@ -1,7 +1,7 @@
 <div class="">
   <div class="card-info-header">
     <h1>{{ info?.title || '-' }}</h1>
-    <mat-icon (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
+    <mat-icon *ngIf="tooltipText" (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
   </div>
   <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()"
     [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
