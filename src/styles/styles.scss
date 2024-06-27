@@ -821,7 +821,27 @@ input[type="number"]:focus {
   }
 }
 
+@media screen and (max-width: 1190px) {
+  .form-padding {
+    padding: 0 160px !important;
+  }
+
+  .c-card-info .card-info {
+    width: 100%!important;
+  }
+}
+
 @media screen and (max-width: 875px) {
+
+  .c-install  {
+    .pdf {
+      height: 450px!important;
+    }
+  }
+
+  .c-card-info .card-info {
+    width: 100%!important;
+  }
   .form-padding {
     padding: 0 25px !important;
   }
