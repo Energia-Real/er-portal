@@ -1,6 +1,6 @@
 <app-layout routeActive="/home"></app-layout>
 <main class="px-10 pt-10 grid md:grid-cols-2 md:gap-4 c-home p-top-main">
-    <div>
+    <div style="height: calc(100vh - 100px);">
         <div class="c-client-list">
             <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
                 <mat-icon *ngIf="first">favorite</mat-icon>
@@ -23,36 +23,15 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="px-8 py-4 mt-1 rounded-3xl border-2">
-            <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
-            <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
-                <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
-                        hourglass_top
-                    </span>
-                </div>
-                <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
-                        hourglass_top
-                    </span>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="px-8 py-4 mt-4 rounded-3xl border-2"> -->
         <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <!-- <h1>{{ savingsDetails.totalEnergyConsumption !== "" ? savingsDetails.totalEnergyConsumption + ' kWh' : '' }}</h1> -->
-
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{ savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
-
                     <p class="text-sm" i18n>Total Energy <br> Consumption</p>
                 </div>
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{ savingsDetails.totalEnergyProduction }} <br> kWh</h2>
-
-                    <!-- <h1>{{ savingsDetails.totalEnergyProduction !== "" ? savingsDetails.totalEnergyProduction + ' kWh' : '' }}</h1> -->
                     <p class="text-sm" i18n>Energy <br> Production</p>
                 </div>
                 <div>
@@ -76,7 +55,7 @@
             </div>
         </div>
         
-        <div class="table-container-scroll mt-3 mb-5">
+        <div class="table-container-scroll mt-3 mb-5" style="max-height: calc(100% - 340px);">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
                 <!-- <ng-container matColumnDef="select">
@@ -164,7 +143,7 @@
         </div>
     </div>
     
-    <div class="c-graph ">
+    <div class="c-graph">
         <!-- <div class="flex justify-end">
             <button mat-stroked-button>
                 Export PDF Report
@@ -183,20 +162,13 @@
                     <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
             </div>
-            <!-- <div class="col-md-3 d-flex justify-content-start">
-                <mat-form-field floatLabel="always" appearance="outline" class="input-select">
-                    <mat-select placeholder="Group View">
-                        <mat-option value="one">First option</mat-option>
-                        <mat-option value="two">Second option</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
         </div>
-        <div class="graph">
+
+        <div class="graph" style="height: calc(100vh - 155px);">
             <highcharts-chart 
                 [Highcharts]="Highcharts"
                 [options]="chartOptions"
-                class="h-max w-full block">
+                class="h-max w-full block" style="height: calc(100vh - 175px);">
             </highcharts-chart>
         </div>
     </div>
