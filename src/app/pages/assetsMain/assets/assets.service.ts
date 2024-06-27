@@ -9,7 +9,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AssetsService implements OnDestroy{
+export class AssetsService implements OnDestroy {
   private onDestroy = new Subject<void>();
 
   private API_URL = environment.API_URL_CLIENTS_V1;
@@ -18,63 +18,62 @@ export class AssetsService implements OnDestroy{
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
   getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
-		const url = `${this.API_URL}/projects/${assetId}`;
+    const url = `${this.API_URL}/projects/${assetId}`;
     return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
-			map((response) => Mapper.getDataRespOverviewMapper(response, this.formatsService))
-		);
-	}
+      map((response) => Mapper.getDataRespOverviewMapper(response, this.formatsService))
+    );
+  }
 
   getDataRespStatus(): Observable<entity.ProjectStatus[]> {
-		const url = `${this.API_URL}/projects/projectstate`;
+    const url = `${this.API_URL}/projects/projectstate`;
 
     return this.http.get<entity.ProjectStatus[]>(url).pipe(
-			map((response) => Mapper.getDataRespStatusMapper(response, this.formatsService))
-		);
-	}
+      map((response) => Mapper.getDataRespStatusMapper(response, this.formatsService))
+    );
+  }
 
   getDataRespUnauthorized(): Observable<any> {
-		const url = `${this.API_URL}/pruebas/unauthorized`;
+    const url = `${this.API_URL}/pruebas/unauthorized`;
     return this.http.get<any>(url);
-	}
+  }
 
-  getDataRespSite(data:entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
-		const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
+  getDataRespSite(data: entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
+    const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
 
     return this.http.post<entity.DataResponseDetails>(url, data).pipe(
-			map((response) => Mapper.getDataRespSiteMapper(response.data, this.formatsService))
-		);
-	}
-  
-  getDataSystem(data:entity.PostDataByPlant): Observable<entity.ResponseSystem> {
-		const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;
+      map((response) => Mapper.getDataRespSiteMapper(response.data, this.formatsService))
+    );
+  }
+
+  getDataSystem(data: entity.PostDataByPlant): Observable<entity.ResponseSystem> {
+    const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;
 
     return this.http.post<entity.ResponseSystem>(url, data);
-	}
+  }
 
   getDataAssetsmanagement(name: string, pageSize: number, page: number): Observable<any> {
     const params = new HttpParams()
-    .set('name', name)
-    .set('pagesize', pageSize)
-    .set('page', page);
+      .set('name', name)
+      .set('pagesize', pageSize)
+      .set('page', page);
 
     return this.http.get<entity.DataManagementTableResponse>(`${this.API_URL}/projects`, { params }).pipe(
-			map((response) => Mapper.getDataAssetsmanagementMapper(response, this.formatsService))
-		);
+      map((response) => Mapper.getDataAssetsmanagementMapper(response, this.formatsService))
+    );
   }
 
-  getSummaryProjects() : Observable<entity.DataSummaryProjects>{
+  getSummaryProjects(): Observable<entity.DataSummaryProjects> {
     const url = `${this.API_URL}/projects/summary`;
 
     return this.http.get<entity.DataSummaryProjects>(url);
   }
 
-  getDataId(id: string | null) : Observable<entity.DataPlant> {
+  getDataId(id: string | null): Observable<entity.DataPlant> {
     const url = `${this.API_URL}/projects/${id}`;
 
-    // return this.http.get<entity.DataPlant>(url);
     return this.http.get<entity.DataPlant>(url).pipe(
-			map((response) => Mapper.getDataIdMapper(response))
-		);
+      map((response) => Mapper.getDataIdMapper(response))
+    );
   }
 
   getWeatherData(lat: number, long: number) {
@@ -85,21 +84,21 @@ export class AssetsService implements OnDestroy{
 
   getPlaceAddress(lat: number, long: number) {
     const params = new HttpParams()
-    .set('latlng', `${lat},${long}`)
-    .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
+      .set('latlng', `${lat},${long}`)
+      .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
 
     return this.http.get<any>(`https://maps.googleapis.com/maps/api/geocode/json?`, { params })
   }
 
   getLocalTimeOfPlace(lat: number, long: number) {
     const params = new HttpParams()
-    .set('location', `${lat},${long}`)
-    .set('timestamp', `${Math.floor(Date.now() / 1000)}`)
-    .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
+      .set('location', `${lat},${long}`)
+      .set('timestamp', `${Math.floor(Date.now() / 1000)}`)
+      .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
 
     return this.http.get<entity.DataLocalTime>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params }).pipe(
-			map((response) => Mapper.getLocalTimeOfPlaceMapper(response))
-		);
+      map((response) => Mapper.getLocalTimeOfPlaceMapper(response))
+    );
   }
 
   postDataPlant(data: any) {
@@ -108,17 +107,17 @@ export class AssetsService implements OnDestroy{
     return this.http.post<any>(url, data);
   }
 
-  patchDataPlant(id:string, data:entity.DataPlant): Observable<any> {
-		const url = `${this.API_URL}/projects/${id}/`;
+  patchDataPlant(id: string, data: entity.DataPlant): Observable<any> {
+    const url = `${this.API_URL}/projects/${id}/`;
 
     return this.http.patch<any>(url, data);
-	}
+  }
 
-  patchDataPlantOverview(id:string, data:Partial<entity.DataResponseDetailsClient>): Observable<any> {
-		const url = `${this.API_URL}/projects/${id}/`;
+  patchDataPlantOverview(id: string, data: Partial<entity.DataResponseDetailsClient>): Observable<any> {
+    const url = `${this.API_URL}/projects/${id}/`;
 
     return this.http.patch<any>(url, data);
-	}
+  }
 
   putUpdateAsset(data: any, id: string | null) {
     return this.http.put<any>(`${this.API_URL}/projects/${id}`, data);
@@ -131,7 +130,7 @@ export class AssetsService implements OnDestroy{
     );
   }
 
-  getProyectResume(brand: string, plantCode: string, startDate:Date, endDate:Date) {
+  getProyectResume(brand: string, plantCode: string, startDate: Date, endDate: Date) {
     const url = `${this.API_URL_PROXY}/integrators/proxy/GetMonthProyectResume`;
     const jsonObject = {
       "brand": brand,
@@ -139,7 +138,7 @@ export class AssetsService implements OnDestroy{
       "startDate": startDate,
       "endDate": endDate
     };
-    return this.http.post<entity.ProyectResume[]>(url,jsonObject )
+    return this.http.post<entity.ProyectResume[]>(url, jsonObject)
   }
 
   ngOnDestroy() {

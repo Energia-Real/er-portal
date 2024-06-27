@@ -20,117 +20,117 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
 
   weatherCode: { [key: number]: { text: string, icon: string, background: string } } = {
     1000: {
-      text: "Soleado",
+      text: "Sunny",
       icon: "fa-regular fa-sun",
       background: "yellow"
     },
     1100: {
-      text: "Mayormente soleado",
+      text: "Mainly sunny",
       icon: "fa-solid fa-cloud-sun",
       background: "yellow"
     },
     1101: {
-      text: "Parcialmente nublado",
+      text: "Partly cloudy",
       icon: "fa-solid fa-cloud-sun",
       background: "yellow"
     },
     1102: {
-      text: "Mayormente nublado",
+      text: "Mostly cloudy",
       icon: "fa-solid fa-cloud-sun",
       background: "yellow"
     },
     1001: {
-      text: "Nublado",
+      text: "Cloudy",
       icon: "fa-solid fa-cloud",
       background: "yellow"
     },
     2000: {
-      text: "Niebla",
+      text: "Fog",
       icon: "fa-solid fa-smog",
       background: "yellow"
     },
     2100: {
-      text: "Niebla ligera",
+      text: "Light fog",
       icon: "fa-solid fa-smog",
       background: "yellow"
     },
     4000: {
-      text: "Llovizna",
+      text: "Drizzle",
       icon: "fa-solid fa-cloud-rain",
       background: "yellow"
     },
     4001: {
-      text: "Lluvia",
+      text: "Rain",
       icon: "fa-solid fa-cloud-showers-heavy",
       background: "yellow"
     },
     4200: {
-      text: "Lluvia ligera",
+      text: "Light rain",
       icon: "fa-solid fa-cloud-rain",
       background: "yellow"
     },
     4201: {
-      text: "Fuertes lluvias",
+      text: "Strong rains",
       icon: "fa-solid fa-cloud-showers-water",
       background: "yellow"
     },
     5000: {
-      text: "Nieve",
+      text: "Snow",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     5001: {
-      text: "Nieve intensa",
+      text: "Heavy snow",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     5100: {
-      text: "Nieve ligera",
+      text: "Light snow",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     5101: {
-      text: "Nieve intensa",
+      text: "Heavy snow",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     6000: {
-      text: "Llovizna helada",
+      text: "Freezing drizzle",
       icon: "fa-solid fa-cloud-rain",
       background: "yellow"
     },
     6001: {
-      text: "Lluvia helada",
+      text: "freezing rain",
       icon: "fa-solid fa-cloud-showers-heavy",
       background: "yellow"
     },
     6200: {
-      text: "Lluvia ligera y helada",
+      text: "Light and freezing rain",
       icon: "fa-solid fa-cloud-rain",
       background: "yellow"
     },
     6201: {
-      text: "Fuerte lluvia helada",
+      text: "Heavy freezing rain",
       icon: "fa-solid fa-cloud-showers-water",
       background: "yellow"
     },
     7000: {
-      text: "Pellets de hielo",
+      text: "Ice pellets",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     7101: {
-      text: "Películas de hielo pesadas",
+      text: "Heavy ice films",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     7102: {
-      text: "Películas de hielo ligeras",
+      text: "light ice films",
       icon: "fa-regular fa-snowflake",
       background: "yellow"
     },
     8000: {
-      text: "Tormenta",
+      text: "Storm",
       icon: "fa-solid fa-cloud-bolt",
       background: "yellow"
     }
@@ -165,7 +165,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   onTabChange(event: MatTabChangeEvent) {
-      this.sitePerformanceComponent.refreshChart(event.index);
+    this.sitePerformanceComponent.refreshChart(event.index);
   }
 
   ngOnInit(): void {

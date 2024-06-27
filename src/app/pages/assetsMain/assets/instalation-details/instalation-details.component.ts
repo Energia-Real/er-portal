@@ -18,7 +18,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit{
   Highcharts: typeof Highcharts = Highcharts;
   images: string[] = [];
   renderedImage: string | null = null;
-
+ materialIcon: string = 'help_outline'
 
   
   ngOnInit(): void {
@@ -33,7 +33,4 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit{
     const canvas: HTMLCanvasElement = event.target as HTMLCanvasElement;
     this.renderedImage = canvas.toDataURL('image/png');
   }
-
-
-  
 }
