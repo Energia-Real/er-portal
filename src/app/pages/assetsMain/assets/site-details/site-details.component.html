@@ -3,23 +3,23 @@
     <div class="col-md-6 mb-3 mb-lg-0">
       <div class="c-card-info" *ngIf="!showAlert else notData">
         <div class="card-info" *ngFor="let data of siteResponse">
-          <app-info-card [info]="data" [materialIconName]="materialIcon"></app-info-card>
+          <app-info-card [info]="data" [materialIconName]="materialIcon" [tooltipText]="data.tooltip"></app-info-card>
         </div>
       </div>
     </div>
 
     <div class="col-md-6 text-center" *ngIf="siteResponse && urlMap">
-      <p *ngIf="assetData.latitude">Mapa cargado utilizando las siguientes coordenadas: <br> Latitud: <span
-          class="color-EE5427">{{ assetData.latitude }}</span>, Longitud: <span class="color-EE5427">{{
+      <p *ngIf="assetData.latitude">Map loaded using the following coordinates: <br> Latitude: <span
+          class="color-EE5427">{{ assetData.latitude }}</span>, Length: <span class="color-EE5427">{{
           assetData.longitude }}</span></p>
-      <p *ngIf="!assetData.latitude">No es posible cargar el mapa debido a la falta de coordenadas de latitud y
-        longitud.</p>
+      <p *ngIf="!assetData.latitude">Unable to load map due to lack of latitude and longitude coordinates.</p>
 
       <div class="loader-overlay" *ngIf="loaderMap">
         <div class="loader"></div>
       </div>
 
-      <iframe class="iframe" *ngIf="!loaderMap" height="460" frameborder="0" referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
+      <iframe class="iframe" *ngIf="!loaderMap" height="400" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
+        [src]="urlMap" allowfullscreen>
       </iframe>
     </div>
   </div>
