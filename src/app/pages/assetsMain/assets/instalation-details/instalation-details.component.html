@@ -4,15 +4,9 @@
             No data available!
           </div>
           
-        <pdf-viewer *ngIf="pdfSrc" 
-            class="pdf"
-            [src]="pdfSrc"
-            [render-text]="true"
-            [original-size]="false"
-            [zoom-scale]="'page-fit'"
-            [show-borders]="true"
-            (page-rendered)="onPageRendered($event)">
-        </pdf-viewer> 
+          <div *ngIf="pdfSrc">
+            <iframe class="pdf" [src]="pdfSrc"  allow="autoplay"></iframe>
+          </div>
         <div *ngIf="renderedImage">
             <ngx-image-zoom 
               [thumbImage]="renderedImage"
