@@ -29,7 +29,6 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Tu código actual después de la vista inicial
   }
 
   onPageRendered(event: CustomEvent): void {

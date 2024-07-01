@@ -2,23 +2,10 @@
     <div class="col-md-8 c-graph">
         <div *ngIf="showAlert" class="alert alert-warning">
             No data available!
-          </div>
-          
+          </div>        
           <div *ngIf="pdfSrc">
             <iframe class="pdf" [src]="pdfSrc"  allow="autoplay"></iframe>
-          </div>
-        <div *ngIf="renderedImage">
-            <ngx-image-zoom 
-              [thumbImage]="renderedImage"
-              [fullImage]="renderedImage"
-              [zoomMode]="'hover'"
-              [magnification]="2"
-              [enableScrollZoom]="true"
-              [scrollStep]="0.1"
-              [zoomLevel]="1"
-              class="ngx-image">
-            </ngx-image-zoom>
-          </div>      
+          </div>     
     </div>
     
     <div class="col-md-4">
