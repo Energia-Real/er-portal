@@ -24,8 +24,8 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    const oneDriveLink = this.convertToEmbedUrl('https://netorgft1186079-my.sharepoint.com/personal/sh_energiareal_mx/_layouts/15/onedrive.aspx?listurl=https%3A%2F%2Fnetorgft1186079%2Esharepoint%2Ecom%2Fsites%2FOperacionesER%2FShared%20Documents&viewid=346b4a7d%2D5e25%2D4195%2Db9ab%2D02f2d56a98a0&id=%2Fsites%2FOperacionesER%2FShared%20Documents%2FCentrales%20El%C3%A9ctricas%20Operando%2FMerco%2FMerco%20Pilares%2F06%20Cierre%20Obra%2F03%20Proyecto%20As%2DBuilt%2F03%20Planos%2F1%2E0%2E0%2EImplantaci%C3%B3n%20general%20Merco%20Pilares%20As%20Built%2D01%2Epdf&parent=%2Fsites%2FOperacionesER%2FShared%20Documents%2FCentrales%20El%C3%A9ctricas%20Operando%2FMerco%2FMerco%20Pilares%2F06%20Cierre%20Obra%2F03%20Proyecto%20As%2DBuilt%2F03%20Planos&parentview=0&OR=Teams-HL&CT=1719603853224&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiI0OS8yNDA1MzEwMTQyMSIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D');
-    this.pdfSrc = this.sanitizeUrl(oneDriveLink);
+    const googleDriveLink = 'https://drive.google.com/file/d/1lgQftv0wuVvwhkUfbWtuRCWHs84A_KL6/view?usp=sharing';
+    this.pdfSrc = this.sanitizeUrl(this.getGoogleDriveEmbedLink(googleDriveLink));
   }
 
   ngAfterViewInit(): void {
@@ -37,14 +37,15 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
     this.renderedImage = canvas.toDataURL('image/png');
   }
 
-  private sanitizeUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  private getGoogleDriveEmbedLink(link: string): string {
+    const fileIdMatch = link.match(/[-\w]{25,}/);
+    if (fileIdMatch && fileIdMatch[0]) {
+      return `https://drive.google.com/file/d/${fileIdMatch[0]}/preview`;
+    }
+    return '';
   }
 
-  private convertToEmbedUrl(url: string): string {
-    // La conversión de URL puede necesitar ajustes específicos dependiendo del formato
-    const embedUrl = url.replace('/_layouts/15/onedrive.aspx?', '/_layouts/15/WopiFrame.aspx?')
-                        .replace('&action=default', '&action=embedview');
-    return embedUrl;
+  private sanitizeUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }
