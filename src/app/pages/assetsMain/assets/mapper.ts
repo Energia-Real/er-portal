@@ -109,16 +109,6 @@ export class Mapper {
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
 		return {
 			...response,
-			instalaciones: response.instalaciones.map((data: entity.Module, i: number) => {
-				return {
-					instalacionId: data.instalacionId,
-					moduloQty: data.moduloQty,
-					moduloBrand: data.moduloBrand,
-					moduloModel: data.moduloModel,
-					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
-					description: `${data.moduloQty}  ${data.moduloModel}`,
-				}
-			}),
 			assetStatusIcon: response.assetStatus.toLowerCase().includes('active') ? 'radio_button_checked'
 				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
 					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'
@@ -129,9 +119,50 @@ export class Mapper {
 
 	}
 
+	
+
 	static getLocalTimeOfPlaceMapper(response: entity.DataLocalTime): string {
 		const utcTime = moment.utc();
 		const localTime = utcTime.tz(response.timeZoneId);
 		return localTime.format('hh:mm A');
+	}
+
+	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
+		let instalaciones=[];
+		instalaciones.push({
+			equipmentId: 0,
+			moduloQty: 0,
+			moduloBrand: "",
+			moduloModel: "",
+			title: "Mounting Technology",
+			description: response.mountingTechnology,
+
+		});
+		instalaciones.push({
+			equipmentId: 0,
+			moduloQty: 0,
+			moduloBrand: "",
+			moduloModel: "",
+			title: "Roof Type",
+			description: response.roofType,
+
+		})
+		response.equipment.map((data: entity.Equipment, i: number) => {
+			instalaciones.push(
+				{
+					equipmentId: data.equipmentId,
+					moduloQty: data.moduloQty,
+					moduloBrand: data.moduloBrand,
+					moduloModel: data.moduloModel,
+					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
+					description: `${data.moduloQty}  ${data.moduloModel}`,
+				}
+			) 
+		})
+		
+		return {
+			...response,
+			equipment: instalaciones
+		}
 	}
 }

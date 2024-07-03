@@ -23,6 +23,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   graphicsType: 'pie' | 'bars' = 'bars';
   lineChartData!: ChartConfiguration<'bar'>['data'];
   showSitePerformance = false;
+  monthResume:any;
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     animation: {
@@ -133,16 +134,18 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getMonthResume(startDate: Date, endDate: Date) {
-    this.moduleServices.getProyectResume(this.assetData.inverterBrand[0], this.assetData.plantCode, startDate, endDate).subscribe({
+    this.moduleServices.getProyectResume("Huawei", this.assetData.plantCode, startDate, endDate).subscribe({
       next: (response) => {
-        const monthResume = response[0]?.monthresume;
-        if (!monthResume) {
+        try{
+          this.monthResume = response[0]?.monthresume;
+        }catch{
+          this.showAlert=true;
           console.error('monthresume is undefined');
-          return;
         }
+       
   
-        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
-        const seriesData = monthResume.map((item) => {
+        const inverterPowerData = this.monthResume.map((item: { inverterPower: number; }) => this.formatsService.graphFormat(item.inverterPower));
+        const seriesData = this.monthResume.map((item: { collectTime: string | number | Date; inverterPower: number; }) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
           monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
@@ -180,7 +183,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         };
   
         this.lineChartData = {
-          labels: monthResume.map((item) => {
+          labels: this.monthResume.map((item: { collectTime: string | number | Date; }) => {
             let date = new Date(item.collectTime);
             let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
             monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);

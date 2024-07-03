@@ -60,7 +60,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   getDataResponse() {
     let objData: entity.PostDataByPlant = {
-      brand: this.assetData.inverterBrand[0],
+      brand: "Huawei",
       plantCode: this.assetData.plantCode
     };
 

@@ -181,6 +181,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
     this.assetsService.getDataId(id).subscribe({
       next: (response: entity.DataPlant) => {
         this.assetData = response;
+        console.log(response)
         this.verifyInformation(response);
       },
       error: (error) => {
@@ -192,12 +193,12 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   verifyInformation(assetData: entity.DataPlant) {
-    if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') {
+    if (assetData?.plantCode && "Huawei" == 'Huawei') {
       this.showNotdata = false
-      this.getDataRespSystem({ brand: assetData.inverterBrand[0], plantCode: assetData.plantCode })
+      this.getDataRespSystem({ brand: "Huawei", plantCode: assetData.plantCode })
     } else {
       this.showNotdata = true;
-      if (assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('La información proporcionada incluye una marca del inversor que aún no ha sido implementado.');
+      if ("Huawei" != 'Huawei') this.modalMessage.push('La información proporcionada incluye una marca del inversor que aún no ha sido implementado.');
       else this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.');
       this.loadingSystem = false;
     }
