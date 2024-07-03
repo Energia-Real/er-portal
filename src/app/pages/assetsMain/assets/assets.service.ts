@@ -14,6 +14,7 @@ export class AssetsService implements OnDestroy {
 
   private API_URL = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
+  private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
@@ -133,12 +134,19 @@ export class AssetsService implements OnDestroy {
   getProyectResume(brand: string, plantCode: string, startDate: Date, endDate: Date) {
     const url = `${this.API_URL_PROXY}/integrators/proxy/GetMonthProyectResume`;
     const jsonObject = {
-      "brand": brand,
+      "brand": "brand",
       "plantCode": plantCode,
       "startDate": startDate,
       "endDate": endDate
     };
     return this.http.post<entity.ProyectResume[]>(url, jsonObject)
+  }
+
+  getInstalations(plantCode:string) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${plantCode}`;
+    return this.http.get<entity.Instalations>(url).pipe(
+      map((response) => Mapper.getInstalacionesMapper(response))
+    );
   }
 
   ngOnDestroy() {

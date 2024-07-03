@@ -256,4 +256,20 @@ export interface Module {
   moduloModel: string
 }
 
+export interface Instalations {
+  id: string
+  mountingTechnology: string
+  roofType: string
+  equipment: Equipment[]
+  equipmentPath: string
+}
+
+export interface Equipment {
+  equipmentId: number
+  moduloQty: number
+  moduloBrand: string
+  moduloModel: string
+  description?:string
+  title?:string
+}
 
