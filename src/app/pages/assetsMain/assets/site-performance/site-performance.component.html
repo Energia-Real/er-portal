@@ -1,51 +1,42 @@
-<div class="row c-global c-site-performance" *ngIf="!showAlert else notData">
+<div class="row c-global c-site-performance">
     <div class="col-md-12">
         <div class="c-data">
             <button class="btn-action-add">
+                <i class="fa-solid fa-arrows-rotate"></i>
                 Refresh Data
             </button>
-            <!-- <form [formGroup]="formFilters">
-                <div class="header">
-                    <mat-form-field appearance="outline" class="input-date">
-                        <mat-date-range-input [min]="fechaHoy" [rangePicker]="picker"
-                            [comparisonStart]="formFilters.value['start']" [comparisonEnd]="formFilters.value['end']">
-
-                            <input matStartDate placeholder="Start date" formControlName="start">
-                            <input matEndDate placeholder="End date" formControlName="end">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"
-                            [disableRipple]="true"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                </div>
-            </form> -->
+            <button class="btn-action-export" (click)="exportData()">
+                <i class="fa-solid fa-file-export"></i>
+                Export data
+            </button>
         </div>
     </div>
-    <div class="col-md-5 col-sm-12 col-lg-6" *ngIf="!showAlert else notData">
-        <div class="row">
-            <div class="col-md-6 col-lg-12 mt-2">
-                <div class="highcharts">
-                    <div class="charts">
-                        <div class="graphic-performance" *ngIf="displayChart" style="display: flex; height: 433px;">
-                            <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'"
-                                [data]="lineChartData" [options]="lineChartOptions" [legend]="lineChartLegend">
-                            </canvas>
+
+    <div class="row" *ngIf="!showAlert else notData">
+        <div class="col-md-5 col-sm-12 col-lg-6">
+            <div class="row">
+                <div class="col-md-6 col-lg-12 mt-2">
+                    <div class="highcharts">
+                        <div class="charts">
+                            <div class="graphic-performance" *ngIf="displayChart" style="display: flex; height: 433px;">
+                                <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'"
+                                    [data]="lineChartData" [options]="lineChartOptions" [legend]="lineChartLegend">
+                                </canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-
-
-    <div class="col-md-5 col-sm-12 col-lg-6 " *ngIf="!showAlert else notData">
-        <div class="row">
-            <div class="col-md-12 col-lg-12 mt-2">
-                <div class="highcharts">
-                    <div class="charts">
-                        <div class="graphic-performance" *ngIf="displayChart">
-                            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
+        <div class="col-md-5 col-sm-12 col-lg-6 ">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 mt-2">
+                    <div class="highcharts">
+                        <div class="charts">
+                            <div class="graphic-performance" *ngIf="displayChart">
+                                <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
+                            </div>
                         </div>
                     </div>
                 </div>
