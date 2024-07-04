@@ -28,8 +28,6 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    const googleDriveLink = 'https://drive.google.com/file/d/1lgQftv0wuVvwhkUfbWtuRCWHs84A_KL6/view?usp=sharing';
-    this.pdfSrc = this.sanitizeUrl(this.getGoogleDriveEmbedLink(googleDriveLink));
     this.getInstalations(this.assetData.id)
   }
 
@@ -56,7 +54,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   getInstalations(plantCode:string){
     this.assetService.getInstalations(plantCode).subscribe(data=>{
       this.instalations = data;
-      console.log(data)
+      this.pdfSrc = this.sanitizeUrl(data.equipmentPath);
     })
 
   }
