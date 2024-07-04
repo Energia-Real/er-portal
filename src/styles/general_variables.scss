@@ -7,6 +7,10 @@
     color: #EE5427;
 }
 
+.color-792430 {
+    color: #792430;
+}
+
 // INPUTS 
 .input-search {
     position: absolute;
@@ -207,6 +211,21 @@
 
 
 // BTNS 
+
+.btn-cancel {
+    border: 1px solid #D2D2D2!important;
+    color: #000000 !important;
+    border-radius: 24px;
+    padding: 5px 15px !important;
+    font-size: 14px;
+    display: block;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    transition: 150ms all ease;
+}
+
+
 .btn-action-add {
     background: #f56e46 !important;
     color: white !important;
@@ -233,7 +252,7 @@
     }
 }
 
-.btn-action-add:hover, .btn-action-export:hover {
+.btn-action-add:hover, .btn-action-export:hover, .btn-cancel:hover {
     box-shadow: 1px 1px 4px 0px #00000020;
 }
 

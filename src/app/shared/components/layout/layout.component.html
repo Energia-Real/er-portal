@@ -1,5 +1,4 @@
 <nav class="c-header border-b-2">
-  <!-- <nav class="c-header py-4 border-b-2 mb-2"> -->
   <div class="mx-10 flex justify-between items-center">
     <a href="/home" class="text-white text-sm font-semibold c-version">
       <div class="version">
@@ -12,13 +11,9 @@
           [ngClass]="{ 'text-er-orange': routeActive.includes('home') }">Home</a></li>
       <li *ngIf="userInfo?.accessTo == 'BackOffice'" class="mx-5"><a routerLink="/assets/management"
           class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Plants</a></li>
+          [ngClass]="{ 'text-er-orange': routeActive.includes('assets') }">Plants</a></li>
       <li class="mx-5"><a routerLink="/payments" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('selectPay') }">Payments</a></li>
-      <!-- <li class="mx-5"><a matTooltip="En desarrollo..." class="hover:text-gray-300 cursor-pointer"
-          >FAQ</a></li> -->
-      <!-- <li class="mx-5"><a routerLink="/" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive === 'home' }">FAQ</a></li> -->
+          [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li>
     </ul>
 
     <div class="flex">

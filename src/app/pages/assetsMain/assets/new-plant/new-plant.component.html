@@ -84,7 +84,7 @@
           </mat-form-field>
         </div>
 
-        <div class="form-group-container">
+        <div class="form-group-container mb-1">
           <p>Status:</p>
           <mat-form-field class="select-ER" appearance="outline">
             <mat-select formControlName="statusPlantId" placeholder="Status">
@@ -94,8 +94,9 @@
           </mat-form-field>
         </div>
 
-        <div class="form-group-container input-email-container">
+        <div class="form-group-container input-email-container mb-1">
           <p>Operation scheme:</p>
+
           <mat-form-field class="select-ER" appearance="outline">
             <mat-select formControlName="netZero" placeholder="Operation scheme">
               <mat-option value="" disabled>Choose one</mat-option>
@@ -189,7 +190,7 @@
 
         <div class="button-container d-flex justify-content-between pt-3">
           <div>
-            <button class="button-cancel" (click)="toBack()" type="button">Cancel</button>
+            <button class="btn-cancel" (click)="toBack()" type="button">Cancel</button>
           </div>
           <div>
             <span class="loader" *ngIf="loading"></span>

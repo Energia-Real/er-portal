@@ -1,0 +1,97 @@
+.c-modal {
+    background: #FFFFFF;
+    width: 520px;
+    height: 770px;
+    position: relative;
+    padding: 35px;
+    border: 1px solid red;
+
+    > i {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 16px;
+        transition: 300ms all ease;
+        cursor: pointer;
+    }
+
+    i:hover {
+        color: #EE5427;
+    }
+
+    .header-modal {
+        h1 {
+            font-size: 32px;
+            font-weight: 400;
+        }
+
+        p {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        span {
+            font-weight: 400;
+        }
+    }
+
+    hr {
+        margin: 20px 0;
+    }
+
+    .c-select-report {
+        border: 1px solid #E2E2E2;
+        min-height: 100px;
+        background: #F9F9F9;
+        border-radius: 16px;
+        padding: 8px 16px;
+
+        >div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .col-md-5 {
+                height: 45px;
+            }
+
+            .mat-mdc-text-field-wrapper {
+                width: 150px !important;
+            }
+
+            p {
+                color: black;
+
+                span {
+                    font-weight: 600;
+                }
+            }
+
+        }
+        span {
+            font-size: 10px;
+            margin-bottom: 0;
+            color: #898D93!important;
+        }
+    }
+
+    .add {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        .c-input {
+            width: 80%;
+        }
+
+        button {
+            background: #792430!important;
+        }
+    }
+
+    .footer-modal {
+        display: flex;
+        justify-content: center;
+        gap: 11px;
+    }
+}

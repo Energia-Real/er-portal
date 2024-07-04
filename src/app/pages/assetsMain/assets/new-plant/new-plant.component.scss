@@ -1,40 +1,52 @@
 .create-asset-main-container{
     padding: 0% 4% 4% 4%;
+
     .create-asset-form-container{
       text-align: center;
       width: 50%;
       margin: 0 auto;
       padding-top: 20px;
+
       .create-asset-header-container{
-        img{
+        img {
           margin-bottom: 20px;
         }
-        h2{
+
+        h2 {
           font-size: 30px;
           margin-bottom: 20px;
         }
-        p{
+
+        p {
           margin-bottom: 30px;
         }
       }
+
       .create-asset-inputs-component{
         .form-group-container{
           text-align: left;
-          margin-bottom: 15px;
+          margin-bottom: 8px;
         }
+
         input, select{
           height: 45px;
           width: 100%;
         }
+
         .button-container{
           padding-top: 5px;
         }
       }
+      
       .coordinates-container{
         display: flex;
         justify-content: space-between;
+
         .coordinates-input-container{
           width: 48%;
+          p {
+            color: #b84d2d;
+          }
         }
       }
     }
@@ -44,6 +56,7 @@
     color: #E30613;
     min-height: 30px;
     text-align: left;
+
     p {
       margin: 0;
     }
