@@ -3,6 +3,12 @@ body {
   height: 100%;
 }
 
+
+* {
+  scrollbar-width: thin !important;
+}
+
+
 body {
   font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
 }
@@ -82,6 +88,10 @@ span {
     width: 325px;
     padding: 5px 15px;
     outline: none;
+  }
+
+  p {
+    color: #b84d2d;
   }
 }
 
@@ -166,18 +176,6 @@ select {
   justify-content: space-between !important;
 }
 
-.button-cancel {
-  box-shadow: 3px 3px 4px 0px #00000040;
-  background: rgb(243, 37, 37) !important;
-  color: white !important;
-  border-radius: 24px;
-  border: 1px solid #E2E2E2;
-  padding: 10px 24px;
-  display: block;
-  margin: 0 auto;
-  border: none;
-  cursor: pointer;
-}
 
 .swal2-confirm {
   background-color: #EE5427 !important;
@@ -413,8 +411,6 @@ select {
 
   .c-content {
     margin-top: 50px;
-
-
   }
 }
 
@@ -452,7 +448,7 @@ select {
   display: flex;
   justify-content: space-between;
   text-align: left;
-  margin-bottom: 8px;
+  // margin-bottom: 8px;
 
   .c-input {
     width: 48%;
@@ -462,6 +458,11 @@ select {
 .c-input {
   text-align: left;
   margin-bottom: 8px;
+
+  p {
+    color: #b84d2d;
+    font-weight: 500;
+  }
 }
 
 .mat-mdc-option.mdc-list-item {
@@ -481,6 +482,17 @@ select {
 
 *[class*=mat-mdc-tab-group] {
   width: 100% !important;
+}
+
+*[class*=mat-mdc-form-field] {
+  .mat-mdc-select-multiple {
+    padding: 0;
+    border-width: 0 !important;
+    font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
+    letter-spacing: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 
 
@@ -811,8 +823,8 @@ input[type="number"]:focus {
   color: red;
 }
 
-* {
-  scrollbar-width: thin !important;
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+  color: #EE5427!important;
 }
 
 @media screen and (max-width: 1390px) {
@@ -827,21 +839,22 @@ input[type="number"]:focus {
   }
 
   .c-card-info .card-info {
-    width: 100%!important;
+    width: 100% !important;
   }
 }
 
 @media screen and (max-width: 875px) {
 
-  .c-install  {
+  .c-install {
     .pdf {
-      height: 450px!important;
+      height: 450px !important;
     }
   }
 
   .c-card-info .card-info {
-    width: 100%!important;
+    width: 100% !important;
   }
+
   .form-padding {
     padding: 0 25px !important;
   }

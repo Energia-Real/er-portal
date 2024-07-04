@@ -31,3 +31,8 @@ export interface DataRespSavingDetailsList {
   clientId: number;
   nombre: string;
 }
+
+export interface Month {
+  value: number;
+  viewValue: string;
+}
