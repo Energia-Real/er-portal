@@ -7,6 +7,10 @@
     color: #EE5427;
 }
 
+.color-792430 {
+    color: #792430;
+}
+
 // INPUTS 
 .input-search {
     position: absolute;
@@ -27,8 +31,10 @@
     }
 }
 
+
 .input-ER {
     width: 100% !important;
+
     .mat-mdc-text-field-wrapper {
         padding: 0 !important;
         border: none !important;
@@ -83,6 +89,82 @@
     font-size: 20px;
 }
 
+.input-toggle {
+    border-radius: 25px !important;
+    height: 35px !important;
+    background: white;
+
+    .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+        height: 35px;
+        display: flex;
+        align-items: center;
+        background: white;
+    }
+}
+
+
+.select-mount {
+    width: 100% !important;
+    height: 35px !important;
+
+    border-color: none !important;
+    outline: none !important;
+
+    .mat-mdc-text-field-wrapper {
+        padding: 0 !important;
+        border: none !important;
+        outline: none !important;
+        border-color: none !important;
+    }
+
+    .mat-mdc-select {
+        outline: none !important;
+        border-color: none !important;
+        outline-offset: 0px !important;
+    }
+
+    .mat-mdc-select-multiple {
+        outline: none !important;
+        border-color: none !important;
+        outline-offset: 0px !important;
+    }
+
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex {
+        height: 35px !important;
+        display: flex;
+        align-items: center;
+        outline: none !important;
+        border-color: none !important;
+        outline-offset: 0px !important;
+    }
+}
+
+.mat-option:focus,
+.mat-option:hover,
+.mat-option[aria-selected="true"] {
+    background: none !important;
+    outline: none !important;
+    border-color: none !important;
+}
+
+[type=text]:focus,
+[type=email]:focus,
+[type=url]:focus,
+[type=password]:focus,
+[type=number]:focus,
+[type=date]:focus,
+[type=datetime-local]:focus,
+[type=month]:focus,
+[type=search]:focus,
+[type=tel]:focus,
+[type=time]:focus,
+[type=week]:focus,
+[multiple]:focus,
+textarea:focus,
+select:focus {
+    --tw-ring-color: transparent;
+}
+
 .input-date {
     width: 100%;
     border-radius: 25px;
@@ -92,6 +174,8 @@
         font-size: 14px;
         font-weight: 500;
         letter-spacing: .5px;
+        width: 70px;
+        // max-width: ;
     }
 
     .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
@@ -138,7 +222,7 @@
     height: 35px !important;
     width: 100%;
     border-radius: 25px;
-    
+
     mat-icon {
         color: #EE5427 !important;
         margin-right: 10px;
@@ -207,6 +291,21 @@
 
 
 // BTNS 
+
+.btn-cancel {
+    border: 1px solid #D2D2D2!important;
+    color: #000000 !important;
+    border-radius: 24px;
+    padding: 5px 15px !important;
+    font-size: 14px;
+    display: block;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    transition: 150ms all ease;
+}
+
+
 .btn-action-add {
     background: #f56e46 !important;
     color: white !important;
@@ -214,20 +313,63 @@
     font-weight: 500;
     letter-spacing: .5px;
     padding: 5px 15px !important;
-    box-shadow: 3px 3px 4px 0px #00000040;
     border-radius: 100px !important;
     border: none !important;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    transition: 150ms all ease;
+    height: 35px;
+    // box-shadow: 3px 3px 4px 0px #00000040;
+    user-select: none!important;
+    outline: none!important;
+    i, span {
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+        width: 15px;
+        height: 15px;
+    }
+}
+
+.btn-action-add:hover, .btn-action-export:hover, .btn-cancel:hover {
+    box-shadow: 2px 2px 4px 0px #00000020;
+}
+
+
+.btn-action-cancel {
+    background: #a7a7a7 !important;
+    color: white !important;
+    font-size: 14px;
+    letter-spacing: .5px;
+    font-weight: 500;
+    padding: 5px 15px !important;
+    box-shadow: 3px 3px 4px 0px #00000040;
+    border-radius: 100px !important;
+    border: none !important;
+}
+
+.btn-action-export {
+    border: 1px solid #D2D2D2;
+    transition: 150ms all ease;
+    background: white !important;
+    color: black !important;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    padding: 5px 15px !important;
+    border-radius: 100px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     height: 35px;
 
     i {
-        font-size: 18px;
+        font-size: 15px;
         margin: 0;
         padding: 0;
-        width: 18px;
-        height: 18px;
+        width: 15px;
+        height: 15px;
     }
 }
 

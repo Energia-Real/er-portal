@@ -23,15 +23,18 @@
                 </div>
             </div>
         </div>
+
         <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{ savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
+                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
+                        savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
                     <p class="text-sm" i18n>Total Energy <br> Consumption</p>
                 </div>
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{ savingsDetails.totalEnergyProduction }} <br> kWh</h2>
+                    <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
+                        savingsDetails.totalEnergyProduction }} <br> kWh</h2>
                     <p class="text-sm" i18n>Energy <br> Production</p>
                 </div>
                 <div>
@@ -54,8 +57,8 @@
                 </div>
             </div>
         </div>
-        
-        <div class="table-container-scroll mt-3 mb-5" style="max-height: calc(100% - 340px);">
+
+        <div class="table-container-scroll mt-3 mb-5" style="max-height: calc(100% - 350px);">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
                 <!-- <ng-container matColumnDef="select">
@@ -71,42 +74,57 @@
                         </mat-checkbox>
                     </td>
                 </ng-container> -->
-    
+
                 <ng-container matColumnDef="siteName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header ><p class="header-table">Site name</p></th>
-                    <td mat-cell *matCellDef="let element" class="column-ipervinculo" (click)="goDetails(element.siteId)"> {{ element.siteName }} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="header-table">Site name</p>
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="column-ipervinculo"
+                        (click)="goDetails(element.siteId)"> {{ element.siteName }} </td>
                 </ng-container>
-    
+
                 <ng-container matColumnDef="energyConsumption">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header><p class="header-table">Energy Production</p> </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="header-table">Energy Production</p>
+                    </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }} kWh</div>
+                        <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }} kWh
+                        </div>
                     </td>
                 </ng-container>
-    
+
                 <ng-container matColumnDef="energyProduction">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">Energy Consumption</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="header-table">Energy Consumption</p>
+                    </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} kWh </div>
+                        <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} kWh
+                        </div>
                     </td>
                 </ng-container>
-    
+
                 <ng-container matColumnDef="solarCoverage">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">% Solar Coverage</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="header-table">% Solar Coverage</p>
+                    </th>
                     <td mat-cell *matCellDef="let element">
                         <div *ngIf="element?.solarCoverage else notDataTable"> {{ element.solarCoverage }}% </div>
                     </td>
                 </ng-container>
-                
+
                 <ng-container matColumnDef="co2Saving">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">tCO2 Savings</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="header-table">tCO2 Savings</p>
+                    </th>
                     <td mat-cell *matCellDef="let element">
                         <div *ngIf="element?.co2Saving else notDataTable"> {{ element.co2Saving }} </div>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="siteStatus">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> <p class="header-table">Site Status</p></th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <p class="header-table">Site Status</p>
+                    </th>
                     <td mat-cell *matCellDef="let element">
                         <div class="table-icon" *ngIf="element.siteStatus=='Active'">
                             <mat-icon matTooltip="Active" class="table-check">radio_button_checked</mat-icon>
@@ -127,22 +145,22 @@
                         </div>
                         <div class="table-icon" *ngIf="element.siteStatus==null">
                             <mat-icon matTooltip="Unknown status">help_outline</mat-icon>
-                        </div>                    
+                        </div>
                     </td>
                 </ng-container>
-    
+
                 <tr *matNoDataRow>
                     <td class="mat-cell" [attr.colspan]="displayedColumns.length">
                         <h5 class="text-center my-5">No results found.</h5>
                     </td>
                 </tr>
-    
+
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
             </table>
         </div>
     </div>
-    
+
     <div class="c-graph">
         <!-- <div class="flex justify-end">
             <button mat-stroked-button>
@@ -150,25 +168,53 @@
                 <mat-icon>favorite</mat-icon>
             </button>
         </div> -->
+          
+        <div class="row c-filters">
+            <div class="col-md-4 col-sm-4">
+                <mat-button-toggle-group [formControl]="dayOrMount" class="input-toggle" name="fontStyle"
+                    aria-label="Font Style">
+                    <mat-button-toggle value="day">day</mat-button-toggle>
+                    <mat-button-toggle value="month">month</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
 
-        <div class="row">
-            <div class="col-md-4">
-                <mat-form-field appearance="outline" class="input-date">
-                    <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate placeholder="Start date">
-                        <input matEndDate placeholder="End date">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker" [disableRipple]="true"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
+            <div class="col-md-8 col-sm-8">
+                <div class="c-input" *ngIf="dayOrMount.value == 'month'">
+                    <mat-form-field class="select-mount" appearance="outline">
+                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
+                            (selectionChange)="onSelectionChange($event)">
+                            <mat-option *ngFor="let month of months" [value]="month.value"
+                                [disabled]="isDisabled(month.value)">
+                                {{ month.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <form [formGroup]="formFilters" *ngIf="dayOrMount.value == 'day'">
+                    <mat-form-field appearance="outline" class="input-date">
+                        <mat-date-range-input [rangePicker]="date"
+                            [comparisonStart]="formFilters.value['rangeDateStart']"
+                            [comparisonEnd]="formFilters.value['rangeDateEnd']">
+                            <input matStartDate placeholder="Start date" formControlName="rangeDateStart" />
+                            <input matEndDate placeholder="End date" formControlName="rangeDateEnd" />
+                        </mat-date-range-input>
+    
+                        <mat-datepicker-toggle matIconSuffix
+                            [for]="date"></mat-datepicker-toggle>
+                        <mat-date-range-picker #date></mat-date-range-picker>
+                    </mat-form-field>
+                </form>
+
+                <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''" class="btn-action-add" (click)="searchWithFilters()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </div>
         </div>
 
         <div class="graph" style="height: calc(100vh - 155px);">
-            <highcharts-chart 
-                [Highcharts]="Highcharts"
-                [options]="chartOptions"
-                class="h-max w-full block" style="height: calc(100vh - 175px);">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block"
+                style="height: calc(100vh - 175px);">
             </highcharts-chart>
         </div>
     </div>
