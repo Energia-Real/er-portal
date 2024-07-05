@@ -7,7 +7,7 @@
     margin-top: 5px;
     line-height: 15px
   }
-  
+
 
   .c-client-list {
     display: flex;
@@ -20,9 +20,33 @@
     }
   }
 
+  .c-filters {
+    height: 46px;
+
+    .col-md-8 {
+
+      display: flex;
+      justify-content: end;
+      gap: 15px;
+
+      .c-input, form {
+        width: 50%;
+        display: flex;
+      }
+
+      > button {
+        gap: 0;
+        width: 10%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
   .c-graph {
     >.row {
-      margin-bottom: 11px;
+      // margin-bottom: 11px;
       display: flex;
       justify-content: flex-end;
     }

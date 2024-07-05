@@ -45,13 +45,13 @@
             class="flex items-center justify-center sm:justify-end px-6 py-3 space-x-3 bg-gray-50 dark:bg-black dark:bg-opacity-10">
 
             <ng-container *ngIf="data.actions?.cancel?.show">
-                <button class="btn-action-cancel" mat-stroked-button [matDialogClose]="false">
+                <button class="btn-cancel" [matDialogClose]="false">
                     {{data?.actions?.cancel?.label}}
                 </button>
             </ng-container>
 
             <ng-container *ngIf="data?.actions?.confirm?.show">
-                <button class="btn-action-add" mat-flat-button [matDialogClose]="true">
+                <button class="btn-action-add" [matDialogClose]="true">
                     {{data?.actions?.confirm?.label}}
                 </button>
             </ng-container>

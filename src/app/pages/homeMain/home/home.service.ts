@@ -17,8 +17,10 @@ export class HomeService {
     public formatsService: FormatsService
   ) { }
 
-  getDataClients(): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${this.API_URL_CLIENTS}/projects/savingdetails`;
+  getDataClients(filters?:string): Observable<entity.DataRespSavingDetailsMapper> {
+    const url = `${this.API_URL_CLIENTS}/projects/savingdetails${filters ? `?${filters}` : ''}`;
+
+    console.log(url);
 
     return this.http.get<entity.DataRespSavingDetails[]>(url).pipe(
 			map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
