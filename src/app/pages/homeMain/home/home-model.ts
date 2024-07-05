@@ -33,6 +33,6 @@ export interface DataRespSavingDetailsList {
 }
 
 export interface Month {
-  value: number;
+  value: string;
   viewValue: string;
 }

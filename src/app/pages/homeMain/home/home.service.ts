@@ -18,7 +18,7 @@ export class HomeService {
   ) { }
 
   getDataClients(filters?:string): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${this.API_URL_CLIENTS}/projects/savingdetails/${filters ? `?${filters}` : ''}`;
+    const url = `${this.API_URL_CLIENTS}/projects/savingdetails${filters ? `?${filters}` : ''}`;
 
     console.log(url);
 

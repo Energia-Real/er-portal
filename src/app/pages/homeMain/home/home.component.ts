@@ -18,7 +18,6 @@ import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 
 
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -44,25 +43,26 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   months: entity.Month[] = [
-    { value: 1, viewValue: 'Enero' },
-    { value: 2, viewValue: 'Febrero' },
-    { value: 3, viewValue: 'Marzo' },
-    { value: 4, viewValue: 'Abril' },
-    { value: 5, viewValue: 'Mayo' },
-    { value: 6, viewValue: 'Junio' },
-    { value: 7, viewValue: 'Julio' },
-    { value: 8, viewValue: 'Agosto' },
-    { value: 9, viewValue: 'Septiembre' },
-    { value: 10, viewValue: 'Octubre' },
-    { value: 11, viewValue: 'Noviembre' },
-    { value: 12, viewValue: 'Diciembre' }
+    { value: '01', viewValue: 'Enero' },
+    { value: '02', viewValue: 'Febrero' },
+    { value: '03', viewValue: 'Marzo' },
+    { value: '04', viewValue: 'Abril' },
+    { value: '05', viewValue: 'Mayo' },
+    { value: '06', viewValue: 'Junio' },
+    { value: '07', viewValue: 'Julio' },
+    { value: '08', viewValue: 'Agosto' },
+    { value: '09', viewValue: 'Septiembre' },
+    { value: '10', viewValue: 'Octubre' },
+    { value: '11', viewValue: 'Noviembre' },
+    { value: '12', viewValue: 'Diciembre' }
   ];
 
   currentYear = new Date().getFullYear();
   dayOrMount = new FormControl('month');
-  selectedMonths: number[] = [];
-
+  selectedMonths: any[] = [];
+  selectedEndMonth: number = new Date().getMonth() + 1;
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
+
   Highcharts: typeof Highcharts = Highcharts;
 
   chartOptions: Highcharts.Options = {
@@ -132,43 +132,39 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    this.getDataResponse();
+    this.setMounts();
+    this.getDataClientsList();
+  }
+
+  setMounts() {
+    this.selectedMonths = ['01', this.selectedEndMonth.toString().padStart(2, '0')];
+    this.searchWithFilters()
   }
 
   ngAfterViewInit(): void {
     this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe(content => {
-      console.log(content);
+      this.searchWithFilters()
     })
-  }
-
-  getDataResponse() {
-    this.getDataClients();
-    this.getDataClientsList();
   }
 
   searchWithFilters() {
     let filters = "";
 
-    // console.log(this.selectedMonths);
-    // console.log(this.formFilters.value);
-    
-    if (this.dayOrMount?.value == 'day') {
-      filters += `startDay=${moment(this.formFilters?.get('rangeDateStart')?.value).format('DD/MM/YYYY')}&`,
-        filters += `endDate=${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('DD/MM/YYYY')}&`
-        filters += `requestType=day`
-    } else {
-      console.log(this.selectedMonths);
-      filters += `startDay=${this.selectedMonths[0]}/${this.currentYear}&endDate=${this.selectedMonths[1]}/${this.currentYear}&`
-      filters += `requestType=month`
+    if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
+      filters += `requestType=Day&`
+      filters += `startDate=${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}&`,
+        filters += `endDate=${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
+      this.getDataClients(filters)
 
+    } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
+      filters += `requestType=Month&`
+      filters += `startDate=${this.selectedMonths[0]}/${this.currentYear}&endDate=${this.selectedMonths[1]}/${this.currentYear}`
+      this.getDataClients(filters)
     }
-
-    console.log(filters);
-    this.getDataClients(filters)
-    
   }
 
   onSelectionChange(event: any): void {
@@ -176,13 +172,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     else this.selectedMonths = event.value;
   }
 
-  isDisabled(month: number): boolean {
+  isDisabled(month: any): boolean {
     if (this.selectedMonths.length === 0) return false;
     else if (this.selectedMonths.length === 1) return month < this.selectedMonths[0];
     else return !this.selectedMonths.includes(month);
   }
 
-  getDataClients(fitlers?:string) {
+  getDataClients(fitlers?: string) {
     this.homeService.getDataClients(fitlers).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
@@ -233,6 +229,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goDetails(id: string) {
     this.router.navigateByUrl(`/assets/details/${id}`)
+  }
+
+  get searchFilters() {
+    if (!this.dayOrMount) {
+      return false;
+    }
+
+    const daySelected = this.dayOrMount.value === 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value;
+    const monthSelected = this.dayOrMount.value === 'month' && this.selectedMonths.length > 0;
+
+    return daySelected || monthSelected;
   }
 
   ngOnDestroy(): void {

@@ -181,7 +181,7 @@
             <div class="col-md-8 col-sm-8">
                 <div class="c-input" *ngIf="dayOrMount.value == 'month'">
                     <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Start and End" [(value)]="selectedMonths" multiple
+                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
                             (selectionChange)="onSelectionChange($event)">
                             <mat-option *ngFor="let month of months" [value]="month.value"
                                 [disabled]="isDisabled(month.value)">
@@ -206,7 +206,7 @@
                     </mat-form-field>
                 </form>
 
-                <button class="btn-action-add" (click)="searchWithFilters()">
+                <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''" class="btn-action-add" (click)="searchWithFilters()">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </div>
