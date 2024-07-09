@@ -61,19 +61,23 @@
         <div class="table-container-scroll mt-3 mb-5" style="max-height: calc(100% - 350px);">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
-                <!-- <ng-container matColumnDef="select">
+                <ng-container matColumnDef="select">
                     <th mat-header-cell *matHeaderCellDef>
-                        <mat-checkbox class="check-color" (change)="$event ? toggleAllRows() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        <mat-checkbox class="check-color" 
+                        (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected() ||allRowsInit"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                         </mat-checkbox>
                     </th>
                     <td mat-cell *matCellDef="let row">
-                        <mat-checkbox class="check-color" (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                            [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                        <mat-checkbox class="check-color" 
+                        (click)="$event.stopPropagation()" 
+                        (change)="$event ? toggleRow(row) : null"
+                        [checked]="selection.isSelected(row) ||allRowsInit" 
+                        [aria-label]="checkboxLabel(row)">
                         </mat-checkbox>
                     </td>
-                </ng-container> -->
+                </ng-container>
 
                 <ng-container matColumnDef="siteName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -212,10 +216,10 @@
             </div>
         </div>
 
-        <div class="graph" style="height: calc(100vh - 155px);">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" class="h-max w-full block"
-                style="height: calc(100vh - 175px);">
-            </highcharts-chart>
+        <div class="graph" >
+            <canvas    baseChart [type]="'bar'"
+                [data]="lineChartData" [options]="lineChartOptions" >
+            </canvas>
         </div>
     </div>
 </main>
