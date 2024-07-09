@@ -12,8 +12,8 @@
         </div>
     </div>
 
-    <div class="row" *ngIf="!showAlert else notData">
-        <div class="col-md-5 col-sm-12 col-lg-6">
+    <ng-container  *ngIf="!showAlert else notData">
+        <div class="col-md-6 col-sm-12 col-lg-6">
             <div class="row">
                 <div class="col-md-6 col-lg-12 mt-2">
                     <div class="highcharts">
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="col-md-5 col-sm-12 col-lg-6 ">
+        <div class="col-md-6 col-sm-12 col-lg-6 ">
             <div class="row">
                 <div class="col-md-12 col-lg-12 mt-2">
                     <div class="highcharts">
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </ng-container>
 </div>
 
 <ng-template #notData>

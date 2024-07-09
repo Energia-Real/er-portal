@@ -2,49 +2,49 @@
     <div class="register-form-container">
       <div class="register-header-container">
         <img src="../../../assets/svg/logo.svg" alt="logo energia real">
-        <h2>Crear cuenta</h2>
-        <p>Ingresa tus datos para crear tu cuenta</p>
+        <h2>Create Account</h2>
+        <p>Enter your details to create your account</p>
       </div>
       <div class="alert alert-danger" role="alert" *ngIf="errorCreate">
         {{messageError}}
       </div>
       <div class="alert alert-success" role="alert" *ngIf="successfulCreate">
-        ¡Cuenta creada con éxito! <br>
-        Serás redireccionado al login
+        ¡Account Created successfully! <br>
+        You will be redirected to the logi
       </div>
       <div class="register-inputs-component">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <div class="form-group-container">
-            <input type="text" id="nombre" formControlName="name" required placeholder="Nombre">
+            <input type="text" id="nombre" formControlName="name" required placeholder="Name">
             <div class="message-error">
-              <p *ngIf="registerForm.get('name')?.value == '' && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)">Debe agregar un nombre</p>
+              <p *ngIf="registerForm.get('name')?.value == '' && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)">You must add a name</p>
             </div>
           </div>
       
           <div class="form-group-container">
-            <input type="text" id="apellido" formControlName="lastname" required placeholder="Apellido">
+            <input type="text" id="apellido" formControlName="lastname" required placeholder="Last name">
             <div class="message-error">
-              <p *ngIf="registerForm.get('lastname')?.value == '' && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)">Debe agregar un apellido</p>
+              <p *ngIf="registerForm.get('lastname')?.value == '' && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)">You must add a last name</p>
             </div>
           </div>
       
           <div class="form-group-container input-email-container">
-            <input type="email" id="email" formControlName="email" required placeholder="Correo">
+            <input type="email" id="email" formControlName="email" required placeholder="Email">
             <div class="message-error">
-              <p *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">Correo inválido</p>
+              <p *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">Invalid email</p>
             </div>
           </div>
       
           <div class="form-group-container">
             <div class="password-input-container">
-              <input type="{{ showPassword ? 'text' : 'password' }}" id="password" formControlName="password" required placeholder="Contraseña">
+              <input type="{{ showPassword ? 'text' : 'password' }}" id="password" formControlName="password" required placeholder="Password">
               <span class="eye-icon" (click)="togglePasswordVisibility(1)">
                 <img *ngIf="showPassword" src="./assets/svg/open-eye.svg" alt="Eye Open">
                 <img *ngIf="!showPassword" src="./assets/svg/closed-eye.svg" alt="Eye Closed">
               </span>
             </div>
             <div class="message-error">
-              <p *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres</p>
+              <p *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">The password must have at least one uppercase letter, one lowercase letter, one number and one special character, with a minimum length of 8 characters</p>
             </div>
           </div>
       
@@ -57,18 +57,18 @@
               </span>
             </div>
             <div class="message-error">
-              <p *ngIf="registerForm.get('passwordConfirm')?.hasError('pattern') && (registerForm.get('passwordConfirm')?.dirty || registerForm.get('passwordConfirm')?.touched)">La contraseña debe tener al menos una mayúscula, una minúscula, un número y un carácter especial, con una longitud mínima de 8 caracteres</p>
-              <p *ngIf="registerForm.get('passwordConfirm')?.hasError('noCoincide')">Las contraseñas no coinciden</p>
+              <p *ngIf="registerForm.get('passwordConfirm')?.hasError('pattern') && (registerForm.get('passwordConfirm')?.dirty || registerForm.get('passwordConfirm')?.touched)">The password must have at least one uppercase letter, one lowercase letter, one number and one special character, with a minimum length of 8 characters</p>
+              <p *ngIf="registerForm.get('passwordConfirm')?.hasError('noCoincide')">Passwords do not match</p>
             </div>
           </div>
           <div class="button-container">
             <span class="loader" *ngIf="loading"></span>
-            <button class="button-primary" *ngIf="!loading" type="submit" [disabled]="registerForm.invalid || buttonDisabled">Crear cuenta</button>
+            <button class="button-primary" *ngIf="!loading" type="submit" [disabled]="registerForm.invalid || buttonDisabled">Create Account</button>
           </div>
         </form>
       </div>
       <div class="register-footer-container">
-        <a routerLink="/">¿Ya tienes una cuenta?</a>
+        <a routerLink="/">Do you already have an account?</a>
       </div>
     </div>
   </div>  
