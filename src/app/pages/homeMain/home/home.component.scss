@@ -53,6 +53,12 @@
 
     .graph {
       height: 690px;
+      height: calc(100vh - 155px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
     }
 
     highcharts-chart {
