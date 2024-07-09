@@ -31,7 +31,7 @@
           <label class="input-search ">
             <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
           </label>
-          <input class="mt-1 block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
+          <input class="block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
             placeholder="Search by site name" [formControl]="searchBar">
         </form>
       </div>
@@ -110,11 +110,11 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="googleMapAdress">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header i18n> Address </th>
+        <ng-container matColumnDef="googleMapAdress" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header i18n > Address </th>
           <td mat-cell *matCellDef="let element">
-            <div *ngIf="element?.link else notDataTable">
-              <a [href]="element.link" target="_blank" class="truncate">{{ element.link }}</a>
+            <div class="column-maps" *ngIf="element?.link else notDataTable">
+              <a [href]="element.link" target="_blank" class="truncate" style="width: 170px;">{{ element.link }}</a>
             </div>
           </td>
         </ng-container>

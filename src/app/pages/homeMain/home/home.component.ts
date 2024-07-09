@@ -34,15 +34,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
   lineChartData!: ChartConfiguration<'bar'>['data'];
-   labels = [];
-  data=[5,4,3]
+  labels = [];
+  data = [5, 4, 3]
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   displayedColumns: string[] = [
-    'select',
+    // 'select',
     'siteName',
     'energyConsumption',
     'energyProduction',
@@ -67,19 +67,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     plugins: {
       tooltip: {
         usePointStyle: true,
-        callbacks:{
-          label: function(context) {
+        callbacks: {
+          label: function (context) {
             const value = Math.abs(context.raw as number);
             return `${context.dataset.label}: ${value}`;
           }
         }
       },
-      
+
       legend: {
         labels: {
           usePointStyle: true,
         },
-        position:"bottom",
+        position: "bottom",
         onHover: (event, legendItem, legend) => {
           const index = legendItem.datasetIndex;
           const chart = legend.chart;
@@ -95,9 +95,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
           chart.data.datasets.forEach((dataset, i) => {
             if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)'; 
+              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
             } else {
-              dataset.backgroundColor = 'rgba(87, 177, 177, 1)'; 
+              dataset.backgroundColor = 'rgba(87, 177, 177, 1)';
             }
           });
 
@@ -105,18 +105,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     },
-    
+
     scales: {
       x: {
         stacked: true,
         grid: {
-          display: false, 
+          display: false,
         },
       },
       y: {
         ticks: {
-          callback: function(value, index, values) {
-            return Math.abs(Number(value)) + ' kWh'; 
+          callback: function (value, index, values) {
+            return Math.abs(Number(value)) + ' kWh';
           },
         },
         stacked: true,
@@ -129,18 +129,18 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   months: entity.Month[] = [
-    { value: '01', viewValue: 'Enero' },
-    { value: '02', viewValue: 'Febrero' },
-    { value: '03', viewValue: 'Marzo' },
-    { value: '04', viewValue: 'Abril' },
-    { value: '05', viewValue: 'Mayo' },
-    { value: '06', viewValue: 'Junio' },
-    { value: '07', viewValue: 'Julio' },
-    { value: '08', viewValue: 'Agosto' },
-    { value: '09', viewValue: 'Septiembre' },
-    { value: '10', viewValue: 'Octubre' },
-    { value: '11', viewValue: 'Noviembre' },
-    { value: '12', viewValue: 'Diciembre' }
+    { value: '01', viewValue: 'January' },
+    { value: '02', viewValue: 'February' },
+    { value: '03', viewValue: 'March' },
+    { value: '04', viewValue: 'April' },
+    { value: '05', viewValue: 'May' },
+    { value: '06', viewValue: 'June' },
+    { value: '07', viewValue: 'July' },
+    { value: '08', viewValue: 'August' },
+    { value: '09', viewValue: 'September' },
+    { value: '10', viewValue: 'October' },
+    { value: '11', viewValue: 'November' },
+    { value: '12', viewValue: 'December' }
   ];
 
   currentYear = new Date().getFullYear();
@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedMonths: any[] = [];
   selectedEndMonth: number = new Date().getMonth() + 1;
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
-  allRowsInit=true;
+  allRowsInit = true;
 
   showLoader: boolean = true;
 
@@ -178,7 +178,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setMounts();
     this.getDataClientsList();
     this.lineChartData = {
-      labels:this.labels,
+      labels: this.labels,
       datasets: [
         {
           data: [],
@@ -186,10 +186,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           backgroundColor: 'rgba(121, 36, 48, 1)',
         },
         {
-          data: [].map((item: number)=> -item),
+          data: [].map((item: number) => -item),
           label: 'Energy Consuption',
           backgroundColor: 'rgba(87, 177, 177, 1)',
-          
+
         }
       ]
     };
@@ -243,7 +243,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selection.clear();
         this.toggleAllRows();
         this.allRowsInit = false;
-        
+
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
@@ -306,15 +306,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     return daySelected || monthSelected;
   }
 
-  updtChart(){
+  updtChart() {
     if (this.chart) {
-      let romevingType:any = this.selection.selected;
+      let romevingType: any = this.selection.selected;
       let newData = this.mappingData(romevingType);
       this.printSelectedData();
-      let itttm=[2,3,4]
-      this.lineChartData.labels= newData.labels
+      let itttm = [2, 3, 4]
+      this.lineChartData.labels = newData.labels
       this.lineChartData.datasets[0].data = newData.energyProduction;
-      this.lineChartData.datasets[1].data = newData.energyConsumption.map((item: number)=> -item);
+      this.lineChartData.datasets[1].data = newData.energyConsumption.map((item: number) => -item);
       this.chart.update();
     }
   }
@@ -323,14 +323,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('Selected Data:', this.selection.selected);
   }
 
-  mappingData(dataSelected: entity.DataRespSavingDetails[]):any{
-    let labels= dataSelected.map(item => item.siteName);
-    let energyConsumption = dataSelected.map(item =>this.formatsService.homeGraphFormat(item.energyConsumption));
-    let energyProduction = dataSelected.map(item =>this.formatsService.homeGraphFormat(item.energyProduction)); 
+  mappingData(dataSelected: entity.DataRespSavingDetails[]): any {
+    let labels = dataSelected.map(item => item.siteName);
+    let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
+    let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
     return {
-      labels:labels,
-      energyConsumption:energyConsumption,
-      energyProduction:energyProduction
+      labels: labels,
+      energyConsumption: energyConsumption,
+      energyProduction: energyProduction
     }
   }
 
