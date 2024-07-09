@@ -21,7 +21,7 @@ body {
 }
 
 .div-groups {
-  div {
+ > div {
     &:first-child {
       border-right-width: 2px;
     }
@@ -784,7 +784,8 @@ input[type="number"]:focus {
   border: 2px solid #E5E7EB;
   border-radius: 20px;
   padding: 10px 15px 10px 15px;
-  margin-top: 10px;
+  // margin-top: 20px;
+  // margin-top: 10px;
 
   >div {
     span {
@@ -821,6 +822,14 @@ input[type="number"]:focus {
   font-weight: 500;
   cursor: default;
   color: red;
+  border: none;
+}
+
+
+.mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background, .mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background, .mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true]:enabled~.mdc-checkbox__background {
+  background: #EE5427!important;
+  width: 15px !important;
+  height: 15px !important;
 }
 
 .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
