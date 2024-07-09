@@ -105,7 +105,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
       error: error => {
         console.log('entro aqui');
         
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
     });
@@ -119,7 +119,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
       },
       error: error => {
         this.loadingtotalPlants = false;
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.log(error);
       }
     })

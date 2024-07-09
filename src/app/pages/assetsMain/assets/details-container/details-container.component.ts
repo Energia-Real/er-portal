@@ -186,7 +186,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
       },
       error: (error) => {
         this.showLoader = false;
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     });
@@ -198,8 +198,8 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
       this.getDataRespSystem({ brand: "Huawei", plantCode: assetData.plantCode })
     } else {
       this.showNotdata = true;
-      if ("Huawei" != 'Huawei') this.modalMessage.push('La información proporcionada incluye una marca del inversor que aún no ha sido implementado.');
-      else this.modalMessage.push('La información no incluye el código de planta o la marca del inversor.');
+      if ("Huawei" != 'Huawei') this.modalMessage.push('The information provided includes an inverter brand that has not yet been implemented.');
+      else this.modalMessage.push('Information does not include plant code or inverter brand.');
       this.loadingSystem = false;
     }
 
@@ -209,7 +209,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
       this.getLocalTimeOfPlace(assetData.latitude, assetData.longitude);
     } else {
       this.loadingWeather = this.loadingTimeZone = false;
-      this.modalMessage.push('La información proporcionada no incluye coordenadas de latitud o longitud, por lo que no es posible cargar el mapa.')
+      this.modalMessage.push('The information provided does not include latitude or longitude coordinates, so it is not possible to upload the map.')
     }
 
     if (this.modalMessage.length) {
@@ -225,7 +225,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
       next: (response: entity.ResponseSystem) => { this.dataRespoSystem = response.data },
       error: (error) => {
         this.loadingSystem = false;
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -239,7 +239,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
       },
       error: (error) => {
         this.loadingWeather = false;
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -251,7 +251,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
         if (response.results.length) {
           this.addressPlace = response.results[0].formatted_address;
         } else {
-          this.notificationService.notificacion(`La dirección no pudo ser cargada correctamente.`, 'alert')
+          this.notificationService.notificacion(`The address could not be loaded correctly.`, 'alert')
         }
       },
     })
@@ -265,7 +265,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
       },
       error: (error) => {
         this.loadingTimeZone = false;
-        this.notificationService.notificacion(`No fue posible obtener la información de la zona horaria.`, 'alert')
+        this.notificationService.notificacion(`Could not get time zone information.`, 'alert')
         console.error(error)
       }
     })
