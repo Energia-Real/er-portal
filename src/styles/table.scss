@@ -21,10 +21,11 @@
 .c-table {
     max-width: 100%;
     overflow-y: auto;
+
     .header-table {
         margin: 0;
         line-height: 15px;
-      }
+    }
 }
 
 .truncate {
@@ -34,4 +35,14 @@
     max-width: 300px;
     display: inline-block;
     vertical-align: middle;
+}
+
+.column-check-content {
+    display: flex !important;
+    align-items: center !important;
+    padding-left: 0!important;
+    justify-content: start;
+    p {
+        margin: 0;
+    }
 }

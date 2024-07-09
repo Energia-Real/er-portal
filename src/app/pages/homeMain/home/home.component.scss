@@ -8,6 +8,10 @@
     line-height: 15px
   }
 
+  .c-card-section {
+    margin-top: 10px;
+  }
+
 
   .c-client-list {
     display: flex;
@@ -44,7 +48,10 @@
     }
   }
 
+
+
   .c-graph {
+    margin-top: 10px;
     >.row {
       // margin-bottom: 11px;
       display: flex;
@@ -52,8 +59,8 @@
     }
 
     .graph {
-      height: 690px;
-      height: calc(100vh - 155px);
+      // height: 690px;
+      // height: calc(100vh - 155px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -67,8 +74,13 @@
   }
 
   .table-container-scroll {
-    max-height: 400px;
+    // max-height: 400px;
     overflow-y: auto;
+
+    height: calc(100vh - 100px);
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    overflow-x: hidden;
 
     thead {
       position: sticky;
@@ -100,6 +112,8 @@
       line-height: 18px;
     }
   }
-
+  .custom-column {
+    width: 50px!important; /* Ajusta el tamaño según tus necesidades */
+}
 
 }
