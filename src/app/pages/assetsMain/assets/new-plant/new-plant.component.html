@@ -194,7 +194,10 @@
           </div>
           <div>
             <span class="loader" *ngIf="loading"></span>
-            <button class="button-primary" [disabled]="formData.invalid" *ngIf="!loading" type="submit">Save</button>
+            <button class="btn-action-add" [disabled]="formData.invalid" *ngIf="!loading" type="submit">
+              <i class="fa-solid fa-floppy-disk"></i>
+              Save
+            </button>
           </div>
         </div>
       </form>

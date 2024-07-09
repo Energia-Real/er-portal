@@ -3,6 +3,12 @@ body {
   height: 100%;
 }
 
+
+* {
+  scrollbar-width: thin !important;
+}
+
+
 body {
   font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
 }
@@ -404,8 +410,6 @@ select {
 
   .c-content {
     margin-top: 50px;
-
-
   }
 }
 
@@ -477,6 +481,17 @@ select {
 
 *[class*=mat-mdc-tab-group] {
   width: 100% !important;
+}
+
+*[class*=mat-mdc-form-field] {
+  .mat-mdc-select-multiple {
+    padding: 0;
+    border-width: 0 !important;
+    font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
+    letter-spacing: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
 }
 
 
@@ -807,8 +822,8 @@ input[type="number"]:focus {
   color: red;
 }
 
-* {
-  scrollbar-width: thin !important;
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+  color: #EE5427!important;
 }
 
 @media screen and (max-width: 1390px) {
