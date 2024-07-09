@@ -173,11 +173,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private homeService: HomeService,
     private router: Router,
     private formBuilder: FormBuilder,
+<<<<<<< Updated upstream
     private notificationService: OpenModalsService,
     private formatsService: FormatsService
   ) {
   
   }
+=======
+    private notificationService: OpenModalsService
+  ) {}
+>>>>>>> Stashed changes
 
   ngOnInit(): void {
     this.setMounts();
@@ -308,12 +313,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get searchFilters() {
-    if (!this.dayOrMount) {
-      return false;
-    }
-
+    if (!this.dayOrMount) return false;
     const daySelected = this.dayOrMount.value === 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value;
-    const monthSelected = this.dayOrMount.value === 'month' && this.selectedMonths.length > 0;
+    const monthSelected = this.dayOrMount.value === 'month' && this.selectedMonths.length == 2;
 
     return daySelected || monthSelected;
   }
