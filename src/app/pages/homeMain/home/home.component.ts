@@ -21,9 +21,6 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
 
 Chart.register(...registerables);
-
-
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -173,16 +170,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private homeService: HomeService,
     private router: Router,
     private formBuilder: FormBuilder,
-<<<<<<< Updated upstream
     private notificationService: OpenModalsService,
     private formatsService: FormatsService
-  ) {
-  
-  }
-=======
-    private notificationService: OpenModalsService
-  ) {}
->>>>>>> Stashed changes
+  ) { }
 
   ngOnInit(): void {
     this.setMounts();
@@ -194,7 +184,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           data: [],
           label: 'Energy Production',
           backgroundColor: 'rgba(121, 36, 48, 1)',
-          
         },
         {
           data: [].map((item: number)=> -item),
@@ -219,7 +208,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchWithFilters() {
-
     let filters = "";
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
@@ -290,9 +278,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.selection.select(...this.dataSource.data);
     this.updtChart();
-
     this.printSelectedData();
-
   }
 
   toggleRow(row: any) {
@@ -322,19 +308,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updtChart(){
     if (this.chart) {
-      console.log("chart updt")
       let romevingType:any = this.selection.selected;
       let newData = this.mappingData(romevingType);
       this.printSelectedData();
       let itttm=[2,3,4]
-      console.log(newData)
       this.lineChartData.labels= newData.labels
       this.lineChartData.datasets[0].data = newData.energyProduction;
       this.lineChartData.datasets[1].data = newData.energyConsumption.map((item: number)=> -item);
-
       this.chart.update();
     }
   }
+
   printSelectedData() {
     console.log('Selected Data:', this.selection.selected);
   }
