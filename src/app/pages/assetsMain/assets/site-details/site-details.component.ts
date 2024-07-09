@@ -52,7 +52,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.showAlert = true;
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
     })
@@ -71,7 +71,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.showAlert = true;
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
     })

@@ -246,7 +246,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -258,7 +258,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataClientsList = response;
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })

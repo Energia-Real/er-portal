@@ -74,7 +74,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
         this.formData.patchValue(response)
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -84,7 +84,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.catalogsService.getCatPlantStatus().subscribe({
       next: (response: entityCatalogs.DataCatalogs[]) => this.catPlantStatus = response,
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -92,7 +92,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.catalogsService.getCatContractType().subscribe({
       next: (response: entityCatalogs.DataCatalogs[]) => this.catContractType = response,
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     });
@@ -100,7 +100,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.catalogsService.getCatInstallationType().subscribe({
       next: (response: entityCatalogs.DataCatalogs[]) => this.catInstallationType = response,
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     });
@@ -108,7 +108,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.catalogsService.getCatInstallationType().subscribe({
       next: (response: entityCatalogs.DataCatalogs[]) => this.catInstallationType = response,
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     });
@@ -149,7 +149,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.moduleServices.postDataPlant(objData).subscribe({
       next: () => { this.completionMessage() },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -159,7 +159,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.moduleServices.patchDataPlant(this.objEditData.id, objData).subscribe({
       next: () => { this.completionMessage(true) },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
