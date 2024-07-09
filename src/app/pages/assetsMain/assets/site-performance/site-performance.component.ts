@@ -204,7 +204,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         this.initChart();
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
     })
@@ -227,7 +227,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         this.projectStatus = response;
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
     })
