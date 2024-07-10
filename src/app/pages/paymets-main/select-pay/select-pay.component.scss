@@ -1,97 +1,105 @@
-.c-modal {
-    background: #FFFFFF;
-    width: 520px;
-    height: 770px;
-    position: relative;
-    padding: 35px;
-    border: 1px solid red;
+.c-select-pay {
 
-    > i {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        font-size: 16px;
-        transition: 300ms all ease;
-        cursor: pointer;
-    }
 
-    i:hover {
-        color: #EE5427;
-    }
-
-    .header-modal {
+    .c-card-v3 {
         h1 {
-            font-size: 32px;
-            font-weight: 400;
-        }
-
-        p {
+            color: #b84d2d;
+            font-weight: 500;
             font-size: 12px;
-            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 20px;
         }
 
-        span {
-            font-weight: 400;
-        }
-    }
 
-    hr {
-        margin: 20px 0;
-    }
+        .c-content {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
 
-    .c-select-report {
-        border: 1px solid #E2E2E2;
-        min-height: 100px;
-        background: #F9F9F9;
-        border-radius: 16px;
-        padding: 8px 16px;
+            >div {
+                background: white;
+                padding: 20px;
+                border: 1px solid #D2D2D2;
+                padding: 8px 16px;
+                border-radius: 16px;
+                display: flex;
+                flex-direction: column;
+                height: 75px;
+                align-items: center;
+                justify-content: center;
 
-        >div {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .col-md-5 {
-                height: 45px;
-            }
-
-            .mat-mdc-text-field-wrapper {
-                width: 150px !important;
-            }
-
-            p {
-                color: black;
+                h2 {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #000000;
+                    margin: 0;
+                }
 
                 span {
-                    font-weight: 600;
+                    font-size: 16px;
+                    font-weight: 700;
                 }
             }
-
-        }
-        span {
-            font-size: 10px;
-            margin-bottom: 0;
-            color: #898D93!important;
         }
     }
 
-    .add {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        .c-input {
-            width: 80%;
+    .c-card-v3-little {
+        padding-left: 10px;
+
+        h1 {
+            color: #b84d2d;
+            font-weight: 500;
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 20px;
         }
+
+
+        .c-content {
+            display: grid;
+            gap: 10px;
+            // grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            // grid-template-columns: repeat(auto-fit, 90px);
+            display: flex;
+
+            >div {
+                width: 90px;
+                background: white;
+                padding: 20px;
+                border: 1px solid #D2D2D2;
+                padding: 8px 16px;
+                border-radius: 16px;
+                display: flex;
+                flex-direction: column;
+                height: 75px;
+                align-items: center;
+                justify-content: center;
+
+                h2 {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #000000;
+                    margin-bottom: 0;
+                }
+
+                span {
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .btn-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-end;
+        justify-content: flex-end;
 
         button {
-            background: #792430!important;
+            justify-content: center !important;
+            width: 180px;
         }
-    }
-
-    .footer-modal {
-        display: flex;
-        justify-content: center;
-        gap: 11px;
     }
 }
