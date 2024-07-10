@@ -89,7 +89,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
     })
   }
 
-  public getServerData(event: PageEvent): void {
+  getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     this.getDataResponse(event.pageIndex + 1, this.searchValue);
   }

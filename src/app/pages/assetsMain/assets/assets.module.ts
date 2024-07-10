@@ -21,6 +21,7 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
 import { InstalationDetailsComponent } from './instalation-details/instalation-details.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import { ModalExportDataComponent } from './site-performance/modal-export-data/modal-export-data.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
     SitePerformanceComponent,
     NewPlantComponent,
     InstalationDetailsComponent,
+    ModalExportDataComponent,
   ],
   imports: [
     CommonModule,

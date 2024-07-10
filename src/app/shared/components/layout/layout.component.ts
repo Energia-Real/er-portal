@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 
 import * as entityGeneral from '../../models/general-models';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
+import { Subject } from 'rxjs';
 
 interface User {
   id: string,
@@ -20,7 +21,9 @@ interface User {
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnDestroy {
+  private onDestroy = new Subject<void>();
+
   userInfo: any = {};
   @Input() routeActive = '';
 
@@ -41,5 +44,10 @@ export class LayoutComponent {
     this.accountService.getInfoUser().subscribe((data:User) => {
       this.userInfo = data;
     })
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }

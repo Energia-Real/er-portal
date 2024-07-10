@@ -160,8 +160,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   formFilters = this.formBuilder.group({
-    status: [{ value: null, disabled: false }],
-    agent: [{ value: null, disabled: false }],
     rangeDateStart: [{ value: '', disabled: false }],
     rangeDateEnd: [{ value: '', disabled: false }],
   });
