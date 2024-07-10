@@ -128,3 +128,22 @@ tr {
         }
     }
 }
+
+.column-pay {
+    background: #792430;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    border: 1px solid #EDEDED;
+    padding: 4px 8px ;
+}
+
+
+.column-content-orange {
+    color: #FF4713;
+    border-bottom: 1px solid #FF4713;
+    line-height: 14px;
+    text-align: center;
+}

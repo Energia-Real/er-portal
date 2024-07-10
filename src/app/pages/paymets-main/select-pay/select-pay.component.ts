@@ -10,6 +10,8 @@ import { Store } from '@ngrx/store';
 import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
+import { SelectionModel } from '@angular/cdk/collections';
+import * as entity from '../payments-model';
 
 @Component({
   selector: 'app-select-pay',
@@ -21,7 +23,13 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
-
+  selection = new SelectionModel<entity.PeriodicElement>(true, []);
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSize: number = 5;
+  pageIndex: number = 1 ;
+  totalItems: number = 0;
+  pageSizeSub: Subscription;
+  pageIndexSub: Subscription;
 
   ngAfterViewChecked() {
     if (this.paginator) {
@@ -31,9 +39,7 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
     }
   }
 
-  
-
-  displayedColumns: string[] = [
+    displayedColumns: string[] = [
     'siteName',
     'rpu',
     'billingperiod',
@@ -91,12 +97,10 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
   ]
 
 
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 5;
-  pageIndex: number = 1 ;
-  totalItems: number = 0;
-  pageSizeSub: Subscription;
-  pageIndexSub: Subscription;
+  allRowsInit:boolean = true;
+
+
+
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -159,9 +163,41 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
     // });
   }
 
-  public getServerData(event: PageEvent): void {
+  getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     this.getDataResponse(event.pageIndex + 1, this.searchValue);
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  toggleRow(row: any) {
+    this.selection.toggle(row);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+
+  checkboxLabel(row?: entity.PeriodicElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  goDetails(id: string) {
+    this.router.navigateByUrl(`/assets/details/${id}`)
   }
 
   navigate(link: string) {
