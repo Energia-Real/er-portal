@@ -31,7 +31,7 @@
         </div>
         <div class="col-md-5">
             <div class="d-flex flex-wrap justify-content-between ">
-                <div class="c-card-v3-little" style="width: 45%;">
+                <div class="c-card-v3-little mt-2 mt-lg-0" style="width: 45%;">
                     <h1>Solar coverage & CO2 Savings</h1>
 
                     <div class="c-content">
@@ -54,6 +54,39 @@
                     <button class="btn-cancel" type="button">Download bill selection</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <hr class="mt-4 mb-4">
+
+    <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
+
+
+    <div class="row">
+        <div class="c-filters">
+            <div>
+                <form class="relative w-80 c-search">
+                  <label class="input-search">
+                    <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
+                  </label>
+                  <input class="block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
+                    placeholder="Search">
+                </form>
+              </div>
+
+              <form>
+                <mat-form-field appearance="outline" class="input-date">
+                    <mat-date-range-input [rangePicker]="date"
+                        [comparisonStart]="formFilters.value['rangeDateStart']"
+                        [comparisonEnd]="formFilters.value['rangeDateEnd']">
+                        <input matStartDate placeholder="Start date" formControlName="rangeDateStart" />
+                        <input matEndDate placeholder="End date" formControlName="rangeDateEnd" />
+                    </mat-date-range-input>
+
+                    <mat-datepicker-toggle matIconSuffix [for]="date"></mat-datepicker-toggle>
+                    <mat-date-range-picker #date></mat-date-range-picker>
+                </mat-form-field>
+            </form>
         </div>
     </div>
 </div>

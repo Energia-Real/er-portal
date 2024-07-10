@@ -44,7 +44,7 @@
     }
 
     .c-card-v3-little {
-        padding-left: 10px;
+        // padding-left: 10px;
 
         h1 {
             color: #b84d2d;
@@ -101,5 +101,15 @@
             justify-content: center !important;
             width: 180px;
         }
+    }
+
+    .c-filters {
+        display: flex;
+        justify-content: space-between;
+        
+        > form {
+            width: 225px;
+        }
+    
     }
 }
