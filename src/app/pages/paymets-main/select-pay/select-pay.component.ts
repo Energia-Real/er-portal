@@ -12,6 +12,7 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { SelectionModel } from '@angular/cdk/collections';
 import * as entity from '../payments-model';
+import { ModalPayComponent } from '../modal-pay/modal-pay.component';
 
 @Component({
   selector: 'app-select-pay',
@@ -195,6 +196,10 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
 
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
+
+  payData() {
+    this.notificationService.openModalMedium(ModalPayComponent);
+}
 
   goDetails(id: string) {
     this.router.navigateByUrl(`/assets/details/${id}`)

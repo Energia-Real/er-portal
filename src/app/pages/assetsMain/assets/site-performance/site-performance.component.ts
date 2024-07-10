@@ -144,7 +144,6 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           console.error('monthresume is undefined');
         }
 
-
         const inverterPowerData = this.monthResume.map((item: { inverterPower: number; }) => this.formatsService.graphFormat(item.inverterPower));
         const seriesData = this.monthResume.map((item: { collectTime: string | number | Date; inverterPower: number; }) => {
           let date = new Date(item.collectTime);
@@ -152,6 +151,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
           return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
         });
+
         const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
 
         this.chartOptions = {
@@ -223,9 +223,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   getStatus() {
     this.moduleServices.getDataRespStatus().subscribe({
-      next: (response: entity.ProjectStatus[]) => {
-        this.projectStatus = response;
-      },
+      next: (response: entity.ProjectStatus[]) => { this.projectStatus = response; },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
@@ -233,26 +231,15 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     })
   }
 
-
-
   exportData() {
     this.notificationService.openModalMedium(ModalExportDataComponent);
-
   }
-  //   this.notificationService
-  //   .notificacion(`Registro ${edit ? 'editado' : 'guardado'}.`, 'save')
-  //   .afterClosed()
-  //   .subscribe((_) => this.toBack());
 
   refreshChart(index?: number): void {
-    if (index == 1) {
-      this.showSitePerformance = true
-    }
-    else {
-      this.showSitePerformance = false
-    }
-
+    if (index == 1) this.showSitePerformance = true
+    else this.showSitePerformance = false
   }
+
   initChart(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     if (ctx) {

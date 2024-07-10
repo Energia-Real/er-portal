@@ -6,13 +6,15 @@ import { LayoutComponent } from './layout/layout.component';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
+import { ModalPayComponent } from './modal-pay/modal-pay.component';
 
 
 
 @NgModule({
   declarations: [
     SelectPayComponent,
-    LayoutComponent
+    LayoutComponent,
+    ModalPayComponent
   ],
   imports: [
     CommonModule,

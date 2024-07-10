@@ -276,12 +276,11 @@ select {
       }
 
       mat-icon {
-        // width: 30px;
         width: 14%;
         display: flex;
         justify-content: end;
+        font-size: 20px;
       }
-
     }
   }
 
@@ -463,7 +462,10 @@ select {
 .c-input {
   text-align: left;
   margin-bottom: 8px;
-
+  &:focus {
+    outline: none; 
+    border: 1px solid #b84d2d!important;
+}
   p {
     color: #b84d2d;
     font-weight: 500;
