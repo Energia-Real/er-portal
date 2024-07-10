@@ -1,4 +1,4 @@
-<div class="p-top-main px-16 c-management">
+<div class="c-main px-16 c-management">
   <div class="mb-2">
     <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
       <div class="c-card-section">
@@ -27,8 +27,8 @@
       </div>
 
       <div>
-        <form class="relative w-80 ms-auto">
-          <label class="input-search ">
+        <form class="relative w-80 ms-auto c-search">
+          <label class="input-search">
             <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
           </label>
           <input class="block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder
@@ -41,7 +41,7 @@
   <div>
     <div class="flex justify-end mb-2">
       <button class="btn-action-add" routerLink="/assets/create">
-        <mat-icon>add</mat-icon>
+        <i class="fa-solid fa-plus"></i>
         Add new plant
       </button>
     </div>

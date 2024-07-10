@@ -21,7 +21,7 @@ body {
 }
 
 .div-groups {
- > div {
+  >div {
     &:first-child {
       border-right-width: 2px;
     }
@@ -56,8 +56,8 @@ span {
   padding: 0;
 }
 
-.p-top-main {
-  padding-top: 80px !important;
+.c-main {
+  padding: 80px 60px 0 60px;
 }
 
 .c-global {
@@ -176,7 +176,6 @@ select {
   justify-content: space-between !important;
 }
 
-
 .swal2-confirm {
   background-color: #EE5427 !important;
 }
@@ -277,12 +276,11 @@ select {
       }
 
       mat-icon {
-        // width: 30px;
         width: 14%;
         display: flex;
         justify-content: end;
+        font-size: 20px;
       }
-
     }
   }
 
@@ -455,10 +453,19 @@ select {
   }
 }
 
+.c-search {
+  input {
+    border: 1px solid #949191!important;
+  }
+}
+
 .c-input {
   text-align: left;
   margin-bottom: 8px;
-
+  &:focus {
+    outline: none; 
+    border: 1px solid #b84d2d!important;
+}
   p {
     color: #b84d2d;
     font-weight: 500;
@@ -826,14 +833,16 @@ input[type="number"]:focus {
 }
 
 
-.mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background, .mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background, .mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true]:enabled~.mdc-checkbox__background {
-  background: #EE5427!important;
+.mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true]:enabled~.mdc-checkbox__background {
+  background: #EE5427 !important;
   width: 15px !important;
   height: 15px !important;
 }
 
 .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
-  color: #EE5427!important;
+  color: #EE5427 !important;
 }
 
 @media screen and (max-width: 1390px) {

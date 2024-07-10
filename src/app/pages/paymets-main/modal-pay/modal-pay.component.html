@@ -1,0 +1,54 @@
+<div class="c-modal">
+    <i class="fa-solid fa-xmark" (click)="closeModal()"></i>
+    <div class="header-modal">
+        <h1>Chedraui / Santa Ana</h1>
+        <!-- <p class="fw-medium">Direccion: <span>Calle Antonio Díaz Varela, Ximentla, Centro, 90800 Chiautempan, Tlax.,
+                Mexico</span>
+        </p> -->
+    </div>
+
+    <hr>
+
+    <form>
+        <div class="c-input">
+            <p>Amount:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                <input placeholder="$1,308.00" matInput>
+            </mat-form-field>
+        </div>
+
+        <div class="d-flex justify-center mb-3">
+            <mat-checkbox class="check-color me-4">CLABE</mat-checkbox>
+            <mat-checkbox class="check-color">DEBIT CARD</mat-checkbox>
+        </div>
+
+        <div class="c-input">
+            <p>CLABE number:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                <input placeholder="1234 5678 9101 1223 45" matInput>
+                <!-- <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error> -->
+            </mat-form-field>
+        </div>
+     
+        <div class="c-input">
+            <p>Bank:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                <input placeholder="Type bank" matInput>
+                <!-- <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error> -->
+            </mat-form-field>
+        </div>
+
+        <div class="c-input">
+            <p>Name:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                <input placeholder="Name" matInput>
+                <!-- <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error> -->
+            </mat-form-field>
+        </div>
+
+        <div class="footer-modal">
+            <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+            <button class="btn-action-add">Pay $1,308.00</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,80 @@
+<div class="c-modal">
+    <i class="fa-solid fa-xmark" (click)="closeModal()"></i>
+    <div class="header-modal">
+        <h1>Chedraui / Santa Ana</h1>
+        <p class="fw-medium">Direccion: <span>Calle Antonio Díaz Varela, Ximentla, Centro, 90800 Chiautempan, Tlax.,
+                Mexico</span>
+        </p>
+    </div>
+
+    <hr>
+
+    <form>
+        <div class="c-input">
+            <p>Report name:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                <input placeholder="Type report name" matInput>
+                <!-- <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error> -->
+            </mat-form-field>
+        </div>
+
+        <div class="c-input">
+            <p>Report type:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                <input placeholder="Residential monthly performance" matInput>
+                <!-- <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error> -->
+            </mat-form-field>
+        </div>
+
+        <div class="c-input">
+            <p class="m-0">Repeat report:</p>
+            <mat-radio-group aria-label="Select an option">
+                <mat-radio-button value="1">Never (instant report)</mat-radio-button>
+                <mat-radio-button value="2">Every Month (recurring)</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+
+        <div class="c-select-report c-input">
+            <p>Select report data</p>
+
+            <div class="row">
+                <div class="col-md-5">
+                    <p>From <span>09 / 04 / 23</span> to</p>
+
+                </div>
+                <div class="col-md-7">
+                    <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
+                        <input formControlName="contractSignatureDate" placeholder="Signing contract date" matInput
+                            [matDatepicker]="picker2">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <span>Report will be sent whitin 24 hours</span>
+        </div>
+
+        <div class="add">
+            <div class="c-input">
+                <p>Email adresses of subscribers</p>
+                <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input placeholder="Enter one or more email adresses (separated by commas)" matInput>
+                    <!-- <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error> -->
+                </mat-form-field>
+            </div>
+
+            <button class="btn-action-add">
+                <i class="fa-solid fa-plus"></i>
+                Add
+            </button>
+        </div>
+
+
+        <div class="footer-modal">
+            <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+            <button class="btn-action-add">Create</button>
+        </div>
+    </form>
+</div>

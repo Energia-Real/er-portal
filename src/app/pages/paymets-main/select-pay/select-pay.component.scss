@@ -1,0 +1,115 @@
+.c-select-pay {
+
+
+    .c-card-v3 {
+        h1 {
+            color: #b84d2d;
+            font-weight: 500;
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 20px;
+        }
+
+
+        .c-content {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+
+            >div {
+                background: white;
+                padding: 20px;
+                border: 1px solid #D2D2D2;
+                padding: 8px 16px;
+                border-radius: 16px;
+                display: flex;
+                flex-direction: column;
+                height: 75px;
+                align-items: center;
+                justify-content: center;
+
+                h2 {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #000000;
+                    margin: 0;
+                }
+
+                span {
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .c-card-v3-little {
+        // padding-left: 10px;
+
+        h1 {
+            color: #b84d2d;
+            font-weight: 500;
+            font-size: 12px;
+            margin-bottom: 10px;
+            line-height: 20px;
+        }
+
+
+        .c-content {
+            display: grid;
+            gap: 10px;
+            // grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            // grid-template-columns: repeat(auto-fit, 90px);
+            display: flex;
+
+            >div {
+                width: 90px;
+                background: white;
+                padding: 20px;
+                border: 1px solid #D2D2D2;
+                padding: 8px 16px;
+                border-radius: 16px;
+                display: flex;
+                flex-direction: column;
+                height: 75px;
+                align-items: center;
+                justify-content: center;
+
+                h2 {
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #000000;
+                    margin-bottom: 0;
+                }
+
+                span {
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .btn-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        button {
+            justify-content: center !important;
+            width: 180px;
+        }
+    }
+
+    .c-filters {
+        display: flex;
+        justify-content: space-between;
+        
+        > form {
+            width: 225px;
+        }
+    
+    }
+}
