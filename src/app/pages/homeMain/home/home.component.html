@@ -12,6 +12,10 @@
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
+                    <h2 class="mb-0" *ngIf="dataClientsBatu?.cO2Saving else notDataTable"> {{ dataClientsBatu.cO2Saving }}</h2>
+                </div>
+<!--                 
+                <div>
                     <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
                         hourglass_top
                     </span>
@@ -20,7 +24,7 @@
                     <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
                         hourglass_top
                     </span>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -37,22 +41,16 @@
                         savingsDetails.totalEnergyProduction }} <br> kWh</h2>
                     <p class="text-sm" i18n>Energy <br> Production</p>
                 </div>
-                <div>
-                    <div style="border: none;" [ngClass]="{'c-comming-soon': savingsDetails?.totalEnergyConsumption}">
-                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
-                            hourglass_top
-                        </span>
-                    </div>
 
+                <div>
+                    <h2 *ngIf="dataClientsBatu?.costwoSolarTotal else notDataTable"> {{
+                        dataClientsBatu.costwoSolarTotal }}</h2>
                     <p class="text-sm" i18n>CFE <br> Cost without Solar</p>
                 </div>
-                <div>
-                    <div style="border: none;" [ngClass]="{'c-comming-soon': savingsDetails?.totalEnergyConsumption}">
-                        <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
-                            hourglass_top
-                        </span>
-                    </div>
 
+                <div>
+                    <h2 *ngIf="dataClientsBatu?.totalSaving else notDataTable"> {{
+                        dataClientsBatu.totalSaving }}</h2>
                     <p class="text-sm" i18n>Total <br> Saving</p>
                 </div>
             </div>
@@ -219,8 +217,6 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
         </table>
     </div>
-
-
 </main>
 
 <ng-template #notDataTable>

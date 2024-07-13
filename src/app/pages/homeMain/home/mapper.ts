@@ -35,4 +35,14 @@ export class Mapper {
 			}
 		};
 	}
+
+	static getDataBatuCoverageSavings(response: any, formatsService: FormatsService ) {
+		console.log(response);
+		
+		return {
+			totalSaving : formatsService.energyFormat(response.totalSaving),
+			cO2Saving : formatsService.energyFormat(response.cO2Saving),
+			costwoSolarTotal : formatsService.energyFormat(response.costwoSolarTotal),
+		}
+	}
 }
