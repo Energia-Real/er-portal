@@ -19,6 +19,8 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
+import { AuthService } from '@app/auth/auth.service';
+import { User } from '@app/shared/models/general-models';
 
 Chart.register(...registerables);
 @Component({
@@ -108,7 +110,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     scales: {
       x: {
-        stacked: true,
+        stacked: false,
         grid: {
           display: false,
         },
@@ -119,7 +121,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             return Math.abs(Number(value)) + ' kWh';
           },
         },
-        stacked: true,
+        stacked: false,
         grid: {
           display: false,
         },
@@ -151,8 +153,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   allRowsInit = true;
 
   showLoader: boolean = true;
-
+  userInfo: any
   dataClientsList: entity.DataRespSavingDetailsList[] = []
+  dataClientsBatu: any
 
   savingsDetails: any = {
     totalEnergyConsumption: 0,
@@ -169,11 +172,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService,
-    private formatsService: FormatsService
+    private formatsService: FormatsService,
+    private accountService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.setMounts();
+    this.getInfoUser();
     this.getDataClientsList();
     this.lineChartData = {
       labels: this.labels,
@@ -184,7 +188,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           backgroundColor: 'rgba(121, 36, 48, 1)',
         },
         {
-          data: [].map((item: number) => -item),
+          data: [],
           label: 'Energy Consuption',
           backgroundColor: 'rgba(87, 177, 177, 1)',
 
@@ -195,7 +199,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setMounts() {
     this.selectedMonths = ['01', this.selectedEndMonth.toString().padStart(2, '0')];
-    this.searchWithFilters()
+    // this.searchWithFilters()
   }
 
   ngAfterViewInit(): void {
@@ -206,19 +210,32 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchWithFilters() {
-    let filters = "";
+    let filters: string = "";
+    let filtersBanu: any = {}
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
       filters += `requestType=Day&`
       filters += `startDate=${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}&`,
         filters += `endDate=${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
-      this.getDataClients(filters)
+
+      filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
+      filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
+      filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
+      filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
 
     } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
       filters += `requestType=Month&`
       filters += `startDate=${this.selectedMonths[0]}/${this.currentYear}&endDate=${this.selectedMonths[1]}/${this.currentYear}`
-      this.getDataClients(filters)
+
+      filtersBanu.añoInicio = this.currentYear.toString()
+      filtersBanu.añoFin = this.currentYear.toString()
+      filtersBanu.mesInicio = this.selectedMonths[0]
+      filtersBanu.mesFin = this.selectedMonths[1]
     }
+
+    this.getDataClients(filters)
+    this.getDataBatuCoverageSavings(filtersBanu);
+
   }
 
   onSelectionChange(event: any): void {
@@ -241,7 +258,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selection.clear();
         this.toggleAllRows();
         this.allRowsInit = false;
-
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -254,11 +270,32 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.homeService.getDataClientsList().subscribe({
       next: (response: entity.DataRespSavingDetailsList[]) => {
         this.dataClientsList = response;
+        this.searchWithFilters()
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
+    })
+  }
+
+  getDataBatuCoverageSavings(filters?: string) {
+    this.homeService.getDataBatuCoverageSavings(this.dataClientsList[0]?.id, filters).subscribe({
+      next: (response: any) => {
+        this.dataClientsBatu = response;        
+      },
+      error: (error) => {
+        this.dataClientsBatu = null;
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.error(error)
+      }
+    })
+  }
+
+  getInfoUser() {
+    this.accountService.getInfoUser().subscribe((data: User) => {
+      this.userInfo = data;
+      this.setMounts();
     })
   }
 
@@ -308,17 +345,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.chart) {
       let romevingType: any = this.selection.selected;
       let newData = this.mappingData(romevingType);
-      this.printSelectedData();
-      let itttm = [2, 3, 4]
       this.lineChartData.labels = newData.labels
       this.lineChartData.datasets[0].data = newData.energyProduction;
-      this.lineChartData.datasets[1].data = newData.energyConsumption.map((item: number) => -item);
+      this.lineChartData.datasets[1].data = newData.energyConsumption;
       this.chart.update();
     }
   }
 
   printSelectedData() {
-    console.log('Selected Data:', this.selection.selected);
+    // console.log('Selected Data:', this.selection.selected);
   }
 
   mappingData(dataSelected: entity.DataRespSavingDetails[]): any {

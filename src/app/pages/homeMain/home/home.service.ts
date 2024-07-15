@@ -10,7 +10,6 @@ import { FormatsService } from '@app/shared/services/formats.service';
   providedIn: 'root'
 })
 export class HomeService {
-  private API_URL_CLIENTS = environment.API_URL_CLIENTS_V1;
 
   constructor(
     private http: HttpClient,
@@ -18,7 +17,7 @@ export class HomeService {
   ) { }
 
   getDataClients(filters?:string): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${this.API_URL_CLIENTS}/projects/savingdetails${filters ? `?${filters}` : ''}`;
+    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails${filters ? `?${filters}` : ''}`;
 
     console.log(url);
 
@@ -28,8 +27,18 @@ export class HomeService {
   }
 
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
-    const url = `${this.API_URL_CLIENTS}/clients/list`;
+    const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
 
     return this.http.get<entity.DataRespSavingDetailsList[]>(url)
+  }
+ 
+  // getDataCoverageSavings(): Observable<entity.DataRespSavingDetailsList[]> {
+  getDataBatuCoverageSavings(id?:string, filters?:any): Observable<any> {
+    const url = `${environment.API_URL_BATU_V1}/GetBatu/${id}`;
+
+    return this.http.post<any>(url, filters).pipe(
+			map((response) => Mapper.getDataBatuCoverageSavings(response, this.formatsService))
+		);
+    // return this.http.get<entity.DataRespSavingDetailsList[]>(url)
   }
 }

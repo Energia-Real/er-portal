@@ -10,7 +10,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
-    if (request.url.startsWith(environment.API_URL_CLIENTS_V1) || request.url.startsWith(environment.API_URL_EQUIPMENTS_V1)) {
+    if (request.url.startsWith(environment.API_URL_CLIENTS_V1) || request.url.startsWith(environment.API_URL_EQUIPMENTS_V1) || request.url.startsWith(environment.API_URL_BATU_V1)) {
       
       const user = accountService.userValue;
   
