@@ -36,9 +36,7 @@ export class Mapper {
 		};
 	}
 
-	static getDataBatuCoverageSavings(response: any, formatsService: FormatsService ) {
-		console.log(response);
-		
+	static getDataBatuCoverageSavings(response: any, formatsService: FormatsService ) {		
 		return {
 			totalSaving : formatsService.energyFormat(response.totalSaving),
 			cO2Saving : formatsService.energyFormat(response.cO2Saving),
