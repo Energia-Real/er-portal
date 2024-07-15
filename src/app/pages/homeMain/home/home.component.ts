@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     scales: {
       x: {
-        stacked: true,
+        stacked: false,
         grid: {
           display: false,
         },
@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
             return Math.abs(Number(value)) + ' kWh';
           },
         },
-        stacked: true,
+        stacked: false,
         grid: {
           display: false,
         },
@@ -188,7 +188,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           backgroundColor: 'rgba(121, 36, 48, 1)',
         },
         {
-          data: [].map((item: number) => -item),
+          data: [],
           label: 'Energy Consuption',
           backgroundColor: 'rgba(87, 177, 177, 1)',
 
@@ -282,9 +282,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getDataBatuCoverageSavings(filters?: string) {
     this.homeService.getDataBatuCoverageSavings(this.dataClientsList[0]?.id, filters).subscribe({
       next: (response: any) => {
-        this.dataClientsBatu = response;
-        console.log(response);
-        
+        this.dataClientsBatu = response;        
       },
       error: (error) => {
         this.dataClientsBatu = null;
@@ -347,11 +345,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.chart) {
       let romevingType: any = this.selection.selected;
       let newData = this.mappingData(romevingType);
-      this.printSelectedData();
-      let itttm = [2, 3, 4]
       this.lineChartData.labels = newData.labels
       this.lineChartData.datasets[0].data = newData.energyProduction;
-      this.lineChartData.datasets[1].data = newData.energyConsumption.map((item: number) => -item);
+      this.lineChartData.datasets[1].data = newData.energyConsumption;
       this.chart.update();
     }
   }
