@@ -1,7 +1,21 @@
 <div class="spinner-container" *ngIf="loading">
-  <div class="logo-container">
-    <svg width="56" height="30" viewBox="0 0 56 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M55.5 15.5L39.5 4.5L50.5 19.5L50 23.5L46 24L35.5 7.5L39.5 26.5L37.5 28.5L34 27.5L30.5 8.5L27 27.5L24 28.5L21 26.5L26 7.5L14.5 24L11.5 23.5L10 20.5L22 4.5L5.5 15.5L2 14L2.5 10L20 0.5L0.5 3" stroke="black"/>
-      </svg>      
+  <div class="loader">
+    <svg  viewBox="0 0 30 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 0V59.5" stroke="#FF4713" stroke-width="4">
+        <animate attributeName="opacity" attributeType="XML"
+        values="1; .2; 1" 
+        begin="0s" dur="0.6s" repeatCount="indefinite" />
+      </path>
+      <path d="M15 0V59.5" stroke="#FF4713" stroke-width="4">
+        <animate attributeName="opacity" attributeType="XML"
+        values="1; .2; 1" 
+        begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+      </path>
+      <path d="M28 0V59.5" stroke="#FF4713" stroke-width="4">
+        <animate attributeName="opacity" attributeType="XML"
+        values="1; .2; 1" 
+        begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+      </path>
+  </svg>
   </div>
 </div>

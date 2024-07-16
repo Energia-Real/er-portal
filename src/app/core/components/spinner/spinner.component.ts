@@ -15,9 +15,9 @@ export class SpinnerComponent implements OnDestroy, AfterViewInit {
   constructor(private loadingService: LoadingService) {
     this.subscription = this.loadingService.loading$.subscribe((status) => {
       this.loading = status;
-      if (this.loading) {
+      /*if (this.loading) {
         setTimeout(() => this.startAnimation(), 0);
-      }
+      }*/
     });
   }
 
@@ -26,12 +26,12 @@ export class SpinnerComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.loading) {
+    /*if (this.loading) {
       setTimeout(() => this.startAnimation(), 0);
-    }
+    */
   }
 
-  startAnimation() {
+  /*startAnimation() {
     anime({
       targets: '  path',
       strokeDashoffset: [anime.setDashoffset, 0],
@@ -41,5 +41,5 @@ export class SpinnerComponent implements OnDestroy, AfterViewInit {
       direction: 'alternate',
       loop: true
     });
-  }
+  }*/
 }
