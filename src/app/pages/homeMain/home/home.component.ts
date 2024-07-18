@@ -130,19 +130,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
-  months: entity.Month[] = [
-    { value: '01', viewValue: 'January' },
-    { value: '02', viewValue: 'February' },
-    { value: '03', viewValue: 'March' },
-    { value: '04', viewValue: 'April' },
-    { value: '05', viewValue: 'May' },
-    { value: '06', viewValue: 'June' },
-    { value: '07', viewValue: 'July' },
-    { value: '08', viewValue: 'August' },
-    { value: '09', viewValue: 'September' },
-    { value: '10', viewValue: 'October' },
-    { value: '11', viewValue: 'November' },
-    { value: '12', viewValue: 'December' }
+  months: { value: string, viewValue: string, disabled: boolean, check: boolean }[] = [
+    { value: '01', viewValue: 'January', disabled: false, check: false },
+    { value: '02', viewValue: 'February', disabled: false, check: false },
+    { value: '03', viewValue: 'March', disabled: false, check: false },
+    { value: '04', viewValue: 'April', disabled: false, check: false },
+    { value: '05', viewValue: 'May', disabled: false, check: false },
+    { value: '06', viewValue: 'June', disabled: false, check: false },
+    { value: '07', viewValue: 'July', disabled: false, check: false },
+    { value: '08', viewValue: 'August', disabled: false, check: false },
+    { value: '09', viewValue: 'September', disabled: false, check: false },
+    { value: '10', viewValue: 'October', disabled: false, check: false },
+    { value: '11', viewValue: 'November', disabled: false, check: false },
+    { value: '12', viewValue: 'December', disabled: false, check: false }
   ];
 
   currentYear = new Date().getFullYear();
@@ -197,16 +197,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  setMounts() {
-    this.selectedMonths = ['01', this.selectedEndMonth.toString().padStart(2, '0')];
-    // this.searchWithFilters()
-  }
-
   ngAfterViewInit(): void {
     this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe(content => {
       this.searchWithFilters()
     })
+  }
 
+  setMounts() {
+    const currentMonthIndex = new Date().getMonth();
+    this.selectedMonths = [this.months[currentMonthIndex]];
+    this.updateMonthStatus();
+  }
+
+  updateMonthStatus(): void {
+    this.months.forEach((month, index) => {
+      month.check = this.selectedMonths.some(selected => selected.value === month.value);
+      month.disabled = this.isDisabled(index);
+    });
   }
 
   searchWithFilters() {
@@ -238,16 +245,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  onSelectionChange(event: any): void {
-    if (event.value.length > 2) event.source.deselect(event.value[2]);
-    else this.selectedMonths = event.value;
-  }
-
-  isDisabled(month: any): boolean {
-    if (this.selectedMonths.length === 0) return false;
-    else if (this.selectedMonths.length === 1) return month < this.selectedMonths[0];
-    else return !this.selectedMonths.includes(month);
-  }
 
   getDataClients(fitlers?: string) {
     this.homeService.getDataClients(fitlers).subscribe({
@@ -282,11 +279,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getDataBatuCoverageSavings(filters?: string) {
     this.homeService.getDataBatuCoverageSavings(this.dataClientsList[0]?.id, filters).subscribe({
       next: (response: any) => {
-        this.dataClientsBatu = response;        
+        this.dataClientsBatu = response;
       },
       error: (error) => {
         this.dataClientsBatu = null;
-        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
       }
     })
@@ -365,6 +361,33 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       energyConsumption: energyConsumption,
       energyProduction: energyProduction
     }
+  }
+
+  onSelectionChange(event: any): void {
+    this.selectedMonths = event.value;
+
+    this.months.forEach(month => {
+      if (this.selectedMonths.some(selected => selected.value === month.value)) {
+        month.disabled = false;
+        month.check = true;
+      } else {
+        month.disabled = true;
+        month.check = false;
+      }
+    });
+  }
+
+  isDisabled(index: any): boolean {
+    let value = false;
+
+    if (this.selectedMonths.length) {
+      if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
+      else if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
+      else if (this.months[index]?.check && (!this.months[index - 1] || !this.months[index + 1])) value = true
+      else value = false;
+    }
+
+    return value
   }
 
   ngOnDestroy(): void {
