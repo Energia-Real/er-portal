@@ -2,7 +2,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './home-model';
 
 export class Mapper {
-	static getDataClientsMapper(response: entity.DataRespSavingDetails[], formatsService: FormatsService ): entity.DataRespSavingDetailsMapper {
+	static getDataClientsMapper(response: entity.DataRespSavingDetails[], formatsService: FormatsService): entity.DataRespSavingDetailsMapper {
 		let totalEnergyConsumption: number = 0;
 		let totalEnergyProduction: number = 0;
 
@@ -20,7 +20,7 @@ export class Mapper {
 				siteSaving: data?.siteSaving,
 				cfeZone: data?.cfeZone,
 				solarCoverage: data?.solarCoverage || '',
-				co2Saving: data?.co2Saving  || '',
+				co2Saving: data?.co2Saving || '',
 				energyConsumption: formatsService.energyFormat(parseFloat(data?.energyConsumption)),
 				energyProduction: formatsService.energyFormat(parseFloat(data?.energyProduction)),
 				siteStatus: data?.siteStatus
@@ -36,11 +36,25 @@ export class Mapper {
 		};
 	}
 
-	static getDataBatuCoverageSavings(response: any, formatsService: FormatsService ) {		
+	static getDataSolarCovergaCo2(response: entity.DataSolarCovergaCo2, formatsService: FormatsService): entity.FormatCards[] {
+		let dataList: entity.FormatCards[] = [];
+		if (response.data.length > 1) {
+			response.data.forEach((data: entity.FormatCards, i): void => {
+				dataList.push({
+					title: data?.title,
+					value: formatsService.energyFormat(parseFloat(data?.value)) + `${i > 0 ? ' TCO²' : ''}`,
+				});
+			});
+		}
+
+		return dataList
+	}
+
+	static getDataBatuSavings(response: any, formatsService: FormatsService) {
 		return {
-			totalSaving : formatsService.energyFormat(response.totalSaving),
-			cO2Saving : formatsService.energyFormat(response.cO2Saving),
-			costwoSolarTotal : formatsService.energyFormat(response.costwoSolarTotal),
+			totalSaving: formatsService.energyFormat(response.totalSaving),
+			cO2Saving: formatsService.energyFormat(response.cO2Saving),
+			costwoSolarTotal: formatsService.energyFormat(response.costwoSolarTotal),
 		}
 	}
 }

@@ -162,6 +162,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     totalEnergyProduction: 0
   }
 
+  solarCovergaCo2!: entity.FormatCards[];
+
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
     rangeDateEnd: [{ value: '', disabled: false }],
@@ -204,9 +206,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setMounts() {
-    const currentMonthIndex = new Date().getMonth();
-    this.selectedMonths = [this.months[currentMonthIndex]];
-    this.updateMonthStatus();
+    // const currentMonthIndex = new Date().getMonth();
+    // this.selectedMonths = [this.months[currentMonthIndex]];
+    // this.updateMonthStatus();
   }
 
   updateMonthStatus(): void {
@@ -219,30 +221,49 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   searchWithFilters() {
     let filters: string = "";
     let filtersBanu: any = {}
+    let filtersSolarCoverage: any = {
+      brand: "huawei",
+      clientName: "Merco",
+      months: []
+    }
+
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
       filters += `requestType=Day&`
       filters += `startDate=${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}&`,
         filters += `endDate=${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
 
-      filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
-      filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
-      filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
-      filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
+      filtersSolarCoverage.requestType = 1;
+      filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).toISOString()}`;
+      filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value).toISOString()}`;
+
+      // filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
+      // filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
+      // filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
+      // filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
 
     } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
       filters += `requestType=Month&`
-      filters += `startDate=${this.selectedMonths[0]}/${this.currentYear}&endDate=${this.selectedMonths[1]}/${this.currentYear}`
 
-      filtersBanu.añoInicio = this.currentYear.toString()
-      filtersBanu.añoFin = this.currentYear.toString()
-      filtersBanu.mesInicio = this.selectedMonths[0]
-      filtersBanu.mesFin = this.selectedMonths[1]
+      this.selectedMonths.map(month => {
+        filters += `months=${month.value}/${this.currentYear}&`
+      });
+
+      // filtersBanu.añoInicio = this.currentYear.toString()
+      // filtersBanu.añoFin = this.currentYear.toString()
+      // filtersBanu.mesInicio = this.selectedMonths[0]
+      // filtersBanu.mesFin = this.selectedMonths[1]
+
+      filtersSolarCoverage.requestType = 2
+      filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
     }
 
-    this.getDataClients(filters)
-    this.getDataBatuCoverageSavings(filtersBanu);
+    console.log('filtersSolarCoverage', filtersSolarCoverage);
 
+    // ARREGLAR ESTE 
+    // this.getDataClients(filters)
+    // this.getDataBatuSavings(filtersBanu);
+    this.getDataSolarCovergaCo2(filtersSolarCoverage);
   }
 
 
@@ -276,8 +297,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  getDataBatuCoverageSavings(filters?: string) {
-    this.homeService.getDataBatuCoverageSavings(this.dataClientsList[0]?.id, filters).subscribe({
+  getDataSolarCovergaCo2(filters?: string) {
+    this.homeService.getDataSolarCovergaCo2(filters).subscribe({
+      next: (response: entity.FormatCards[]) => {
+        this.solarCovergaCo2 = response;
+      },
+      error: (error) => {
+        this.dataClientsBatu = null;
+        console.error(error)
+      }
+    })
+  }
+
+  getDataBatuSavings(filters?: string) {
+    this.homeService.getDataBatuSavings(this.dataClientsList[0]?.id, filters).subscribe({
       next: (response: any) => {
         this.dataClientsBatu = response;
       },
@@ -388,6 +421,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     return value
+  }
+
+  convertToISO8601(month: string): string {
+    const year = new Date().getFullYear();
+    const date = moment(`${year}-${month}-01`).startOf('month').toISOString();
+    return date;
   }
 
   ngOnDestroy(): void {
