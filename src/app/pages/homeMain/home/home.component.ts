@@ -218,26 +218,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  
-      // filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
-      // filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
-      // filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
-      // filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
-
-         // filtersBanu.añoInicio = this.currentYear.toString()
-      // filtersBanu.añoFin = this.currentYear.toString()
-      // filtersBanu.mesInicio = this.selectedMonths[0]
-      // filtersBanu.mesFin = this.selectedMonths[1]
 
   searchWithFilters() {
     let filters: any = {};
-    let filtersBanu: any = {}
     let filtersSolarCoverage: any = {
       brand: "huawei",
       clientName: "Merco",
       months: []
     }
-
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
       filters.requestType = 'Day'
@@ -257,17 +245,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
     }
 
-    console.log('filters', filters);
-
-    // ARREGLAR ESTE 
     this.getDataClients(filters)
     this.getDataSolarCovergaCo2(filtersSolarCoverage);
-    // this.getDataBatuSavings(filtersBanu);
   }
 
 
-  getDataClients(fitlers?: string) {
-    this.homeService.getDataClients(fitlers).subscribe({
+  getDataClients(filters?: any) {
+    this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
@@ -275,6 +259,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selection.clear();
         this.toggleAllRows();
         this.allRowsInit = false;
+
+        if (this.dayOrMount.value == 'month') {
+          filters.energyProduction = response.savingDetails.totalEnergyProduction ? parseFloat(response.savingDetails.totalEnergyProduction.replace(/,/g, '')) : 0;
+          delete filters.requestType
+          this.getDataBatuSavings(filters);
+        }
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -309,6 +299,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getDataBatuSavings(filters?: string) {
+    console.log('getDataBatuSavings', filters);
+
     this.homeService.getDataBatuSavings(this.dataClientsList[0]?.id, filters).subscribe({
       next: (response: any) => {
         this.dataClientsBatu = response;
