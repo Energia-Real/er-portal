@@ -75,8 +75,10 @@
                     <mat-form-field class="select-mount" appearance="outline">
                         <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
                             (selectionChange)="onSelectionChange($event)">
+                            <!-- <mat-option *ngFor="let month of months; let i = index" [value]="month"
+                                [disabled]="isDisabled(i)"> -->
                             <mat-option *ngFor="let month of months; let i = index" [value]="month"
-                                [disabled]="isDisabled(i)">
+                                >
                                 {{ month.viewValue }}
                             </mat-option>
                         </mat-select>

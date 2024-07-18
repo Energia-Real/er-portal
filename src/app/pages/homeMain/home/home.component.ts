@@ -206,15 +206,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setMounts() {
-    // const currentMonthIndex = new Date().getMonth();
-    // this.selectedMonths = [this.months[currentMonthIndex]];
-    // this.updateMonthStatus();
+    const currentMonthIndex = new Date().getMonth();
+    const previousMonthIndex = currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
+  
+    this.selectedMonths = [this.months[previousMonthIndex], this.months[currentMonthIndex]];
   }
+  // this.updateMonthStatus();
 
   updateMonthStatus(): void {
     this.months.forEach((month, index) => {
       month.check = this.selectedMonths.some(selected => selected.value === month.value);
-      month.disabled = this.isDisabled(index);
+      // month.disabled = this.isDisabled(index);
     });
   }
 
