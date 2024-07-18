@@ -17,9 +17,9 @@ export class HomeService {
   ) { }
 
   getDataClients(filters?: string): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails${filters ? `?${filters}` : ''}`;
+    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails`;
 
-    return this.http.get<entity.DataRespSavingDetails[]>(url).pipe(
+    return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
       map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
     );
   }

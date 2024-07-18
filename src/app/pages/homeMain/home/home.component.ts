@@ -218,8 +218,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  
+      // filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
+      // filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
+      // filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
+      // filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
+
+         // filtersBanu.añoInicio = this.currentYear.toString()
+      // filtersBanu.añoFin = this.currentYear.toString()
+      // filtersBanu.mesInicio = this.selectedMonths[0]
+      // filtersBanu.mesFin = this.selectedMonths[1]
+
   searchWithFilters() {
-    let filters: string = "";
+    let filters: any = {};
     let filtersBanu: any = {}
     let filtersSolarCoverage: any = {
       brand: "huawei",
@@ -229,41 +240,29 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
-      filters += `requestType=Day&`
-      filters += `startDate=${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}&`,
-        filters += `endDate=${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
+      filters.requestType = 'Day'
+      filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}`,
+        filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
 
       filtersSolarCoverage.requestType = 1;
       filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).toISOString()}`;
       filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value).toISOString()}`;
 
-      // filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
-      // filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
-      // filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
-      // filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
 
     } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
-      filters += `requestType=Month&`
-
-      this.selectedMonths.map(month => {
-        filters += `months=${month.value}/${this.currentYear}&`
-      });
-
-      // filtersBanu.añoInicio = this.currentYear.toString()
-      // filtersBanu.añoFin = this.currentYear.toString()
-      // filtersBanu.mesInicio = this.selectedMonths[0]
-      // filtersBanu.mesFin = this.selectedMonths[1]
+      filters.requestType = 'Month'
+      filters.months = this.selectedMonths.map(month => `${month.value}/${this.currentYear}`);
 
       filtersSolarCoverage.requestType = 2
       filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
     }
 
-    console.log('filtersSolarCoverage', filtersSolarCoverage);
+    console.log('filters', filters);
 
     // ARREGLAR ESTE 
-    // this.getDataClients(filters)
-    // this.getDataBatuSavings(filtersBanu);
+    this.getDataClients(filters)
     this.getDataSolarCovergaCo2(filtersSolarCoverage);
+    // this.getDataBatuSavings(filtersBanu);
   }
 
 

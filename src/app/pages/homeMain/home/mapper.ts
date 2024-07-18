@@ -40,9 +40,12 @@ export class Mapper {
 		let dataList: entity.FormatCards[] = [];
 		if (response.data.length > 1) {
 			response.data.forEach((data: entity.FormatCards, i): void => {
+
+				const value = parseFloat(data?.value) / 100;
+
 				dataList.push({
 					title: data?.title,
-					value: formatsService.energyFormat(parseFloat(data?.value)) + `${i > 0 ? ' TCO²' : ''}`,
+					value: formatsService.energyFormat(value)  + `${i > 0 ? ' TCO²' : '%'}`,
 				});
 			});
 		}

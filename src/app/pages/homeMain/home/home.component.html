@@ -10,9 +10,9 @@
 
         <div class="c-card-section c-card-section-m">
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
-            <div class="grid md:grid-cols-2 gap-4 text-center div-groups">
+            <div class="grid md:grid-cols-2 gap-4 text-center div-groups" *ngIf="solarCovergaCo2?.length else notDataTable">
                 <div *ngFor="let data of solarCovergaCo2">
-                    <h2 class="mb-0" *ngIf="data?.value else notDataTable"> {{ data.value }}</h2>
+                    <h2 class="mb-0"> {{ data.value }}</h2>
                 </div>
             </div>
         </div>
