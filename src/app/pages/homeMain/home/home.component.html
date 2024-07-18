@@ -10,21 +10,10 @@
 
         <div class="c-card-section c-card-section-m">
             <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
-            <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
-                <div>
-                    <h2 class="mb-0" *ngIf="dataClientsBatu?.cO2Saving else notDataTable"> {{ dataClientsBatu.cO2Saving }}</h2>
+            <div class="grid md:grid-cols-2 gap-4 text-center div-groups" *ngIf="solarCovergaCo2?.length else notDataTable">
+                <div *ngFor="let data of solarCovergaCo2">
+                    <h2 class="mb-0"> {{ data.value }}</h2>
                 </div>
-<!--                 
-                <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
-                        hourglass_top
-                    </span>
-                </div>
-                <div>
-                    <span class="material-symbols-outlined color-EE5427" matTooltip="Comming soon.">
-                        hourglass_top
-                    </span>
-                </div> -->
             </div>
         </div>
 
@@ -86,8 +75,10 @@
                     <mat-form-field class="select-mount" appearance="outline">
                         <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
                             (selectionChange)="onSelectionChange($event)">
-                            <mat-option *ngFor="let month of months" [value]="month.value"
-                                [disabled]="isDisabled(month.value)">
+                            <!-- <mat-option *ngFor="let month of months; let i = index" [value]="month"
+                                [disabled]="isDisabled(i)"> -->
+                            <mat-option *ngFor="let month of months; let i = index" [value]="month"
+                                >
                                 {{ month.viewValue }}
                             </mat-option>
                         </mat-select>
@@ -108,10 +99,13 @@
                     </mat-form-field>
                 </form>
 
-                <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''"
-                    class="btn-action-add" (click)="searchWithFilters()">
+                <button class="btn-action-add" (click)="searchWithFilters()">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
+                <!-- <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''"
+                    class="btn-action-add" (click)="searchWithFilters()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button> -->
             </div>
         </div>
 
