@@ -16,14 +16,12 @@ export class HomeService {
     public formatsService: FormatsService
   ) { }
 
-  getDataClients(filters?:string): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails${filters ? `?${filters}` : ''}`;
+  getDataClients(filters?: string): Observable<entity.DataRespSavingDetailsMapper> {
+    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails`;
 
-    console.log(url);
-
-    return this.http.get<entity.DataRespSavingDetails[]>(url).pipe(
-			map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
-		);
+    return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
+      map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
+    );
   }
 
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
@@ -31,14 +29,22 @@ export class HomeService {
 
     return this.http.get<entity.DataRespSavingDetailsList[]>(url)
   }
- 
+
+  getDataSolarCovergaCo2(filters?: any) : Observable<entity.FormatCards[]> {
+    const url = `${environment.API_URL_PROXY_V1}/integrators/proxy/GetGlobalSolarCoverage`;
+
+    return this.http.post<entity.DataSolarCovergaCo2>(url, filters).pipe(
+      map((response) => Mapper.getDataSolarCovergaCo2(response, this.formatsService))
+    );
+  }
+
   // getDataCoverageSavings(): Observable<entity.DataRespSavingDetailsList[]> {
-  getDataBatuCoverageSavings(id?:string, filters?:any): Observable<any> {
+  getDataBatuSavings(id?: string, filters?: any): Observable<any> {
     const url = `${environment.API_URL_BATU_V1}/GetBatu/${id}`;
 
     return this.http.post<any>(url, filters).pipe(
-			map((response) => Mapper.getDataBatuCoverageSavings(response, this.formatsService))
-		);
+      map((response) => Mapper.getDataBatuSavings(response, this.formatsService))
+    );
     // return this.http.get<entity.DataRespSavingDetailsList[]>(url)
   }
 }

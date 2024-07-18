@@ -15,12 +15,12 @@ export interface DataRespSavingDetails {
   co2Saving: number | string;
   energyProduction: string;
   energyConsumption: string;
-  siteStatus: string; 
+  siteStatus: string;
 }
 
 export interface DataRespSavingDetailsMapper {
   data: DataRespSavingDetails[];
-  savingDetails : {
+  savingDetails: {
     totalEnergyConsumption: string;
     totalEnergyProduction: string;
   }
@@ -36,3 +36,20 @@ export interface Month {
   value: string;
   viewValue: string;
 }
+
+export interface DataSolarCovergaCo2 {
+  success: boolean;
+  errorMessage: string;
+  errorCode: 204,
+  data: [
+    {
+      title: string;
+      value: string
+    }
+  ]
+}
+
+export interface FormatCards {
+  title: string;
+  value: string;
+}[]

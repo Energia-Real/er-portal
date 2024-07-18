@@ -130,19 +130,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
-  months: entity.Month[] = [
-    { value: '01', viewValue: 'January' },
-    { value: '02', viewValue: 'February' },
-    { value: '03', viewValue: 'March' },
-    { value: '04', viewValue: 'April' },
-    { value: '05', viewValue: 'May' },
-    { value: '06', viewValue: 'June' },
-    { value: '07', viewValue: 'July' },
-    { value: '08', viewValue: 'August' },
-    { value: '09', viewValue: 'September' },
-    { value: '10', viewValue: 'October' },
-    { value: '11', viewValue: 'November' },
-    { value: '12', viewValue: 'December' }
+  months: { value: string, viewValue: string, disabled: boolean, check: boolean }[] = [
+    { value: '01', viewValue: 'January', disabled: false, check: false },
+    { value: '02', viewValue: 'February', disabled: false, check: false },
+    { value: '03', viewValue: 'March', disabled: false, check: false },
+    { value: '04', viewValue: 'April', disabled: false, check: false },
+    { value: '05', viewValue: 'May', disabled: false, check: false },
+    { value: '06', viewValue: 'June', disabled: false, check: false },
+    { value: '07', viewValue: 'July', disabled: false, check: false },
+    { value: '08', viewValue: 'August', disabled: false, check: false },
+    { value: '09', viewValue: 'September', disabled: false, check: false },
+    { value: '10', viewValue: 'October', disabled: false, check: false },
+    { value: '11', viewValue: 'November', disabled: false, check: false },
+    { value: '12', viewValue: 'December', disabled: false, check: false }
   ];
 
   currentYear = new Date().getFullYear();
@@ -161,6 +161,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     totalEnergyConsumption: 0,
     totalEnergyProduction: 0
   }
+
+  solarCovergaCo2!: entity.FormatCards[];
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -197,60 +199,61 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  setMounts() {
-    this.selectedMonths = ['01', this.selectedEndMonth.toString().padStart(2, '0')];
-    // this.searchWithFilters()
-  }
-
   ngAfterViewInit(): void {
     this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe(content => {
       this.searchWithFilters()
     })
-
   }
 
+  setMounts() {
+    const currentMonthIndex = new Date().getMonth();
+    const previousMonthIndex = currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
+  
+    this.selectedMonths = [this.months[previousMonthIndex], this.months[currentMonthIndex]];
+  }
+  // this.updateMonthStatus();
+
+  updateMonthStatus(): void {
+    this.months.forEach((month, index) => {
+      month.check = this.selectedMonths.some(selected => selected.value === month.value);
+      // month.disabled = this.isDisabled(index);
+    });
+  }
+
+
   searchWithFilters() {
-    let filters: string = "";
-    let filtersBanu: any = {}
+    let filters: any = {};
+    let filtersSolarCoverage: any = {
+      brand: "huawei",
+      clientName: "Merco",
+      months: []
+    }
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
-      filters += `requestType=Day&`
-      filters += `startDate=${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}&`,
-        filters += `endDate=${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
+      filters.requestType = 'Day'
+      filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}`,
+        filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
 
-      filtersBanu.añoInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY')
-      filtersBanu.añoFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY')
-      filtersBanu.mesInicio = moment(this.formFilters?.get('rangeDateStart')?.value).format('MM')
-      filtersBanu.mesFin = moment(this.formFilters?.get('rangeDateEnd')?.value).format('MM')
+      filtersSolarCoverage.requestType = 1;
+      filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).toISOString()}`;
+      filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value).toISOString()}`;
+
 
     } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
-      filters += `requestType=Month&`
-      filters += `startDate=${this.selectedMonths[0]}/${this.currentYear}&endDate=${this.selectedMonths[1]}/${this.currentYear}`
+      filters.requestType = 'Month'
+      filters.months = this.selectedMonths.map(month => `${month.value}/${this.currentYear}`);
 
-      filtersBanu.añoInicio = this.currentYear.toString()
-      filtersBanu.añoFin = this.currentYear.toString()
-      filtersBanu.mesInicio = this.selectedMonths[0]
-      filtersBanu.mesFin = this.selectedMonths[1]
+      filtersSolarCoverage.requestType = 2
+      filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
     }
 
     this.getDataClients(filters)
-    this.getDataBatuCoverageSavings(filtersBanu);
-
+    this.getDataSolarCovergaCo2(filtersSolarCoverage);
   }
 
-  onSelectionChange(event: any): void {
-    if (event.value.length > 2) event.source.deselect(event.value[2]);
-    else this.selectedMonths = event.value;
-  }
 
-  isDisabled(month: any): boolean {
-    if (this.selectedMonths.length === 0) return false;
-    else if (this.selectedMonths.length === 1) return month < this.selectedMonths[0];
-    else return !this.selectedMonths.includes(month);
-  }
-
-  getDataClients(fitlers?: string) {
-    this.homeService.getDataClients(fitlers).subscribe({
+  getDataClients(filters?: any) {
+    this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
@@ -258,6 +261,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selection.clear();
         this.toggleAllRows();
         this.allRowsInit = false;
+
+        if (this.dayOrMount.value == 'month') {
+          filters.energyProduction = response.savingDetails.totalEnergyProduction ? parseFloat(response.savingDetails.totalEnergyProduction.replace(/,/g, '')) : 0;
+          delete filters.requestType
+          this.getDataBatuSavings(filters);
+        }
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -279,14 +288,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  getDataBatuCoverageSavings(filters?: string) {
-    this.homeService.getDataBatuCoverageSavings(this.dataClientsList[0]?.id, filters).subscribe({
-      next: (response: any) => {
-        this.dataClientsBatu = response;        
+  getDataSolarCovergaCo2(filters?: string) {
+    this.homeService.getDataSolarCovergaCo2(filters).subscribe({
+      next: (response: entity.FormatCards[]) => {
+        this.solarCovergaCo2 = response;
       },
       error: (error) => {
         this.dataClientsBatu = null;
-        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.error(error)
+      }
+    })
+  }
+
+  getDataBatuSavings(filters?: string) {
+    console.log('getDataBatuSavings', filters);
+
+    this.homeService.getDataBatuSavings(this.dataClientsList[0]?.id, filters).subscribe({
+      next: (response: any) => {
+        this.dataClientsBatu = response;
+      },
+      error: (error) => {
+        this.dataClientsBatu = null;
         console.error(error)
       }
     })
@@ -365,6 +387,39 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       energyConsumption: energyConsumption,
       energyProduction: energyProduction
     }
+  }
+
+  onSelectionChange(event: any): void {
+    this.selectedMonths = event.value;
+
+    this.months.forEach(month => {
+      if (this.selectedMonths.some(selected => selected.value === month.value)) {
+        month.disabled = false;
+        month.check = true;
+      } else {
+        month.disabled = true;
+        month.check = false;
+      }
+    });
+  }
+
+  isDisabled(index: any): boolean {
+    let value = false;
+
+    if (this.selectedMonths.length) {
+      if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
+      else if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
+      else if (this.months[index]?.check && (!this.months[index - 1] || !this.months[index + 1])) value = true
+      else value = false;
+    }
+
+    return value
+  }
+
+  convertToISO8601(month: string): string {
+    const year = new Date().getFullYear();
+    const date = moment(`${year}-${month}-01`).startOf('month').toISOString();
+    return date;
   }
 
   ngOnDestroy(): void {
