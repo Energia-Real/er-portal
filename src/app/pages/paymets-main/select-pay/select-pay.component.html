@@ -66,7 +66,7 @@
                     <label class="input-search">
                         <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
                     </label>
-                    <input class="block w-full rounded-full pl-9 h-9" type="text" i18n-placeholder placeholder="Search">
+                    <input class="block w-full rounded-full pl-9 h-9" type="text" >
                 </form>
             </div>
 
@@ -126,63 +126,63 @@
           </ng-container>
   
           <ng-container matColumnDef="tariffDivision">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n> Tariff division </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Tariff division </th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element?.tariffDivision else notDataTable"> {{ element.tariffDivision }} </div>
             </td>
           </ng-container>
   
           <ng-container matColumnDef="productionMWh">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n> Production mWh </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Production mWh </th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element?.productionMWh else notDataTable"> {{ element.productionMWh }} </div>
             </td>
           </ng-container>
   
           <ng-container matColumnDef="rate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n> Rate ($/kWh) </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Rate ($/kWh) </th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element?.rate else notDataTable"> {{ element.rate }} </div>
             </td>
           </ng-container>
   
           <ng-container matColumnDef="consumption">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n> Consumption (kWh) </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Consumption (kWh) </th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element?.consumption else notDataTable"> {{ element.consumption }} </div>
             </td>
           </ng-container>
   
           <ng-container matColumnDef="solarSavings">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n> Solar savings ($) </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > Solar savings ($) </th>
             <td mat-cell *matCellDef="let element">
               <div *ngIf="element?.solarSavings else notDataTable"> {{ element.solarSavings }} </div>
             </td>
           </ng-container>
   
           <ng-container matColumnDef="erBill" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n > ER bill </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header  > ER bill </th>
             <td mat-cell *matCellDef="let element">
                 <div class="column-content-orange"> ER bill </div>
             </td>
           </ng-container>
       
           <ng-container matColumnDef="cfeBill" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n > CFE bill </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header  > CFE bill </th>
             <td mat-cell *matCellDef="let element">
                 <div class="column-content-orange"> Download </div>
             </td>
           </ng-container>
     
           <ng-container matColumnDef="dueDate" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n > Due date </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header  > Due date </th>
             <td mat-cell *matCellDef="let element">
                 <div *ngIf="element?.dueDate else notDataTable"> {{ element.dueDate }} </div>
             </td>
           </ng-container>
        
           <ng-container matColumnDef="pay">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header i18n></th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header ></th>
             <td mat-cell *matCellDef="let element">
                 <div class="column-pay" (click)="payData()"> Pay </div>
             </td>
