@@ -7,7 +7,6 @@ import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { ModalExportDataComponent } from './modal-export-data/modal-export-data.component';
 
 @Component({
   selector: 'app-site-performance',
@@ -17,14 +16,13 @@ import { ModalExportDataComponent } from './modal-export-data/modal-export-data.
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy = new Subject<void>();
   @Input() assetData!: entity.DataPlant;
-
+  
   chart: any;
   chartOptions!: Highcharts.Options;
   Highcharts: typeof Highcharts = Highcharts;
   graphicsType: 'pie' | 'bars' = 'bars';
   lineChartData!: ChartConfiguration<'bar'>['data'];
   showSitePerformance = false;
-  monthResume: any;
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     animation: {
@@ -42,12 +40,12 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
       tooltip: {
         usePointStyle: true,
       },
-
+      
       legend: {
         labels: {
           usePointStyle: true,
         },
-        position: "bottom",
+        position:"bottom",
         onHover: (event, legendItem, legend) => {
           const index = legendItem.datasetIndex;
           const chart = legend.chart;
@@ -63,9 +61,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
           chart.data.datasets.forEach((dataset, i) => {
             if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
+              dataset.backgroundColor = 'rgba(121, 36, 48, 1)'; 
             } else {
-              dataset.backgroundColor = 'rgba(238, 84, 39, 1)';
+              dataset.backgroundColor = 'rgba(238, 84, 39, 1)'; 
             }
           });
 
@@ -73,18 +71,18 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
       }
     },
-
+    
     scales: {
       x: {
         stacked: true,
         grid: {
-          display: false,
+          display: false, 
         },
       },
       y: {
         ticks: {
-          callback: function (value, index, values) {
-            return value + ' MWh';
+          callback: function(value, index, values) {
+            return value + ' MWh'; 
           },
         },
         stacked: true,
@@ -135,23 +133,21 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getMonthResume(startDate: Date, endDate: Date) {
-    this.moduleServices.getProyectResume("Huawei", this.assetData.plantCode, startDate, endDate).subscribe({
+    this.moduleServices.getProyectResume(this.assetData.inverterBrand[0], this.assetData.plantCode, startDate, endDate).subscribe({
       next: (response) => {
-        try {
-          this.monthResume = response[0]?.monthresume;
-        } catch {
-          this.showAlert = true;
+        const monthResume = response[0]?.monthresume;
+        if (!monthResume) {
           console.error('monthresume is undefined');
+          return;
         }
-
-        const inverterPowerData = this.monthResume.map((item: { inverterPower: number; }) => this.formatsService.graphFormat(item.inverterPower));
-        const seriesData = this.monthResume.map((item: { collectTime: string | number | Date; inverterPower: number; }) => {
+  
+        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
+        const seriesData = monthResume.map((item) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
           monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
           return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
         });
-
         const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
 
         this.chartOptions = {
@@ -172,7 +168,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             pie: {
               dataLabels: {
                 enabled: true,
-                formatter: function () {
+                formatter: function() {
                   return `<b>${this.point.name}</b>: ${this.y!.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
@@ -182,9 +178,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             }
           }
         };
-
+  
         this.lineChartData = {
-          labels: this.monthResume.map((item: { collectTime: string | number | Date; }) => {
+          labels: monthResume.map((item) => {
             let date = new Date(item.collectTime);
             let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
             monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
@@ -195,16 +191,16 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
               data: inverterPowerData,
               label: 'Energy Production',
               backgroundColor: 'rgba(121, 36, 48, 1)',
-
+              
             }
           ]
         };
-
+  
         this.displayChart = true;
         this.initChart();
       },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
       }
     })
@@ -223,23 +219,29 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   getStatus() {
     this.moduleServices.getDataRespStatus().subscribe({
-      next: (response: entity.ProjectStatus[]) => { this.projectStatus = response; },
+      next: (response: entity.ProjectStatus[]) => {
+        this.projectStatus = response;
+      },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
       }
     })
   }
 
-  exportData() {
-    this.notificationService.openModalMedium(ModalExportDataComponent);
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
-
-  refreshChart(index?: number): void {
-    if (index == 1) this.showSitePerformance = true
-    else this.showSitePerformance = false
+  refreshChart(index?:number): void {
+    if (index==1) {
+      this.showSitePerformance=true
+    }
+    else{
+      this.showSitePerformance=false
+    }
+    
   }
-
   initChart(): void {
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     if (ctx) {
@@ -251,8 +253,4 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
-  ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
-  }
 }

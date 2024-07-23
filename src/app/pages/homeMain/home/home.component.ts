@@ -231,20 +231,27 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
       filters.requestType = 'Day'
-      filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}`,
-        filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
+      filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM-DD')}`,
+        filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
+      // filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('MM/DD/YYYY')}`,
+      //   filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('MM/DD/YYYY')}`
+
 
       filtersSolarCoverage.requestType = 1;
-      filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).toISOString()}`;
-      filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value).toISOString()}`;
+      filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM-DD')}`,
+      filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
+
+      // filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).toISOString()}`;
+      // filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value).toISOString()}`;
 
 
     } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
       filters.requestType = 'Month'
-      filters.months = this.selectedMonths.map(month => `${month.value}/${this.currentYear}`);
+      filters.months = this.selectedMonths.map(month => `${month.value}-${this.currentYear}`);
 
       filtersSolarCoverage.requestType = 2
-      filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
+      filtersSolarCoverage.months = this.selectedMonths.map(month => month.value+'-'+this.currentYear);
+      // filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
     }
 
     this.getDataClients(filters)
