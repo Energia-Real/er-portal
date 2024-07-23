@@ -247,10 +247,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
       filters.requestType = 'Month'
-      filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}`);
+      filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
 
       filtersSolarCoverage.requestType = 2
-      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value);
+      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value+'-01');
       // filtersSolarCoverage.months = this.selectedMonths.map(month => this.convertToISO8601(month.value));
     }
 
