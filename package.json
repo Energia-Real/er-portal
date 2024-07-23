@@ -8,7 +8,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "i18n": "ng extract-i18n --output-path src/locale",
     "prepare": "husky install"
   },
   "private": true,

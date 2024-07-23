@@ -9,7 +9,7 @@
         </div>
 
         <div class="c-card-section c-card-section-m">
-            <h2 class="text-er-orange text-base font-normal" i18n>Solar Coverage & CO2 Savings</h2>
+            <h2 class="text-er-orange text-base font-normal" >Solar Coverage & CO2 Savings</h2>
             <div class="grid md:grid-cols-2 gap-4 text-center div-groups" *ngIf="solarCovergaCo2?.length else notDataTable">
                 <div *ngFor="let data of solarCovergaCo2">
                     <h2 class="mb-0"> {{ data.value }}</h2>
@@ -18,29 +18,29 @@
         </div>
 
         <div class="c-card-section">
-            <h2 class="text-er-orange text-base font-normal" i18n>Savings Details</h2>
+            <h2 class="text-er-orange text-base font-normal" >Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
                         savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
-                    <p class="text-sm" i18n>Total Energy <br> Consumption</p>
+                    <p class="text-sm" >Total Energy <br> Consumption</p>
                 </div>
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
                         savingsDetails.totalEnergyProduction }} <br> kWh</h2>
-                    <p class="text-sm" i18n>Energy <br> Production</p>
+                    <p class="text-sm" >Energy <br> Production</p>
                 </div>
 
                 <div>
                     <h2 *ngIf="dataClientsBatu?.costwoSolarTotal else notDataTable"> {{
                         dataClientsBatu.costwoSolarTotal }}</h2>
-                    <p class="text-sm" i18n>CFE <br> Cost without Solar</p>
+                    <p class="text-sm" >CFE <br> Cost without Solar</p>
                 </div>
 
                 <div>
                     <h2 *ngIf="dataClientsBatu?.totalSaving else notDataTable"> {{
                         dataClientsBatu.totalSaving }}</h2>
-                    <p class="text-sm" i18n>Total <br> Saving</p>
+                    <p class="text-sm" >Total <br> Saving</p>
                 </div>
             </div>
         </div>
