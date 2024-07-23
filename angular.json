@@ -4,19 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "er-portal": {
-      "i18n": {
-        "sourceLocale": "en-US",
-        "locales": {
-          "es-MX": {
-            "translation": "src/locale/messages.es.xlf",
-            "baseHref": "es-MX/"
-          },
-          "en-MX": {
-            "translation": "src/locale/messages.en.xlf",
-            "baseHref": "en-MX/"
-          }
-        }
-      },
+     
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -37,7 +25,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "localize": ["es-MX"],
             "outputPath": "dist/er-portal",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -110,12 +97,7 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "er-portal:build"
-          }
-        },
+       
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
