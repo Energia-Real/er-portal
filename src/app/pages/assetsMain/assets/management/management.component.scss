@@ -17,16 +17,8 @@
       border: none;
       color: #792430;
       border-color: none!important;
-      line-height: 18px;
-      vertical-align: top;
-    }
-  }
 
-  .column-maps {
-    width: 170px;
-    
-    a {
-      width: 170px;
+      vertical-align: top;
     }
   }
   
@@ -35,10 +27,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-
-      h2 {
-        line-height: unset;
-      }
     }  
   }
 
@@ -77,5 +65,5 @@
 }
 
 tbody, td, tfoot, th, thead, tr {
-  border-color:  #D2D2D2; /* O el color que prefieras */
+  border-color:  #D2D2D2;
 }
