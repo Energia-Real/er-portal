@@ -7,7 +7,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: er-portal   
-  AZURE_WEBAPP_PACKAGE_PATH: './dist/er-portal/browser/en-US'    
+  AZURE_WEBAPP_PACKAGE_PATH: './dist/er-portal/browser'    
   NODE_VERSION: '20.x'              
 
 permissions:
@@ -29,15 +29,8 @@ jobs:
         run: |
           npm install
           npm run build --if-present
-
-      - name: List build directory
-        run: ls -R ./dist/er-portal/browser
-
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./dist/er-portal/browser
-
-      - name: List contents of the ZIP file
-        run: unzip -l release.zip
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -55,26 +48,21 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: node-app
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: node-app
 
-      - name: List contents of the downloaded artifact
-        run: unzip -l release.zip
+    - name: List contents of the downloaded artifact
+      run: unzip -l release.zip
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip -d ./dist/er-portal/browser
+    - name: Unzip artifact for deployment
+      run: unzip release.zip -d ./dist/er-portal/browser
 
-      - name: List directory contents after unzip
-        run: ls -R ./dist/er-portal/browser
-
-      - name: 'Deploy to Azure WebApp'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: './dist/er-portal/browser/en-US'
-
-      run: echo "Hello ${{ inputs.name }}"
+    - name: 'Deploy to Azure WebApp'
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
