@@ -39,6 +39,9 @@ jobs:
           name: node-app
           path: release.zip
 
+      - name: List dist folder
+        run: ls -R ./dist/er-portal
+
   deploy:
     permissions:
       contents: none
