@@ -68,4 +68,4 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: 'dev'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEVELOP }}
-          package: 'release/dist/er-portal/browser/browser'
+          package: 'release/dist/er-portal/browser/en-US'
