@@ -1,31 +1,33 @@
 .spinner-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 500px; /* Ajusta el tamaño del logo según tus necesidades */
+    height: auto;
   }
-  .loader {
-    width: 50px; 
-    height: 50px;
+}
 
-  }
+.loader svg path {
+  stroke-width: 1;
+}
 
-  .loader svg path {
-    stroke-width: 6;
-  }
-
-  
-
- 
-  
-  
-  
-
-  
-  
+.loader svg path {
+  stroke-width: 1;
+  transform-origin: center; /* Asegura que la transformación se haga desde el centro */
+  transform: translate(35%, 0%); /* Centra los paths dentro del SVG */
+}
