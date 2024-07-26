@@ -169,10 +169,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
               dataLabels: {
                 enabled: true,
                 formatter: function() {
-                  return `<b>${this.point.name}</b>: ${this.y!.toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })}</b> MWh`;
+                  return `<b>${this.point.name}</b>: ${this.y!}</b> MWh`;
                 }
               }
             }

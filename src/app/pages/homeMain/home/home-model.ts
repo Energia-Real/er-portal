@@ -51,5 +51,5 @@ export interface DataSolarCovergaCo2 {
 
 export interface FormatCards {
   title: string;
-  value: string;
+  value: any;
 }[]
