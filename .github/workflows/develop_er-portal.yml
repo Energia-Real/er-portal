@@ -61,9 +61,15 @@ jobs:
       - name: Unzip artifact
         run: unzip release.zip -d release
 
+      - name: List release directory contents
+        run: ls -R release
+
       - name: Clean deployment directory
         run: |
           rm -rf /home/site/wwwroot/*
+
+      - name: List deployment directory contents after cleaning
+        run: ls -R /home/site/wwwroot
 
       - name: 'Deploy to Azure WebApp'
         id: deploy-to-webapp
