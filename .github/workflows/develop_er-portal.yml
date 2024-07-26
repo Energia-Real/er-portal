@@ -70,6 +70,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          slot-name: 'develop'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEVELOPMENT }}
+          slot-name: 'dev'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEVELOP }}
           package: 'release/dist/er-portal/browser/browser'
