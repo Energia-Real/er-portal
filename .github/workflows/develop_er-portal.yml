@@ -32,8 +32,6 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           zip -r release.zip dist/er-portal/browser
-        run: |
-          zip -r release.zip dist/er-portal/browser
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -44,12 +42,7 @@ jobs:
       - name: List dist folder
         run: ls -R ./dist/er-portal
 
-      - name: List dist folder
-        run: ls -R ./dist/er-portal
-
   deploy:
-    permissions:
-      contents: none
     permissions:
       contents: none
     runs-on: ubuntu-latest
@@ -65,12 +58,7 @@ jobs:
         with:
           name: node-app
           path: .
-          path: .
 
-      - name: Unzip artifact
-        run: unzip release.zip -d release
-
-      - name: 'Deploy to Azure WebApp'
       - name: Unzip artifact
         run: unzip release.zip -d release
 
