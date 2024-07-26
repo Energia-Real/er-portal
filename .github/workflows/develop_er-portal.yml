@@ -12,13 +12,6 @@ env:
 permissions:
   contents: read
 
-env:
-  AZURE_WEBAPP_NAME: er-portal   
-  NODE_VERSION: '20.x'              
-
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
