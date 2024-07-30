@@ -6,7 +6,7 @@ export class Mapper {
 	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
-		response.forEach((data: entity.DataDetails): void => {
+		response?.forEach((data: entity.DataDetails): void => {
 			let formattedValue: string = data.value;
 
 			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
