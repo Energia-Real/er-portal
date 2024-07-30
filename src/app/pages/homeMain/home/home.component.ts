@@ -252,9 +252,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value+'-01');
       filtersBatu.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value);
     }
-    
+
     this.getDataClients(filters, filtersBatu)
     this.getDataSolarCovergaCo2(filtersSolarCoverage);
+
+    delete filtersSolarCoverage.clientName
+    localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
   }
 
 

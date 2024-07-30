@@ -36,6 +36,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('assetId')!;
 
+
     if (this.notData) this.showAlert = true;
     else this.getDataResponse();
 
@@ -59,11 +60,18 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   }
 
   getDataResponse() {
+    const dateFiltersObj = localStorage.getItem('dateFilters');
+    let dateFilters : any 
+    if (dateFiltersObj) {
+      dateFilters = JSON.parse(dateFiltersObj);
+    }
+    
     let objData: entity.PostDataByPlant = {
       brand: "Huawei",
-      plantCode: this.assetData.plantCode
+      plantCode: this.assetData.plantCode,
+      ...dateFilters
     };
-
+    
     this.moduleServices.getDataRespSite(objData).subscribe({
       next: (response: entity.DataResponseDetailsMapper[]) => {
         this.siteResponse = response;
