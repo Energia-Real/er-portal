@@ -14,10 +14,7 @@ export class FormatsService {
 
   energyFormat(content: number): string {
     if (content) {
-      return content.toLocaleString('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      })
+      return content.toString()
     } else return '0'
   }
 

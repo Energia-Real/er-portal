@@ -1,13 +1,12 @@
-name: Build and deploy Node.js app to Azure Web App - er-portal
+name: Build and deploy Node.js app to Azure Web App Develop - er-portal
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
   workflow_dispatch:
 
 env:
   AZURE_WEBAPP_NAME: er-portal   
-  AZURE_WEBAPP_PACKAGE_PATH: '.'     
   NODE_VERSION: '20.x'              
 
 permissions:
@@ -31,13 +30,17 @@ jobs:
           npm run build --if-present
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: |
+          zip -r release.zip dist/er-portal/browser
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
           path: release.zip
+
+      - name: List dist folder
+        run: ls -R ./dist/er-portal
 
   deploy:
     permissions:
@@ -49,15 +52,24 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v3
-      with:
-        name: node-app
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: node-app
+          path: .
 
-    - name: 'Deploy to Azure WebApp'
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: 'release.zip'
+      - name: Unzip artifact
+        run: unzip release.zip -d release
+
+      - name: Clean deployment directory
+        run: |
+          rm -rf /home/site/wwwroot/*
+
+      - name: 'Deploy to Azure WebApp'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'dev'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_DEVELOP }}
+          package: 'release/dist/er-portal/browser/browser'
