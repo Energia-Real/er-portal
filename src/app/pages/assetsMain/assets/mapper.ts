@@ -4,6 +4,9 @@ import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
 	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
+		console.log('getDataRespSiteMapper', response);
+		
+	
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
 		response?.forEach((data: entity.DataDetails): void => {

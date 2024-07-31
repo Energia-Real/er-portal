@@ -2,7 +2,6 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import * as Highcharts from 'highcharts';
 import { ViewEncapsulation } from '@angular/core';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
 import { Subject, takeUntil } from 'rxjs';
@@ -44,7 +43,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   displayedColumns: string[] = [
-    // 'select',
     'siteName',
     'energyConsumption',
     'energyProduction',
@@ -130,19 +128,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
-  months: { value: string, viewValue: string, disabled: boolean, check: boolean }[] = [
-    { value: '01', viewValue: 'January', disabled: false, check: false },
-    { value: '02', viewValue: 'February', disabled: false, check: false },
-    { value: '03', viewValue: 'March', disabled: false, check: false },
-    { value: '04', viewValue: 'April', disabled: false, check: false },
-    { value: '05', viewValue: 'May', disabled: false, check: false },
-    { value: '06', viewValue: 'June', disabled: false, check: false },
-    { value: '07', viewValue: 'July', disabled: false, check: false },
-    { value: '08', viewValue: 'August', disabled: false, check: false },
-    { value: '09', viewValue: 'September', disabled: false, check: false },
-    { value: '10', viewValue: 'October', disabled: false, check: false },
-    { value: '11', viewValue: 'November', disabled: false, check: false },
-    { value: '12', viewValue: 'December', disabled: false, check: false }
+  months: { value: string, viewValue: string }[] = [
+    { value: '01', viewValue: 'January' },
+    { value: '02', viewValue: 'February' },
+    { value: '03', viewValue: 'March' },
+    { value: '04', viewValue: 'April' },
+    { value: '05', viewValue: 'May' },
+    { value: '06', viewValue: 'June' },
+    { value: '07', viewValue: 'July' },
+    { value: '08', viewValue: 'August' },
+    { value: '09', viewValue: 'September' },
+    { value: '10', viewValue: 'October' },
+    { value: '11', viewValue: 'November' },
+    { value: '12', viewValue: 'December' }
   ];
 
   currentYear = new Date().getFullYear();
@@ -180,6 +178,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.getInfoUser();
+    this.setMounts();
     this.getDataClientsList();
     this.lineChartData = {
       labels: this.labels,
@@ -200,26 +199,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe(content => {
-      this.searchWithFilters()
+    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe( _ => {
+      this.searchWithFilters();
     })
   }
 
   setMounts() {
-    const currentMonthIndex = new Date().getMonth();
-    const previousMonthIndex = currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
-  
-    this.selectedMonths = [this.months[previousMonthIndex], this.months[currentMonthIndex]];
+    this.selectedMonths = [this.months[5], this.months[6]];
   }
-  // this.updateMonthStatus();
-
-  updateMonthStatus(): void {
-    this.months.forEach((month, index) => {
-      month.check = this.selectedMonths.some(selected => selected.value === month.value);
-      // month.disabled = this.isDisabled(index);
-    });
-  }
-
 
   searchWithFilters() {
     let filtersBatu: any = {};
@@ -257,11 +244,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getDataSolarCovergaCo2(filtersSolarCoverage);
 
     delete filtersSolarCoverage.clientName
-    localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
+
+    if (filtersSolarCoverage.requestType) {
+      // console.log('**********************************');
+      console.log('LOCALSTOARGE:', filtersSolarCoverage);
+      // console.log('**********************************');
+      localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
+    }
   }
 
 
   getDataClients(filters?: any, filtersBatu?:any) {
+
+    // console.log('filters', filters);
+    // console.log('***********************************');
+    // console.log('filtersBatu', filtersBatu);
+
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
@@ -310,8 +308,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getDataBatuSavings(filters?: string) {
-    console.log('getDataBatuSavings', filters);
-
     this.homeService.getDataBatuSavings(this.dataClientsList[0]?.id, filters).subscribe({
       next: (response: any) => {
         this.dataClientsBatu = response;
@@ -325,7 +321,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getInfoUser() {
     this.accountService.getInfoUser().subscribe((data: User) => {
       this.userInfo = data;
-      this.setMounts();
     })
   }
 
@@ -397,32 +392,32 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onSelectionChange(event: any): void {
-    this.selectedMonths = event.value;
+  // onSelectionChange(event: any): void {
+  //   this.selectedMonths = event.value;
 
-    this.months.forEach(month => {
-      if (this.selectedMonths.some(selected => selected.value === month.value)) {
-        month.disabled = false;
-        month.check = true;
-      } else {
-        month.disabled = true;
-        month.check = false;
-      }
-    });
-  }
+  //   this.months.forEach(month => {
+  //     if (this.selectedMonths.some(selected => selected.value === month.value)) {
+  //       month.disabled = false;
+  //       month.check = true;
+  //     } else {
+  //       month.disabled = true;
+  //       month.check = false;
+  //     }
+  //   });
+  // }
 
-  isDisabled(index: any): boolean {
-    let value = false;
+  // isDisabled(index: any): boolean {
+  //   let value = false;
 
-    if (this.selectedMonths.length) {
-      if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
-      else if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
-      else if (this.months[index]?.check && (!this.months[index - 1] || !this.months[index + 1])) value = true
-      else value = false;
-    }
+  //   if (this.selectedMonths.length) {
+  //     if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
+  //     else if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
+  //     else if (this.months[index]?.check && (!this.months[index - 1] || !this.months[index + 1])) value = true
+  //     else value = false;
+  //   }
 
-    return value
-  }
+  //   return value
+  // }
 
   convertToISO8601(month: string): string {
     const year = new Date().getFullYear();
