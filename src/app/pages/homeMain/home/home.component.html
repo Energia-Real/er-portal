@@ -1,17 +1,20 @@
 <app-layout routeActive="/home"></app-layout>
 <main class="grid md:grid-cols-2 md:gap-4 c-home c-main">
-    <div style="height: calc(100vh - 100px);">
+    <div>
         <div class="c-client-list">
             <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
-                <mat-icon *ngIf="first">favorite</mat-icon>
+                <div class="logo-merco">
+                    <img src="../../../../assets/img/merco.png" alt="">
+                </div>
                 {{ client.nombre }}
             </button>
         </div>
 
         <div class="c-card-section c-card-section-m">
-            <h2 class="text-er-orange text-base font-normal" >Solar Coverage & CO2 Savings</h2>
-            <div class="d-flex justify-content-center">
-                <div class="grid md:grid-cols-2 gap-4 text-center div-groups" *ngIf="solarCovergaCo2?.length else notDataTable">
+            <h2 class="text-er-orange text-base font-normal">Solar Coverage & CO2 Savings</h2>
+            <div class="d-flex" [ngStyle]="{'justify-content-center': !solarCovergaCo2?.length}">
+                <div class="grid md:grid-cols-2 gap-4 text-center div-groups"
+                    *ngIf="solarCovergaCo2?.length else notDataTable">
                     <div *ngFor="let data of solarCovergaCo2">
                         <h2 class="mb-0"> {{ data.value }}</h2>
                     </div>
@@ -20,29 +23,30 @@
         </div>
 
         <div class="c-card-section">
-            <h2 class="text-er-orange text-base font-normal" >Savings Details</h2>
+            <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
                         savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
-                    <p class="text-sm" >Total Energy <br> Consumption</p>
+                    <p class="text-sm">Total Energy <br> Consumption</p>
                 </div>
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
                         savingsDetails.totalEnergyProduction }} <br> kWh</h2>
-                    <p class="text-sm" >Energy <br> Production</p>
+                    <p class="text-sm">Energy <br> Production</p>
                 </div>
 
                 <div>
                     <h2 *ngIf="dataClientsBatu?.costwoSolarTotal else notDataTable"> {{
                         dataClientsBatu.costwoSolarTotal }}</h2>
-                    <p class="text-sm" >CFE <br> Cost without Solar</p>
+                    <p class="text-sm">CFE <br> Cost without Solar <br> <span class="wi-progress">Work in
+                            progress</span></p>
                 </div>
 
                 <div>
                     <h2 *ngIf="dataClientsBatu?.totalSaving else notDataTable"> {{
                         dataClientsBatu.totalSaving }}</h2>
-                    <p class="text-sm" >Total <br> Saving</p>
+                    <p class="text-sm">Total <br> Saving <br> <span class="wi-progress">Work in progress</span></p>
                 </div>
             </div>
         </div>
@@ -75,7 +79,7 @@
             <div class="col-md-8 col-sm-8">
                 <div class="c-input" *ngIf="dayOrMount.value == 'month'">
                     <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple >
+                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple>
                             <mat-option *ngFor="let month of months; let i = index" [value]="month">
                                 {{ month.viewValue }}
                             </mat-option>
@@ -207,6 +211,7 @@
         </table>
     </div>
 </main>
+<app-footer></app-footer>
 
 <ng-template #notDataTable>
     <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>

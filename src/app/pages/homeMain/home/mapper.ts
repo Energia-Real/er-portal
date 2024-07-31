@@ -42,7 +42,7 @@ export class Mapper {
 			response.data.forEach((data: entity.FormatCards, i): void => {
 				dataList.push({
 					title: data?.title,
-					value: formatsService.energyFormat(data.value)  + `${i > 0 ? ' TCO²' : '%'}`,
+					value: formatsService.energyFormat(parseFloat(data.value))  + `${i > 0 ? ' TCO²' : '%'}`,
 				});
 			});
 		}

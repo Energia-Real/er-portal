@@ -10,7 +10,7 @@
 
     <div class="col-md-6 text-center" *ngIf="siteResponse && urlMap">
       <p *ngIf="assetData.latitude">Map loaded using the following coordinates: <br> Latitude: <span
-          class="color-EE5427">{{ assetData.latitude }}</span>, Length: <span class="color-EE5427">{{
+          class="color-EE5427">{{ assetData.latitude }}</span>, Longitude: <span class="color-EE5427">{{
           assetData.longitude }}</span></p>
       <p *ngIf="!assetData.latitude">Unable to load map due to lack of latitude and longitude coordinates.</p>
 

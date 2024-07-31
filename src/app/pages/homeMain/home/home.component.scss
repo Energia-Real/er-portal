@@ -16,11 +16,28 @@
     margin-top: 18px;
   }
 
+  .logo-merco {
+      width: 20px;
+      height: 20px;
+      img {
+        width: 20px;
+        height: 20px;
+        padding-bottom: 2px;
+      }
+  }
+
   .c-client-list {
     display: flex;
     gap: 10px;
     overflow-x: auto;
     overflow-y: hidden;
+
+    .mdc-button__label {
+      display: flex;
+    align-items: center;
+    gap: 10px;
+    }
+    
 
     button {
       min-width: 120px;
