@@ -10,9 +10,11 @@
 
         <div class="c-card-section c-card-section-m">
             <h2 class="text-er-orange text-base font-normal" >Solar Coverage & CO2 Savings</h2>
-            <div class="grid md:grid-cols-2 gap-4 text-center div-groups" *ngIf="solarCovergaCo2?.length else notDataTable">
-                <div *ngFor="let data of solarCovergaCo2">
-                    <h2 class="mb-0"> {{ data.value }}</h2>
+            <div class="d-flex justify-content-center">
+                <div class="grid md:grid-cols-2 gap-4 text-center div-groups" *ngIf="solarCovergaCo2?.length else notDataTable">
+                    <div *ngFor="let data of solarCovergaCo2">
+                        <h2 class="mb-0"> {{ data.value }}</h2>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,12 +75,8 @@
             <div class="col-md-8 col-sm-8">
                 <div class="c-input" *ngIf="dayOrMount.value == 'month'">
                     <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
-                            (selectionChange)="onSelectionChange($event)">
-                            <!-- <mat-option *ngFor="let month of months; let i = index" [value]="month"
-                                [disabled]="isDisabled(i)"> -->
-                            <mat-option *ngFor="let month of months; let i = index" [value]="month"
-                                >
+                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple >
+                            <mat-option *ngFor="let month of months; let i = index" [value]="month">
                                 {{ month.viewValue }}
                             </mat-option>
                         </mat-select>
@@ -99,13 +97,10 @@
                     </mat-form-field>
                 </form>
 
-                <button class="btn-action-add" (click)="searchWithFilters()">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-                <!-- <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''"
+                <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''"
                     class="btn-action-add" (click)="searchWithFilters()">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                </button> -->
+                </button>
             </div>
         </div>
 
