@@ -5,7 +5,14 @@ module.exports = {
     "./node_modules/flowbite/**/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      width: {
+        '10/10': '100%',
+        '9/10': '90%',
+        '8/10': '80%',
+        '7/10': '70%',
+      }
+    },
     colors:  {
       inherit: 'inherit',
       current: 'currentColor',
