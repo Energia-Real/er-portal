@@ -178,7 +178,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.getInfoUser();
-    this.setMounts();
+    this.setMonths();
     this.getDataClientsList();
     this.lineChartData = {
       labels: this.labels,
@@ -204,9 +204,23 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  setMounts() {
+  setMonths() {
     this.selectedMonths = [this.months[5], this.months[6]];
   }
+
+  // setMonths() {
+  //   const now = new Date();
+  //   const currentMonthIndex = now.getMonth(); 
+  
+  //   const previousMonthIndex1 = (currentMonthIndex - 1 + 12) % 12;
+  //   const previousMonthIndex2 = (currentMonthIndex - 2 + 12) % 12;
+  
+  //   this.selectedMonths = [
+  //     this.months[previousMonthIndex2],
+  //     this.months[previousMonthIndex1],
+  //     this.months[currentMonthIndex]
+  //   ];
+  // }
 
   searchWithFilters() {
     let filtersBatu: any = {};
@@ -243,23 +257,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getDataClients(filters, filtersBatu)
     this.getDataSolarCovergaCo2(filtersSolarCoverage);
 
-    delete filtersSolarCoverage.clientName
-
-    if (filtersSolarCoverage.requestType) {
-      // console.log('**********************************');
-      console.log('LOCALSTOARGE:', filtersSolarCoverage);
-      // console.log('**********************************');
-      localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
-    }
+    delete filtersSolarCoverage.clientName;
+    if (filtersSolarCoverage.requestType) localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
   }
 
 
   getDataClients(filters?: any, filtersBatu?:any) {
-
-    // console.log('filters', filters);
-    // console.log('***********************************');
-    // console.log('filtersBatu', filtersBatu);
-
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data

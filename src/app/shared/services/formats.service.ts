@@ -17,7 +17,7 @@ export class FormatsService {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
       })
-    } else return '0'
+    } else return ''
   }
 
   homeGraphFormat(content:string):number{
