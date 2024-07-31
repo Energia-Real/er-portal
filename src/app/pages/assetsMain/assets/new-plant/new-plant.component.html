@@ -144,12 +144,12 @@
           </div>
 
           <div class="c-input">
-            <p>Length:</p>
+            <p>Longitude :</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-              <input type="number" formControlName="longitude" placeholder="Length" matInput>
+              <input type="number" formControlName="longitude" placeholder="Longitude " matInput>
               <mat-error
                 *ngIf="formData.get('longitude')?.errors?.['invalidLongitude'] && formData.get('longitude')?.touched">The
-                length must be between -180 y 180</mat-error>
+                longitude must be between -180 y 180</mat-error>
 
             </mat-form-field>
           </div>

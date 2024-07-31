@@ -21,7 +21,7 @@ export class Mapper {
 			dataList.push({
 				title: data.title,
 				description: formattedValue ?? null,
-				tooltip: data?.title?.toLocaleLowerCase()?.includes('life time energy consumptio') ? 'Energy consumption since the solar installation was commissioned.' : ''
+				// tooltip: data?.title?.toLocaleLowerCase()?.includes('life time energy consumptio') ? 'Energy consumption since the solar installation was commissioned.' : ''
 			});
 		});
 
