@@ -42,7 +42,7 @@ export class AssetsService implements OnDestroy {
     const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
 
     return this.http.post<entity.DataResponseDetails>(url, data).pipe(
-      map((response) => Mapper.getDataRespSiteMapper(response.data, this.formatsService))
+      map((response) => Mapper.getDataRespSiteMapper(response?.data, this.formatsService))
     );
   }
 
