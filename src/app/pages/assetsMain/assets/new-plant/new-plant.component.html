@@ -1,129 +1,154 @@
-<div class="c-main create-asset-main-container">
+<div class="c-main create-asset-main-container" style="padding-top: 80px;">
   <app-return-bar></app-return-bar>
   <div class="create-asset-form-container">
-    <div class="create-asset-header-container" *ngIf="objEditData">
+    <div class="create-asset-header-container">
       <h2>{{!objEditData ? 'Create' : 'Edit'}} plant</h2>
       <p> {{!objEditData ? 'Enter the data to create a plant' : 'Modify the data to edit the plant'}}</p>
     </div>
 
-    <div class="create-asset-inputs-component">
-      <form [formGroup]="formData" (ngSubmit)="actionSave()">
-        <div *ngIf="objEditData" class="form-group-container mb-3 text-center">
-          <h3>{{objEditData.siteName}}</h3>
+    <form [formGroup]="formData" class="p-3">
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-0">
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p class="text-sm font-medium text-gray-700">Name of the site:</p>
+            <mat-form-field appearance="outline" class="w-full input-ER">
+              <input formControlName="siteName" placeholder="Name of the site" matInput>
+              <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Name of the site:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="siteName" placeholder="Name of the site" matInput>
-            <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p class="text-sm font-medium text-gray-700">Plant code:</p>
+            <mat-form-field appearance="outline" class="w-full input-ER">
+              <input formControlName="plantCode" placeholder="Plant code" matInput>
+              <mat-error *ngIf="formData.get('plantCode')?.hasError('required')">You must add plant code</mat-error>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Plant code:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="plantCode" placeholder="Plant code" matInput>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Address:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input formControlName="direction" placeholder="Address" matInput>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Address:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="direction" placeholder="Address" matInput>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Type of contract:</p>
+            <mat-form-field class="select-ER" appearance="outline">
+              <mat-select formControlName="contractTypeId" placeholder="Type of contract">
+                <mat-option value="" disabled>Choose one</mat-option>
+                <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Type of contract:</p>
-          <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="contractTypeId" placeholder="Type of contract">
-              <mat-option value="" disabled>Choose one</mat-option>
-              <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
-                }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Installation type:</p>
+            <mat-form-field class="select-ER" appearance="outline">
+              <mat-select formControlName="installationTypeId" placeholder="Installation type">
+                <mat-option value="" disabled>Choose one</mat-option>
+                <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Installation type:</p>
-          <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="installationTypeId" placeholder="Installation type">
-              <mat-option value="" disabled>Choose one</mat-option>
-              <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
-                }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Installed capacity:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input formControlName="installedCapacity" placeholder="Installed capacity" matInput>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Installed capacity:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="installedCapacity" placeholder="Installed capacity" matInput>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Quality ratio:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input formControlName="installedCapacity" placeholder="Quality ratio" matInput>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Quality ratio:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="installedCapacity" placeholder="Quality ratio" matInput>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Annual performance:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input formControlName="yearlyYield" placeholder="Annual performance" matInput>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Annual performance:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="yearlyYield" placeholder="Annual performance" matInput>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Rated power mAC:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input formControlName="nominalPowerAC" placeholder="Rated power mAC" matInput>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Rated power mAC:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="nominalPowerAC" placeholder="Rated power mAC" matInput>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Status:</p>
+            <mat-form-field class="select-ER" appearance="outline">
+              <mat-select formControlName="statusPlantId" placeholder="Status">
+                <mat-option value="" disabled>Choose one</mat-option>
+                <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-'
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="form-group-container mb-1">
-          <p>Status:</p>
-          <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="statusPlantId" placeholder="Status">
-              <mat-option value="" disabled>Choose one</mat-option>
-              <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-' }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Operation scheme:</p>
+            <mat-form-field class="select-ER" appearance="outline">
+              <mat-select formControlName="netZero" placeholder="Operation scheme">
+                <mat-option value="" disabled>Choose one</mat-option>
+                <mat-option [value]="true">Net Zero Export</mat-option>
+                <mat-option [value]="false">Normal</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="form-group-container input-email-container mb-1">
-          <p>Operation scheme:</p>
 
-          <mat-form-field class="select-ER" appearance="outline">
-            <mat-select formControlName="netZero" placeholder="Operation scheme">
-              <mat-option value="" disabled>Choose one</mat-option>
-              <mat-option [value]="true">Net Zero Export</mat-option>
-              <mat-option [value]="false">Normal</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
+            <p>Map link:</p>
+            <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+              <input formControlName="link" placeholder="Map link" matInput>
+              <mat-error
+                *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
+                must add a valid map link</mat-error>
+            </mat-form-field>
+          </div>
         </div>
 
-        <div class="c-input">
-          <p>Map link:</p>
-          <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="link" placeholder="Map link" matInput>
-            <mat-error
-              *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
-              must add a valid map link</mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="c-input-group">
+        <div class="col-span-1 md:col-span-1">
           <div class="c-input">
             <p>System size:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
               <input type="number" formControlName="systemSize" placeholder="System size" matInput>
             </mat-form-field>
           </div>
+        </div>
 
+        <div class="col-span-1 md:col-span-1">
           <div class="c-input">
             <p>Inverter quantity:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
@@ -132,7 +157,7 @@
           </div>
         </div>
 
-        <div class="c-input-group">
+        <div class="col-span-1 md:col-span-1">
           <div class="c-input">
             <p>Latitude:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
@@ -142,7 +167,9 @@
                 latitude must be between -90 y 90</mat-error>
             </mat-form-field>
           </div>
+        </div>
 
+        <div class="col-span-1 md:col-span-1">
           <div class="c-input">
             <p>Longitude :</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
@@ -155,8 +182,8 @@
           </div>
         </div>
 
-        <div class="form-group-container coordinates-container ">
-          <div class="coordinates-input-container">
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
             <p>Commission date:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
               <input formControlName="commissionDate" placeholder="Commission date" matInput [matDatepicker]="picker1">
@@ -164,8 +191,10 @@
               <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
           </div>
+        </div>
 
-          <div class="coordinates-input-container">
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
             <p>Signing contract date:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
               <input formControlName="contractSignatureDate" placeholder="Signing contract date" matInput
@@ -176,8 +205,8 @@
           </div>
         </div>
 
-        <div class="form-group-container coordinates-container mb-3">
-          <div class="coordinates-input-container">
+        <div class="col-span-1 md:col-span-1">
+          <div class="c-input">
             <p>Instalation date:</p>
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
               <input formControlName="endInstallationDate" placeholder="Instalation date" matInput
@@ -187,20 +216,20 @@
             </mat-form-field>
           </div>
         </div>
+      </div>
 
-        <div class="button-container d-flex justify-content-between pt-3">
-          <div>
-            <button class="btn-cancel" (click)="toBack()" type="button">Cancel</button>
-          </div>
-          <div>
-            <span class="loader" *ngIf="loading"></span>
-            <button class="btn-action-add" [disabled]="formData.invalid" *ngIf="!loading" type="submit">
-              <i class="fa-solid fa-floppy-disk"></i>
-              Save
-            </button>
-          </div>
+      <div class="button-container d-flex justify-content-between pt-0">
+        <div>
+          <button class="btn-cancel" (click)="toBack()" type="button">Cancel</button>
         </div>
-      </form>
-    </div>
+        <div>
+          <span class="loader" *ngIf="loading"></span>
+          <button class="btn-action-add" [disabled]="formData.invalid" *ngIf="!loading" type="submit">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
