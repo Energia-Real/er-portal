@@ -16,7 +16,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy = new Subject<void>();
   @Input() assetData!: entity.DataPlant;
-  
+  dots = Array(3).fill(0);
   chart: any;
   chartOptions!: Highcharts.Options;
   Highcharts: typeof Highcharts = Highcharts;
