@@ -81,6 +81,7 @@ export interface DataManagementTable {
   contractType: string;
   installationType: string;
   commissionDate: string;
+  numberOfInvestors: any;
   clientId: number;
   inverterQty: number;
   netZero: boolean
