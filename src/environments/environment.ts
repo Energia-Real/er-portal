@@ -8,4 +8,5 @@ export const environment = {
     API_URL_BATU_V1: "https://er-batu-int.azurewebsites.net/api/v1",
     APP: "backoffice",
     GOOGLE_API_KEY: "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k"
+    
 };

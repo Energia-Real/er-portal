@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { paginatorReducer } from './core/store/reducers/paginator.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -21,6 +22,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     HttpClientModule,
     LayoutModule,
+    GoogleMapsModule,
     CoreModule,
     StoreModule.forRoot({ paginator: paginatorReducer }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
