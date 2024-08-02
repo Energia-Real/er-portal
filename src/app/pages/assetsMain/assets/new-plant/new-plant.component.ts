@@ -3,12 +3,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssetsService } from '../assets.service';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomValidators } from '@app/shared/validators/custom-validatos';
 import { CatalogsService } from '@app/shared/services/catalogs.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import moment from 'moment';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
 import * as entity from '../assets-model';
+import { Loader } from '@googlemaps/js-api-loader';
 
 @Component({
   selector: 'app-new-plant',
@@ -22,13 +22,14 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     siteName: ['', Validators.required],
     plantCode: [''],
     direction: [''],
-    link: ['', CustomValidators.validateUrlPrefix],
+    link: [{ value: '', disabled: true }],
     contractTypeId: [''],
-    latitude: ['', CustomValidators.validateLatitude],
-    longitude: ['', CustomValidators.validateLongitude],
+    latitude: [0],
+    longitude: [0],
     installationTypeId: [''],
     performanceRatio: [''],
     yearlyYield: [''],
+    qualityRatio: [''],
     nominalPowerAC: [''],
     commissionDate: [''],
     installedCapacity: [''],
@@ -38,15 +39,24 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     inverterQty: [''],
     statusPlantId: [''],
     netZero: [''],
+    searchAddress: [''],
   });
+
+  map!: google.maps.Map;
+  marker!: google.maps.Marker;
+  latitude: any;
+  longitude: any;
+  autocomplete!: google.maps.places.Autocomplete;
 
   catContractType: entityCatalogs.DataCatalogs[] = [];
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
   catPlantStatus: entityCatalogs.DataCatalogs[] = [];
+  objEditData!: entity.DataPlant;
 
   showLoader: boolean = false;
   loading: boolean = false;
-  objEditData!: entity.DataPlant;
+
+  mapLink: string = ''
 
   constructor(
     private catalogsService: CatalogsService,
@@ -58,7 +68,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.getCatalogs()
+    this.getCatalogs();
+    this.mapTo();
   }
 
   getId() {
@@ -71,7 +82,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataId(id).subscribe({
       next: (response: entity.DataPlant | any) => {
         this.objEditData = response;
-        this.formData.patchValue(response)
+        this.formData.patchValue(response);
+        this.getAddressMap(response);
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -163,6 +175,112 @@ export class NewPlantComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     })
+  }
+
+  getAddressMap(response: entity.DataPlant | any) {
+    const location = {
+      lat: response.latitude,
+      lng: response.longitude,
+    };
+    this.map?.setCenter(location);
+    this.marker?.setPosition(location);
+    this.map?.setZoom(15);
+
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: location }, (results: any, status: any) => {
+      if (status === google.maps.GeocoderStatus.OK && results[0]) {
+        const address = results[0].formatted_address;
+        this.formData.patchValue({
+          searchAddress: address
+        });
+      }
+    });
+  }
+
+  mapTo() {
+    const loader = new Loader({
+      apiKey: 'AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k',
+      version: 'weekly',
+      libraries: ['places']
+    });
+
+    loader.load().then(() => {
+      this.initMap();
+      this.initAutocomplete();
+    }).catch(e => {
+      console.error("Error loading Google Maps API", e);
+    });
+  }
+
+  initMap() {
+    const initialLocation = { lat: 23.6345, lng: -102.5528 };
+
+    this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+      center: initialLocation,
+      zoom: 5,
+    });
+
+    this.marker = new google.maps.Marker({
+      position: initialLocation,
+      map: this.map,
+      draggable: true
+    });
+
+    this.marker.addListener('dragend', () => {
+      const position = this.marker.getPosition();
+      this.latitude = position?.lat();
+      this.longitude = position?.lng();
+      this.updateMapLink();
+    });
+  }
+
+  searchLocation() {
+    const place = this.autocomplete?.getPlace();
+
+    if (place && place.geometry) {
+      this.map.setCenter(place.geometry.location!);
+      this.map.setZoom(15);
+      this.marker.setPosition(place.geometry.location!);
+      this.latitude = place.geometry.location!.lat();
+      this.longitude = place.geometry.location!.lng();
+    }
+  }
+
+  initAutocomplete() {
+    const input = document.getElementById('address-input') as HTMLInputElement;
+    this.autocomplete = new google.maps.places.Autocomplete(input);
+
+    this.autocomplete.addListener('place_changed', () => {
+      const place = this.autocomplete.getPlace();
+      if (place.geometry) {
+        this.map.setCenter(place.geometry.location!);
+        this.map.setZoom(15);
+        this.marker.setPosition(place.geometry.location!);
+        this.latitude = place.geometry.location!.lat();
+        this.longitude = place.geometry.location!.lng();
+        this.formData.patchValue({
+          latitude: this.latitude,
+          longitude: this.longitude
+        });
+        this.updateMapLink();
+      }
+    });
+  }
+
+  updateMapLink() {
+    if (this.latitude && this.longitude) {
+      this.mapLink = `https://www.google.com/maps/search/?api=1&query=${this.latitude},${this.longitude}&z=15`;
+      this.formData.patchValue({ link: this.mapLink });
+    }
+  }
+
+  openToMap() {
+    if (this.mapLink) {
+      window.open(this.mapLink, '_blank');
+    } else if (this.objEditData?.link) {
+      window.open(this.objEditData?.link, '_blank');
+    }
   }
 
   completionMessage(edit = false) {
