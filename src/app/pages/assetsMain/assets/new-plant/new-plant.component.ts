@@ -26,10 +26,10 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     direction: [''],
     link: ['', CustomValidators.validateUrlPrefix],
     contractTypeId: [''],
-    latitude: [0, CustomValidators.validateLatitude],
-    longitude: [0, CustomValidators.validateLongitude],
+    latitude: [0],
+    longitude: [0],
     installationTypeId: [''],
-    performanceRatio: [''], //duda
+    performanceRatio: [''],
     yearlyYield: [''],
     qualityRatio: [''],
     nominalPowerAC: [''],
@@ -98,6 +98,9 @@ export class NewPlantComponent implements OnInit, OnDestroy {
       next: (response: entity.DataPlant | any) => {
         this.objEditData = response;
         this.formData.patchValue(response)
+
+        console.log('RESPONSE:', response);
+        
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -193,7 +196,6 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     })
   }
 
-  
   initMap() {
     const initialLocation = { lat: 23.6345, lng: -102.5528, }; 
 
@@ -221,6 +223,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     
     if (place && place.geometry) {
       this.map.setCenter(place.geometry.location!);
+      this.map.setZoom(15);
       this.marker.setPosition(place.geometry.location!);
       this.latitude = place.geometry.location!.lat();
       this.longitude = place.geometry.location!.lng();
@@ -236,6 +239,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
       const place = this.autocomplete.getPlace();
       if (place.geometry) {
         this.map.setCenter(place.geometry.location!);
+        this.map.setZoom(15);
         this.marker.setPosition(place.geometry.location!);
         this.latitude = place.geometry.location!.lat();
         this.longitude = place.geometry.location!.lng();

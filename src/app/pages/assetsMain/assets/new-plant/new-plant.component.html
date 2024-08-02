@@ -8,242 +8,247 @@
 
     <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
       <div class="mb-0">
-        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Site Information</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+
           <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p class="text-sm font-medium text-gray-700">Name of the site:</p>
-              <mat-form-field appearance="outline" class="w-full input-ER">
-                <input formControlName="siteName" placeholder="Name of the site" matInput>
-                <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error>
-              </mat-form-field>
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Site Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p class="text-sm font-medium text-gray-700">Name of the site:</p>
+                  <mat-form-field appearance="outline" class="w-full input-ER">
+                    <input formControlName="siteName" placeholder="Name of the site" matInput>
+                    <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p class="text-sm font-medium text-gray-700">Plant code:</p>
+                  <mat-form-field appearance="outline" class="w-full input-ER">
+                    <input formControlName="plantCode" placeholder="Plant code" matInput>
+                    <mat-error *ngIf="formData.get('plantCode')?.hasError('required')">You must add plant
+                      code</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Address:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="direction" placeholder="Address" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Contract Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+              <div class="col-span-1 md:col-span-1">
+
+                <div class="c-input">
+                  <p>Type of contract:</p>
+                  <mat-form-field class="select-ER" appearance="outline">
+                    <mat-select formControlName="contractTypeId" placeholder="Type of contract">
+                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
+                        }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Installation type:</p>
+                  <mat-form-field class="select-ER" appearance="outline">
+                    <mat-select formControlName="installationTypeId" placeholder="Installation type">
+                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
+                        }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>System size:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input type="number" formControlName="systemSize" placeholder="System size" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Performance Data</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Installed capacity:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="installedCapacity" placeholder="Installed capacity" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Quality ratio:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="qualityRatio" placeholder="Quality ratio" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Annual performance:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="yearlyYield" placeholder="Annual performance" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Rated power mAC:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="nominalPowerAC" placeholder="Rated power mAC" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+              
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Performance ratio:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="performanceRatio" placeholder="Performance ratio" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p class="text-sm font-medium text-gray-700">Plant code:</p>
-              <mat-form-field appearance="outline" class="w-full input-ER">
-                <input formControlName="plantCode" placeholder="Plant code" matInput>
-                <mat-error *ngIf="formData.get('plantCode')?.hasError('required')">You must add plant code</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Location</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
+              <div class="col-span-2 md:col-span-2">
 
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Address:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="direction" placeholder="Address" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="c-input">
+                  <p>Location on map:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input id="address-input" formControlName="nominalPowerAC" placeholder="Search for a location" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
 
-      <div class="mb-0">
-        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Contract Information</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-4">
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Type of contract:</p>
-              <mat-form-field class="select-ER" appearance="outline">
-                <mat-select formControlName="contractTypeId" placeholder="Type of contract">
-                  <mat-option value="" disabled>Choose one</mat-option>
-                  <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
-                    }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Installation type:</p>
-              <mat-form-field class="select-ER" appearance="outline">
-                <mat-select formControlName="installationTypeId" placeholder="Installation type">
-                  <mat-option value="" disabled>Choose one</mat-option>
-                  <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
-                    }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-0">
-        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Performance Data</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-1">
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Installed capacity:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="installedCapacity" placeholder="Installed capacity" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Quality ratio:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="qualityRatio" placeholder="Quality ratio" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Annual performance:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="yearlyYield" placeholder="Annual performance" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Rated power mAC:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="nominalPowerAC" placeholder="Rated power mAC" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-          
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Performance ratio:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="performanceRatio" placeholder="Performance ratio" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-0">
-        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Additional Information</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-1">
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Status:</p>
-              <mat-form-field class="select-ER" appearance="outline">
-                <mat-select formControlName="statusPlantId" placeholder="Status">
-                  <mat-option value="" disabled>Choose one</mat-option>
-                  <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-'
-                    }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Operation scheme:</p>
-              <mat-form-field class="select-ER" appearance="outline">
-                <mat-select formControlName="netZero" placeholder="Operation scheme">
-                  <mat-option value="" disabled>Choose one</mat-option>
-                  <mat-option [value]="true">Net Zero Export</mat-option>
-                  <mat-option [value]="false">Normal</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>System size:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input type="number" formControlName="systemSize" placeholder="System size" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Inverter quantity:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input type="number" formControlName="inverterQty" placeholder="Inverter quantity" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-0">
-        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Dates</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-1">
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Commission date:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
-                <input formControlName="commissionDate" placeholder="Commission date" matInput
-                  [matDatepicker]="picker1">
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Signing contract date:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
-                <input formControlName="contractSignatureDate" placeholder="Signing contract date" matInput
-                  [matDatepicker]="picker2">
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Instalation date:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
-                <input formControlName="endInstallationDate" placeholder="Instalation date" matInput
-                  [matDatepicker]="picker3">
-                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                <mat-datepicker #picker3></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mb-0">
-        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Location</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-1">
-          <div class="col-span-2 md:col-span-2">
-            <div class="c-input">
-              <p>Location on map:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input id="address-input" formControlName="nominalPowerAC" placeholder="Search for a location" matInput>
-              </mat-form-field>
-            </div>
-          </div>
-
-
-          <div class="col-span-1 md:col-span-1">
-            <div class="c-input">
-              <p>Map link:</p>
-              <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                <input formControlName="link" placeholder="Map link" matInput>
-                <mat-error
-                  *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
-                  must add a valid map link</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-        
-          <div class="col-span-4 md:col-span-4">
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Map link:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="link" placeholder="Map link" matInput>
+                    <mat-error
+                      *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
+                      must add a valid map link</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div> 
+            
             <div class="map-container">
-              <div id="map" style="height: 400px; width: 100%;"></div>
+              <div id="map" style="height: 450px; width: 100%;"></div>
+            </div>
+          </div>
+
+          <div class="col-span-1 md:col-span-1">
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Additional Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Status:</p>
+                  <mat-form-field class="select-ER" appearance="outline">
+                    <mat-select formControlName="statusPlantId" placeholder="Status">
+                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-'
+                        }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Operation scheme:</p>
+                  <mat-form-field class="select-ER" appearance="outline">
+                    <mat-select formControlName="netZero" placeholder="Operation scheme">
+                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option [value]="true">Net Zero Export</mat-option>
+                      <mat-option [value]="false">Normal</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+    
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Inverter quantity:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input type="number" formControlName="inverterQty" placeholder="Inverter quantity" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-span-1 md:col-span-1">
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Dates</h2>
+            <div class="grid grid-cols-3 md:grid-cols-3 gap-x-6 gap-y-4">
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Commission date:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
+                    <input formControlName="commissionDate" placeholder="Commission date" matInput
+                      [matDatepicker]="picker1">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+    
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Signing contract date:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
+                    <input formControlName="contractSignatureDate" placeholder="Signing contract date" matInput
+                      [matDatepicker]="picker2">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+    
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
+                  <p>Instalation date:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-date-new">
+                    <input formControlName="endInstallationDate" placeholder="Instalation date" matInput
+                      [matDatepicker]="picker3">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+
+
 
       <div class="button-container d-flex justify-content-between pt-0">
         <div>
@@ -252,7 +257,7 @@
         <div>
           <span class="loader" *ngIf="loading"></span>
           <button class="btn-action-add" [disabled]="formData.invalid" *ngIf="!loading" type="submit">
-          <!-- <button class="btn-action-add" *ngIf="!loading" type="submit"> -->
+            <!-- <button class="btn-action-add" *ngIf="!loading" type="submit"> -->
             <i class="fa-solid fa-floppy-disk"></i>
             Save
           </button>
