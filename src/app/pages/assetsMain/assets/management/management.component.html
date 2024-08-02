@@ -85,7 +85,7 @@
         <ng-container matColumnDef="inverterQty">
           <th mat-header-cell *matHeaderCellDef mat-sort-header > # of investors </th>
           <td mat-cell *matCellDef="let element">
-            <div *ngIf="element?.inverterQty else notDataTable"> {{ element.inverterQty }} </div>
+            <div *ngIf="element?.numberOfInvestors else notDataTable"> {{ element.numberOfInvestors }} </div>
           </td>
         </ng-container>
 
