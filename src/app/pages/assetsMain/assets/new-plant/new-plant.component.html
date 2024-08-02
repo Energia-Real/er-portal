@@ -140,16 +140,16 @@
                 <div class="c-input">
                   <p>Location on map:</p>
                   <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input id="address-input" formControlName="nominalPowerAC" placeholder="Search for a location" matInput>
+                    <input formControlName="searchAddress" id="address-input" placeholder="Search for a location" matInput>
                   </mat-form-field>
                 </div>
               </div>
 
               <div class="col-span-1 md:col-span-1">
-                <div class="c-input">
+                <div class="c-input"  (click)="openToMap()">
                   <p>Map link:</p>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="link" placeholder="Map link" matInput>
+                  <mat-form-field appearance="outline" (click)="openToMap()" class="flex-auto gt-xs:pr-3 input-ER" [ngClass]="{'cursor-pointer': mapLink || objEditData}" [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''">
+                    <input formControlName="link" placeholder="Map link" matInput (click)="openToMap()"  [ngClass]="{'cursor-pointer': mapLink || objEditData}">
                     <mat-error
                       *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
                       must add a valid map link</mat-error>
