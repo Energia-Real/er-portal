@@ -29,3 +29,13 @@
     margin: 0;
   }
 }
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coordinates {
+  margin-top: 10px;
+}

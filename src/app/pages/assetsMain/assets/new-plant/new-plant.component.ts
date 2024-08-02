@@ -9,6 +9,7 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import moment from 'moment';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
 import * as entity from '../assets-model';
+import { Loader } from '@googlemaps/js-api-loader';
 
 @Component({
   selector: 'app-new-plant',
@@ -18,17 +19,19 @@ import * as entity from '../assets-model';
 export class NewPlantComponent implements OnInit, OnDestroy {
   private onDestroy = new Subject<void>();
 
+  
   formData = this.fb.group({
     siteName: ['', Validators.required],
     plantCode: [''],
     direction: [''],
     link: ['', CustomValidators.validateUrlPrefix],
     contractTypeId: [''],
-    latitude: ['', CustomValidators.validateLatitude],
-    longitude: ['', CustomValidators.validateLongitude],
+    latitude: [0, CustomValidators.validateLatitude],
+    longitude: [0, CustomValidators.validateLongitude],
     installationTypeId: [''],
-    performanceRatio: [''],
+    performanceRatio: [''], //duda
     yearlyYield: [''],
+    qualityRatio: [''],
     nominalPowerAC: [''],
     commissionDate: [''],
     installedCapacity: [''],
@@ -39,6 +42,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     statusPlantId: [''],
     netZero: [''],
   });
+
+  map!: google.maps.Map;
+  marker!: google.maps.Marker;
+  latitude: any
+  longitude: any
+  autocomplete!: google.maps.places.Autocomplete; 
 
   catContractType: entityCatalogs.DataCatalogs[] = [];
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
@@ -58,8 +67,25 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.getCatalogs()
+    this.getCatalogs();
+    this.mapTo();
   }
+
+  mapTo(){
+    const loader = new Loader({
+      apiKey: 'AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k',
+      version: 'weekly',
+      libraries: ['places'] 
+    });
+
+    loader.load().then(() => {
+      this.initMap();
+      this.initAutocomplete();
+    }).catch(e => {
+      console.error("Error loading Google Maps API", e);
+    });
+  }
+
 
   getId() {
     this.activatedRoute.params.pipe(takeUntil(this.onDestroy)).subscribe((params: any) => {
@@ -141,6 +167,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
 
+    console.log('GUARDAR', objData);
+    
     if (this.objEditData) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
@@ -163,6 +191,60 @@ export class NewPlantComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     })
+  }
+
+  
+  initMap() {
+    const initialLocation = { lat: 23.6345, lng: -102.5528, }; 
+
+    this.map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+      center: initialLocation,
+      zoom: 5,
+    });
+
+    this.marker = new google.maps.Marker({
+      position: initialLocation,
+      map: this.map,
+      draggable: true 
+    });
+
+    this.marker.addListener('dragend', () => {
+      const position = this.marker.getPosition();
+      console.log(`Latitud: ${position?.lat()}, Longitud: ${position?.lng()}`);
+      this.latitude = position?.lat();
+      this.longitude = position?.lng()
+    });
+  }
+
+  searchLocation() {
+    const place = this.autocomplete?.getPlace();
+    
+    if (place && place.geometry) {
+      this.map.setCenter(place.geometry.location!);
+      this.marker.setPosition(place.geometry.location!);
+      this.latitude = place.geometry.location!.lat();
+      this.longitude = place.geometry.location!.lng();
+    } 
+  }
+
+ initAutocomplete() {
+    const input = document.getElementById('address-input') as HTMLInputElement;
+    
+    this.autocomplete = new google.maps.places.Autocomplete(input); 
+
+    this.autocomplete.addListener('place_changed', () => {
+      const place = this.autocomplete.getPlace();
+      if (place.geometry) {
+        this.map.setCenter(place.geometry.location!);
+        this.marker.setPosition(place.geometry.location!);
+        this.latitude = place.geometry.location!.lat();
+        this.longitude = place.geometry.location!.lng();
+        this.formData.patchValue({
+          latitude: this.latitude,
+          longitude: this.longitude
+        });
+      }
+    });
   }
 
   completionMessage(edit = false) {
