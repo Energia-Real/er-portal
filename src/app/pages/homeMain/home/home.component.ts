@@ -364,7 +364,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   get searchFilters() {
     if (!this.dayOrMount) return false;
     const daySelected = this.dayOrMount.value === 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value;
-    const monthSelected = this.dayOrMount.value === 'month' && this.selectedMonths.length == 2;
+    const monthSelected = this.dayOrMount.value === 'month' && this.selectedMonths.length;
 
     return daySelected || monthSelected;
   }
