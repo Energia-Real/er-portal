@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 
-import * as entityGeneral from '../../models/general-models';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 import { Subject } from 'rxjs';
+import packageJson from '../../../../../package.json';
 
 interface User {
   id: string,
@@ -27,7 +27,7 @@ export class LayoutComponent implements OnDestroy {
   userInfo: any = {};
   @Input() routeActive = '';
 
-  version : string = '1.0.0'
+  version = packageJson.version;
 
   constructor(private accountService: AuthService, private router: Router) {}
 
