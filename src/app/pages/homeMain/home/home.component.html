@@ -33,18 +33,18 @@
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
                         savingsDetails.totalEnergyProduction }} <br> kWh</h2>
-                    <p class="text-sm">Energy <br> Production</p>
+                    <p class="text-sm">Total Energy <br> Production</p>
                 </div>
 
                 <div>
-                    <h2 *ngIf="dataClientsBatu?.costwoSolarTotal else notDataTable"> {{
+                    <h2 *ngIf="dataClientsBatu?.noExist else notDataTable"> {{
                         dataClientsBatu.costwoSolarTotal }}</h2>
                     <p class="text-sm">CFE <br> Cost without Solar <br> <span class="wi-progress">Work in
                             progress</span></p>
                 </div>
 
                 <div>
-                    <h2 *ngIf="dataClientsBatu?.totalSaving else notDataTable"> {{
+                    <h2 *ngIf="dataClientsBatu?.noExist else notDataTable"> {{
                         dataClientsBatu.totalSaving }}</h2>
                     <p class="text-sm">Total <br> Saving <br> <span class="wi-progress">Work in progress</span></p>
                 </div>
