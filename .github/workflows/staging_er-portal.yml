@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App Dev - er-portal
+name: Build and deploy Node.js app to Azure Web App Staging - er-portal
 
 on:
   push:
