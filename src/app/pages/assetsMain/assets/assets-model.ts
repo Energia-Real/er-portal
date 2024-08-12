@@ -5,6 +5,13 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+export interface DataRespSavingDetailsList {
+  id: string;
+  clientId: number;
+  nombre: string;
+}
+
+
 export interface Example {
   name: string;
   position: number;

@@ -9,6 +9,7 @@ import moment from 'moment';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
 import * as entity from '../assets-model';
 import { Loader } from '@googlemaps/js-api-loader';
+import { HomeService } from '@app/pages/homeMain/home/home.service';
 
 @Component({
   selector: 'app-new-plant',
@@ -57,12 +58,14 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   loading: boolean = false;
 
   mapLink: string = ''
+  dataClientsList: entity.DataRespSavingDetailsList[] = []
 
   constructor(
     private catalogsService: CatalogsService,
     private notificationService: OpenModalsService,
     private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
+    private homeService: HomeService,
     private moduleServices: AssetsService,
     private router: Router
   ) { }
@@ -70,6 +73,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCatalogs();
     this.mapTo();
+    this.getDataClientsList();
   }
 
   getId() {
@@ -153,8 +157,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
 
-    if (this.objEditData) this.saveDataPatch(objData);
-    else this.saveDataPost(objData);
+    objData.clientId = this.dataClientsList[0].id
+
+    console.log(objData);
+    
+    // if (this.objEditData) this.saveDataPatch(objData);
+    // else this.saveDataPost(objData);
   }
 
   saveDataPost(objData: entity.DataPlant) {
@@ -170,6 +178,18 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   saveDataPatch(objData: entity.DataPlant) {
     this.moduleServices.patchDataPlant(this.objEditData.id, objData).subscribe({
       next: () => { this.completionMessage(true) },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.error(error)
+      }
+    })
+  }
+
+  getDataClientsList() {
+    this.homeService.getDataClientsList().subscribe({
+      next: (response: entity.DataRespSavingDetailsList[]) => {
+        this.dataClientsList = response;
+      },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
