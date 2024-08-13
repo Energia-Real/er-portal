@@ -11,15 +11,25 @@ export class FormatsService {
      else return '-'
   }
 
-  energyFormat(content: number): string {
-    if (content) {
-      return content.toLocaleString('en-US', {
+  // energyFormat(content: number): string {
+  //   if (content) {
+  //     return content.toLocaleString('en-US', {
+  //       minimumFractionDigits: 0,
+  //       maximumFractionDigits: 0
+  //     })
+  //   } else return ''
+  // }
+
+  energyFormat(content: string | number): string {
+    let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
+    if (!isNaN(numberValue)) {
+      return numberValue.toLocaleString('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-      })
-    } else return ''
+      });
+    } else return '';
   }
-
+    
   homeGraphFormat(content:string):number{
     let cleanString = content.replace(/,/g, '');
     return +cleanString;

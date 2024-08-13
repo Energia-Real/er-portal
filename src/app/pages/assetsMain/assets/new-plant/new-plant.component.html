@@ -146,10 +146,11 @@
               </div>
 
               <div class="col-span-1 md:col-span-1">
-                <div class="c-input"  (click)="openToMap()">
+                <div class="c-input-icon">
                   <p>Map link:</p>
-                  <mat-form-field appearance="outline" (click)="openToMap()" class="flex-auto gt-xs:pr-3 input-ER" [ngClass]="{'cursor-pointer': mapLink || objEditData}" [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''">
-                    <input formControlName="link" placeholder="Map link" matInput (click)="openToMap()"  [ngClass]="{'cursor-pointer': mapLink || objEditData}">
+                  <i class="fa-solid fa-eye"  (click)="openToMap()" *ngIf="mapLink || objEditData?.link" [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''"></i>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="link" placeholder="Map link" matInput>
                     <mat-error
                       *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
                       must add a valid map link</mat-error>
@@ -194,9 +195,9 @@
     
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
-                  <p>Inverter quantity:</p>
+                  <p>RPU:</p>
                   <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input type="number" formControlName="inverterQty" placeholder="Inverter quantity" matInput>
+                    <input type="text" formControlName="rpu" placeholder="RPU" matInput>
                   </mat-form-field>
                 </div>
               </div>
@@ -246,9 +247,6 @@
           </div>
         </div>
       </div>
-
-
-
 
       <div class="button-container d-flex justify-content-between pt-0">
         <div>

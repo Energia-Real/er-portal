@@ -158,8 +158,8 @@ select {
   }
 }
 
-.wi-progress{
-  font-size: 10px!important;
+.wi-progress {
+  font-size: 10px !important;
   color: #EE5427;
   font-weight: 600;
   letter-spacing: 1px;
@@ -452,20 +452,47 @@ select {
 
 .c-search {
   input {
-    border: 1px solid #949191!important;
+    border: 1px solid #949191 !important;
   }
 }
 
 .c-input {
   text-align: left;
   margin-bottom: 8px;
+
   &:focus {
-    outline: none; 
-    border: 1px solid #b84d2d!important;
-}
+    outline: none;
+    border: 1px solid #b84d2d !important;
+  }
+
   p {
     color: #b84d2d;
     font-weight: 500;
+  }
+}
+
+.c-input-icon {
+  text-align: left;
+  margin-bottom: 8px;
+  position: relative;
+
+  &:focus {
+    outline: none;
+    border: 1px solid #b84d2d !important;
+  }
+
+  p {
+    color: #b84d2d;
+    font-weight: 500;
+  }
+
+  i {
+    position: absolute;
+    right: 15px;
+    top: 50px;
+    cursor: pointer;
+    color: #EE5427;
+    z-index: 10000;
   }
 }
 

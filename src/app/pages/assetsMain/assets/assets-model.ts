@@ -82,7 +82,7 @@ export interface DataManagementTableResponse {
 export interface DataManagementTable {
   id: string;
   siteName: string;
-  systemSize: number;
+  systemSize: string;
   direction: string;
   longitude: number
   contractType: string;
@@ -193,7 +193,7 @@ export interface DataLocalTimeMapper {
   timeZoneName: string;
 }
 
-export interface DataSummaryProjects {
+export interface DataSummaryProjectsMapper {
   noOfSites: string;
   noOfModules: string;
   noOfInverters: string;

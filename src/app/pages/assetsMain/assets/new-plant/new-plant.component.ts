@@ -37,7 +37,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     contractSignatureDate: [''],
     endInstallationDate: [''],
     systemSize: [''],
-    inverterQty: [''],
+    rpu: [''],
     statusPlantId: [''],
     netZero: [''],
     searchAddress: [''],
@@ -150,19 +150,16 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = this.formData.get('commissionDate')?.value;
     if (this.formData.get('installedCapacity')?.value) objData.installedCapacity = this.formData.get('installedCapacity')?.value;
     if (this.formData.get('systemSize')?.value) objData.systemSize = this.formData.get('systemSize')?.value;
-    if (this.formData.get('inverterQty')?.value) objData.inverterQty = this.formData.get('inverterQty')?.value;
+    if (this.formData.get('rpu')?.value) objData.rpu = this.formData.get('rpu')?.value;
     if (this.formData.get('statusPlantId')?.value) objData.statusPlantId = this.formData.get('statusPlantId')?.value;
     if (this.formData.get('netZero')?.value) objData.netZero = this.formData.get('netZero')?.value;
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
-
-    objData.clientId = this.dataClientsList[0].id
-
-    console.log(objData);
+    console.log('GUARDAR', objData);
     
-    // if (this.objEditData) this.saveDataPatch(objData);
-    // else this.saveDataPost(objData);
+    if (this.objEditData) this.saveDataPatch(objData);
+    else this.saveDataPost(objData);
   }
 
   saveDataPost(objData: entity.DataPlant) {
@@ -296,11 +293,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   openToMap() {
-    if (this.mapLink) {
-      window.open(this.mapLink, '_blank');
-    } else if (this.objEditData?.link) {
-      window.open(this.objEditData?.link, '_blank');
-    }
+    if (this.mapLink) window.open(this.mapLink, '_blank');
+    else if (this.objEditData?.link) window.open(this.objEditData?.link, '_blank');
   }
 
   completionMessage(edit = false) {
