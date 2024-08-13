@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     'siteStatus'
   ];
 
+
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     animation: {
@@ -69,12 +70,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         usePointStyle: true,
         callbacks: {
           label: function (context) {
-            const value = Math.abs(context.raw as number);
+            const value = Math.abs(context.raw as number).toLocaleString('en-US');
             return `${context.dataset.label}: ${value}`;
           }
         }
       },
-
       legend: {
         labels: {
           usePointStyle: true,
@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       y: {
         ticks: {
           callback: function (value, index, values) {
-            return Math.abs(Number(value)) + ' kWh';
+            return `${Number(value).toLocaleString('en-US')} kWh`;
           },
         },
         stacked: false,
@@ -127,6 +127,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
+  
 
   months: { value: string, viewValue: string }[] = [
     { value: '01', viewValue: 'January' },
@@ -207,20 +208,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   setMonths() {
     this.selectedMonths = [this.months[5], this.months[6]];
   }
-
-  // setMonths() {
-  //   const now = new Date();
-  //   const currentMonthIndex = now.getMonth(); 
-  
-  //   const previousMonthIndex1 = (currentMonthIndex - 1 + 12) % 12;
-  //   const previousMonthIndex2 = (currentMonthIndex - 2 + 12) % 12;
-  
-  //   this.selectedMonths = [
-  //     this.months[previousMonthIndex2],
-  //     this.months[previousMonthIndex1],
-  //     this.months[currentMonthIndex]
-  //   ];
-  // }
 
   searchWithFilters() {
     let filtersBatu: any = {};
@@ -341,7 +328,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.selection.select(...this.dataSource.data);
     this.updtChart();
-    this.printSelectedData();
   }
 
   toggleRow(row: any) {
@@ -380,48 +366,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  printSelectedData() {
-    // console.log('Selected Data:', this.selection.selected);
-  }
-
   mappingData(dataSelected: entity.DataRespSavingDetails[]): any {
     let labels = dataSelected.map(item => item.siteName);
+  
     let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
     let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
+  
     return {
       labels: labels,
       energyConsumption: energyConsumption,
       energyProduction: energyProduction
     }
   }
-
-  // onSelectionChange(event: any): void {
-  //   this.selectedMonths = event.value;
-
-  //   this.months.forEach(month => {
-  //     if (this.selectedMonths.some(selected => selected.value === month.value)) {
-  //       month.disabled = false;
-  //       month.check = true;
-  //     } else {
-  //       month.disabled = true;
-  //       month.check = false;
-  //     }
-  //   });
-  // }
-
-  // isDisabled(index: any): boolean {
-  //   let value = false;
-
-  //   if (this.selectedMonths.length) {
-  //     if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
-  //     else if (this.months[index]?.check && (this.months[index - 1]?.check && this.months[index + 1]?.check)) value = true;
-  //     else if (this.months[index]?.check && (!this.months[index - 1] || !this.months[index + 1])) value = true
-  //     else value = false;
-  //   }
-
-  //   return value
-  // }
-
+  
   convertToISO8601(month: string): string {
     const year = new Date().getFullYear();
     const date = moment(`${year}-${month}-01`).startOf('month').toISOString();
