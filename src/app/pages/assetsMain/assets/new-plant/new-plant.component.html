@@ -33,15 +33,6 @@
                   </mat-form-field>
                 </div>
               </div>
-
-              <div class="col-span-1 md:col-span-1">
-                <div class="c-input">
-                  <p>Address:</p>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="direction" placeholder="Address" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
             </div>
 
             <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Contract Information</h2>
@@ -75,9 +66,9 @@
 
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
-                  <p>System size:</p>
+                  <p>Installed capacity:</p>
                   <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input type="number" formControlName="systemSize" placeholder="System size" matInput>
+                    <input type="number" formControlName="systemSize" placeholder="Installed capacity" matInput>
                   </mat-form-field>
                 </div>
               </div>
@@ -85,24 +76,6 @@
 
             <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Performance Data</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
-              <div class="col-span-1 md:col-span-1">
-                <div class="c-input">
-                  <p>Installed capacity:</p>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="installedCapacity" placeholder="Installed capacity" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <div class="col-span-1 md:col-span-1">
-                <div class="c-input">
-                  <p>Quality ratio:</p>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="qualityRatio" placeholder="Quality ratio" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
-
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
                   <p>Annual performance:</p>
@@ -130,41 +103,7 @@
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-span-1 md:col-span-1">
-            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Location</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
-              <div class="col-span-2 md:col-span-2">
-
-                <div class="c-input">
-                  <p>Location on map:</p>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="searchAddress" id="address-input" placeholder="Search for a location" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <div class="col-span-1 md:col-span-1">
-                <div class="c-input-icon">
-                  <p>Map link:</p>
-                  <i class="fa-solid fa-eye"  (click)="openToMap()" *ngIf="mapLink || objEditData?.link" [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''"></i>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="link" placeholder="Map link" matInput>
-                    <mat-error
-                      *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
-                      must add a valid map link</mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-            </div> 
-            
-            <div class="map-container">
-              <div id="map" style="height: 450px; width: 100%;"></div>
-            </div>
-          </div>
-
-          <div class="col-span-1 md:col-span-1">
             <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Additional Information</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
               <div class="col-span-1 md:col-span-1">
@@ -193,8 +132,6 @@
                 </div>
               </div>
 
-             
-    
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
                   <p>RPU:</p>
@@ -203,13 +140,11 @@
                   </mat-form-field>
                 </div>
               </div>
-
             </div>
-          </div>
 
-          <div class="col-span-1 md:col-span-1">
+
             <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Dates</h2>
-            <div class="grid grid-cols-3 md:grid-cols-3 gap-x-6 gap-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
                   <p>Commission date:</p>
@@ -245,6 +180,38 @@
                   </mat-form-field>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="col-span-1 md:col-span-1">
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Location</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
+              <div class="col-span-2 md:col-span-2">
+
+                <div class="c-input">
+                  <p>Location on map:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="searchAddress" id="address-input" placeholder="Search for a location" matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input-icon">
+                  <p>Map link:</p>
+                  <i class="fa-solid fa-eye"  (click)="openToMap()" *ngIf="mapLink || objEditData?.link" [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''"></i>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="link" placeholder="Map link" matInput>
+                    <mat-error
+                      *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
+                      must add a valid map link</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div> 
+            
+            <div class="map-container">
+              <div id="map" style="height: 670px; width: 100%;"></div>
             </div>
           </div>
         </div>
