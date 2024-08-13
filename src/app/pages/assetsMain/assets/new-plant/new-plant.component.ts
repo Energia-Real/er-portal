@@ -158,7 +158,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
-    objData.netZero = this.formData.get('netZero')?.value;
+    if (this.formData.get('netZero')?.value == 'False') {
+      objData.netZero = false
+    } else if (this.formData.get('netZero')?.value == 'True') {
+      objData.netZero = true
+    } 
+
     console.log('GUARDAR', objData);
 
     if (this.objEditData) this.saveDataPatch(objData);
