@@ -63,10 +63,12 @@ export class AssetsService implements OnDestroy {
     );
   }
 
-  getSummaryProjects(): Observable<entity.DataSummaryProjects> {
+  getSummaryProjects(): Observable<entity.DataSummaryProjectsMapper> {
     const url = `${this.API_URL}/projects/summary`;
 
-    return this.http.get<entity.DataSummaryProjects>(url);
+    return this.http.get<entity.DataSummaryProjectsMapper>(url).pipe(
+      map((response) => Mapper.getSummaryProjects(response, this.formatsService))
+    );
   }
 
   getDataId(id: string | null): Observable<entity.DataPlant> {
@@ -153,5 +155,4 @@ export class AssetsService implements OnDestroy {
     this.onDestroy.next();
     this.onDestroy.complete();
   }
-
 }

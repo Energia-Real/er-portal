@@ -23,6 +23,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   graphicsType: 'pie' | 'bars' = 'bars';
   lineChartData!: ChartConfiguration<'bar'>['data'];
   showSitePerformance = false;
+
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     animation: {
@@ -39,6 +40,12 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     plugins: {
       tooltip: {
         usePointStyle: true,
+        callbacks: {
+          label: function (context) {
+            const value = Math.abs(context.raw as number).toLocaleString('en-US');
+            return `${context.dataset.label}: ${value}`;
+          }
+        }
       },
       
       legend: {
@@ -82,7 +89,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
       y: {
         ticks: {
           callback: function(value, index, values) {
-            return value + ' MWh'; 
+            return `${Number(value).toLocaleString('en-US')} MWh`;
           },
         },
         stacked: true,

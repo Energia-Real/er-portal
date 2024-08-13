@@ -29,12 +29,16 @@ export class Mapper {
 	}
 
 	static getDataAssetsmanagementMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
+		console.log(response.data);
+		
 		let dataList: entity.DataManagementTable[] = [];
 
 		response?.data.forEach((data: entity.DataManagementTable): void => {
 
 			dataList.push({
 				...data,
+				systemSize: formatsService.energyFormat(data.systemSize),
+				numberOfInvestors: formatsService.energyFormat(data.numberOfInvestors),
 				commissionDate: formatsService.dateFormat(data.commissionDate),
 				contractSignatureDate: formatsService.dateFormat(data.contractSignatureDate),
 				endInstallationDate: formatsService.dateFormat(data.endInstallationDate)
@@ -58,6 +62,15 @@ export class Mapper {
 		});
 
 		return dataList
+	}
+
+	static getSummaryProjects(response: entity.DataSummaryProjectsMapper, formatsService: FormatsService) : entity.DataSummaryProjectsMapper{
+		return {
+			noOfSites: formatsService.energyFormat(parseFloat(response.noOfSites)),
+			noOfModules: formatsService.energyFormat(parseFloat(response.noOfModules)),
+			noOfInverters: formatsService.energyFormat(parseFloat(response.noOfInverters)),
+			mWpInstalled: formatsService.energyFormat(parseFloat(response.mWpInstalled))
+		}
 	}
 
 	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient, formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
@@ -127,7 +140,7 @@ export class Mapper {
 	static getLocalTimeOfPlaceMapper(response: entity.DataLocalTime): string {
 		const utcTime = moment.utc();
 		const localTime = utcTime.tz(response.timeZoneId);
-		return localTime.format('hh:mm A');
+		return localTime?.format('hh:mm A');
 	}
 
 	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
