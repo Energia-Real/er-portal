@@ -144,6 +144,7 @@ export interface DataPlant {
   direction: string;
   longitude: number,
   contractType: string,
+  descriptionStatus: string,
   installationType: string,
   commissionDate: string,
   inverterQty: number,

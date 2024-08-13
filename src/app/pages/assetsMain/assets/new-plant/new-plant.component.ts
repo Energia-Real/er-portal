@@ -9,6 +9,8 @@ import moment from 'moment';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
 import * as entity from '../assets-model';
 import { Loader } from '@googlemaps/js-api-loader';
+import { DataRespSavingDetailsList } from '@app/pages/homeMain/home/home-model';
+import { HomeService } from '@app/pages/homeMain/home/home.service';
 
 @Component({
   selector: 'app-new-plant',
@@ -52,6 +54,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
   catPlantStatus: entityCatalogs.DataCatalogs[] = [];
   objEditData!: entity.DataPlant;
+  dataClientsList: DataRespSavingDetailsList[] = []
 
   showLoader: boolean = false;
   loading: boolean = false;
@@ -62,6 +65,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     private catalogsService: CatalogsService,
     private notificationService: OpenModalsService,
     private fb: FormBuilder,
+    private homeService: HomeService,
     private activatedRoute: ActivatedRoute,
     private moduleServices: AssetsService,
     private router: Router
@@ -70,6 +74,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCatalogs();
     this.mapTo();
+    this.getDataClientsList();
   }
 
   getId() {
@@ -130,7 +135,9 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   actionSave() {
     // const objData: any = { ...this.formData.value }
-    const objData: any = {}
+    const objData: any = {
+      clientId: this.dataClientsList[0].clientId
+    }
 
     if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
     if (this.formData.get('plantCode')?.value) objData.plantCode = this.formData.get('plantCode')?.value;
@@ -153,7 +160,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
     console.log('GUARDAR', objData);
-    
+
     if (this.objEditData) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
@@ -171,6 +178,20 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   saveDataPatch(objData: entity.DataPlant) {
     this.moduleServices.patchDataPlant(this.objEditData.id, objData).subscribe({
       next: () => { this.completionMessage(true) },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.error(error)
+      }
+    })
+  }
+
+  getDataClientsList() {
+    this.homeService.getDataClientsList().subscribe({
+      next: (response: DataRespSavingDetailsList[]) => {
+        this.dataClientsList = response;
+        console.log('dataClientsList', this.dataClientsList);
+
+      },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
