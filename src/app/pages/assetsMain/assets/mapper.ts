@@ -29,8 +29,6 @@ export class Mapper {
 	}
 
 	static getDataAssetsmanagementMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
-		console.log(response.data);
-		
 		let dataList: entity.DataManagementTable[] = [];
 
 		response?.data.forEach((data: entity.DataManagementTable): void => {

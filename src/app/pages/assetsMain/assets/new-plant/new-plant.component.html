@@ -52,7 +52,7 @@
                   <p>Type of contract:</p>
                   <mat-form-field class="select-ER" appearance="outline">
                     <mat-select formControlName="contractTypeId" placeholder="Type of contract">
-                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option value="">Choose one</mat-option>
                       <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
                         }}</mat-option>
                     </mat-select>
@@ -65,7 +65,7 @@
                   <p>Installation type:</p>
                   <mat-form-field class="select-ER" appearance="outline">
                     <mat-select formControlName="installationTypeId" placeholder="Installation type">
-                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option value="">Choose one</mat-option>
                       <mat-option [value]="cat.id" *ngFor="let cat of catInstallationType">{{ cat?.description || '-'
                         }}</mat-option>
                     </mat-select>
@@ -172,7 +172,7 @@
                   <p>Status:</p>
                   <mat-form-field class="select-ER" appearance="outline">
                     <mat-select formControlName="statusPlantId" placeholder="Status">
-                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option value="">Choose one</mat-option>
                       <mat-option [value]="cat.id" *ngFor="let cat of catPlantStatus">{{ cat?.description || '-'
                         }}</mat-option>
                     </mat-select>
@@ -185,13 +185,15 @@
                   <p>Operation scheme:</p>
                   <mat-form-field class="select-ER" appearance="outline">
                     <mat-select formControlName="netZero" placeholder="Operation scheme">
-                      <mat-option value="" disabled>Choose one</mat-option>
+                      <mat-option value="">Choose one</mat-option>
                       <mat-option [value]="true">Net Zero Export</mat-option>
                       <mat-option [value]="false">Normal</mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
               </div>
+
+             
     
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
