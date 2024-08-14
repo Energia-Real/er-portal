@@ -136,6 +136,11 @@ export class NewPlantComponent implements OnInit, OnDestroy {
       clientId: this.dataClientsList[0].clientId
     }
 
+    if (this.formData.invalid) {
+      this.formData.markAllAsTouched(); // Marca todos los controles como tocados
+      return;
+    }
+
     if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
     if (this.formData.get('plantCode')?.value) objData.plantCode = this.formData.get('plantCode')?.value;
     if (this.formData.get('link')?.value) objData.link = this.formData.get('link')?.value;
@@ -156,10 +161,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('netZero')?.value == 'False') objData.netZero = false
      else if (this.formData.get('netZero')?.value == 'True') objData.netZero = true
 
-     console.log(objData);
-     
-    // if (this.objEditData) this.saveDataPatch(objData);
-    // else this.saveDataPost(objData);
+    if (this.objEditData) this.saveDataPatch(objData);
+    else this.saveDataPost(objData);
   }
 
   saveDataPost(objData: entity.DataPlant) {
