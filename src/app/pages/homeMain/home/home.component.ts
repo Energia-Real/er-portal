@@ -191,7 +191,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         {
           data: [],
-          label: 'Energy Consuption',
+          label: 'Energy Consumption',
           backgroundColor: 'rgba(87, 177, 177, 1)',
 
         }
