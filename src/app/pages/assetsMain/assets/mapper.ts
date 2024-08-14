@@ -4,8 +4,6 @@ import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
 	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
-		console.log('getDataRespSiteMapper', response);
-
 
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
@@ -121,7 +119,6 @@ export class Mapper {
 
 
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
-		console.log('getDataIdMapper', response);
 
 		return {
 			...response,

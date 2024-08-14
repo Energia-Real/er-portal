@@ -190,8 +190,6 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.homeService.getDataClientsList().subscribe({
       next: (response: DataRespSavingDetailsList[]) => {
         this.dataClientsList = response;
-        console.log('dataClientsList', this.dataClientsList);
-
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
