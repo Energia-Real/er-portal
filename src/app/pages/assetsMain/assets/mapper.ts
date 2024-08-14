@@ -5,8 +5,8 @@ import { FormatsService } from '@app/shared/services/formats.service';
 export class Mapper {
 	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
 		console.log('getDataRespSiteMapper', response);
-		
-	
+
+
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
 		response?.forEach((data: entity.DataDetails): void => {
@@ -62,7 +62,7 @@ export class Mapper {
 		return dataList
 	}
 
-	static getSummaryProjects(response: entity.DataSummaryProjectsMapper, formatsService: FormatsService) : entity.DataSummaryProjectsMapper{
+	static getSummaryProjects(response: entity.DataSummaryProjectsMapper, formatsService: FormatsService): entity.DataSummaryProjectsMapper {
 		return {
 			noOfSites: formatsService.energyFormat(parseFloat(response.noOfSites)),
 			noOfModules: formatsService.energyFormat(parseFloat(response.noOfModules)),
@@ -82,7 +82,7 @@ export class Mapper {
 			title: 'Age of the site',
 			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'year'}` ?? null
 		});
-	
+
 		dataList.push({
 			title: 'Install Date',
 			description: formatsService.dateFormat(response.endInstallationDate) ?? null
@@ -91,7 +91,7 @@ export class Mapper {
 			title: 'COD',
 			description: formatsService.dateFormat(response.contractSignatureDate) ?? null
 		});
-	
+
 		dataList.push({
 			title: 'Commission Date',
 			description: formatsService.dateFormat(response.commissionDate) ?? null
@@ -121,15 +121,15 @@ export class Mapper {
 
 
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
-		console.log(response);
-		
+		console.log('getDataIdMapper', response);
+
 		return {
 			...response,
-			assetStatusIcon: response?.descriptionStatus?.toLowerCase()?.includes('active') ? 'radio_button_checked'
-				: response?.descriptionStatus?.toLowerCase()?.includes('defaulter') ? 'warning'
-					: response?.descriptionStatus?.toLowerCase()?.includes('under construction') ? 'engineering'
-						: response?.descriptionStatus?.toLowerCase()?.includes('under permitting process') ? 'assignment'
-							: response?.descriptionStatus?.toLowerCase()?.includes('without Off-taker') ? 'person_off'
+			assetStatusIcon: response?.assetStatus?.toLowerCase()?.includes('active') ? 'radio_button_checked'
+				: response?.assetStatus?.toLowerCase()?.includes('defaulter') ? 'warning'
+					: response?.assetStatus?.toLowerCase()?.includes('under construction') ? 'engineering'
+						: response?.assetStatus?.toLowerCase()?.includes('under permitting process') ? 'assignment'
+							: response?.assetStatus?.toLowerCase()?.includes('without Off-taker') ? 'person_off'
 								: 'help_outline'
 		}
 
@@ -142,7 +142,7 @@ export class Mapper {
 	}
 
 	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
-		let instalaciones=[];
+		let instalaciones = [];
 		instalaciones.push({
 			equipmentId: 0,
 			moduloQty: 0,
@@ -171,9 +171,9 @@ export class Mapper {
 					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
 					description: `${data.moduloQty}  ${data.moduloModel}`,
 				}
-			) 
+			)
 		})
-		
+
 		return {
 			...response,
 			equipment: instalaciones

@@ -181,7 +181,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
     this.assetsService.getDataId(id).subscribe({
       next: (response: entity.DataPlant) => {
         this.assetData = response;
-        console.log(response)
+        console.log('getDetailsAsset', response);
         this.verifyInformation(response);
       },
       error: (error) => {
