@@ -20,7 +20,8 @@ export class Mapper {
 				siteSaving: data?.siteSaving,
 				cfeZone: data?.cfeZone,
 				solarCoverage: data?.solarCoverage || '',
-				co2Saving: data?.co2Saving || '',
+				// co2Saving: data?.co2Saving || '',
+				co2Saving: formatsService.energyFormat(data?.co2Saving),
 				energyConsumption: formatsService.energyFormat(parseFloat(data?.energyConsumption)),
 				energyProduction: formatsService.energyFormat(parseFloat(data?.energyProduction)),
 				siteStatus: data?.siteStatus
