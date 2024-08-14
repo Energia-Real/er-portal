@@ -29,8 +29,6 @@ export class Mapper {
 	}
 
 	static getDataAssetsmanagementMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
-		console.log(response.data);
-		
 		let dataList: entity.DataManagementTable[] = [];
 
 		response?.data.forEach((data: entity.DataManagementTable): void => {
@@ -123,19 +121,19 @@ export class Mapper {
 
 
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
+		console.log(response);
+		
 		return {
 			...response,
-			assetStatusIcon: response.assetStatus.toLowerCase().includes('active') ? 'radio_button_checked'
-				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
-					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'
-						: response.assetStatus.toLowerCase().includes('under permitting process') ? 'assignment'
-							: response.assetStatus.toLowerCase().includes('without Off-taker') ? 'person_off'
+			assetStatusIcon: response?.descriptionStatus?.toLowerCase()?.includes('active') ? 'radio_button_checked'
+				: response?.descriptionStatus?.toLowerCase()?.includes('defaulter') ? 'warning'
+					: response?.descriptionStatus?.toLowerCase()?.includes('under construction') ? 'engineering'
+						: response?.descriptionStatus?.toLowerCase()?.includes('under permitting process') ? 'assignment'
+							: response?.descriptionStatus?.toLowerCase()?.includes('without Off-taker') ? 'person_off'
 								: 'help_outline'
 		}
 
 	}
-
-	
 
 	static getLocalTimeOfPlaceMapper(response: entity.DataLocalTime): string {
 		const utcTime = moment.utc();
