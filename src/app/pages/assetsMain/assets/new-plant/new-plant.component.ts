@@ -33,6 +33,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     nominalPowerAC: [''],
     commissionDate: [''],
     contractSignatureDate: [''],
+    performanceRatio: [''],
     endInstallationDate: [''],
     systemSize: [''],
     rpu: [''],
@@ -143,6 +144,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('contractTypeId')?.value) objData.contractTypeId = this.formData.get('contractTypeId')?.value;
     if (this.formData.get('latitude')?.value) objData.latitude = this.formData.get('latitude')?.value;
     if (this.formData.get('longitude')?.value) objData.longitude = this.formData.get('longitude')?.value;
+    if (this.formData.get('performanceRatio')?.value) objData.performanceRatio = this.formData.get('performanceRatio')?.value;
     if (this.formData.get('installationTypeId')?.value) objData.installationTypeId = this.formData.get('installationTypeId')?.value;
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = this.formData.get('commissionDate')?.value;
     if (this.formData.get('systemSize')?.value) objData.systemSize = this.formData.get('systemSize')?.value;
@@ -154,8 +156,10 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('netZero')?.value == 'False') objData.netZero = false
      else if (this.formData.get('netZero')?.value == 'True') objData.netZero = true
 
-    if (this.objEditData) this.saveDataPatch(objData);
-    else this.saveDataPost(objData);
+     console.log(objData);
+     
+    // if (this.objEditData) this.saveDataPatch(objData);
+    // else this.saveDataPost(objData);
   }
 
   saveDataPost(objData: entity.DataPlant) {
