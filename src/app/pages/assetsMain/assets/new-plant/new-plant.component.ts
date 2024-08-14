@@ -137,7 +137,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     }
 
     if (this.formData.invalid) {
-      this.formData.markAllAsTouched(); // Marca todos los controles como tocados
+      this.formData.markAllAsTouched(); 
       return;
     }
 
@@ -158,9 +158,10 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
-    if (this.formData.get('netZero')?.value == 'False') objData.netZero = false
-     else if (this.formData.get('netZero')?.value == 'True') objData.netZero = true
-
+    if (this.formData.get('netZero')?.value == 'False') objData.netZero = "False"
+     else if (this.formData.get('netZero')?.value == 'True') objData.netZero = "True" 
+     else objData.netZero = null
+     
     if (this.objEditData) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
