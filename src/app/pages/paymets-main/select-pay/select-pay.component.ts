@@ -156,8 +156,6 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
     //     this.pageIndex = page
     //   },
     //   error: error => {
-    //     console.log('entro aqui');
-        
     //     this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
     //     console.log(error);
     //   }

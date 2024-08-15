@@ -31,9 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    console.log(this.accountService?.getDecryptedUser());
-  }
+  ngOnInit(): void {}
   
   onSubmit() {
     this.loading = true;

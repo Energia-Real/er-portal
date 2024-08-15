@@ -39,8 +39,6 @@ export class OpenModalsService {
 	}
 
 	openModalMedium(modalComponent:any, data = null) {
-		console.log(modalComponent);
-		
 		this.dialog.open(modalComponent, {
 		  data,
 		  disableClose: true,

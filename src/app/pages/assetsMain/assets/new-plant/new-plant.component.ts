@@ -9,6 +9,7 @@ import moment from 'moment';
 import * as entityCatalogs from '../../../../shared/models/catalogs-models';
 import * as entity from '../assets-model';
 import { Loader } from '@googlemaps/js-api-loader';
+import { DataRespSavingDetailsList } from '@app/pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
 
 @Component({
@@ -22,19 +23,17 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   formData = this.fb.group({
     siteName: ['', Validators.required],
     plantCode: [''],
-    direction: [''],
     link: [{ value: '', disabled: true }],
     contractTypeId: [''],
     latitude: [0],
     longitude: [0],
     installationTypeId: [''],
-    performanceRatio: [''],
     yearlyYield: [''],
     qualityRatio: [''],
     nominalPowerAC: [''],
     commissionDate: [''],
-    installedCapacity: [''],
     contractSignatureDate: [''],
+    performanceRatio: [''],
     endInstallationDate: [''],
     systemSize: [''],
     rpu: [''],
@@ -53,19 +52,19 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
   catPlantStatus: entityCatalogs.DataCatalogs[] = [];
   objEditData!: entity.DataPlant;
+  dataClientsList: DataRespSavingDetailsList[] = []
 
   showLoader: boolean = false;
   loading: boolean = false;
 
   mapLink: string = ''
-  dataClientsList: entity.DataRespSavingDetailsList[] = []
 
   constructor(
     private catalogsService: CatalogsService,
     private notificationService: OpenModalsService,
     private fb: FormBuilder,
-    private activatedRoute: ActivatedRoute,
     private homeService: HomeService,
+    private activatedRoute: ActivatedRoute,
     private moduleServices: AssetsService,
     private router: Router
   ) { }
@@ -133,31 +132,36 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   actionSave() {
-    // const objData: any = { ...this.formData.value }
-    const objData: any = {}
+    const objData: any = {
+      clientId: this.dataClientsList[0].clientId
+    }
+
+    if (this.formData.invalid) {
+      this.formData.markAllAsTouched(); 
+      return;
+    }
 
     if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
     if (this.formData.get('plantCode')?.value) objData.plantCode = this.formData.get('plantCode')?.value;
-    if (this.formData.get('direction')?.value) objData.direction = this.formData.get('direction')?.value;
     if (this.formData.get('link')?.value) objData.link = this.formData.get('link')?.value;
-    if (this.formData.get('performanceRatio')?.value) objData.performanceRatio = this.formData.get('performanceRatio')?.value;
     if (this.formData.get('yearlyYield')?.value) objData.yearlyYield = this.formData.get('yearlyYield')?.value;
     if (this.formData.get('nominalPowerAC')?.value) objData.nominalPowerAC = this.formData.get('nominalPowerAC')?.value;
     if (this.formData.get('contractTypeId')?.value) objData.contractTypeId = this.formData.get('contractTypeId')?.value;
     if (this.formData.get('latitude')?.value) objData.latitude = this.formData.get('latitude')?.value;
     if (this.formData.get('longitude')?.value) objData.longitude = this.formData.get('longitude')?.value;
+    if (this.formData.get('performanceRatio')?.value) objData.performanceRatio = this.formData.get('performanceRatio')?.value;
     if (this.formData.get('installationTypeId')?.value) objData.installationTypeId = this.formData.get('installationTypeId')?.value;
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = this.formData.get('commissionDate')?.value;
-    if (this.formData.get('installedCapacity')?.value) objData.installedCapacity = this.formData.get('installedCapacity')?.value;
     if (this.formData.get('systemSize')?.value) objData.systemSize = this.formData.get('systemSize')?.value;
     if (this.formData.get('rpu')?.value) objData.rpu = this.formData.get('rpu')?.value;
     if (this.formData.get('statusPlantId')?.value) objData.statusPlantId = this.formData.get('statusPlantId')?.value;
-    if (this.formData.get('netZero')?.value) objData.netZero = this.formData.get('netZero')?.value;
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
-    console.log('GUARDAR', objData);
-    
+    if (this.formData.get('netZero')?.value == 'False') objData.netZero = "False"
+     else if (this.formData.get('netZero')?.value == 'True') objData.netZero = "True" 
+     else objData.netZero = null
+     
     if (this.objEditData) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
@@ -202,7 +206,6 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.map?.setCenter(location);
     this.marker?.setPosition(location);
     this.map?.setZoom(15);
-
 
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: location }, (results: any, status: any) => {
