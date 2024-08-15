@@ -17,7 +17,7 @@ import { MessageNoDataComponent } from '../message-no-data/message-no-data.compo
     MessageNoDataComponent
   ]
 })
-export class InfoCardComponent implements OnInit {
+export class InfoCardComponent {
   @Input() info: any;
   @Input() executeFunction!: Function;  
   @Input() tooltipText!: string;  
@@ -30,11 +30,6 @@ export class InfoCardComponent implements OnInit {
   originalTitle = '';
   isEditing = false;
   specialTitles = ['Commission Date', 'COD', 'Install Date'];
-
-  ngOnInit(): void {
-    console.log(this.info);
-    
-  }
 
   isSpecialTitle(): boolean {
     return this.specialTitles.includes(this.info?.title);
