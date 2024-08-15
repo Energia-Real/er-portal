@@ -164,7 +164,7 @@ export interface DataPlant {
   contractSignatureDate: string
   endInstallationDate: string
   mountingTechnology: string
-  nominalPower: string
+  nominalPowerAC: string
   roofType: string
   rpu: string
   assetStatusIcon: string
