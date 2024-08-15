@@ -220,7 +220,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
 
   getDataRespSystem(objBody: entity.PostDataByPlant) {
     this.assetsService.getDataSystem(objBody).subscribe({
-      next: (response: entity.ResponseSystem) => { this.dataRespoSystem = response.data },
+      next: (response: entity.ResponseSystem) => { this.dataRespoSystem = response?.data },
       error: (error) => {
         this.loadingSystem = false;
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')

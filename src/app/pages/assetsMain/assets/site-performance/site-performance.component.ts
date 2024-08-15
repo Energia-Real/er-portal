@@ -142,6 +142,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   getMonthResume(startDate: Date, endDate: Date) {
     this.moduleServices.getProyectResume(this.assetData.inverterBrand[0], this.assetData.plantCode, startDate, endDate).subscribe({
       next: (response) => {
+        if (response) {
         const monthResume = response[0]?.monthresume;
         if (!monthResume) {
           console.error('monthresume is undefined');
@@ -202,6 +203,8 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   
         this.displayChart = true;
         this.initChart();
+      }
+
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
