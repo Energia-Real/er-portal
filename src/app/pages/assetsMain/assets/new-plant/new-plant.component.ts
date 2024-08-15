@@ -188,7 +188,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   getDataClientsList() {
     this.homeService.getDataClientsList().subscribe({
-      next: (response: DataRespSavingDetailsList[]) => {
+      next: (response: entity.DataRespSavingDetailsList[]) => {
         this.dataClientsList = response;
       },
       error: (error) => {

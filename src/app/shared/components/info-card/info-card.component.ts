@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { MessageNoDataComponent } from '../message-no-data/message-no-data.compo
     MessageNoDataComponent
   ]
 })
-export class InfoCardComponent {
+export class InfoCardComponent implements OnInit {
   @Input() info: any;
   @Input() executeFunction!: Function;  
   @Input() tooltipText!: string;  
@@ -30,6 +30,11 @@ export class InfoCardComponent {
   originalTitle = '';
   isEditing = false;
   specialTitles = ['Commission Date', 'COD', 'Install Date'];
+
+  ngOnInit(): void {
+    console.log(this.info);
+    
+  }
 
   isSpecialTitle(): boolean {
     return this.specialTitles.includes(this.info?.title);
