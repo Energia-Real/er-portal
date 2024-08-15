@@ -3,8 +3,7 @@
     <h1>{{ info?.title || '-' }}</h1>
     <mat-icon *ngIf="tooltipText" (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
   </div>
-  <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()"
-    [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
+  <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
   <div *ngIf="isSpecialTitle() && isEditing">
     <mat-form-field *ngIf="isSpecialTitle() && isEditing">
       <input matInput [matDatepicker]="picker" [(ngModel)]="info.description" (dateChange)="onDateChange($event.value)">
