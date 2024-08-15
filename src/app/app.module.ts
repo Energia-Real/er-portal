@@ -16,7 +16,7 @@ import { environment } from '../environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

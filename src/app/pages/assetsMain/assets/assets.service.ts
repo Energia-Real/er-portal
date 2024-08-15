@@ -151,6 +151,34 @@ export class AssetsService implements OnDestroy {
     );
   }
 
+  createInstalations(equipment:entity.Equipment) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments`;
+    return this.http.post<entity.Equipment>(url,equipment)
+  }
+
+  getInverterBrands() {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterBrands`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getInverterModels(id: number) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterModels/${id}`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getModuleBrands() {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleBrands`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getModuleModels(id: number) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleModels/${id}`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+
+
+
   ngOnDestroy() {
     this.onDestroy.next();
     this.onDestroy.complete();

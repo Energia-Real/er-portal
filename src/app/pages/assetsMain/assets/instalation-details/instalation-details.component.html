@@ -1,5 +1,5 @@
-<div class="c-global c-install row">
-    <div class="col-md-8 c-graph">
+<div class="c-global c-install  grid grid-cols-1 md:grid-cols-2">
+    <div class="c-graph">
         <div *ngIf="showAlert" class="alert alert-warning">
             No data available!
           </div>        
@@ -7,7 +7,14 @@
             <iframe class="pdf" [src]="pdfSrc"  allow="autoplay"></iframe>
           </div>     
     </div>
-    <div class="col-md-4">
+    <div class="">
+      <div class="flex justify-end mb-2">
+        <button class="btn-action-add" (click)="toggleDrawer()">
+          <i class="fa-solid fa-plus"></i>
+          Add new equipment
+        </button>
+        <app-new-equipment [isOpen]="drawerOpen" [modeDrawer]="'Create'" [plantCode]="assetData.id"></app-new-equipment>
+      </div>
         <div class="c-card-info" *ngIf="!showAlert else notData">
             <div class="c-card-info" *ngIf="!showAlert&&instalations else notData">
                 <div class="card-info" *ngFor="let instalation of instalations.equipment; let i = index">

@@ -13,7 +13,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
-
+  drawerOpen = false;
   pdfSrc: SafeResourceUrl = '';
   showAlert: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
@@ -56,6 +56,10 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
       this.instalations = data;
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath+"#zoom=85");
     })
+  }
 
+  
+  toggleDrawer() {
+    this.drawerOpen = !this.drawerOpen;
   }
 }
