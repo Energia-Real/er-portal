@@ -4,9 +4,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
 	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
-		console.log('getDataRespSiteMapper', response);
-		
-	
+
 		let dataList: entity.DataResponseDetailsMapper[] = [];
 
 		response?.forEach((data: entity.DataDetails): void => {
@@ -29,8 +27,6 @@ export class Mapper {
 	}
 
 	static getDataAssetsmanagementMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
-		console.log(response.data);
-		
 		let dataList: entity.DataManagementTable[] = [];
 
 		response?.data.forEach((data: entity.DataManagementTable): void => {
@@ -64,7 +60,7 @@ export class Mapper {
 		return dataList
 	}
 
-	static getSummaryProjects(response: entity.DataSummaryProjectsMapper, formatsService: FormatsService) : entity.DataSummaryProjectsMapper{
+	static getSummaryProjects(response: entity.DataSummaryProjectsMapper, formatsService: FormatsService): entity.DataSummaryProjectsMapper {
 		return {
 			noOfSites: formatsService.energyFormat(parseFloat(response.noOfSites)),
 			noOfModules: formatsService.energyFormat(parseFloat(response.noOfModules)),
@@ -84,7 +80,7 @@ export class Mapper {
 			title: 'Age of the site',
 			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'year'}` ?? null
 		});
-	
+
 		dataList.push({
 			title: 'Install Date',
 			description: formatsService.dateFormat(response.endInstallationDate) ?? null
@@ -93,7 +89,7 @@ export class Mapper {
 			title: 'COD',
 			description: formatsService.dateFormat(response.contractSignatureDate) ?? null
 		});
-	
+
 		dataList.push({
 			title: 'Commission Date',
 			description: formatsService.dateFormat(response.commissionDate) ?? null
@@ -123,19 +119,18 @@ export class Mapper {
 
 
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
+
 		return {
 			...response,
-			assetStatusIcon: response.assetStatus.toLowerCase().includes('active') ? 'radio_button_checked'
-				: response.assetStatus.toLowerCase().includes('defaulter') ? 'warning'
-					: response.assetStatus.toLowerCase().includes('under construction') ? 'engineering'
-						: response.assetStatus.toLowerCase().includes('under permitting process') ? 'assignment'
-							: response.assetStatus.toLowerCase().includes('without Off-taker') ? 'person_off'
+			assetStatusIcon: response?.assetStatus?.toLowerCase()?.includes('active') ? 'radio_button_checked'
+				: response?.assetStatus?.toLowerCase()?.includes('defaulter') ? 'warning'
+					: response?.assetStatus?.toLowerCase()?.includes('under construction') ? 'engineering'
+						: response?.assetStatus?.toLowerCase()?.includes('under permitting process') ? 'assignment'
+							: response?.assetStatus?.toLowerCase()?.includes('without Off-taker') ? 'person_off'
 								: 'help_outline'
 		}
 
 	}
-
-	
 
 	static getLocalTimeOfPlaceMapper(response: entity.DataLocalTime): string {
 		const utcTime = moment.utc();
@@ -144,7 +139,7 @@ export class Mapper {
 	}
 
 	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
-		let instalaciones=[];
+		let instalaciones = [];
 		instalaciones.push({
 			equipmentId: 0,
 			moduloQty: 0,
@@ -173,9 +168,9 @@ export class Mapper {
 					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
 					description: `${data.moduloQty}  ${data.moduloModel}`,
 				}
-			) 
+			)
 		})
-		
+
 		return {
 			...response,
 			equipment: instalaciones

@@ -37,7 +37,6 @@ export class AuthService {
 
     return this.http.post<{}>(`${environment.API_URL_AUTH_V1}/login`, { email, password }, httpOptions)
       .pipe(map(user => {
-        console.log(user);
         const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user), 'secretKey').toString();
         localStorage.setItem('userEnergiaReal', encryptedUser);
         this.userSubject.next(user);
