@@ -56,8 +56,8 @@
 
               <div *ngIf="assetData">
                 <p>AC capacity</p>
-                <div *ngIf="assetData.nominalPower else notDataOne">
-                  <p class="card-value">{{ assetData.nominalPower }} kW</p>
+                <div *ngIf="assetData.nominalPowerAC else notDataOne">
+                  <p class="card-value">{{ assetData.nominalPowerAC }} kW</p>
                 </div>
               </div>
             </div>
@@ -67,8 +67,8 @@
 
               <div *ngIf="assetData">
                 <p>Status</p>
-                <div *ngIf="assetData.assetStatus else notData">
-                  <mat-icon [matTooltip]="assetData.assetStatus">{{ assetData.assetStatusIcon }} </mat-icon>
+                <div *ngIf="assetData.assetStatusIcon else notData">
+                  <mat-icon [matTooltip]="assetData.assetStatusIcon">{{ assetData.assetStatusIcon }} </mat-icon>
                 </div>
               </div>
             </div>

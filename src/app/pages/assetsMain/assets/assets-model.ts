@@ -164,7 +164,7 @@ export interface DataPlant {
   contractSignatureDate: string
   endInstallationDate: string
   mountingTechnology: string
-  nominalPower: string
+  nominalPowerAC: string
   roofType: string
   rpu: string
   assetStatusIcon: string
@@ -274,11 +274,28 @@ export interface Instalations {
 }
 
 export interface Equipment {
-  equipmentId: number
-  moduloQty: number
-  moduloBrand: string
-  moduloModel: string
+  equipmentId?: string|number|null|undefined
+  moduloQty?: number
+  moduloBrand?: string
+  moduloBrandId?: number
+  moduloModel?: string
+  tilt?: number
+  orientation?: number
+  projectExternalId?: string
+  inverterBrand?: string
+  inverterBrandId?: number
+  inverterModel?: string
+  inverterModelId?: number
+  moduloModelId?:number
   description?:string
   title?:string
 }
+
+export interface CatalogEquipment{
+  id?:  number
+  nombre?: string
+}
+
+
+
 

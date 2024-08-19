@@ -151,6 +151,44 @@ export class AssetsService implements OnDestroy {
     );
   }
 
+  createInstalations(equipment:entity.Equipment) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments`;
+    return this.http.post<entity.Equipment>(url,equipment)
+  }
+
+  deleteInstalation(equipmentId: string){
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${equipmentId}`;
+    return this.http.delete<any>(url)
+  }
+
+  patchInstalation(id: string |number | null | undefined, data: Partial<entity.Equipment> | null | undefined): Observable<any> {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${id}`;
+    return this.http.patch<any>(url, data);
+  }
+
+  getInverterBrands() {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterBrands`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getInverterModels(id: number) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterModels/${id}`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getModuleBrands() {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleBrands`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getModuleModels(id: number) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleModels/${id}`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+
+
+
   ngOnDestroy() {
     this.onDestroy.next();
     this.onDestroy.complete();

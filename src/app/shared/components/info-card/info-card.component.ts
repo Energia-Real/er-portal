@@ -4,6 +4,9 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { FormsModule } from '@angular/forms';
 import { MessageNoDataComponent } from '../message-no-data/message-no-data.component';
+import { Store } from '@ngrx/store';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { AssetsService } from '@app/pages/assetsMain/assets/assets.service';
 
 @Component({
   selector: 'app-info-card',
@@ -14,13 +17,14 @@ import { MessageNoDataComponent } from '../message-no-data/message-no-data.compo
     MaterialModule,
     CommonModule,
     FormsModule,
-    MessageNoDataComponent
+    MessageNoDataComponent,
   ]
 })
-export class InfoCardComponent implements OnInit {
+export class InfoCardComponent {
   @Input() info: any;
   @Input() executeFunction!: Function;  
   @Input() tooltipText!: string;  
+  @Input() fromEquipments!:boolean;
   @Input() materialIconName!: string; 
   @Input() canEditCard!: boolean; 
   @Output() infoEdited = new EventEmitter<any>();
@@ -31,10 +35,11 @@ export class InfoCardComponent implements OnInit {
   isEditing = false;
   specialTitles = ['Commission Date', 'COD', 'Install Date'];
 
-  ngOnInit(): void {
-    console.log(this.info);
-    
-  }
+ constructor(
+  private store: Store,
+  private assetService: AssetsService
+ ){
+ }
 
   isSpecialTitle(): boolean {
     return this.specialTitles.includes(this.info?.title);
@@ -98,5 +103,19 @@ export class InfoCardComponent implements OnInit {
     const month = date.getMonth() + 1; 
     const day = date.getDate();
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  }
+
+  editEquipment(){
+    this.updDraweState(true);
+  }
+
+  updDraweState(estado: boolean): void {
+    this.store.dispatch(updateDrawer({drawerOpen:estado, drawerAction:"Edit", drawerInfo: this.info}));
+  }
+
+  deleteEquipment(){
+    this.assetService.deleteInstalation(this.info.equipmentId).subscribe(resp =>{
+      console.log("eliminado")
+    })
   }
 }

@@ -1,0 +1,120 @@
+<div
+  class="fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
+  c-main create-asset-main-container  "
+  [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }"
+  
+>
+    <div class="return-bar-container">
+        <button class="button-transparent" type="button" (click)="closeDrawer()" >
+            <i class="fa-solid fa-angles-left" matTooltip="Go back"></i>  
+        </button>
+    </div>
+    <div class="mx-auto text-center w-full">
+        <div>
+            <h2>{{modeDrawer=="Create" ? 'Create' : 'Edit'}} equipment</h2>
+            <p>{{modeDrawer=="Create" ? 'Enter the data to create a equipment' : 'Modify the data to edit the equipment'}}</p>
+        </div>
+        <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
+            <div class="mb-0">
+                <div class="grid grid-cols-1  gap-x-6 gap-y-4">
+                    <div class="col-span-1 md:col-span-1">
+                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Inverter Information</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Inverter Brand:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                      <mat-select formControlName="inverterBrand" placeholder="Inverter Brand">
+                                        <mat-option value="" disabled>Choose one</mat-option>
+                                        <mat-option [value]="IBrand.id" *ngFor="let IBrand of inverterBrands">{{ IBrand?.nombre || '-'
+                                          }}</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Inverter Model:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                      <mat-select formControlName="inverterModel" placeholder="Inverter Model">
+                                        <mat-option value="" disabled>Choose one</mat-option>
+                                        <mat-option [value]="IModel.id" *ngFor="let IModel of inverterModels">{{ IModel?.nombre || '-'
+                                          }}</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-1 md:col-span-1">
+                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Module Information</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Module Brand:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                      <mat-select formControlName="moduleBrand" placeholder="Module Brand">
+                                        <mat-option value="" disabled>Choose one</mat-option>
+                                        <mat-option [value]="MBrand.id" *ngFor="let MBrand of moduleBrands">{{ MBrand?.nombre || '-'
+                                          }}</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Module Model:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                      <mat-select formControlName="moduleModel" placeholder="Module Model">
+                                        <mat-option value="" disabled>Choose one</mat-option>
+                                        <mat-option [value]="MModel.id" *ngFor="let MModel of moduleModels">{{ MModel?.nombre || '-'
+                                          }}</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Module Quantity:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                        <input formControlName="moduleQty" id="module-qty" placeholder="Modules Quantity" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Tilt:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                        <input formControlName="tilt" placeholder="Tilt" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input">
+                                    <p>Orientation:</p>
+                                    <mat-form-field class="select-ER" appearance="outline">
+                                        <input formControlName="orientation" placeholder="Orientation" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container d-flex justify-content-between pt-0">
+                <div>
+                  <button class="btn-cancel" (click)="closeDrawer()" type="button">Cancel</button>
+                </div>
+                <div>
+                  <span class="loader" *ngIf="loading"></span>
+                  <button class="btn-action-add" [disabled]="formData.invalid" *ngIf="!loading" type="submit">
+                    <!-- <button class="btn-action-add" *ngIf="!loading" type="submit"> -->
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save
+                  </button>
+                </div>
+              </div>
+        </form>
+    </div>
+ 
+</div>

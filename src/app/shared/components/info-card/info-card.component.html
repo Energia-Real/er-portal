@@ -2,6 +2,8 @@
   <div class="card-info-header">
     <h1>{{ info?.title || '-' }}</h1>
     <mat-icon *ngIf="tooltipText" (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
+    <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' " (click)="editEquipment()" matTooltip="Edit Equipment">{{ materialIconName }}</mat-icon>
+    <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' " (click)="deleteEquipment()" matTooltip="Edit Equipment">delete</mat-icon>
   </div>
   <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
   <div *ngIf="isSpecialTitle() && isEditing">
