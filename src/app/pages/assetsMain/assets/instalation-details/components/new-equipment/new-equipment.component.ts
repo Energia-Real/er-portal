@@ -136,7 +136,6 @@ export class NewEquipmentComponent {
     const moduleQtyValue = this.formData.get('moduleQty')?.value;
     const tiltValue = this.formData.get('tilt')?.value;
     const orientationValue = this.formData.get('orientation')?.value;
-console.log("ggg", moduleQtyValue)
     if (inverterBrandValue !== null && inverterBrandValue !== undefined) {
       equipment.inverterBrandId = inverterBrandValue;
     }
@@ -170,7 +169,6 @@ console.log("ggg", moduleQtyValue)
     }
     if(this.modeDrawer=="Edit"){
       console.log("editing ....")
-      console.log(equipment)
 
       this.assetService.patchInstalation(
         this._equipment?.equipmentId,

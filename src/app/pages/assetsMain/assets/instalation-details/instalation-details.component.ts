@@ -71,7 +71,6 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
     this.assetService.getInstalations(plantCode).subscribe(data=>{
       this.instalations = data;
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath+"#zoom=85");
-      console.log(this.instalations)
     })
   }
 
