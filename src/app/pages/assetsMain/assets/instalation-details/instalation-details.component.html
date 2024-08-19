@@ -1,4 +1,4 @@
-<div class="c-global c-install  grid grid-cols-1 md:grid-cols-2">
+<div [class.sombreado]="drawerOpen" class="c-global c-install  grid grid-cols-1 md:grid-cols-2">
     <div class="c-graph">
         <div *ngIf="showAlert" class="alert alert-warning">
             No data available!

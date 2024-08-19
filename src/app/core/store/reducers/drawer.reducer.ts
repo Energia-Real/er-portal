@@ -1,22 +1,24 @@
 import { createReducer, on } from '@ngrx/store';
 import { updateDrawer } from '../actions/drawer.actions';
-import { Equipment } from '@app/pages/paymets-main/payments-model';
+import { Equipment } from '@app/pages/assetsMain/assets/assets-model';
 
 export interface DrawerState {
   drawerOpen: boolean;
   drawerAction: "Create"|"Edit",
-  drawerInfo: Equipment | null | undefined
+  drawerInfo: Equipment | null | undefined,
+  needReload: boolean
 }
 
 export const initialState: DrawerState = {
   drawerOpen :  false,
   drawerAction: "Create",
-  drawerInfo: null
+  drawerInfo: null,
+  needReload: false
 };
 
 export const drawerReducer = createReducer(
   initialState,
-  on(updateDrawer, (state, { drawerOpen, drawerAction, drawerInfo}) => ({
-   drawerOpen,drawerAction,drawerInfo
+  on(updateDrawer, (state, { drawerOpen, drawerAction, drawerInfo,needReload}) => ({
+   drawerOpen,drawerAction,drawerInfo,needReload
   }))
 );

@@ -28,6 +28,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   drawerOpenSub: Subscription;
   drawerInfo: entity.Equipment | null | undefined = null;
   instalations!:entity.Instalations;
+  needReload:boolean = false; 
 
   constructor(
     private sanitizer: DomSanitizer, 
@@ -39,6 +40,10 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
       this.drawerOpen  = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
       this.drawerInfo = resp.drawerInfo;
+      this.needReload = resp.needReload;
+      if (this.needReload) {
+        this.reloadData();
+      }
     });
   }
 
@@ -73,6 +78,11 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath+"#zoom=85");
     })
   }
+  reloadData(){
+    console.log("Reloading data...");
+    this.getInstalations(this.assetData.id);
+    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:false}));
+  }
 
   
   toggleDrawer() {
@@ -80,6 +90,6 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   }
   
   updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({drawerOpen:estado,drawerAction: "Create", drawerInfo: null }));
+    this.store.dispatch(updateDrawer({drawerOpen:estado,drawerAction: "Create", drawerInfo: null,needReload: false }));
   }
 }
