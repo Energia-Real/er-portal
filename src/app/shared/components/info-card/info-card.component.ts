@@ -110,12 +110,13 @@ export class InfoCardComponent {
   }
 
   updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({drawerOpen:estado, drawerAction:"Edit", drawerInfo: this.info}));
+    this.store.dispatch(updateDrawer({drawerOpen:estado, drawerAction:"Edit", drawerInfo: this.info,needReload:false}));
   }
 
   deleteEquipment(){
     this.assetService.deleteInstalation(this.info.equipmentId).subscribe(resp =>{
       console.log("eliminado")
+      this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction:"Edit", drawerInfo: null,needReload:true}));
     })
   }
 }

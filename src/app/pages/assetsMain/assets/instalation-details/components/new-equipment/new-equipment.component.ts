@@ -123,8 +123,8 @@ export class NewEquipmentComponent {
 
   closeDrawer() {
     this.isOpen = false;
-    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null }));
-
+    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:true}));
+    this.resetForm();
   }
 
   actionSave() {
@@ -177,7 +177,7 @@ export class NewEquipmentComponent {
 
       })
     }
-    
+    this.resetForm();
   }
 
   getInverterBrandsCatalog(){
@@ -202,5 +202,19 @@ export class NewEquipmentComponent {
       this.moduleModels=resp; 
     })
   }
+  resetForm() {
+    this.formData.reset({
+      inverterBrand: null,
+      inverterModel: null,
+      moduleBrand: null,
+      moduleModel: null,
+      moduleQty: null,
+      tilt: null,
+      orientation: null,
+    });
+    this.formData.get('inverterModel')?.disable();
+    this.formData.get('moduleModel')?.disable();
+  }
+  
 
 }

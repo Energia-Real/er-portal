@@ -139,7 +139,6 @@ export class Mapper {
 	}
 
 	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
-		console.log(response)
 		let instalaciones:entity.Equipment[] = [];
 		instalaciones.push({
 			equipmentId: "0",

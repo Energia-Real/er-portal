@@ -17,3 +17,8 @@ export const selecDrawerInfo= createSelector(
   selectDrawer,
   state => state.drawerInfo
 );
+
+export const needReload= createSelector(
+  selectDrawer,
+  state => state.needReload
+);
