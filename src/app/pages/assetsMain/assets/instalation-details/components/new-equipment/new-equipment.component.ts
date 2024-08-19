@@ -2,6 +2,10 @@ import { Component, Input ,OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CatalogEquipment, Equipment } from '../../../assets-model';
 import { AssetsService } from '../../../assets.service';
+import { Store } from '@ngrx/store';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { Subscription } from 'rxjs';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 
 export interface EquipmentForm {
   inverterBrand: FormControl<number|null>;
@@ -26,6 +30,16 @@ export class NewEquipmentComponent {
   @Input()
   plantCode?:string;
 
+  private _equipment?: Equipment | null | undefined;
+  @Input()
+  set equipment(value: Equipment | null | undefined) {
+    this._equipment = value;
+    this.initializeForm();
+  }
+  get equipment(): Equipment | null | undefined {
+    return this._equipment;
+  }
+
   inverterBrands: CatalogEquipment[]=[];
   inverterModels: CatalogEquipment[]=[];
   moduleBrands:   CatalogEquipment[]=[];
@@ -46,10 +60,10 @@ export class NewEquipmentComponent {
 
   constructor(
     private fb: FormBuilder,
-    private assetService: AssetsService
-
+    private assetService: AssetsService,
+    private store: Store
   ){
-
+    
   }
 
   ngOnInit(){
@@ -72,13 +86,48 @@ export class NewEquipmentComponent {
     });
   }
 
+  initializeForm() {
+    if (this.equipment) {
+      this.formData.patchValue({
+        inverterBrand: this.equipment.inverterBrandId || null,
+        inverterModel: this.equipment.inverterModelId || null,
+        moduleBrand: this.equipment.moduloBrandId || null,
+        moduleModel: this.equipment.moduloModelId || null,
+        moduleQty: this.equipment.moduloQty || null,
+        tilt: this.equipment.tilt || null,
+        orientation: this.equipment.orientation || null,
+      });
+
+      // Habilitar los campos deshabilitados si hay valores para ellos
+      if (this.equipment.inverterModelId) {
+        this.formData.get('inverterModel')?.enable();
+      }
+      if (this.equipment.moduloModelId) {
+        this.formData.get('moduleModel')?.enable();
+      }
+    } else {
+      // Resetear el formulario si no hay equipment
+      this.formData.reset({
+        inverterBrand: null,
+        inverterModel: null,
+        moduleBrand: null,
+        moduleModel: null,
+        moduleQty: null,
+        tilt: null,
+        orientation: null,
+      });
+      this.formData.get('inverterModel')?.disable();
+      this.formData.get('moduleModel')?.disable();
+    }
+  }
 
   closeDrawer() {
     this.isOpen = false;
+    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null }));
+
   }
 
   actionSave() {
-    console.log("saving...")
     let equipment:Equipment = {};
     const inverterBrandValue = this.formData.get('inverterBrand')?.value;
     const inverterModelValue = this.formData.get('inverterModel')?.value;
@@ -87,7 +136,7 @@ export class NewEquipmentComponent {
     const moduleQtyValue = this.formData.get('moduleQty')?.value;
     const tiltValue = this.formData.get('tilt')?.value;
     const orientationValue = this.formData.get('orientation')?.value;
-
+console.log("ggg", moduleQtyValue)
     if (inverterBrandValue !== null && inverterBrandValue !== undefined) {
       equipment.inverterBrandId = inverterBrandValue;
     }
@@ -113,9 +162,21 @@ export class NewEquipmentComponent {
       equipment.projectExternalId=this.plantCode;
     }
 
-    if(this.modeDrawer="Create"){
+    if(this.modeDrawer=="Create"){
+      console.log("saving ...")
       this.assetService.createInstalations(equipment).subscribe(resp=>{
         this.closeDrawer();
+      })
+    }
+    if(this.modeDrawer=="Edit"){
+      console.log("editing ....")
+      console.log(equipment)
+
+      this.assetService.patchInstalation(
+        this._equipment?.equipmentId,
+        equipment).subscribe(resp=>{
+          this.closeDrawer();
+
       })
     }
     

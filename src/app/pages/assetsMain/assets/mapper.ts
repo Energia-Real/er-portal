@@ -139,9 +139,10 @@ export class Mapper {
 	}
 
 	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
-		let instalaciones = [];
+		console.log(response)
+		let instalaciones:entity.Equipment[] = [];
 		instalaciones.push({
-			equipmentId: 0,
+			equipmentId: "0",
 			moduloQty: 0,
 			moduloBrand: "",
 			moduloModel: "",
@@ -150,7 +151,7 @@ export class Mapper {
 
 		});
 		instalaciones.push({
-			equipmentId: 0,
+			equipmentId: "0",
 			moduloQty: 0,
 			moduloBrand: "",
 			moduloModel: "",
@@ -158,6 +159,7 @@ export class Mapper {
 			description: response.roofType,
 
 		})
+
 		response.equipment.map((data: entity.Equipment, i: number) => {
 			instalaciones.push(
 				{
@@ -165,11 +167,18 @@ export class Mapper {
 					moduloQty: data.moduloQty,
 					moduloBrand: data.moduloBrand,
 					moduloModel: data.moduloModel,
+					inverterBrandId: data.inverterBrandId,
+					inverterModelId: data.inverterModelId,
+					moduloModelId: data.moduloModelId,
+					moduloBrandId: data.moduloBrandId,
+					orientation: data.orientation,
+					tilt: data.tilt,
 					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
 					description: `${data.moduloQty}  ${data.moduloModel}`,
 				}
 			)
 		})
+
 
 		return {
 			...response,

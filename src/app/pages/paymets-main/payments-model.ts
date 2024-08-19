@@ -265,7 +265,7 @@ export interface Instalations {
 }
 
 export interface Equipment {
-  equipmentId: number
+  equipmentId : number|string
   moduloQty: number
   moduloBrand: string
   moduloModel: string

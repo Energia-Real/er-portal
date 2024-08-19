@@ -3,6 +3,10 @@ import * as entity from '../assets-model';
 import Highcharts from 'highcharts';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AssetsService } from '../assets.service';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 @Component({
   selector: 'app-instalation-details',
@@ -19,12 +23,24 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   Highcharts: typeof Highcharts = Highcharts;
   images: string[] = [];
   renderedImage: string | null = null;
-  materialIcon: string = 'help_outline';
+  materialIcon: string = 'edit';
+  drawerAction: "Create"|"Edit" = "Create";
+  drawerOpenSub: Subscription;
+  drawerInfo: entity.Equipment | null | undefined = null;
   instalations!:entity.Instalations;
+
   constructor(
     private sanitizer: DomSanitizer, 
-    private assetService: AssetsService
-  ) {}
+    private assetService: AssetsService,
+    private store: Store,
+
+  ) {
+    this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
+      this.drawerOpen  = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+    });
+  }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
@@ -55,11 +71,16 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
     this.assetService.getInstalations(plantCode).subscribe(data=>{
       this.instalations = data;
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath+"#zoom=85");
+      console.log(this.instalations)
     })
   }
 
   
   toggleDrawer() {
-    this.drawerOpen = !this.drawerOpen;
+    this.updDraweState(!this.drawerOpen);
+  }
+  
+  updDraweState(estado: boolean): void {
+    this.store.dispatch(updateDrawer({drawerOpen:estado,drawerAction: "Create", drawerInfo: null }));
   }
 }

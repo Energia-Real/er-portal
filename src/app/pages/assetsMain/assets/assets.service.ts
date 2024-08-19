@@ -156,6 +156,16 @@ export class AssetsService implements OnDestroy {
     return this.http.post<entity.Equipment>(url,equipment)
   }
 
+  deleteInstalation(equipmentId: string){
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${equipmentId}`;
+    return this.http.delete<any>(url)
+  }
+
+  patchInstalation(id: string |number | null | undefined, data: Partial<entity.Equipment> | null | undefined): Observable<any> {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${id}`;
+    return this.http.patch<any>(url, data);
+  }
+
   getInverterBrands() {
     const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterBrands`;
     return this.http.get<entity.CatalogEquipment[]>(url);

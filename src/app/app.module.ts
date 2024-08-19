@@ -14,6 +14,7 @@ import { paginatorReducer } from './core/store/reducers/paginator.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { drawerReducer } from './core/store/reducers/drawer.reducer';
 
 @NgModule({
   declarations: [ AppComponent],
@@ -24,7 +25,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
     LayoutModule,
     GoogleMapsModule,
     CoreModule,
-    StoreModule.forRoot({ paginator: paginatorReducer }),
+    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer}),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
   ],
   providers: [

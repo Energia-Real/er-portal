@@ -274,7 +274,7 @@ export interface Instalations {
 }
 
 export interface Equipment {
-  equipmentId?: number
+  equipmentId?: string|number|null|undefined
   moduloQty?: number
   moduloBrand?: string
   moduloBrandId?: number
