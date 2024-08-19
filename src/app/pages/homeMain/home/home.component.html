@@ -12,8 +12,8 @@
 
         <div class="c-card-section c-card-section-m">
             <h2 class="text-er-orange text-base font-normal">Solar Coverage & CO2 Savings</h2>
-            <div class="d-flex" [ngStyle]="{'justify-content-center': !solarCovergaCo2?.length}">
-                <div class="grid md:grid-cols-2 gap-4 text-center div-groups"
+            <div [ngClass]="{'flex-center': !solarCovergaCo2?.length}">
+                <div class="grid md:grid-cols-4 gap-4 text-center div-groups"
                     *ngIf="solarCovergaCo2?.length else notDataTable">
                     <div *ngFor="let data of solarCovergaCo2">
                         <h2 class="mb-0"> {{ data.value }}</h2>
