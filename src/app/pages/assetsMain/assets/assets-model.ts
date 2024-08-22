@@ -218,6 +218,12 @@ export interface DataSummaryProjects {
   inverterQty: number
 }
 
+export interface EstimatedEnergy {
+  collectTime : Date
+  inverterPower : number 
+  estimatedEnergyMWh : number
+}
+
 export interface ProyectResume {
   _id: Id
   brandName: string
