@@ -138,10 +138,17 @@ export class AssetsService implements OnDestroy {
     const jsonObject = {
       "brand": brand,
       "plantCode": plantCode,
-      "startDate": startDate,
-      "endDate": endDate
     };
     return this.http.post<entity.ProyectResume[]>(url, jsonObject)
+  }
+
+  getEstimatedEnergy(brand: string, plantCode: string) {
+    const url = `${this.API_URL}/projects/estimatedEnergy`;
+    const jsonObject = {
+      "brand": brand,
+      "plantCode": plantCode,
+    };
+    return this.http.post<entity.EstimatedEnergy[]>(url, jsonObject)
   }
 
   getInstalations(plantCode:string) {
