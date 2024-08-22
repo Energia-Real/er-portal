@@ -3,6 +3,10 @@ import * as entity from '../assets-model';
 import Highcharts from 'highcharts';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AssetsService } from '../assets.service';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 @Component({
   selector: 'app-instalation-details',
@@ -13,18 +17,35 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
-
+  drawerOpen = false;
   pdfSrc: SafeResourceUrl = '';
   showAlert: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
   images: string[] = [];
   renderedImage: string | null = null;
-  materialIcon: string = 'help_outline';
+  materialIcon: string = 'edit';
+  drawerAction: "Create"|"Edit" = "Create";
+  drawerOpenSub: Subscription;
+  drawerInfo: entity.Equipment | null | undefined = null;
   instalations!:entity.Instalations;
+  needReload:boolean = false; 
+
   constructor(
     private sanitizer: DomSanitizer, 
-    private assetService: AssetsService
-  ) {}
+    private assetService: AssetsService,
+    private store: Store,
+
+  ) {
+    this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
+      this.drawerOpen  = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+      this.needReload = resp.needReload;
+      if (this.needReload) {
+        this.reloadData();
+      }
+    });
+  }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
@@ -56,6 +77,19 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
       this.instalations = data;
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath+"#zoom=85");
     })
+  }
+  reloadData(){
+    console.log("Reloading data...");
+    this.getInstalations(this.assetData.id);
+    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:false}));
+  }
 
+  
+  toggleDrawer() {
+    this.updDraweState(!this.drawerOpen);
+  }
+  
+  updDraweState(estado: boolean): void {
+    this.store.dispatch(updateDrawer({drawerOpen:estado,drawerAction: "Create", drawerInfo: null,needReload: false }));
   }
 }
