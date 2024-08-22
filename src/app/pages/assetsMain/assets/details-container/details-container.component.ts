@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
-//import { SitePerformanceComponent } from '../site-performance/site-performance.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SitePerformanceComponent } from '../site-performance/site-performance.component';
 
@@ -181,7 +180,6 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
     this.assetsService.getDataId(id).subscribe({
       next: (response: entity.DataPlant) => {
         this.assetData = response;
-        console.log(response)
         this.verifyInformation(response);
       },
       error: (error) => {

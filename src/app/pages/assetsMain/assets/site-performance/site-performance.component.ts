@@ -21,9 +21,10 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   chartOptions!: Highcharts.Options;
   Highcharts: typeof Highcharts = Highcharts;
   graphicsType: 'pie' | 'bars' = 'bars';
-  lineChartData!: ChartConfiguration<'bar'>['data'];
+  lineChartData!: ChartConfiguration<'bar'| 'line'>['data'];
   showSitePerformance = false;
-  lineChartOptions: ChartOptions<'bar'> = {
+
+  lineChartOptions: ChartOptions<'bar'|'line'> = {
     responsive: false,
     animation: {
       onComplete: () => {
@@ -39,6 +40,12 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     plugins: {
       tooltip: {
         usePointStyle: true,
+        callbacks: {
+          label: function (context) {
+            const value = Math.abs(context.raw as number).toLocaleString('en-US');
+            return `${context.dataset.label}: ${value}`;
+          }
+        }
       },
       
       legend: {
@@ -74,7 +81,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     
     scales: {
       x: {
-        stacked: true,
+        stacked: false,
         grid: {
           display: false, 
         },
@@ -82,10 +89,10 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
       y: {
         ticks: {
           callback: function(value, index, values) {
-            return value + ' MWh'; 
+            return `${Number(value).toLocaleString('en-US')} MWh`;
           },
         },
-        stacked: true,
+        stacked: false,
         grid: {
           display: false,
         },
@@ -115,8 +122,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit(): void {
-    let dates = this.getFormattedDates();
-    this.getMonthResume(dates.fourMonthsAgo, dates.today);
+    this.getEstimateds();
     this.showAlert = false;
     this.fechaHoy = new Date(this.fechaHoy.getFullYear(), 0, 1);
     this.getStatus();
@@ -129,90 +135,61 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   onFormValuesChanged(values: any) {
-    if (values.end != '' && values.start != '') this.getMonthResume(values.start, values.end);
+    if (values.end != '' && values.start != '') this.getEstimateds();
   }
 
-  getMonthResume(startDate: Date, endDate: Date) {
-    this.moduleServices.getProyectResume(this.assetData.inverterBrand[0], this.assetData.plantCode, startDate, endDate).subscribe({
-      next: (response) => {
-        const monthResume = response[0]?.monthresume;
-        if (!monthResume) {
-          console.error('monthresume is undefined');
-          return;
-        }
-  
-        const inverterPowerData = monthResume.map(item => this.formatsService.graphFormat(item.inverterPower));
-        const seriesData = monthResume.map((item) => {
+  getEstimateds(){
+    this.moduleServices.getEstimatedEnergy(this.assetData.inverterBrand[0],this.assetData.plantCode).subscribe( {
+      next: (response) =>{
+        const inverterPowerData = response.map(item => this.formatsService.graphFormat(item.inverterPower));
+        const estimatedInverterPowerData = response.map(item => this.formatsService.graphFormat(item.estimatedEnergyMWh));
+
+        const seriesData = response.map((item) => {
+        let date = new Date(item.collectTime);
+        let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
+        monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
+      });
+      const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
+      this.lineChartData = {
+        labels: response.map((item) => {
           let date = new Date(item.collectTime);
           let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
           monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-          return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
-        });
-        const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
-
-        this.chartOptions = {
-          chart: {
-            type: 'pie'
+          return monthName;
+        }),
+        datasets: [
+          {
+            type:'bar',
+            data: inverterPowerData,
+            label: 'Energy Production',
+            backgroundColor: 'rgba(121, 36, 48, 1)',
+            order:1
           },
-          title: {
-            text: 'Energy Production'
-          },
-          series: [{
-            type: 'pie',
-            name: 'Energy Production',
-            data: seriesData,
-            colors: colors
-
-          }],
-          plotOptions: {
-            pie: {
-              dataLabels: {
-                enabled: true,
-                formatter: function() {
-                  return `<b>${this.point.name}</b>: ${this.y!}</b> MWh`;
-                }
-              }
-            }
+          {
+            type:'line',
+            data: estimatedInverterPowerData,
+            borderColor: 'rgba(238, 84, 39, 1)',
+            backgroundColor:'rgba(238, 84, 39, 1)',
+            pointBackgroundColor: 'rgba(238, 84, 39, 1)',
+            pointBorderColor: 'rgba(238, 84, 39, 1)', 
+            label: 'Estimated Energy Production',
+            order:0,
           }
-        };
-  
-        this.lineChartData = {
-          labels: monthResume.map((item) => {
-            let date = new Date(item.collectTime);
-            let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
-            monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            return monthName;
-          }),
-          datasets: [
-            {
-              data: inverterPowerData,
-              label: 'Energy Production',
-              backgroundColor: 'rgba(121, 36, 48, 1)',
-              
-            }
-          ]
-        };
-  
-        this.displayChart = true;
-        this.initChart();
+        ]
+      };
+
+      this.displayChart = true;
+      this.initChart();
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
       }
-    })
+    }
+    )
   }
 
-  getFormattedDates() {
-    const today = new Date();
-    const firstDayOfCurrentMonth = new Date(today.getFullYear(), today.getMonth(), - 1);
-    const fourMonthsAgo = new Date(today.setMonth(today.getMonth() - 5));
-    const firstDayOfFourMonthsAgo = new Date(fourMonthsAgo.getFullYear(), fourMonthsAgo.getMonth(), 1);
-    return {
-      today: firstDayOfCurrentMonth,
-      fourMonthsAgo: firstDayOfFourMonthsAgo
-    };
-  }
 
   getStatus() {
     this.moduleServices.getDataRespStatus().subscribe({

@@ -22,6 +22,7 @@ import { InstalationDetailsComponent } from './instalation-details/instalation-d
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { ModalExportDataComponent } from './site-performance/modal-export-data/modal-export-data.component';
+import { NewEquipmentComponent } from './instalation-details/components/new-equipment/new-equipment.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { ModalExportDataComponent } from './site-performance/modal-export-data/m
     NewPlantComponent,
     InstalationDetailsComponent,
     ModalExportDataComponent,
+    NewEquipmentComponent,
   ],
   imports: [
     CommonModule,

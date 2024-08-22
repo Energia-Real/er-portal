@@ -5,6 +5,13 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+export interface DataRespSavingDetailsList {
+  id: string;
+  clientId: number;
+  nombre: string;
+}
+
+
 export interface Example {
   name: string;
   position: number;
@@ -75,7 +82,7 @@ export interface DataManagementTableResponse {
 export interface DataManagementTable {
   id: string;
   siteName: string;
-  systemSize: number;
+  systemSize: string;
   direction: string;
   longitude: number
   contractType: string;
@@ -144,6 +151,7 @@ export interface DataPlant {
   direction: string;
   longitude: number,
   contractType: string,
+  descriptionStatus: string,
   installationType: string,
   commissionDate: string,
   inverterQty: number,
@@ -156,7 +164,7 @@ export interface DataPlant {
   contractSignatureDate: string
   endInstallationDate: string
   mountingTechnology: string
-  nominalPower: string
+  nominalPowerAC: string
   roofType: string
   rpu: string
   assetStatusIcon: string
@@ -186,7 +194,7 @@ export interface DataLocalTimeMapper {
   timeZoneName: string;
 }
 
-export interface DataSummaryProjects {
+export interface DataSummaryProjectsMapper {
   noOfSites: string;
   noOfModules: string;
   noOfInverters: string;
@@ -208,6 +216,12 @@ export interface DataSummaryProjects {
   endInstallationDate: string;
   systemSize: number
   inverterQty: number
+}
+
+export interface EstimatedEnergy {
+  collectTime : Date
+  inverterPower : number 
+  estimatedEnergyMWh : number
 }
 
 export interface ProyectResume {
@@ -266,11 +280,28 @@ export interface Instalations {
 }
 
 export interface Equipment {
-  equipmentId: number
-  moduloQty: number
-  moduloBrand: string
-  moduloModel: string
+  equipmentId?: string|number|null|undefined
+  moduloQty?: number
+  moduloBrand?: string
+  moduloBrandId?: number
+  moduloModel?: string
+  tilt?: number
+  orientation?: number
+  projectExternalId?: string
+  inverterBrand?: string
+  inverterBrandId?: number
+  inverterModel?: string
+  inverterModelId?: number
+  moduloModelId?:number
   description?:string
   title?:string
 }
+
+export interface CatalogEquipment{
+  id?:  number
+  nombre?: string
+}
+
+
+
 

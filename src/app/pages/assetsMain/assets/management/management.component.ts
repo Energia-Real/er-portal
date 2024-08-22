@@ -46,7 +46,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
     'actions'
   ];
 
-  totalPlants!: entity.DataSummaryProjects;
+  totalPlants!: entity.DataSummaryProjectsMapper;
 
   searchValue: string = '';
 
@@ -70,6 +70,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
         this.paginator.pageSize = size; 
       }
     });
+
     this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
       this.pageIndex = index + 1;
       if (this.paginator) {
@@ -103,8 +104,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
         this.pageIndex = page
       },
       error: error => {
-        console.log('entro aqui');
-        
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
@@ -113,7 +112,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   
   getSummaryProjects() {
     this.moduleServices.getSummaryProjects().subscribe({
-      next: (response : entity.DataSummaryProjects) => {
+      next: (response : entity.DataSummaryProjectsMapper) => {
         this.totalPlants = response;
         this.loadingtotalPlants = false
       },

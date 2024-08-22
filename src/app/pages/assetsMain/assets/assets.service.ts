@@ -63,10 +63,12 @@ export class AssetsService implements OnDestroy {
     );
   }
 
-  getSummaryProjects(): Observable<entity.DataSummaryProjects> {
+  getSummaryProjects(): Observable<entity.DataSummaryProjectsMapper> {
     const url = `${this.API_URL}/projects/summary`;
 
-    return this.http.get<entity.DataSummaryProjects>(url);
+    return this.http.get<entity.DataSummaryProjectsMapper>(url).pipe(
+      map((response) => Mapper.getSummaryProjects(response, this.formatsService))
+    );
   }
 
   getDataId(id: string | null): Observable<entity.DataPlant> {
@@ -136,10 +138,17 @@ export class AssetsService implements OnDestroy {
     const jsonObject = {
       "brand": brand,
       "plantCode": plantCode,
-      "startDate": startDate,
-      "endDate": endDate
     };
     return this.http.post<entity.ProyectResume[]>(url, jsonObject)
+  }
+
+  getEstimatedEnergy(brand: string, plantCode: string) {
+    const url = `${this.API_URL}/projects/estimatedEnergy`;
+    const jsonObject = {
+      "brand": brand,
+      "plantCode": plantCode,
+    };
+    return this.http.post<entity.EstimatedEnergy[]>(url, jsonObject)
   }
 
   getInstalations(plantCode:string) {
@@ -149,9 +158,46 @@ export class AssetsService implements OnDestroy {
     );
   }
 
+  createInstalations(equipment:entity.Equipment) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments`;
+    return this.http.post<entity.Equipment>(url,equipment)
+  }
+
+  deleteInstalation(equipmentId: string){
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${equipmentId}`;
+    return this.http.delete<any>(url)
+  }
+
+  patchInstalation(id: string |number | null | undefined, data: Partial<entity.Equipment> | null | undefined): Observable<any> {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${id}`;
+    return this.http.patch<any>(url, data);
+  }
+
+  getInverterBrands() {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterBrands`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getInverterModels(id: number) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterModels/${id}`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getModuleBrands() {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleBrands`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+  getModuleModels(id: number) {
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleModels/${id}`;
+    return this.http.get<entity.CatalogEquipment[]>(url);
+  }
+
+
+
+
   ngOnDestroy() {
     this.onDestroy.next();
     this.onDestroy.complete();
   }
-
 }

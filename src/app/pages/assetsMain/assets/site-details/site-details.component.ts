@@ -1,10 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 
 @Component({
   selector: 'app-site-details',
@@ -23,15 +25,22 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   siteResponse: any[] = []
   showAlert: boolean = false
-
+  drawerOpen=false
+  drawerOpenSub: Subscription;
   id: string = '';
 
   constructor(
     private sanitizer: DomSanitizer,
     private moduleServices: AssetsService,
     private notificationService: OpenModalsService,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private store: Store,
+  ) {
+    this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
+      this.drawerOpen  = resp.drawerOpen;
+    });
+
+   }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('assetId')!;
@@ -74,8 +83,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     
     this.moduleServices.getDataRespSite(objData).subscribe({
       next: (response: entity.DataResponseDetailsMapper[]) => {
-        console.log('INFORMACIÓN', response);
-        
         this.siteResponse = response;
         this.getDataResponseOverview();
       },
