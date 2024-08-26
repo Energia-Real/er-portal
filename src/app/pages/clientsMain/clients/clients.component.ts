@@ -11,6 +11,8 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 
 @Component({
   selector: 'app-clients',
@@ -20,11 +22,17 @@ import { MatSort } from '@angular/material/sort';
 export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
-
-
   @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
-
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSize: number = 5;
+  pageIndex: number = 1 ;
+  totalItems: number = 0;
+  displayedColumns: string[] = [
+    'clientName', 
+    'clientId', 
+    'actions'
+  ];
   ngAfterViewChecked() {
       if (this.paginator) {
         this.paginator.pageIndex = this.pageIndex - 1; 
@@ -33,28 +41,30 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
       }
   }
 
-  displayedColumns: string[] = [
-    'clientName', 
-    'clientId', 
-    'actions'
-  ];
+ 
 
-  totalPlants!: entity.DataSummaryProjectsMapper;
+  totalPlants!: any;
+  // totalPlants!: entity.DataSummaryProjectsMapper;
 
   searchValue: string = '';
+  drawerAction: "Create"|"Edit" = "Create";
+  drawerInfo: any | null | undefined = null;
+  // drawerInfo: entity.Equipment | null | undefined = null;
 
-  pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 5;
-  pageIndex: number = 1 ;
-  totalItems: number = 0;
+
+
 
   showLoader: boolean = true;
+  drawerOpen: boolean = false;
+  needReload:boolean = false; 
+
   loadingtotalPlants: boolean = true;
 
   pageSizeSub: Subscription;
   pageIndexSub: Subscription;
 
   searchBar = new FormControl('');
+  drawerOpenSub: Subscription;
 
   
   constructor(private store: Store, private moduleServices: ClientsService, private notificationService: OpenModalsService, private router: Router) {
@@ -71,6 +81,16 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
         this.paginator.pageIndex = index; 
       }
       this.getDataTable(index+1, this.searchValue); 
+    });
+
+    this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
+      this.drawerOpen  = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+      this.needReload = resp.needReload;
+      if (this.needReload) {
+        this.reloadData();
+      }
     });
   }
 
@@ -98,6 +118,15 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
+  toggleDrawer() {
+    console.log(!this.drawerOpen);
+    
+    this.updDraweState(!this.drawerOpen);
+  }
+
+  updDraweState(estado: boolean): void {
+    this.store.dispatch(updateDrawer({drawerOpen:estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
+  }
   
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
@@ -107,6 +136,13 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   navigate(link: string) {
     this.router.navigateByUrl(link);
   }
+
+  reloadData(){
+    console.log("Reloading data...");
+    // this.getInstalations(this.assetData.id);
+    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:false}));
+  }
+
 
   ngOnDestroy(): void {
     this.onDestroy.next();

@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as entity from '../assets-model';
 import Highcharts from 'highcharts';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AssetsService } from '../assets.service';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
@@ -13,7 +13,9 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
   templateUrl: './instalation-details.component.html',
   styleUrls: ['./instalation-details.component.scss']
 })
-export class InstalationDetailsComponent implements OnInit, AfterViewInit {
+export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
+  private onDestroy = new Subject<void>();
+
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -79,11 +81,9 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
     })
   }
   reloadData(){
-    console.log("Reloading data...");
     this.getInstalations(this.assetData.id);
     this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:false}));
   }
-
   
   toggleDrawer() {
     this.updDraweState(!this.drawerOpen);
@@ -91,5 +91,10 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit {
   
   updDraweState(estado: boolean): void {
     this.store.dispatch(updateDrawer({drawerOpen:estado,drawerAction: "Create", drawerInfo: null,needReload: false }));
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.next();
+    this.onDestroy.unsubscribe();
   }
 }

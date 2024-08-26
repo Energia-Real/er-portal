@@ -16,12 +16,15 @@ import { InfoCardComponent } from '@app/shared/components/info-card/info-card.co
 import { ClientsRoutingModule } from './clients-routing.module';
 import { LayoutComponent } from './layout/layout.component';
 import { ClientsComponent } from './clients/clients.component';
+import { NewEquipmentComponent } from '../assetsMain/assets/instalation-details/components/new-equipment/new-equipment.component';
+import { TypesClientsComponent } from './clients/types-clients/types-clients.component';
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
-    ClientsComponent
+    ClientsComponent,
+    TypesClientsComponent,
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 import * as entity from './clients-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
+import { DataCatalogs } from '@app/shared/models/catalogs-models';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,16 @@ export class ClientsService implements OnDestroy {
       .set('pagesize', pageSize)
       .set('page', page);
 
-    // return this.http.get<entity.DataTableResponse>(`${this.API_URL}/projects`, { params }).pipe(
     return this.http.get<entity.DataTableResponse>(url, { params }).pipe(
       map((response) => Mapper.getClientsDataMapper(response))
     );
   }
+
+  getTypeClientsData(): Observable<DataCatalogs[]> {
+		const url = `${this.API_URL}/tipodecliente`;
+
+		return this.http.get<DataCatalogs[]>(url);
+	}
 
   postDataClient(data: entity.DataPostPatchClient) {
     const url = `${this.API_URL}/clients`;

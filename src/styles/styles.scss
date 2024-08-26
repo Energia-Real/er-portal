@@ -60,6 +60,10 @@ span {
   padding: 80px 60px 60px 60px;
 }
 
+.c-modal-lateral {
+  padding: 15px 20px ;
+}
+
 .c-global {
   padding-top: 1.5%;
   width: 100%;
@@ -856,6 +860,23 @@ input[type="number"]:focus {
   border: none;
 }
 
+.return-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 31px;
+
+  button,
+  i {
+    color: #EE5427;
+  }
+}
+
+.separate {
+  font-size: 15px!important;
+  font-weight: 500!important;
+}
 
 .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
 .mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
