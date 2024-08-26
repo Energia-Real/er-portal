@@ -200,7 +200,7 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
 }
 
   goDetails(id: string) {
-    this.router.navigateByUrl(`/assets/details/${id}`)
+    this.router.navigateByUrl(`/plants/details/${id}`)
   }
 
   navigate(link: string) {

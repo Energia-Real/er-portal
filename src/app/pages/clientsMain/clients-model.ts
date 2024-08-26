@@ -72,46 +72,24 @@ export interface DataDetails {
   value: string
 }
 
-export interface DataManagementTableResponse {
+
+export interface DataTableResponse {
   page: number;
   pageSize: number;
   totalItems: number;
-  data: DataManagementTable[]
+  data: DataClientsTable[]
 }
 
-export interface DataManagementTable {
+export interface DataClientsTable {
   id: string;
-  siteName: string;
-  systemSize: string;
-  direction: string;
-  longitude: number
-  contractType: string;
-  installationType: string;
-  commissionDate: string;
-  numberOfInvestors: any;
   clientId: number;
-  inverterQty: number;
-  netZero: boolean
-  assetStatus: string;
-  latitude: boolean
-  link: string;
-  plantCode: string;
-  inverterBrand: string[],
-  subClientId: number
-  endInstallationDate: string;
-  contractSignatureDate: string;
-  rpu: string;
-  clientName: string;
-  nominalPower: number
-  mountingTechnology: string;
-  roofType: string;
-  ageOfTheSite: number;
-  instalaciones: {
-    instalacionId: number;
-    moduloQty: number;
-    moduloBrand: any;
-    moduloModel: any;
-  }[];
+  nombre: string;
+}
+
+export interface DataPostPatchClient {
+  id?: string;
+  clientId?: number;
+  nombre?: string;
 }
 
 export interface DataManagementTableMapper {
@@ -178,41 +156,6 @@ export interface DataPlant {
 }
 
 
-export interface DataPostPatchPlant {
-  id?: string;
-  clientId?: string;
-  siteName?: string;
-  clientName?: string;
-  subClientId?: string;
-  systemSize?: number,
-  direction?: string;
-  longitude?: number,
-  contractType?: string,
-  descriptionStatus?: string,
-  installationType?: string,
-  commissionDate?: string,
-  inverterQty?: number,
-  netZero?: boolean,
-  assetStatus?: string,
-  latitude?: number,
-  link?: string,
-  plantCode?: string,
-  inverterBrand?: string[]
-  contractSignatureDate?: string
-  endInstallationDate?: string
-  mountingTechnology?: string
-  nominalPowerAC?: string
-  roofType?: string
-  rpu?: string
-  assetStatusIcon?: string
-  assetStatusIconTest?: string
-  instalaciones?: {
-    instalacionId?: number;
-    moduloQty?: number;
-    moduloBrand?: any;
-    moduloModel?: any;
-  }[];
-}
 export interface DataLocalTime {
   dstOffset: number;
   rawOffset: number;

@@ -104,7 +104,7 @@ export class AssetsService implements OnDestroy {
     );
   }
 
-  postDataPlant(data: any) {
+  postDataPlant(data: entity.DataPlant) {
     const url = `${this.API_URL}/projects`;
 
     return this.http.post<any>(url, data);

@@ -2,14 +2,12 @@
   <app-return-bar></app-return-bar>
   <div class="create-asset-form-container">
     <div class="create-asset-header-container">
-      <h2>{{!objEditData ? 'Create' : 'Edit'}} plant</h2>
-      <p>{{!objEditData ? 'Enter the data to create a plant' : 'Modify the data to edit the plant'}}</p>
+      <h2 class="m-0">{{!objEditData ? 'Create' : 'Edit'}} plant</h2>
     </div>
 
     <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
       <div class="mb-0">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-
           <div class="col-span-1 md:col-span-1">
             <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Site Information</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
@@ -38,7 +36,6 @@
             <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Contract Information</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
               <div class="col-span-1 md:col-span-1">
-
                 <div class="c-input">
                   <p>Type of contract:</p>
                   <mat-form-field class="select-ER" appearance="outline">
@@ -93,7 +90,7 @@
                   </mat-form-field>
                 </div>
               </div>
-              
+
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
                   <p>Performance ratio:</p>
@@ -141,9 +138,42 @@
                 </div>
               </div>
             </div>
+          </div>
 
+          <div class="col-span-1 md:col-span-1">
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Location</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
+              <div class="col-span-2 md:col-span-2">
 
-            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Dates</h2>
+                <div class="c-input">
+                  <p>Location on map:</p>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="searchAddress" id="address-input" placeholder="Search for a location"
+                      matInput>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input-icon">
+                  <p>Map link:</p>
+                  <i class="fa-solid fa-eye" (click)="openToMap()" *ngIf="mapLink || objEditData?.link"
+                    [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''"></i>
+                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                    <input formControlName="link" placeholder="Map link" matInput>
+                    <mat-error
+                      *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
+                      must add a valid map link</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="map-container">
+              <div id="map" style="height: 340px; width: 100%;"></div>
+            </div>
+
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate" style=" padding-top: 10px;">Dates</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
@@ -156,7 +186,7 @@
                   </mat-form-field>
                 </div>
               </div>
-    
+
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
                   <p>Signing contract date:</p>
@@ -168,7 +198,7 @@
                   </mat-form-field>
                 </div>
               </div>
-    
+
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
                   <p>Instalation date:</p>
@@ -182,48 +212,16 @@
               </div>
             </div>
           </div>
-
-          <div class="col-span-1 md:col-span-1">
-            <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Location</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-1">
-              <div class="col-span-2 md:col-span-2">
-
-                <div class="c-input">
-                  <p>Location on map:</p>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="searchAddress" id="address-input" placeholder="Search for a location" matInput>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <div class="col-span-1 md:col-span-1">
-                <div class="c-input-icon">
-                  <p>Map link:</p>
-                  <i class="fa-solid fa-eye"  (click)="openToMap()" *ngIf="mapLink || objEditData?.link" [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''"></i>
-                  <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                    <input formControlName="link" placeholder="Map link" matInput>
-                    <mat-error
-                      *ngIf="formData.get('link')?.errors?.['urlPrefix'] && (formData.get('link')?.dirty || formData.get('link')?.touched)">You
-                      must add a valid map link</mat-error>
-                  </mat-form-field>
-                </div>
-              </div>
-            </div> 
-            
-            <div class="map-container">
-              <div id="map" style="height: 670px; width: 100%;"></div>
-            </div>
-          </div>
         </div>
       </div>
 
-      <div class="button-container d-flex justify-content-between pt-0">
+      <div class="button-container d-flex justify-content-end gap-3 pt-0">
         <div>
           <button class="btn-cancel" (click)="toBack()" type="button">Cancel</button>
         </div>
         <div>
           <span class="loader" *ngIf="loading"></span>
-            <button class="btn-action-add"  type="submit">
+          <button class="btn-action-add" type="submit">
             <i class="fa-solid fa-floppy-disk"></i>
             Save
           </button>

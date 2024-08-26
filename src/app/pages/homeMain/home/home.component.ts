@@ -346,7 +346,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goDetails(id: string) {
-    this.router.navigateByUrl(`/assets/details/${id}`)
+    this.router.navigateByUrl(`/plants/details/${id}`)
   }
 
   get searchFilters() {
