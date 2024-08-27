@@ -13,7 +13,7 @@ import { SitePerformanceComponent } from '../site-performance/site-performance.c
   styleUrl: './details-container.component.scss'
 })
 export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewInit{
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   weatherData: any = null
 
@@ -270,7 +270,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

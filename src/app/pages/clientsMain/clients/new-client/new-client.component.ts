@@ -9,14 +9,15 @@ import { MatSort } from '@angular/material/sort';
 import { ClientsService } from '../../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
-
 @Component({
-  selector: 'app-types-clients',
-  templateUrl: './types-clients.component.html',
-  styleUrl: './types-clients.component.scss'
+  selector: 'app-new-client',
+  templateUrl: './new-client.component.html',
+  styleUrl: './new-client.component.scss'
 })
-export class TypesClientsComponent implements OnInit, OnDestroy {
+export class NewClientComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+  private _equipment?: any | null | undefined;
+
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
@@ -25,15 +26,16 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
     'actions'
   ];
 
+  get equipment(): any | null | undefined { return this._equipment }
+
   @Input() isOpen = false;
+  @Input() modeDrawer: "Edit" | "Create" = "Create";
+  @Input() plantCode?: string;
+  @Input() set equipment(value: any | null | undefined) {
+    this._equipment = value;
+  }
 
-  description = new FormControl('');
-
-  loading: boolean = false;
-
-  editedClient !: entity.DataPostTypeClient | entity.DataPostTypeClient | null;
-
-  searchValue: string = '';
+  editedClient: any
 
   constructor(
     private moduleServices: ClientsService,
@@ -50,10 +52,8 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
     let objData: entity.DataPostPatchTypeClient = {}
 
     if (this.editedClient?.id) {
-      objData.tipo = this.description.value!
       this.saveDataPatch(objData)
     } else {
-      objData.description = this.description.value!
       this.saveDataPost(objData)
     }
   }
@@ -96,12 +96,12 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   }
 
   editTable(data: entity.DataPatchTypeClient) {
-    this.description.patchValue(data.tipo);
+    // this.description.patchValue(data.tipo);
     this.editedClient = data;
   }
 
   cancelEdit() {
-    this.description.reset();
+    // this.description.reset();
     this.editedClient = null;
   }
 

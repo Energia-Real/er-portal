@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnDestroy{
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   registerForm!: FormGroup;
   showPassword: boolean = false;
@@ -100,7 +100,7 @@ export class RegisterComponent implements OnDestroy{
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

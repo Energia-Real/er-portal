@@ -20,7 +20,7 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
   styleUrl: './clients.component.scss'
 })
 export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
@@ -56,6 +56,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   showLoader: boolean = true;
   drawerOpen: boolean = false;
+  drawerOpenClient: boolean = false;
   needReload:boolean = false; 
 
   loadingtotalPlants: boolean = true;
@@ -98,7 +99,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   };
 
   ngAfterViewInit(): void {
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getDataTable(1, content!);
     })
   }
@@ -119,9 +120,11 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   }
 
   toggleDrawer() {
-    console.log(!this.drawerOpen);
-    
     this.updDraweState(!this.drawerOpen);
+  }
+  
+  toggleDrawerClient() {
+    this.updDraweState(!this.drawerOpenClient);
   }
 
   updDraweState(estado: boolean): void {
@@ -145,7 +148,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

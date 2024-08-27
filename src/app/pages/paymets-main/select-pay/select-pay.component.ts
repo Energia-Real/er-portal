@@ -20,7 +20,7 @@ import { ModalPayComponent } from '../modal-pay/modal-pay.component';
   styleUrl: './select-pay.component.scss'
 })
 export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
@@ -142,7 +142,7 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
   }
 
   ngAfterViewInit(): void {
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getDataResponse(1, content!);
     })
   }
@@ -208,7 +208,7 @@ export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterVie
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

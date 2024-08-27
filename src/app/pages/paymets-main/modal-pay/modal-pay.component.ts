@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
   styleUrl: './modal-pay.component.scss'
 })
 export class ModalPayComponent implements OnInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
@@ -26,7 +26,7 @@ export class ModalPayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

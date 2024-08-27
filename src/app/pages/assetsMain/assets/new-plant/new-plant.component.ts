@@ -18,7 +18,7 @@ import { HomeService } from '@app/pages/homeMain/home/home.service';
   styleUrl: './new-plant.component.scss'
 })
 export class NewPlantComponent implements OnInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   formData = this.fb.group({
     siteName: ['', Validators.required],
@@ -76,7 +76,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   getId() {
-    this.activatedRoute.params.pipe(takeUntil(this.onDestroy)).subscribe((params: any) => {
+    this.activatedRoute.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: any) => {
       if (params.id) this.getDataById(params.id);
     });
   }
@@ -302,7 +302,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   completionMessage(edit = false) {
     this.notificationService
-      .notificacion(`Registro ${edit ? 'editado' : 'guardado'}.`, 'save')
+      .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
       .subscribe((_) => this.toBack());
   }
@@ -316,7 +316,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

@@ -10,7 +10,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
   providedIn: 'root'
 })
 export class AssetsService implements OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
@@ -129,7 +129,7 @@ export class AssetsService implements OnDestroy {
   obtenerHoraLocal(): Observable<number> {
     return interval(1000).pipe(
       map(() => Date.now()),
-      takeUntil(this.onDestroy)
+      takeUntil(this.onDestroy$)
     );
   }
 
@@ -197,7 +197,7 @@ export class AssetsService implements OnDestroy {
 
 
   ngOnDestroy() {
-    this.onDestroy.next();
-    this.onDestroy.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

@@ -19,5 +19,15 @@ export interface DataPostPatchClient {
 
 export interface DataPostPatchTypeClient {
   id?: string;
-  description: string;
+  description?: string;
+  tipo?: string;
+}
+
+export interface DataPostTypeClient {
+  id?: string;
+  description?: string;
+}
+export interface DataPatchTypeClient {
+  id?: string;
+  tipo: string;
 }

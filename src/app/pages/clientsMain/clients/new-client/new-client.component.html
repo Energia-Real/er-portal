@@ -7,30 +7,30 @@
     </div>
     <div class="mx-auto text-center w-full">
         <div>
-            <h2 class="m-0">Types of clients</h2>
+            <h2 class="m-0">Clients</h2>
         </div>
         <form class="p-3">
             <div class="mb-0">
                 <div class="grid grid-cols-1  gap-x-6 gap-y-2">
                     <div class="col-span-1 md:col-span-1">
-                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{this.editedClient?.id ? 'Edit' : 'Add new'}} client type</h2>
+                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{this.editedClient?.id ? 'Edit' : 'Add new'}} client</h2>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
                             <div class="col-span-2 md:col-span-2">
                                 <div class="c-input mb-0">
-                                    <p class="font-medium text-gray-700">Name of client type :</p>
+                                    <p class="font-medium text-gray-700">Name of client :</p>
                                     <mat-form-field appearance="outline" class="w-full input-ER">
-                                        <input [formControl]="description" placeholder="Name of client type" matInput>
+                                        <input placeholder="Name of client" matInput>
                                     </mat-form-field>
                                 </div>
                             </div>
                             <div class="col-span-1 md:col-span-1 d-flex align-items-center">
                                 <div class="button-container d-flex justify-content-between pt-0 gap-2">
-                                    <button class="btn-cancel" *ngIf="description?.value?.trim()" (click)="cancelEdit()"
+                                    <button class="btn-cancel"  (click)="cancelEdit()"
                                         type="button">Cancel</button>
                                     <div>
-                                        <span class="loader" *ngIf="loading"></span>
-                                        <button class="btn-action-add" [disabled]="!description?.value?.trim()"
-                                            *ngIf="!loading" (click)="actionSave()">
+                                        <!-- <span class="loader" *ngIf="loading"></span> -->
+                                        <button class="btn-action-add" 
+                                             (click)="actionSave()">
                                             <i
                                                 [class]="this.editedClient ?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
                                             {{ this.editedClient  ? 'Edit' : 'Save'}}

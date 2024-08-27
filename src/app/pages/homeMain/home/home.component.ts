@@ -32,7 +32,7 @@ Chart.register(...registerables);
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
   lineChartData!: ChartConfiguration<'bar'>['data'];
   labels = [];
@@ -200,7 +200,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe( _ => {
+    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe( _ => {
       this.searchWithFilters();
     })
   }
@@ -388,7 +388,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

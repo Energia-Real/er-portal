@@ -14,7 +14,7 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
   styleUrls: ['./instalation-details.component.scss']
 })
 export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
@@ -94,7 +94,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

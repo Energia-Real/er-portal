@@ -11,7 +11,7 @@ import { DataCatalogs } from '@app/shared/models/catalogs-models';
   providedIn: 'root'
 })
 export class ClientsService implements OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_CLIENTS_V1;
 
@@ -35,6 +35,18 @@ export class ClientsService implements OnDestroy {
 		return this.http.get<DataCatalogs[]>(url);
 	}
 
+  postDataTypeClients(data: entity.DataPostPatchTypeClient) {
+    const url = `${this.API_URL}/tipodecliente`;
+
+    return this.http.post<any>(url, data);
+  }
+
+  patchDataTypeClients(id:string, data: entity.DataPostPatchTypeClient) {
+    const url = `${this.API_URL}/tipodecliente/${id}`;
+
+    return this.http.put<any>(url, data);
+  }
+
   postDataClient(data: entity.DataPostPatchClient) {
     const url = `${this.API_URL}/clients`;
 
@@ -48,7 +60,7 @@ export class ClientsService implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.onDestroy.next();
-    this.onDestroy.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

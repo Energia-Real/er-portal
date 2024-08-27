@@ -55,14 +55,15 @@
                     See types of clients
                 </button>
                 
-                <button class="btn-action-add" routerLink="/clients/create">
+                <button class="btn-action-add" (click)="toggleDrawerClient()">
                     <i class="fa-solid fa-plus"></i>
                     Add new client
                 </button>
             </div>
         </div>
         
-        <app-types-clients [isOpen]="drawerOpen" [modeDrawer]="drawerAction" [plantCode]="''" [equipment]="drawerInfo"></app-types-clients>
+        <app-types-clients [isOpen]="drawerOpen"></app-types-clients>
+        <app-new-client [isOpen]="drawerOpenClient"></app-new-client>
 
         <div class="c-table">
             <table mat-table [dataSource]="dataSource" matSort class="table-assets">

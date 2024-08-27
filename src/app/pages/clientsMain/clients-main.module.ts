@@ -18,6 +18,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { ClientsComponent } from './clients/clients.component';
 import { NewEquipmentComponent } from '../assetsMain/assets/instalation-details/components/new-equipment/new-equipment.component';
 import { TypesClientsComponent } from './clients/types-clients/types-clients.component';
+import { NewClientComponent } from './clients/new-client/new-client.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { TypesClientsComponent } from './clients/types-clients/types-clients.com
     LayoutComponent,
     ClientsComponent,
     TypesClientsComponent,
+    NewClientComponent,
   ],
   imports: [
     CommonModule,
