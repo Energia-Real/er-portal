@@ -48,6 +48,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   searchValue: string = '';
   drawerAction: "Create"|"Edit" = "Create";
+  drawerAction2: "Create"|"Edit" = "Create";
   drawerInfo: any | null | undefined = null;
   // drawerInfo: entity.Equipment | null | undefined = null;
 
@@ -66,8 +67,10 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   searchBar = new FormControl('');
   drawerOpenSub: Subscription;
+  drawerOpenSubClient: Subscription;
 
-  
+  editedClient:any;
+
   constructor(private store: Store, private moduleServices: ClientsService, private notificationService: OpenModalsService, private router: Router) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
@@ -85,12 +88,24 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
 
     this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
-      this.drawerOpen  = resp.drawerOpen;
-      this.drawerAction = resp.drawerAction;
-      this.drawerInfo = resp.drawerInfo;
-      this.needReload = resp.needReload;
-      if (this.needReload) {
-        this.reloadData();
+      if (!this.drawerOpenClient) {
+        this.drawerOpen  = resp.drawerOpen;
+        this.drawerAction = resp.drawerAction;
+        this.drawerInfo = resp.drawerInfo;
+        this.needReload = resp.needReload;
+      }
+    });
+
+    this.drawerOpenSubClient =  this.store.select(selectDrawer).subscribe((resp:any) => {
+      if (this.drawerOpenClient) {
+        this.drawerOpenClient  = resp.drawerOpen;
+        this.drawerAction = resp.drawerAction;
+        this.drawerInfo = resp.drawerInfo;
+        this.needReload = resp.needReload;
+        this.drawerAction = resp.drawerAction;
+        if (this.needReload) {
+          this.reloadData();
+        }
       }
     });
   }
@@ -123,8 +138,10 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.updDraweState(!this.drawerOpen);
   }
   
-  toggleDrawerClient() {
-    this.updDraweState(!this.drawerOpenClient);
+  toggleDrawerClient(data?:any) {
+    this.editedClient = data
+    this.drawerOpenClient = !this.drawerOpenClient
+    this.updDraweState(this.drawerOpenClient);
   }
 
   updDraweState(estado: boolean): void {

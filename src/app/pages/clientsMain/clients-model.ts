@@ -17,17 +17,27 @@ export interface DataPostPatchClient {
   nombre?: string;
 }
 
-export interface DataPostPatchTypeClient {
-  id?: string;
-  description?: string;
-  tipo?: string;
-}
-
 export interface DataPostTypeClient {
   id?: string;
   description?: string;
 }
 export interface DataPatchTypeClient {
   id?: string;
+  tipo: string;
+}
+
+export interface DataPostClient {
+  name: string,
+  tipoDeClienteId: string
+}
+export interface DataPatchClient {
+  clientId:  number
+  name: string,
+  tipoDeClienteId: string
+}
+
+export interface DataCatalogTypeClient {
+  id: string;
+  description: string;
   tipo: string;
 }

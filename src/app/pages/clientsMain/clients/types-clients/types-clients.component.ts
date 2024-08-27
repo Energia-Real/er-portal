@@ -47,7 +47,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   }
 
   actionSave() {
-    let objData: entity.DataPostPatchTypeClient = {}
+    let objData: any = {}
 
     if (this.editedClient?.id) {
       objData.tipo = this.description.value!
@@ -72,7 +72,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   }
 
   saveDataPost(objData: entity.DataPostTypeClient) {
-    this.moduleServices.postDataTypeClients(objData).subscribe({
+    this.moduleServices.postDataTypeClient(objData).subscribe({
       next: () => {
         this.completionMessage()
       },
@@ -83,8 +83,8 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
     })
   }
 
-  saveDataPatch(objData: entity.DataPatchTypeClient | entity.DataPostPatchTypeClient) {
-    this.moduleServices.patchDataTypeClients(this.editedClient?.id!, objData).subscribe({
+  saveDataPatch(objData: entity.DataPatchTypeClient) {
+    this.moduleServices.patchDataTypeClient(this.editedClient?.id!, objData).subscribe({
       next: () => {
         this.completionMessage(true)
       },

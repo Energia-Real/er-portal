@@ -55,15 +55,15 @@
                     See types of clients
                 </button>
                 
-                <button class="btn-action-add" (click)="toggleDrawerClient()">
+                <button class="btn-action-add"  (click)="toggleDrawerClient()">
                     <i class="fa-solid fa-plus"></i>
                     Add new client
                 </button>
             </div>
         </div>
         
-        <app-types-clients [isOpen]="drawerOpen"></app-types-clients>
-        <app-new-client [isOpen]="drawerOpenClient"></app-new-client>
+        <app-new-client [isOpen]="drawerOpenClient" [modeDrawer]="drawerAction"></app-new-client>
+        <app-types-clients [isOpen]="drawerOpen" [modeDrawer]="drawerAction" ></app-types-clients>
 
         <div class="c-table">
             <table mat-table [dataSource]="dataSource" matSort class="table-assets">
@@ -73,7 +73,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="clientId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID Client</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID client</th>
                     <td mat-cell *matCellDef="let element">
                         <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
                     </td>
@@ -84,7 +84,7 @@
                     <td mat-cell *matCellDef="let element">
                         <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item (click)="navigate('/clients/edit/' + element.id)">Edit</button>
+                            <button mat-menu-item (click)="toggleDrawerClient(element)">Edit</button>
                             <button mat-menu-item (click)="navigate('/clients/details/' + element.id)">Details</button>
                         </mat-menu>
                     </td>

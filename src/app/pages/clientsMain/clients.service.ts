@@ -29,32 +29,32 @@ export class ClientsService implements OnDestroy {
     );
   }
 
-  getTypeClientsData(): Observable<DataCatalogs[]> {
+  getTypeClientsData(): Observable<entity.DataCatalogTypeClient[]> {
 		const url = `${this.API_URL}/tipodecliente`;
 
-		return this.http.get<DataCatalogs[]>(url);
+		return this.http.get<entity.DataCatalogTypeClient[]>(url);
 	}
 
-  postDataTypeClients(data: entity.DataPostPatchTypeClient) {
+  postDataTypeClient(data: entity.DataPostTypeClient) {
     const url = `${this.API_URL}/tipodecliente`;
 
     return this.http.post<any>(url, data);
   }
 
-  patchDataTypeClients(id:string, data: entity.DataPostPatchTypeClient) {
+  patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
     const url = `${this.API_URL}/tipodecliente/${id}`;
 
     return this.http.put<any>(url, data);
   }
 
-  postDataClient(data: entity.DataPostPatchClient) {
+  postDataClient(data: entity.DataPostClient) {
     const url = `${this.API_URL}/clients`;
 
     return this.http.post<any>(url, data);
   }
 
-  patchDataClient(data: entity.DataPostPatchClient) {
-    const url = `${this.API_URL}/clients`;
+  patchDataClient(id:number, data: entity.DataPatchClient) {
+    const url = `${this.API_URL}/clients/${id}`;
 
     return this.http.patch<any>(url, data);
   }

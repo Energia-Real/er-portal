@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -18,61 +18,68 @@ export class NewClientComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   private _equipment?: any | null | undefined;
 
-
-  dataSource = new MatTableDataSource<any>([]);
-  @ViewChild(MatSort, { static: false }) sort!: MatSort;
-  displayedColumns: string[] = [
-    'description',
-    'actions'
-  ];
-
   get equipment(): any | null | undefined { return this._equipment }
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
-  @Input() plantCode?: string;
+  @Input() editedData?: any;
   @Input() set equipment(value: any | null | undefined) {
     this._equipment = value;
   }
 
-  editedClient: any
+  formData = this.fb.group({
+    name: ['', Validators.required],
+    tipoDeClienteId: [''],
+  });
+
+
+  cattypesClients: entity.DataCatalogTypeClient[] = []
+  editedClient!: entity.DataPatchClient | null;
+
+  // FALTA ACTUALIZAR LA TABLA DE CLIENTES AL CREAR UNO Y CERRAR  
+  // FALTA EDITAR CLIENTES 
 
   constructor(
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
-    private store: Store
-  ) { }
+    private store: Store,
+    private fb: FormBuilder
+  ) { 
+    console.log(this.editedData);
+
+  }
 
   ngOnInit() {
     console.log(this.isOpen);
-    this.getDataTable();
+    console.log(this.editedData);
+    
+    this.getCatalogs();
+  }
+  
+  getCatalogs() {
+    this.moduleServices.getTypeClientsData().subscribe({
+      next: (response: entity.DataCatalogTypeClient[]) => this.cattypesClients = response,
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.error(error)
+      }
+    })
   }
 
   actionSave() {
-    let objData: entity.DataPostPatchTypeClient = {}
+    let objData: any = { ...this.formData.value };
 
-    if (this.editedClient?.id) {
+    console.log('objData', objData);
+    
+    if (this.editedClient?.clientId) {
       this.saveDataPatch(objData)
     } else {
       this.saveDataPost(objData)
     }
   }
 
-  getDataTable() {
-    this.moduleServices.getTypeClientsData().subscribe({
-      next: (response: DataCatalogs[]) => {
-        this.dataSource.data = response;
-        this.dataSource.sort = this.sort;
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
-
-  saveDataPost(objData: entity.DataPostTypeClient) {
-    this.moduleServices.postDataTypeClients(objData).subscribe({
+  saveDataPost(objData: entity.DataPostClient) {
+    this.moduleServices.postDataClient(objData).subscribe({
       next: () => {
         this.completionMessage()
       },
@@ -83,8 +90,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  saveDataPatch(objData: entity.DataPatchTypeClient | entity.DataPostPatchTypeClient) {
-    this.moduleServices.patchDataTypeClients(this.editedClient?.id!, objData).subscribe({
+  saveDataPatch(objData: entity.DataPatchClient) {
+    this.moduleServices.patchDataClient(this.editedClient?.clientId!, objData).subscribe({
       next: () => {
         this.completionMessage(true)
       },
@@ -95,13 +102,13 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  editTable(data: entity.DataPatchTypeClient) {
-    // this.description.patchValue(data.tipo);
+  editTable(data: entity.DataPatchClient) {
+    this.formData.patchValue(data);
     this.editedClient = data;
   }
 
   cancelEdit() {
-    // this.description.reset();
+    this.formData.reset();
     this.editedClient = null;
   }
 
@@ -114,10 +121,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
     this.notificationService
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
-      .subscribe((_ => {
-        this.cancelEdit();
-        this.getDataTable();
-      }));
+      .subscribe((_ => this.cancelEdit()));
   }
 
   ngOnDestroy(): void {
