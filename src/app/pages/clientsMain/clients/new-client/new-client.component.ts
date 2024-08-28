@@ -22,13 +22,12 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
-  @Input() editedData?: any;
-  @Input() set equipment(value: any | null | undefined) {
-    this._equipment = value;
+  @Input() set equipment(editedData: any | null | undefined) {
+    this.initializeForm(editedData);
   }
 
   formData = this.fb.group({
-    name: ['', Validators.required],
+    nombre: ['', Validators.required],
     tipoDeClienteId: [''],
   });
 
@@ -37,25 +36,20 @@ export class NewClientComponent implements OnInit, OnDestroy {
   editedClient!: entity.DataPatchClient | null;
 
   // FALTA ACTUALIZAR LA TABLA DE CLIENTES AL CREAR UNO Y CERRAR  
-  // FALTA EDITAR CLIENTES 
+  // FALTA EDITAR EDITAR EL TIPODECLIENTE LO REGRESE EN EL SERVICIO DE LA TABLA
 
   constructor(
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
     private store: Store,
     private fb: FormBuilder
-  ) { 
-    console.log(this.editedData);
-
+  ) {
   }
 
   ngOnInit() {
-    console.log(this.isOpen);
-    console.log(this.editedData);
-    
     this.getCatalogs();
   }
-  
+
   getCatalogs() {
     this.moduleServices.getTypeClientsData().subscribe({
       next: (response: entity.DataCatalogTypeClient[]) => this.cattypesClients = response,
@@ -70,12 +64,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
     let objData: any = { ...this.formData.value };
 
     console.log('objData', objData);
-    
-    if (this.editedClient?.clientId) {
-      this.saveDataPatch(objData)
-    } else {
-      this.saveDataPost(objData)
-    }
+
+    if (this.editedClient?.clientId) this.saveDataPatch(objData)
+       else this.saveDataPost(objData)
   }
 
   saveDataPost(objData: entity.DataPostClient) {
@@ -100,6 +91,10 @@ export class NewClientComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     })
+  }
+
+  initializeForm(data: any) {
+    this.formData.patchValue(data)
   }
 
   editTable(data: entity.DataPatchClient) {
