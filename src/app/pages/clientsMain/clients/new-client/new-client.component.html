@@ -6,9 +6,7 @@
         </button>
     </div>
     <div class="mx-auto text-center w-full">
-        <div>
-            <h2 class="m-0">Clients</h2>
-        </div>
+        <h2 class="m-0">Clients</h2>
         <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
             <div class="mb-0">
                 <div class="grid grid-cols-1  gap-x-6 gap-y-2">
@@ -20,7 +18,9 @@
                                 <div class="c-input mb-0">
                                     <p class="font-medium text-gray-700">Name of client :</p>
                                     <mat-form-field appearance="outline" class="w-full input-ER">
-                                        <input formControlName="nombre" placeholder="Name of client" matInput>
+                                        <input formControlName="name" placeholder="Name of client" matInput>
+                                        <mat-error *ngIf="formData.get('name')?.hasError('required')">You must add name
+                                            of client.</mat-error>
                                     </mat-form-field>
                                 </div>
 
@@ -42,13 +42,15 @@
 
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
                             <div class="button-container d-flex justify-content-between pt-0 gap-2">
-                                <button class="btn-cancel" (click)="cancelEdit()" type="button">Cancel</button>
+                                <button class="btn-cancel" (click)="closeDrawer()" type="button">Cancel</button>
                                 <div>
-                                    <!-- <span class="loader" *ngIf="loading"></span> -->
-                                    <button class="btn-action-add" type="submit">
-                                        <i
+                                    <button class="btn-action-add">
+                                        <mat-progress-spinner *ngIf="loading" class="loader-btns"
+                                            [mode]="'indeterminate'">
+                                        </mat-progress-spinner>
+                                        <i *ngIf="!loading"
                                             [class]="this.editedClient?.clientId ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
-                                        {{ this.editedClient ? 'Edit' : 'Save'}}
+                                        {{ !loading ? this.editedClient ? 'Edit' : 'Save' : ''}}
                                     </button>
                                 </div>
                             </div>

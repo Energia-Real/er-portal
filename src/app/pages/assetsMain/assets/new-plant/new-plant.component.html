@@ -2,7 +2,7 @@
   <app-return-bar></app-return-bar>
   <div class="create-asset-form-container">
     <div class="create-asset-header-container">
-      <h2 class="m-0">{{!objEditData ? 'Create' : 'Edit'}} plant</h2>
+      <h2 class="m-0">{{!editedClient ? 'Create' : 'Edit'}} plant</h2>
     </div>
 
     <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
@@ -16,7 +16,8 @@
                   <p class="text-sm font-medium text-gray-700">Name of the site:</p>
                   <mat-form-field appearance="outline" class="w-full input-ER">
                     <input formControlName="siteName" placeholder="Name of the site" matInput>
-                    <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site name</mat-error>
+                    <mat-error *ngIf="formData.get('siteName')?.hasError('required')">You must add site
+                      name.</mat-error>
                   </mat-form-field>
                 </div>
               </div>
@@ -26,7 +27,7 @@
                   <p class="text-sm font-medium text-gray-700">Plant code:</p>
                   <mat-form-field appearance="outline" class="w-full input-ER">
                     <input formControlName="plantCode" placeholder="Plant code" matInput>
-                    <mat-error *ngIf="formData.get('plantCode')?.hasError('required')">You must add plant
+                    <mat-error *ngIf="formData.get('plantCode')?.hasError('required')">You must add plant.
                       code</mat-error>
                   </mat-form-field>
                 </div>
@@ -157,8 +158,8 @@
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input-icon">
                   <p>Map link:</p>
-                  <i class="fa-solid fa-eye" (click)="openToMap()" *ngIf="mapLink || objEditData?.link"
-                    [matTooltip]=" mapLink || objEditData ? 'Click here to open the map.' : ''"></i>
+                  <i class="fa-solid fa-eye" (click)="openToMap()" *ngIf="mapLink || editedClient?.link"
+                    [matTooltip]=" mapLink || editedClient ? 'Click here to open the map.' : ''"></i>
                   <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
                     <input formControlName="link" placeholder="Map link" matInput>
                     <mat-error
@@ -220,10 +221,11 @@
           <button class="btn-cancel" (click)="toBack()" type="button">Cancel</button>
         </div>
         <div>
-          <span class="loader" *ngIf="loading"></span>
           <button class="btn-action-add" type="submit">
-            <i class="fa-solid fa-floppy-disk"></i>
-            Save
+            <mat-progress-spinner *ngIf="loading" class="loader-btns" [mode]="'indeterminate'">
+            </mat-progress-spinner>
+            <i *ngIf="!loading" [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
+            {{ !loading ? this.editedClient ? 'Edit' : 'Save' : ''}}
           </button>
         </div>
       </div>

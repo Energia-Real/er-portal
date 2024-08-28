@@ -878,6 +878,16 @@ input[type="number"]:focus {
   font-weight: 500!important;
 }
 
+.loader-btns {
+  width: 20px!important;
+  height: 20px!important;
+  .mdc-circular-progress__indeterminate-circle-graphic {
+    stroke: white!important;
+  }
+}
+
+
+
 .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,
 .mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate~.mdc-checkbox__background,
 .mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true]:enabled~.mdc-checkbox__background {

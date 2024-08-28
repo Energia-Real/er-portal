@@ -41,8 +41,6 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     }
   }
 
-
-
   totalPlants!: any;
   // totalPlants!: entity.DataSummaryProjectsMapper;
 
@@ -51,9 +49,6 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   drawerAction2: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
   // drawerInfo: entity.Equipment | null | undefined = null;
-
-
-
 
   showLoader: boolean = true;
   drawerOpen: boolean = false;
@@ -74,16 +69,12 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   constructor(private store: Store, private moduleServices: ClientsService, private notificationService: OpenModalsService, private router: Router) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
-      if (this.paginator) {
-        this.paginator.pageSize = size;
-      }
+      if (this.paginator) this.paginator.pageSize = size;
     });
 
     this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
       this.pageIndex = index + 1;
-      if (this.paginator) {
-        this.paginator.pageIndex = index;
-      }
+      if (this.paginator) this.paginator.pageIndex = index;
       this.getDataTable(index + 1, this.searchValue);
     });
 
@@ -92,7 +83,6 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
         this.drawerOpen = resp.drawerOpen;
         this.drawerAction = resp.drawerAction;
         this.drawerInfo = resp.drawerInfo;
-        this.needReload = resp.needReload;
       }
     });
 
@@ -101,17 +91,10 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
         this.drawerOpenClient = resp.drawerOpen;
         this.drawerAction = resp.drawerAction;
         this.drawerInfo = resp.drawerInfo;
-        this.needReload = resp.needReload;
-        this.drawerAction = resp.drawerAction;
-        if (this.needReload) {
-          this.reloadData();
-        }
+        if (this.needReload) this.searchBar.setValue('');
       }
     });
   }
-
-  ngOnInit(): void {
-  };
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
@@ -125,7 +108,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
-        this.pageIndex = page
+        this.pageIndex = page;
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -165,12 +148,6 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   navigate(link: string) {
     this.router.navigateByUrl(link);
   }
-
-  reloadData() {
-    this.editedClient = null
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: false }));
-  }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -27,7 +27,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   @Input() isOpen = false;
 
-  description = new FormControl('');
+  description = new FormControl({ value: '', disabled: false }, Validators.required);
 
   loading: boolean = false;
 
@@ -42,18 +42,24 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log(this.isOpen);
     this.getDataTable();
   }
 
   actionSave() {
+    if (!this.description?.value?.trim()) {
+      setTimeout(() => this.clearValidators(), 2000);
+      return
+    }
+
     let objData: any = {}
 
+    this.loading = !this.loading;
+
     if (this.editedClient?.id) {
-      objData.tipo = this.description.value!
+      objData.tipo = this.description.value
       this.saveDataPatch(objData)
     } else {
-      objData.description = this.description.value!
+      objData.description = this.description.value
       this.saveDataPost(objData)
     }
   }
@@ -101,16 +107,24 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   }
 
   cancelEdit() {
-    this.description.reset();
+    this.description.patchValue('');
     this.editedClient = null;
+    this.clearValidators();
+  }
+
+  clearValidators() {
+    this.description.clearValidators()
+    this.description.updateValueAndValidity()
   }
 
   closeDrawer() {
     this.isOpen = false;
+    setTimeout(() => this.description.reset(), 300);
     this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: true }));
   }
 
   completionMessage(edit = false) {
+    this.loading = !this.loading;
     this.notificationService
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()

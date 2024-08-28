@@ -51,7 +51,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   catContractType: entityCatalogs.DataCatalogs[] = [];
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
   catPlantStatus: entityCatalogs.DataCatalogs[] = [];
-  objEditData!: entity.DataPlant;
+  editedClient!: entity.DataPlant;
   dataClientsList: DataRespSavingDetailsList[] = []
 
   showLoader: boolean = false;
@@ -84,7 +84,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   getDataById(id: string) {
     this.moduleServices.getDataId(id).subscribe({
       next: (response: entity.DataPlant | any) => {
-        this.objEditData = response;
+        this.editedClient = response;
         this.formData.patchValue(response);
         this.getAddressMap(response);
       },
@@ -132,14 +132,13 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   actionSave() {
-    const objData: any = {
-      clientId: this.dataClientsList[0].clientId
-    }
-
     if (this.formData.invalid) {
       this.formData.markAllAsTouched(); 
       return;
     }
+
+    const objData: any = { clientId: this.dataClientsList[0].clientId }
+    this.loading = !this.loading;
 
     if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
     if (this.formData.get('plantCode')?.value) objData.plantCode = this.formData.get('plantCode')?.value;
@@ -162,7 +161,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
      else if (this.formData.get('netZero')?.value == 'True') objData.netZero = "True" 
      else objData.netZero = null
      
-    if (this.objEditData) this.saveDataPatch(objData);
+    if (this.editedClient) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
 
@@ -170,17 +169,19 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     this.moduleServices.postDataPlant(objData).subscribe({
       next: () => { this.completionMessage() },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        this.loading = !this.loading;
         console.error(error)
       }
     })
   }
 
   saveDataPatch(objData: entity.DataPlant) {
-    this.moduleServices.patchDataPlant(this.objEditData.id, objData).subscribe({
+    this.moduleServices.patchDataPlant(this.editedClient.id, objData).subscribe({
       next: () => { this.completionMessage(true) },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        this.loading = !this.loading;
         console.error(error)
       }
     })
@@ -297,10 +298,11 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   openToMap() {
     if (this.mapLink) window.open(this.mapLink, '_blank');
-    else if (this.objEditData?.link) window.open(this.objEditData?.link, '_blank');
+    else if (this.editedClient?.link) window.open(this.editedClient?.link, '_blank');
   }
 
   completionMessage(edit = false) {
+    this.loading = !this.loading;
     this.notificationService
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
@@ -312,7 +314,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   toBack() {
-    this.router.navigateByUrl(`/assets/management`)
+    this.router.navigateByUrl(`/plants`)
   }
 
   ngOnDestroy(): void {

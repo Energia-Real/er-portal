@@ -85,7 +85,6 @@
                         <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                         <mat-menu #menu="matMenu">
                             <button mat-menu-item (click)="editClient(element)">Edit</button>
-                            <button mat-menu-item (click)="navigate('/clients/details/' + element.id)">Details</button>
                         </mat-menu>
                     </td>
                 </ng-container>
