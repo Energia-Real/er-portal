@@ -222,10 +222,8 @@
         </div>
         <div>
           <button class="btn-action-add" type="submit">
-            <mat-progress-spinner *ngIf="loading" class="loader-btns" [mode]="'indeterminate'">
-            </mat-progress-spinner>
-            <i *ngIf="!loading" [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
-            {{ !loading ? this.editedClient ? 'Edit' : 'Save' : ''}}
+            <i [class]="editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
+            {{ editedClient ? 'Edit' : 'Save'}}
           </button>
         </div>
       </div>

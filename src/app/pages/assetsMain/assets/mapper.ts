@@ -138,7 +138,8 @@ export class Mapper {
 		return localTime?.format('hh:mm A');
 	}
 
-	static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
+	// static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
+	static getInstalacionesMapper(response: any): entity.Instalations {
 		let instalaciones:entity.Equipment[] = [];
 		instalaciones.push({
 			equipmentId: "0",

@@ -20,8 +20,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
   @Input() set equipment(editedData: any | null | undefined) {
-    console.log(editedData);
-    
     this.formData.patchValue({
         ...editedData,
         name : editedData?.nombre
@@ -30,10 +28,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   formData = this.fb.group({
     name: ['', Validators.required],
-    tipoDeClienteId: [''],
+    tipoDeClienteId: ['', Validators.required],
   });
-
-  loading: boolean = false;
 
   cattypesClients: entity.DataCatalogTypeClient[] = []
   editedClient!: entity.DataPatchClient | null;
@@ -65,7 +61,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
     if (!this.formData.valid) return
     
     const objData: any = { ...this.formData.value };
-    this.loading = !this.loading;
 
     if (this.editedClient?.clientId) this.saveDataPatch(objData)
     else this.saveDataPost(objData)
@@ -78,7 +73,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-        this.loading = !this.loading;
         console.error(error)
       }
     })
@@ -91,7 +85,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-        this.loading = !this.loading;
         console.error(error)
       }
     })
@@ -109,14 +102,11 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   closeDrawer() {
     this.isOpen = false;
-    setTimeout(() => {
-      this.cancelEdit();
-    }, 300);
+    setTimeout(() => this.cancelEdit(), 300);
     this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: true }));
   }
 
   completionMessage(edit = false) {
-    this.loading = !this.loading;
     this.notificationService
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()

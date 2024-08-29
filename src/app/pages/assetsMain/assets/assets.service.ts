@@ -15,6 +15,7 @@ export class AssetsService implements OnDestroy {
   private API_URL = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
   private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
+  private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
@@ -151,24 +152,27 @@ export class AssetsService implements OnDestroy {
     return this.http.post<entity.EstimatedEnergy[]>(url, jsonObject)
   }
 
-  getInstalations(plantCode:string) {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/${plantCode}`;
-    return this.http.get<entity.Instalations>(url).pipe(
+  getInstalations(plantCode: string) {
+    const url = `${this.API_URL_EQUIPMENT_HUAWEI_V1}/station/${plantCode}/status`;
+    return this.http.get<any>(url).pipe(
       map((response) => Mapper.getInstalacionesMapper(response))
     );
+    // return this.http.get<entity.Instalations>(url).pipe(
+    //   map((response) => Mapper.getInstalacionesMapper(response))
+    // );
   }
 
-  createInstalations(equipment:entity.Equipment) {
+  createInstalations(equipment: entity.Equipment) {
     const url = `${this.API_URL_EQUIPMENTS}/equipments`;
-    return this.http.post<entity.Equipment>(url,equipment)
+    return this.http.post<entity.Equipment>(url, equipment)
   }
 
-  deleteInstalation(equipmentId: string){
+  deleteInstalation(equipmentId: string) {
     const url = `${this.API_URL_EQUIPMENTS}/equipments/${equipmentId}`;
     return this.http.delete<any>(url)
   }
 
-  patchInstalation(id: string |number | null | undefined, data: Partial<entity.Equipment> | null | undefined): Observable<any> {
+  patchInstalation(id: string | number | null | undefined, data: Partial<entity.Equipment> | null | undefined): Observable<any> {
     const url = `${this.API_URL_EQUIPMENTS}/equipments/${id}`;
     return this.http.patch<any>(url, data);
   }

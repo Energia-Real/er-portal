@@ -31,11 +31,8 @@
                                         type="button">Cancel</button>
                                     <div>
                                         <button class="btn-action-add" (click)="actionSave()">
-                                            <mat-progress-spinner *ngIf="loading" class="loader-btns" [mode]="'indeterminate'">
-                                            </mat-progress-spinner>
-                                            <i *ngIf="!loading" 
-                                                [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
-                                            {{ !loading ? this.editedClient ? 'Edit' : 'Save' : ''}}
+                                            <i [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
+                                            {{ this.editedClient ? 'Edit' : 'Save' }}
                                         </button>
                                     </div>
                                 </div>

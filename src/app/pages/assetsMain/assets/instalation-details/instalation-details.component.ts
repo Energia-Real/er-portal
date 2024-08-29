@@ -26,20 +26,20 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
   images: string[] = [];
   renderedImage: string | null = null;
   materialIcon: string = 'edit';
-  drawerAction: "Create"|"Edit" = "Create";
+  drawerAction: "Create" | "Edit" = "Create";
   drawerOpenSub: Subscription;
   drawerInfo: entity.Equipment | null | undefined = null;
-  instalations!:entity.Instalations;
-  needReload:boolean = false; 
+  instalations!: entity.Instalations;
+  needReload: boolean = false;
 
   constructor(
-    private sanitizer: DomSanitizer, 
+    private sanitizer: DomSanitizer,
     private assetService: AssetsService,
     private store: Store,
 
   ) {
-    this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
-      this.drawerOpen  = resp.drawerOpen;
+    this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => {
+      this.drawerOpen = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
       this.drawerInfo = resp.drawerInfo;
       this.needReload = resp.needReload;
@@ -51,7 +51,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    this.getInstalations(this.assetData.id)
+    this.getInstalations(this.assetData.plantCode)
   }
 
   ngAfterViewInit(): void {
@@ -74,23 +74,24 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  getInstalations(plantCode:string){
-    this.assetService.getInstalations(plantCode).subscribe(data=>{
+  getInstalations(plantCode: string) {
+    this.assetService.getInstalations(plantCode).subscribe(data => {
       this.instalations = data;
-      this.pdfSrc = this.sanitizeUrl(data.equipmentPath+"#zoom=85");
+      this.pdfSrc = this.sanitizeUrl(data.equipmentPath + "#zoom=85");
     })
   }
-  reloadData(){
-    this.getInstalations(this.assetData.id);
-    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:false}));
+
+  reloadData() {
+    this.getInstalations(this.assetData?.plantCode);
+    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: false }));
   }
-  
+
   toggleDrawer() {
     this.updDraweState(!this.drawerOpen);
   }
-  
+
   updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({drawerOpen:estado,drawerAction: "Create", drawerInfo: null,needReload: false }));
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
   }
 
   ngOnDestroy(): void {

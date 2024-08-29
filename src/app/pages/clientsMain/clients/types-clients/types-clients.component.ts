@@ -29,8 +29,6 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   description = new FormControl({ value: '', disabled: false }, Validators.required);
 
-  loading: boolean = false;
-
   editedClient !: entity.DataPostTypeClient | entity.DataPostTypeClient | null;
 
   searchValue: string = '';
@@ -52,8 +50,6 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
     }
 
     let objData: any = {}
-
-    this.loading = !this.loading;
 
     if (this.editedClient?.id) {
       objData.tipo = this.description.value
@@ -124,7 +120,6 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   }
 
   completionMessage(edit = false) {
-    this.loading = !this.loading;
     this.notificationService
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()

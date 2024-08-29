@@ -24,11 +24,6 @@ export interface PostDataByPlant {
   plantCode: string;
 }
 
-export interface PostDataByPlant {
-  brand: string;
-  plantCode: string;
-}
-
 export interface DataResponseDetailsClient {
   id: string
   subClientId: number
