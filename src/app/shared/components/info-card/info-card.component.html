@@ -5,7 +5,11 @@
     <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' " (click)="editEquipment()" matTooltip="Edit Equipment">{{ materialIconName }}</mat-icon>
     <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' " (click)="deleteEquipment()" matTooltip="Edit Equipment">delete</mat-icon>
   </div>
-  <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
+
+  <div class="c-status">
+    <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
+    <mat-icon [matTooltip]="info?.statu ? 'Inverter Working' : 'Inverter Problem'"  [ngStyle]="{ 'color': info?.status  ? '#4CAF50' : '#D32F2F' }" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' ">radio_button_checked </mat-icon>
+  </div>
   <div *ngIf="isSpecialTitle() && isEditing">
     <mat-form-field *ngIf="isSpecialTitle() && isEditing">
       <input matInput [matDatepicker]="picker" [(ngModel)]="info.description" (dateChange)="onDateChange($event.value)">
@@ -13,12 +17,12 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </div>
+
   <div *ngIf="isEditing" class="card-info-buttons">
     <button mat-flat-button class="card-info-buttons-cancel me-2" (click)="cancelEdit()">Cancelar</button>
     <button mat-flat-button class="card-info-buttons-confirm" (click)="confirmEdit()">Confirmar</button>
   </div>
 </div>
-
 
 <ng-template #notDataOne>
   <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>

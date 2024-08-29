@@ -153,13 +153,15 @@ export class AssetsService implements OnDestroy {
   }
 
   getInstalations(plantCode: string) {
-    const url = `${this.API_URL_EQUIPMENT_HUAWEI_V1}/station/${plantCode}/status`;
-    return this.http.get<any>(url).pipe(
+    const url = `${this.API_URL_EQUIPMENTS}/equipments/${plantCode}`;
+    return this.http.get<entity.Instalations>(url).pipe(
       map((response) => Mapper.getInstalacionesMapper(response))
     );
-    // return this.http.get<entity.Instalations>(url).pipe(
-    //   map((response) => Mapper.getInstalacionesMapper(response))
-    // );
+  }
+
+  getInstalationsInverterMonitoring(plantCode: string): Observable<entity.InverterMonitoring> {
+    const url = `${this.API_URL_EQUIPMENT_HUAWEI_V1}/station/${plantCode}/status`;
+    return this.http.get<entity.InverterMonitoring>(url)
   }
 
   createInstalations(equipment: entity.Equipment) {

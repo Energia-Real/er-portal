@@ -51,7 +51,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    this.getInstalations(this.assetData.plantCode)
+    this.getInstalations(this.assetData.id)
   }
 
   ngAfterViewInit(): void {
@@ -78,6 +78,29 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
     this.assetService.getInstalations(plantCode).subscribe(data => {
       this.instalations = data;
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath + "#zoom=85");
+
+      this.getInstalationsInverterMonitoring(data)
+    })
+  }
+
+  getInstalationsInverterMonitoring(data: entity.Instalations) {
+    let instalations = data.equipment;
+    this.assetService.getInstalationsInverterMonitoring(this.assetData.plantCode).subscribe((data: entity.InverterMonitoring) => {
+      if (data.invertersStatus.length) {
+        let InvertersStatus = data?.invertersStatus;
+        instalations.forEach((item: any) => {
+          const matchingItem = InvertersStatus.find((obj: any) => obj.sn === item.serialNumber);
+          if (matchingItem) {
+            item.status = matchingItem.status;
+          } else {
+            item.status = null;
+          }
+        });
+      }
+
+      console.log('instalations', instalations);
+      this.instalations.equipment = instalations
+
     })
   }
 

@@ -249,9 +249,9 @@ export interface DataSummaryProjects {
 }
 
 export interface EstimatedEnergy {
-  collectTime : Date
-  inverterPower : number 
-  estimatedEnergyMWh : number
+  collectTime: Date
+  inverterPower: number
+  estimatedEnergyMWh: number
 }
 
 export interface ProyectResume {
@@ -309,8 +309,19 @@ export interface Instalations {
   equipmentPath: string
 }
 
+export interface InverterMonitoring {
+  inverterSystemStatus: boolean,
+  inverterSystemMessage: string,
+  invertersStatus: {
+    sn: string,
+    status: boolean,
+    statusMessage: string
+  }[],
+  equipment: any[]
+}
+
 export interface Equipment {
-  equipmentId?: string|number|null|undefined
+  equipmentId?: string | number | null | undefined
   moduloQty?: number
   moduloBrand?: string
   moduloBrandId?: number
@@ -322,13 +333,14 @@ export interface Equipment {
   inverterBrandId?: number
   inverterModel?: string
   inverterModelId?: number
-  moduloModelId?:number
-  description?:string
-  title?:string
+  moduloModelId?: number
+  description?: string
+  title?: string
+  serialNumber?: string
 }
 
-export interface CatalogEquipment{
-  id?:  number
+export interface CatalogEquipment {
+  id?: number
   nombre?: string
 }
 

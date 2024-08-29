@@ -6,10 +6,18 @@
     line-height: 13.12px;
   }
 
+  .c-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
   h2 {
     margin-bottom: 0;
     font-size: 17px;
     line-height: 22px;
+    width: 80%;
   }
 
   .card-info-buttons-confirm {
@@ -27,7 +35,9 @@
     }
   }
   .custom-equipments-icon {
-    color: #ff5722; 
+    // color: #777777ab; 
+    color: #4A4A4A;
+    // color: #bbb9b9; 
     cursor: pointer; 
   }
 

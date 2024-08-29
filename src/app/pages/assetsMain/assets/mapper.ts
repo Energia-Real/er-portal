@@ -119,7 +119,6 @@ export class Mapper {
 
 
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
-
 		return {
 			...response,
 			assetStatusIcon: response?.descriptionStatus?.toLowerCase()?.includes('active') ? 'radio_button_checked'
@@ -157,7 +156,6 @@ export class Mapper {
 			moduloModel: "",
 			title: "Roof Type",
 			description: response.roofType,
-
 		})
 
 		response.equipment.map((data: entity.Equipment, i: number) => {
@@ -173,6 +171,7 @@ export class Mapper {
 					moduloBrandId: data.moduloBrandId,
 					orientation: data.orientation,
 					tilt: data.tilt,
+					serialNumber: data?.serialNumber,
 					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
 					description: `${data.moduloQty}  ${data.moduloModel}`,
 				}
