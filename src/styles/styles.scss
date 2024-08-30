@@ -234,20 +234,25 @@ select {
 }
 
 .c-card-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 14px;
+
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
   .card-info {
     border: 1px solid #D2D2D2;
     height: auto;
-    width: 48%;
-    padding: 16px 24px 16px 24px;
+    // width: 48%;
+    // padding: 16px 24px 16px 24px;
+    padding: 13px 20px 13px 20px;
     gap: 10px;
     border-radius: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     margin-bottom: 0;
 
     .card-info-header {
@@ -259,8 +264,10 @@ select {
         font-size: 14px;
         font-weight: 600;
         line-height: 14.65px;
-        margin-bottom: 16px;
-        width: 86%;
+        // margin-bottom: 16px;
+        // width: 86%;
+        min-height: 30px;
+        padding-bottom: 6%;
       }
 
       h2,
