@@ -3,7 +3,7 @@
     <div>
         <div class="c-client-list">
             <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
-                <div class="logo-merco" *ngIf="client?.nombre == 'Merco'">
+                <div class="logo-merco" *ngIf="client?.clientId">
                     <img src="../../../../assets/img/merco.png" alt="">
                 </div>
                 {{ client.nombre }}
