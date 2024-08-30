@@ -11,7 +11,7 @@ import { Mapper } from './mapper';
   providedIn: 'root'
 })
 export class PaymentService implements OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
@@ -27,7 +27,7 @@ export class PaymentService implements OnDestroy {
   // }
 
   ngOnDestroy() {
-    this.onDestroy.next();
-    this.onDestroy.complete();
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

@@ -15,9 +15,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { drawerReducer } from './core/store/reducers/drawer.reducer';
+import { ClientsComponent } from './pages/clientsMain/clients/clients.component';
 
 @NgModule({
-  declarations: [ AppComponent],
+  declarations: [ AppComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,

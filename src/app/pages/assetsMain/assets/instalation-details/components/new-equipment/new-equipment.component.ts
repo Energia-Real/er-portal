@@ -62,9 +62,7 @@ export class NewEquipmentComponent {
     private fb: FormBuilder,
     private assetService: AssetsService,
     private store: Store
-  ){
-    
-  }
+  ) { }
 
   ngOnInit(){
     this.getInverterBrandsCatalog(); 

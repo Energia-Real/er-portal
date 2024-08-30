@@ -11,7 +11,7 @@ import { AuthService } from '../auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   loginForm!: FormGroup;
   showPassword: boolean = false;
@@ -31,15 +31,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {}
-  
+  ngOnInit(): void { }
+
   onSubmit() {
     this.loading = true;
     this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
       .pipe(first())
       .subscribe({
-        next: (response:any) => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/assets' : '/home'}`;
+        next: (response: any) => {
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/plants' : '/home'}`;
           this.router.navigateByUrl(returnUrl);
         },
         error: (err) => {
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

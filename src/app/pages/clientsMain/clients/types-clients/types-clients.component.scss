@@ -1,0 +1,12 @@
+.c-types-clients {
+  z-index: 3;
+
+  .table-container-scroll {
+    height: calc(100vh - 470px);
+  }
+}
+
+mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+}
+

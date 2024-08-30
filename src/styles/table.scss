@@ -148,3 +148,41 @@ tr {
     line-height: 14px;
     text-align: center;
 }
+
+.table-container-scroll {
+    overflow-y: auto;
+    height: calc(100vh - 500px);
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    overflow-x: hidden;
+
+    thead {
+      position: sticky;
+      margin-bottom: 10px;
+      top: 0;
+      z-index: 1;
+      background-color: white;
+    }
+
+    th {
+    //   height: 65px;
+    }
+
+    .ms-edge thead {
+      position: -webkit-sticky;
+    }
+
+    .mat-table {
+      width: 100%;
+    }
+
+    .mat-table td,
+    .mat-table th {
+      padding: 8px;
+    }
+
+    .header-table {
+      margin: 0;
+      line-height: 18px;
+    }
+  }

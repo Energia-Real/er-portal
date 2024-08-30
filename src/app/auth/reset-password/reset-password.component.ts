@@ -12,7 +12,7 @@ import { AuthService } from '../auth.service';
   styleUrl: './reset-password.component.scss'
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
   actionComplete : boolean = false;
 
   formData = this.formBuilder.group({
@@ -33,7 +33,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(takeUntil(this.onDestroy)).subscribe((params: any) => {
+    this.activatedRoute.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: any) => {
       this.email = params['email'];
       this.code = params['code'];
     });
@@ -80,7 +80,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

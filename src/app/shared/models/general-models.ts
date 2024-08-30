@@ -2,7 +2,13 @@ export type IForm<T> = {
   [K in keyof T]?: any;
 }
 
-export class User {
+export interface DrawerGeneral {
+    drawerOpen: boolean;
+    drawerAction:  "Create" | "Edit";
+    drawerInfo: any;
+    needReload: boolean;
+}
+export interface User {
   id?: string;
   username?: string;
   password?: string;
@@ -33,3 +39,4 @@ export interface ConfirmationConfig
     };
     dismissible?: boolean;
 }
+

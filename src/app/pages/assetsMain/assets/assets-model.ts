@@ -24,11 +24,6 @@ export interface PostDataByPlant {
   plantCode: string;
 }
 
-export interface PostDataByPlant {
-  brand: string;
-  plantCode: string;
-}
-
 export interface DataResponseDetailsClient {
   id: string
   subClientId: number
@@ -178,6 +173,41 @@ export interface DataPlant {
 }
 
 
+export interface DataPostPatchPlant {
+  id?: string;
+  clientId?: string;
+  siteName?: string;
+  clientName?: string;
+  subClientId?: string;
+  systemSize?: number,
+  direction?: string;
+  longitude?: number,
+  contractType?: string,
+  descriptionStatus?: string,
+  installationType?: string,
+  commissionDate?: string,
+  inverterQty?: number,
+  netZero?: boolean,
+  assetStatus?: string,
+  latitude?: number,
+  link?: string,
+  plantCode?: string,
+  inverterBrand?: string[]
+  contractSignatureDate?: string
+  endInstallationDate?: string
+  mountingTechnology?: string
+  nominalPowerAC?: string
+  roofType?: string
+  rpu?: string
+  assetStatusIcon?: string
+  assetStatusIconTest?: string
+  instalaciones?: {
+    instalacionId?: number;
+    moduloQty?: number;
+    moduloBrand?: any;
+    moduloModel?: any;
+  }[];
+}
 export interface DataLocalTime {
   dstOffset: number;
   rawOffset: number;
@@ -219,9 +249,9 @@ export interface DataSummaryProjects {
 }
 
 export interface EstimatedEnergy {
-  collectTime : Date
-  inverterPower : number 
-  estimatedEnergyMWh : number
+  collectTime: Date
+  inverterPower: number
+  estimatedEnergyMWh: number
 }
 
 export interface ProyectResume {
@@ -279,8 +309,19 @@ export interface Instalations {
   equipmentPath: string
 }
 
+export interface InverterMonitoring {
+  inverterSystemStatus: boolean,
+  inverterSystemMessage: string,
+  invertersStatus: {
+    sn: string,
+    status: boolean,
+    statusMessage: string
+  }[],
+  equipment: any[]
+}
+
 export interface Equipment {
-  equipmentId?: string|number|null|undefined
+  equipmentId?: string | number | null | undefined
   moduloQty?: number
   moduloBrand?: string
   moduloBrandId?: number
@@ -292,13 +333,14 @@ export interface Equipment {
   inverterBrandId?: number
   inverterModel?: string
   inverterModelId?: number
-  moduloModelId?:number
-  description?:string
-  title?:string
+  moduloModelId?: number
+  description?: string
+  title?: string
+  serialNumber?: string
 }
 
-export interface CatalogEquipment{
-  id?:  number
+export interface CatalogEquipment {
+  id?: number
   nombre?: string
 }
 
