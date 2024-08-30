@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import * as entity from '../assets-model';
 import Highcharts from 'highcharts';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { Subject, Subscription } from 'rxjs';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { DrawerGeneral } from '@app/shared/models/general-models';
 
 @Component({
   selector: 'app-instalation-details',
@@ -19,6 +20,8 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter<any>();
+
   drawerOpen = false;
   pdfSrc: SafeResourceUrl = '';
   showAlert: boolean = false;
@@ -38,7 +41,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
     private store: Store,
 
   ) {
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => {
+    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp:DrawerGeneral) => {
       this.drawerOpen = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
       this.drawerInfo = resp.drawerInfo;
@@ -86,6 +89,8 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
   getInstalationsInverterMonitoring(data: entity.Instalations) {
     let instalations = data.equipment;
     this.assetService.getInstalationsInverterMonitoring(this.assetData.plantCode).subscribe((data: entity.InverterMonitoring) => {
+      this.notifyParent.emit(data.inverterSystemStatus);  
+
       if (data.invertersStatus.length) {
         let InvertersStatus = data?.invertersStatus;
         instalations.forEach((item: any) => {
@@ -98,9 +103,7 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
         });
       }
 
-      console.log('instalations', instalations);
       this.instalations.equipment = instalations
-
     })
   }
 

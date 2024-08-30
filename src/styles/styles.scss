@@ -20,6 +20,7 @@ body {
   font-weight: 500;
 }
 
+
 .div-groups {
   >div {
     &:first-child {
@@ -839,11 +840,12 @@ input[type="number"]:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   height: 300px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   width: 100%;
+  color: #664D03;
 }
 
 .c-comming-soon {

@@ -121,7 +121,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   completionMessage(edit = false) {
     this.notificationService
-      .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
+      .notificacion(`Record ${ edit ? 'editado' : 'guardado' }.`, 'save')
       .afterClosed()
       .subscribe((_ => {
         this.cancelEdit();

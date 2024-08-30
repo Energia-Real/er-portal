@@ -20,21 +20,26 @@ export class NewClientComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
   @Input() set equipment(editedData: any | null | undefined) {
-    this.formData.patchValue({
+    console.log(editedData);
+    
+    if (editedData) {
+      this.editedClient = editedData;
+      this.formData.patchValue({
         ...editedData,
-        name : editedData?.nombre
+        name : editedData?.nombre,
+        tipoDeClienteId : editedData?.tipoDeCliente?.id
       })
+    }
   }
 
   formData = this.fb.group({
     name: ['', Validators.required],
     tipoDeClienteId: ['', Validators.required],
+    clientId: [''],
   });
 
   cattypesClients: entity.DataCatalogTypeClient[] = []
-  editedClient!: entity.DataPatchClient | null;
-
-  // FALTA EDITAR EDITAR EL TIPODECLIENTE LO REGRESE EN EL SERVICIO DE LA TABLA
+  editedClient:any;
 
   constructor(
     private moduleServices: ClientsService,
@@ -62,15 +67,14 @@ export class NewClientComponent implements OnInit, OnDestroy {
     
     const objData: any = { ...this.formData.value };
 
-    if (this.editedClient?.clientId) this.saveDataPatch(objData)
-    else this.saveDataPost(objData)
+    if (!this.editedClient?.id) delete objData.clientId
+    if (this.editedClient?.id) this.saveDataPatch(objData);
+    else this.saveDataPost(objData);
 }
 
   saveDataPost(objData: entity.DataPostClient) {
     this.moduleServices.postDataClient(objData).subscribe({
-      next: () => {
-        this.completionMessage()
-      },
+      next: () => { this.completionMessage() },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
@@ -79,10 +83,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
   }
 
   saveDataPatch(objData: entity.DataPatchClient) {
-    this.moduleServices.patchDataClient(this.editedClient?.clientId!, objData).subscribe({
-      next: () => {
-        this.completionMessage(true)
-      },
+    this.moduleServices.patchDataClient(this.editedClient?.id!, objData).subscribe({
+      next: () => { this.completionMessage(true) },
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
         console.error(error)
@@ -90,13 +92,10 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  editTable(data: entity.DataPatchClient) {
-    this.formData.patchValue(data);
-    this.editedClient = data;
-  }
-
   cancelEdit() {
-    this.formData.reset();
+    this.formData.reset();  
+    this.formData.markAsPristine();
+    this.formData.markAsUntouched(); 
     this.editedClient = null;
   }
 

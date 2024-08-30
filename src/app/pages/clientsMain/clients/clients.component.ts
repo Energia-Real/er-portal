@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { DrawerGeneral } from '@app/shared/models/general-models';
 
 @Component({
   selector: 'app-clients',
@@ -31,24 +32,21 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   displayedColumns: string[] = [
     'clientName',
     'clientId',
+    'typeClient',
     'actions'
   ];
+
   ngAfterViewChecked() {
-    if (this.paginator) {
-      this.paginator.pageIndex = this.pageIndex - 1;
-    } else {
-      console.error('Paginator no está definido');
-    }
+    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
+    else console.error('Paginator no está definido');
   }
 
-  totalPlants!: any;
-  // totalPlants!: entity.DataSummaryProjectsMapper;
+  totalPlants: any;
 
   searchValue: string = '';
   drawerAction: "Create" | "Edit" = "Create";
   drawerAction2: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
-  // drawerInfo: entity.Equipment | null | undefined = null;
 
   showLoader: boolean = true;
   drawerOpen: boolean = false;
@@ -78,7 +76,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
       this.getDataTable(index + 1, this.searchValue);
     });
 
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => {
+    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
       if (!this.drawerOpenClient && !this.editedClient) {
         this.drawerOpen = resp.drawerOpen;
         this.drawerAction = resp.drawerAction;
@@ -86,12 +84,14 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
       }
     });
 
-    this.drawerOpenSubClient = this.store.select(selectDrawer).subscribe((resp: any) => {
+    this.drawerOpenSubClient = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
+      console.log(resp);
+
       if (this.drawerOpenClient || this.editedClient?.id) {
         this.drawerOpenClient = resp.drawerOpen;
         this.drawerAction = resp.drawerAction;
         this.drawerInfo = resp.drawerInfo;
-        if (this.needReload) this.searchBar.setValue('');
+        if (resp.needReload) this.getDataTable(1, '');
       }
     });
   }

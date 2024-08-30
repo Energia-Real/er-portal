@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AssetsService } from '../assets.service';
@@ -12,7 +12,7 @@ import { SitePerformanceComponent } from '../site-performance/site-performance.c
   templateUrl: './details-container.component.html',
   styleUrl: './details-container.component.scss'
 })
-export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewInit{
+export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   weatherData: any = null
@@ -149,12 +149,13 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   loadingWeather: boolean = true;
   loadingTimeZone: boolean = true;
   loadingSystem: boolean = true;
+  inverterSystemStatus: boolean = true;
 
   constructor(
     private assetsService: AssetsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute) { }
-  
+
   @ViewChild(SitePerformanceComponent) sitePerformanceComponent!: SitePerformanceComponent;
 
   ngAfterViewInit() {
@@ -267,6 +268,10 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
         console.error(error)
       }
     })
+  }
+
+  systemStatus(status: boolean) {
+    this.inverterSystemStatus = status;
   }
 
   ngOnDestroy(): void {

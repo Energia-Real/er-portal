@@ -5,6 +5,7 @@ export interface DataTableResponse {
   data: DataClientsTable[]
 }
 
+
 export interface DataClientsTable {
   id: string;
   clientId: number;

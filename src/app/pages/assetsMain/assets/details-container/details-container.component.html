@@ -74,14 +74,14 @@
             </div>
 
             <div class="card-weather-container card-status-system"
-              [ngStyle]="{ 'background-color': dataRespoSystem?.real_health_state == 'healthy' ? 'rgb(161 239 168 / 60%)' : '#efa1a1' }">
+              [ngStyle]="{ 'background-color': inverterSystemStatus ? 'rgb(161 239 168 / 60%)' : '#efa1a1' }">
               <span *ngIf="loadingSystem" class="loader" matTooltip="Cargando..."></span>
 
               <div *ngIf="!loadingSystem">
                 <p>System</p>
                 <div *ngIf="dataRespoSystem else notData">
-                  <i *ngIf="dataRespoSystem.real_health_state == 'healthy'" class="fa-solid fa-check mb-2"></i>
-                  <i *ngIf="dataRespoSystem.real_health_state != 'healthy'" class="fa-solid fa-xmark mb-2"></i>
+                  <i *ngIf="inverterSystemStatus" class="fa-solid fa-check mb-2"></i>
+                  <i *ngIf="!inverterSystemStatus" class="fa-solid fa-xmark mb-2"></i>
                 </div>
               </div>
             </div>
@@ -98,14 +98,14 @@
       <mat-tab label="Site details">
         <app-site-details *ngIf="assetData" [notData]="showNotdata" [assetData]="assetData"></app-site-details>
       </mat-tab>
-      
+
       <mat-tab label="Site performance">
         <app-site-performance *ngIf="assetData" [assetData]="assetData"></app-site-performance>
       </mat-tab>
 
       <mat-tab label="Inverter details">
-        <app-instalation-details *ngIf="assetData" [assetData]="assetData"
-          [notData]="showNotdata"></app-instalation-details>
+        <app-instalation-details *ngIf="assetData" [assetData]="assetData" [notData]="showNotdata"
+          (notifyParent)="systemStatus($event)"></app-instalation-details>
       </mat-tab>
 
     </mat-tab-group>

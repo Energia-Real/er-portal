@@ -1,4 +1,9 @@
 .c-install {
+
+    .c-card-info {
+        display: flex;
+        justify-content: end!important;
+    }
     .header-chart {
         >h1 {
             font-size: 11px;

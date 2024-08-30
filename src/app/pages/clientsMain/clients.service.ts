@@ -56,7 +56,7 @@ export class ClientsService implements OnDestroy {
   patchDataClient(id:number, data: entity.DataPatchClient) {
     const url = `${this.API_URL}/clients/${id}`;
 
-    return this.http.patch<any>(url, data);
+    return this.http.put<any>(url, data);
   }
 
   ngOnDestroy() {
