@@ -2,13 +2,22 @@
   <div class="card-info-header">
     <h1>{{ info?.title || '-' }}</h1>
     <mat-icon *ngIf="tooltipText" (click)="editTitle()" matTooltip="{{ tooltipText }}">{{ materialIconName }}</mat-icon>
-    <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' " (click)="editEquipment()" matTooltip="Edit Equipment">{{ materialIconName }}</mat-icon>
-    <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' " (click)="deleteEquipment()" matTooltip="Edit Equipment">delete</mat-icon>
+    <div class="d-flex">
+      <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' "
+        (click)="editEquipment()" matTooltip="Edit Equipment">{{ materialIconName }}</mat-icon>
+      <mat-icon class="custom-equipments-icon" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' "
+        (click)="deleteEquipment()" matTooltip="Edit Equipment">delete</mat-icon>
+    </div>
+
   </div>
 
   <div class="c-status">
-    <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()" [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
-    <mat-icon [matTooltip]="info?.statu ? 'Inverter Working' : 'Inverter Problem'"  [ngStyle]="{ 'color': info?.status  ? '#4CAF50' : '#D32F2F' }" *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' ">radio_button_checked </mat-icon>
+    <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()"
+      [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
+    <mat-icon [matTooltip]="info?.statu ? 'Inverter Working' : 'Inverter Problem'"
+      [ngStyle]="{ 'color': info?.status  ? '#4CAF50' : '#D32F2F' }"
+      *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' ">radio_button_checked </mat-icon>
+    {{info?.statu}}
   </div>
   <div *ngIf="isSpecialTitle() && isEditing">
     <mat-form-field *ngIf="isSpecialTitle() && isEditing">
