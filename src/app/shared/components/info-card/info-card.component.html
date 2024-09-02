@@ -14,7 +14,7 @@
   <div class="c-status">
     <h2 class="card-text" *ngIf="info?.description else notDataOne" #editableDescription (dblclick)="editTitle()"
       [contentEditable]="isEditing && !isSpecialTitle()">{{ info?.description }}</h2>
-    <mat-icon [matTooltip]="info?.statu ? 'Inverter Working' : 'Inverter Problem'"
+    <mat-icon [matTooltip]="info?.status ? 'Inverter Working' : 'Inverter Problem'"
       [ngStyle]="{ 'color': info?.status  ? '#4CAF50' : '#D32F2F' }"
       *ngIf="fromEquipments && info.equipmentId && info.equipmentId != '0' ">radio_button_checked </mat-icon>
     {{info?.statu}}
