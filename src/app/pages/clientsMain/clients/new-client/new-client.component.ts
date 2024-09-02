@@ -21,13 +21,13 @@ export class NewClientComponent implements OnInit, OnDestroy {
   @Input() modeDrawer: "Edit" | "Create" = "Create";
   @Input() set equipment(editedData: any | null | undefined) {
     console.log(editedData);
-    
+
     if (editedData) {
       this.editedClient = editedData;
       this.formData.patchValue({
         ...editedData,
-        name : editedData?.nombre,
-        tipoDeClienteId : editedData?.tipoDeCliente?.id
+        name: editedData?.nombre,
+        tipoDeClienteId: editedData?.tipoDeCliente?.id
       })
     }
   }
@@ -36,10 +36,13 @@ export class NewClientComponent implements OnInit, OnDestroy {
     name: ['', Validators.required],
     tipoDeClienteId: ['', Validators.required],
     clientId: [''],
+    image: [null as File | null]
   });
 
   cattypesClients: entity.DataCatalogTypeClient[] = []
-  editedClient:any;
+  editedClient: any;
+
+  imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
     private moduleServices: ClientsService,
@@ -64,13 +67,13 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   actionSave() {
     if (!this.formData.valid) return
-    
-    const objData: any = { ...this.formData.value };
 
-    if (!this.editedClient?.id) delete objData.clientId
-    if (this.editedClient?.id) this.saveDataPatch(objData);
-    else this.saveDataPost(objData);
-}
+    const objData: any = { ...this.formData.value };
+    console.log('objData', objData);
+    // if (!this.editedClient?.id) delete objData.clientId
+    // if (this.editedClient?.id) this.saveDataPatch(objData);
+    // else this.saveDataPost(objData);
+  }
 
   saveDataPost(objData: entity.DataPostClient) {
     this.moduleServices.postDataClient(objData).subscribe({
@@ -92,10 +95,52 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.formData.get('image')?.setValue(file);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
+      const file = event.dataTransfer.files[0];
+      this.formData.get('image')?.setValue(file);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage(event: Event) {
+    event.stopPropagation();
+    this.imagePreview = null;
+    this.formData.get('image')?.setValue(null);
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+  }
+
   cancelEdit() {
-    this.formData.reset();  
+    this.formData.reset();
     this.formData.markAsPristine();
-    this.formData.markAsUntouched(); 
+    this.formData.markAsUntouched();
     this.editedClient = null;
   }
 
