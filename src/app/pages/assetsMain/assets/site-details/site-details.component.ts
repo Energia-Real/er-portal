@@ -14,7 +14,7 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
   styleUrl: './site-details.component.scss'
 })
 export class SiteDetailsComponent implements OnInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
@@ -95,7 +95,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

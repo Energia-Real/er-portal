@@ -22,7 +22,7 @@ interface User {
   styleUrl: './layout.component.scss'
 })
 export class LayoutComponent implements OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   userInfo: any = {};
   @Input() routeActive = '';
@@ -47,7 +47,7 @@ export class LayoutComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

@@ -13,7 +13,7 @@ import { AuthService } from '../auth.service';
   styleUrl: './forgot-password.component.scss'
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   actionComplete : boolean = false;
 
@@ -65,7 +65,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
       .subscribe((_) => {
         this.notificationService
           .notificacion(
-            'Registro eliminado.',
+            'Record deleted.',
             'delete',
           )
           .afterClosed()
@@ -80,7 +80,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

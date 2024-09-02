@@ -10,7 +10,7 @@
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
             <input formControlName="email" placeholder="Correo" matInput>
             <mat-error
-              *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">Mail invalid</mat-error>
+              *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">Mail invalid.</mat-error>
           </mat-form-field>
         </div>
 
@@ -22,7 +22,7 @@
               <mat-error
                 *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">The
                 Password must have at least one uppercase letter, one lowercase letter, one number, and one special character, with a
-                minimum length of 8 characters</mat-error>
+                minimum length of 8 characters.</mat-error>
             </mat-form-field>
             <span class="eye-icon" (click)="togglePasswordVisibility()">
               <img *ngIf="showPassword" src="../../../assets/svg/open-eye.svg" alt="Eye Open">
