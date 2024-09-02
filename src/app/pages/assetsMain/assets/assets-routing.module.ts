@@ -10,10 +10,10 @@ const routes: Routes = [
   {
     path: '', component: LayoutComponent,
     children: [
+      { path: '', component: ManagementComponent },
       { path: 'create', component: NewPlantComponent },
       { path: 'edit/:id', component: NewPlantComponent },
       { path: 'details/:assetId', component: DetailsContainerComponent },
-      { path: 'management', component: ManagementComponent },
       { path: '**', redirectTo: 'management' }
     ]
   }

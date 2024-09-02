@@ -57,4 +57,4 @@ import { NewEquipmentComponent } from './instalation-details/components/new-equi
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class AssetsModule { }
+export class PlantsModule { }

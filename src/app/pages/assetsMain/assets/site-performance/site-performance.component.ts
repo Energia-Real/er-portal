@@ -14,7 +14,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
   styleUrls: ['./site-performance.component.scss']
 })
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
   @Input() assetData!: entity.DataPlant;
   dots = Array(3).fill(0);
   chart: any;
@@ -129,7 +129,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngAfterViewInit(): void {
-    this.formFilters.valueChanges.pipe(takeUntil(this.onDestroy)).subscribe(values => {
+    this.formFilters.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(values => {
       this.onFormValuesChanged(values);
     });
   }
@@ -204,8 +204,8 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
   refreshChart(index?:number): void {
     if (index==1) {

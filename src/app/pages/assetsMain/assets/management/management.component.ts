@@ -18,7 +18,7 @@ import { MatSort } from '@angular/material/sort';
   styleUrl: './management.component.scss'
 })
 export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
 
   @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
@@ -85,7 +85,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   };
 
   ngAfterViewInit(): void {
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy)).subscribe(content => {
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getDataResponse(1, content!);
     })
   }
@@ -129,7 +129,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

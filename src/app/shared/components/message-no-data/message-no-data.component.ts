@@ -12,13 +12,13 @@ import { Subject } from 'rxjs';
   imports      : [CommonModule, NgIf, MaterialModule, NgClass]
 })
 export class MessageNoDataComponent implements OnDestroy {
-  private onDestroy = new Subject<void>();
+  private onDestroy$ = new Subject<void>();
 
   @Input() message : string = '';
   @Input() type : string = 'line';
   
   ngOnDestroy(): void {
-    this.onDestroy.next();
-    this.onDestroy.unsubscribe();
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }
