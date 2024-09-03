@@ -39,6 +39,33 @@
                                     </mat-form-field>
                                 </div>
                             </div>
+
+                            <div class="col-span-2 md:col-span-2">
+                                <div class="c-input mb-0">
+                                  <p class="font-medium text-gray-700">Upload client image:</p>
+                                  <div
+                                    class="drag-drop-area"
+                                    (dragover)="onDragOver($event)"
+                                    (dragleave)="onDragLeave($event)"
+                                    (drop)="onDrop($event)"
+                                    (click)="!imagePreview && fileInput.click()"
+                                  >
+                                    <input
+                                      type="file"
+                                      #fileInput
+                                      (change)="onFileChange($event)"
+                                      class="file-input"
+                                      accept="image/*"
+                                    />
+                              
+                                    <div class="image-container" *ngIf="imagePreview">
+                                      <img [src]="imagePreview" alt="Selected Image" class="image-preview"/>
+                                      <button type="button" class="remove-image-button" (click)="removeImage($event)">&#10005;</button>
+                                    </div>
+                                    <p *ngIf="!imagePreview">Drag & drop an image here, or click to select one</p>
+                                  </div>
+                                </div>
+                              </div>
                         </div>
 
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
