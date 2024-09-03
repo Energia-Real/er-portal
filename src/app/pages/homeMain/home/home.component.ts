@@ -252,8 +252,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getDataClients(filters?: any, filtersBatu?:any) {
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
-        console.log('response.data', response.data);
-        
         this.dataSource.data = response.data
         this.savingsDetails = response.savingDetails;
         this.dataSource.sort = this.sort;
