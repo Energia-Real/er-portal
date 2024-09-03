@@ -3,5 +3,15 @@ import { createAction, props } from '@ngrx/store';
 
 export const setFilters = createAction(
   '[Filter] Set Filters',
-  props<{ filters: FilterState }>()
+  props<{ filters: FilterState['filters'] }>()
+);
+
+export const setFiltersBatu = createAction(
+  '[Filter] Set Filters Batu',
+  props<{ filtersBatu: FilterState['filtersBatu'] }>()
+);
+
+export const setFiltersSolarCoverage = createAction(
+  '[Filter] Set Filters Solar Coverage',
+  props<{ filtersSolarCoverage: FilterState['filtersSolarCoverage'] }>()
 );

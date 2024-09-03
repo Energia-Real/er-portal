@@ -1,12 +1,12 @@
 import { FilterState, initialFilterState } from '@app/shared/models/general-models';
 import { createReducer, on } from '@ngrx/store';
-import { setFilters } from '../actions/filters.actions';
-// import { setFilters } from '../actions/filter.actions';
-// import { initialFilterState, FilterState } from '../models/filter.model';
+import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '../actions/filters.actions';
 
 const _filterReducer = createReducer(
   initialFilterState,
-  on(setFilters, (state, { filters }) => ({ ...state, ...filters }))
+  on(setFilters, (state, { filters }) => ({ ...state, filters })),
+  on(setFiltersBatu, (state, { filtersBatu }) => ({ ...state, filtersBatu })),
+  on(setFiltersSolarCoverage, (state, { filtersSolarCoverage }) => ({ ...state, filtersSolarCoverage }))
 );
 
 export function filterReducer(state: FilterState | undefined, action: any) {

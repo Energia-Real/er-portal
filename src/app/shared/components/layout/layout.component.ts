@@ -5,7 +5,7 @@ import { AuthService } from '@app/auth/auth.service';
 import { Subject } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { FormBuilder } from '@angular/forms';
-import { setFilters } from '@app/core/store/actions/filters.actions';
+import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 
 interface User {
@@ -60,6 +60,7 @@ export class LayoutComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.setMonths();
+    this.getInfoUser()
   }
 
   setMonths() {
@@ -68,22 +69,6 @@ export class LayoutComponent implements OnDestroy {
   }
 
   searchWithFilters() {
-    let filters: any = {
-      brand: "huawei",
-      clientName: "Merco",
-      months: []
-    }
-
-    if (this.selectedMonths.length) {
-      filters.requestType = 2
-      filters.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
-    }
-
-    this.store.dispatch(setFilters({ filters }));
-    console.log('filters', filters);
-  }
-
-  search() {
     let filtersBatu: any = {};
     let filters: any = {};
     let filtersSolarCoverage: any = {
@@ -91,7 +76,7 @@ export class LayoutComponent implements OnDestroy {
       clientName: "Merco",
       months: []
     }
-
+    
     if (this.selectedMonths.length) {
       filters.requestType = 'Month'
       filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
@@ -99,15 +84,12 @@ export class LayoutComponent implements OnDestroy {
       filtersSolarCoverage.requestType = 2
       filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
       filtersBatu.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value);
+      
+      this.store.dispatch(setFilters({ filters }));
+      this.store.dispatch(setFiltersBatu({ filtersBatu }));
+      this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
     }
-
-    console.log('filters', filters);
-    console.log('filtersBatu', filtersBatu);
-    console.log('filtersSolarCoverage', filtersSolarCoverage);
   }
-
-  // delete filtersSolarCoverage.clientName;
-  // if (filtersSolarCoverage.requestType) localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
 
   signOut() {
     localStorage.removeItem('userEnergiaReal');
