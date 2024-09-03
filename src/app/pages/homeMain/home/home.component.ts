@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
 import { LayoutModule } from '@app/shared/components/layout/layout.module';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import * as entity from './home-model';
 import { Router } from '@angular/router';
@@ -19,7 +19,8 @@ import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { AuthService } from '@app/auth/auth.service';
-import { User } from '@app/shared/models/general-models';
+import { FilterState, User } from '@app/shared/models/general-models';
+import { Store } from '@ngrx/store';
 
 Chart.register(...registerables);
 @Component({
@@ -33,6 +34,8 @@ Chart.register(...registerables);
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+  filters$!: Observable<FilterState>;
+
   dataSource = new MatTableDataSource<any>([]);
   lineChartData!: ChartConfiguration<'bar'>['data'];
   labels = [];
@@ -127,7 +130,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
-  
+
 
   months: { value: string, viewValue: string }[] = [
     { value: '01', viewValue: 'January' },
@@ -174,10 +177,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService,
     private formatsService: FormatsService,
-    private accountService: AuthService
-  ) { }
+    private accountService: AuthService,
+    private store: Store<{ filters: FilterState }>
+  ) {
+    this.filters$ = this.store.select('filters');
+  }
 
   ngOnInit(): void {
+
     this.getInfoUser();
     this.setMonths();
     this.getDataClientsList();
@@ -199,14 +206,22 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  applyFilters(months: string[]) {
+    if (months && months.length) {
+      console.log('Meses seleccionados:', months);
+    }
+  }
+
   ngAfterViewInit(): void {
-    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe( _ => {
+    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(_ => {
       this.searchWithFilters();
     })
   }
 
   setMonths() {
-    this.selectedMonths = [this.months[5], this.months[6]];
+    this.filters$.subscribe(filters => {
+      console.log('Loaded filters', filters);
+    });
   }
 
   searchWithFilters() {
@@ -221,11 +236,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
       filters.requestType = 'Day'
       filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM-DD')}`,
-      filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
+        filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
 
       filtersSolarCoverage.requestType = 1;
       filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM-DD')}`,
-      filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
+        filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
 
       filtersBatu.months = [moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM')]
       if (moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM') != moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY-MM')) {
@@ -237,10 +252,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
 
       filtersSolarCoverage.requestType = 2
-      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value+'-01');
-      filtersBatu.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value);
+      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
+      filtersBatu.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value);
     }
 
+    console.log('filters', filters);
+    console.log('filtersBatu', filtersBatu);
+    console.log('filtersSolarCoverage', filtersSolarCoverage);
+    
     this.getDataClients(filters, filtersBatu)
     this.getDataSolarCovergaCo2(filtersSolarCoverage);
 
@@ -249,7 +268,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  getDataClients(filters?: any, filtersBatu?:any) {
+  getDataClients(filters?: any, filtersBatu?: any) {
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
@@ -259,11 +278,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toggleAllRows();
         this.allRowsInit = false;
 
-        if (filtersBatu?.months?.length) {
-          filtersBatu.energyProduction = response.savingDetails.totalEnergyProduction ? parseFloat(response.savingDetails.totalEnergyProduction.replace(/,/g, '')) : 0;
-          delete filtersBatu.requestType
-          this.getDataBatuSavings(filtersBatu);
-        }
+        // if (filtersBatu?.months?.length) {
+        //   // filtersBatu.energyProduction = response.savingDetails.totalEnergyProduction ? parseFloat(response.savingDetails.totalEnergyProduction.replace(/,/g, '')) : 0;
+        //   delete filtersBatu.requestType
+        //   this.getDataBatuSavings(filtersBatu);
+        // }
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -368,17 +387,17 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   mappingData(dataSelected: entity.DataRespSavingDetails[]): any {
     let labels = dataSelected.map(item => item.siteName);
-  
+
     let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
     let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
-  
+
     return {
       labels: labels,
       energyConsumption: energyConsumption,
       energyProduction: energyProduction
     }
   }
-  
+
   convertToISO8601(month: string): string {
     const year = new Date().getFullYear();
     const date = moment(`${year}-${month}-01`).startOf('month').toISOString();

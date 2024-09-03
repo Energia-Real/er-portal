@@ -40,3 +40,18 @@ export interface ConfirmationConfig
     dismissible?: boolean;
 }
 
+
+export interface FilterState {
+    brand: string;
+    clientName: string;
+    months: string[];
+    requestType: number;
+  }
+  
+  export const initialFilterState: FilterState = {
+    brand: '',
+    clientName: '',
+    months: [],
+    requestType: 0,
+  };
+  

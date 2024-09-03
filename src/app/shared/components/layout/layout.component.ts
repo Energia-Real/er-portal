@@ -5,6 +5,8 @@ import { AuthService } from '@app/auth/auth.service';
 import { Subject } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { FormBuilder } from '@angular/forms';
+import { setFilters } from '@app/core/store/actions/filters.actions';
+import { Store } from '@ngrx/store';
 
 interface User {
   id: string,
@@ -31,7 +33,6 @@ export class LayoutComponent implements OnDestroy {
   version = packageJson.version;
 
 
-  selectedMonths: any[] = [];
 
   months: { value: string, viewValue: string }[] = [
     { value: '01', viewValue: 'January' },
@@ -47,23 +48,23 @@ export class LayoutComponent implements OnDestroy {
     { value: '11', viewValue: 'November' },
     { value: '12', viewValue: 'December' }
   ];
-
+  selectedMonths: any[] = [];
   currentYear = new Date().getFullYear();
 
 
   constructor(
     private accountService: AuthService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private store: Store
   ) { }
 
   ngOnInit(): void {
-    this.getInfoUser();
     this.setMonths();
   }
 
   setMonths() {
     this.selectedMonths = [this.months[5], this.months[6]];
+    this.searchWithFilters();
   }
 
   searchWithFilters() {
@@ -78,12 +79,35 @@ export class LayoutComponent implements OnDestroy {
       filters.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
     }
 
+    this.store.dispatch(setFilters({ filters }));
     console.log('filters', filters);
-
-    // delete filtersSolarCoverage.clientName;
-    // if (filtersSolarCoverage.requestType) localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
   }
 
+  search() {
+    let filtersBatu: any = {};
+    let filters: any = {};
+    let filtersSolarCoverage: any = {
+      brand: "huawei",
+      clientName: "Merco",
+      months: []
+    }
+
+    if (this.selectedMonths.length) {
+      filters.requestType = 'Month'
+      filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
+
+      filtersSolarCoverage.requestType = 2
+      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
+      filtersBatu.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value);
+    }
+
+    console.log('filters', filters);
+    console.log('filtersBatu', filtersBatu);
+    console.log('filtersSolarCoverage', filtersSolarCoverage);
+  }
+
+  // delete filtersSolarCoverage.clientName;
+  // if (filtersSolarCoverage.requestType) localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
 
   signOut() {
     localStorage.removeItem('userEnergiaReal');

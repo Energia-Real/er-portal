@@ -4,7 +4,7 @@ import { LayoutComponent } from './layout.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { FooterComponent } from '../footer/footer.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     RouterModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     LayoutComponent,
