@@ -149,7 +149,7 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   loadingWeather: boolean = true;
   loadingTimeZone: boolean = true;
   loadingSystem: boolean = true;
-  inverterSystemStatus: boolean = true;
+  inverterSystemStatus: boolean = false;
 
   constructor(
     private assetsService: AssetsService,
