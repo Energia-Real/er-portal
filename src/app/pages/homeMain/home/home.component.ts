@@ -209,8 +209,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getFilters() {
-    this.filters$.subscribe(filters => this.getDataClients(filters));
-    this.filtersSolarCoverage$.subscribe(filtersSolarCoverage => this.getDataSolarCovergaCo2(filtersSolarCoverage));
+    this.filters$.subscribe(filters => { if (filters?.months?.length) this.getDataClients(filters) });
+    this.filtersSolarCoverage$.subscribe(filtersSolarCoverage => { 
+      if (filtersSolarCoverage?.months?.length) this.getDataSolarCovergaCo2(filtersSolarCoverage)
+    });
   }
 
   getDataClients(filters?: any) {

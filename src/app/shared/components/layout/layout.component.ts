@@ -2,11 +2,13 @@ import { Component, Input, OnDestroy } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { FormBuilder } from '@angular/forms';
 import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
+import { FilterState } from '@app/shared/models/general-models';
+import { selectFilters } from '@app/core/store/selectors/filters.selector';
 
 interface User {
   id: string,
@@ -32,8 +34,6 @@ export class LayoutComponent implements OnDestroy {
 
   version = packageJson.version;
 
-
-
   months: { value: string, viewValue: string }[] = [
     { value: '01', viewValue: 'January' },
     { value: '02', viewValue: 'February' },
@@ -48,19 +48,29 @@ export class LayoutComponent implements OnDestroy {
     { value: '11', viewValue: 'November' },
     { value: '12', viewValue: 'December' }
   ];
-  selectedMonths: any[] = [];
-  currentYear = new Date().getFullYear();
 
+  selectedMonths: any[] = [];
+
+  currentYear = new Date().getFullYear();
 
   constructor(
     private accountService: AuthService,
     private router: Router,
-    private store: Store
+    private store: Store<{ filters: FilterState }>
   ) { }
 
   ngOnInit(): void {
-    this.setMonths();
-    this.getInfoUser()
+    this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe(filtersState => {
+      if (filtersState && filtersState.months.length > 0) {
+        this.selectedMonths = this.months.filter(month =>  
+          filtersState.months.includes(`${this.currentYear}-${month.value}-01`)
+        );
+      } else {
+        this.setMonths();
+      }
+    });
+
+    this.getInfoUser();
   }
 
   setMonths() {
