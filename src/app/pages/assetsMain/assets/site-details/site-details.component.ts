@@ -1,12 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { AssetsService } from '../assets.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import * as entity from '../assets-model';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { FilterState } from '@app/shared/models/general-models';
 
 @Component({
   selector: 'app-site-details',
@@ -15,6 +16,7 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 })
 export class SiteDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+  filtersSolarCoverage$!: Observable<FilterState['filtersSolarCoverage']>;
 
   @Input() assetData!: entity.DataPlant;
   @Input() notData!: boolean;
@@ -25,7 +27,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   siteResponse: any[] = []
   showAlert: boolean = false
-  drawerOpen=false
+  drawerOpen = false
   drawerOpenSub: Subscription;
   id: string = '';
 
@@ -34,13 +36,16 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     private moduleServices: AssetsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
-    private store: Store,
+    private store: Store<{ filters: FilterState }>
+
   ) {
-    this.drawerOpenSub =  this.store.select(selectDrawer).subscribe(resp => {
-      this.drawerOpen  = resp.drawerOpen;
+    this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => {
+      this.drawerOpen = resp.drawerOpen;
     });
 
-   }
+    this.filtersSolarCoverage$ = this.store.select(state => state.filters.filtersSolarCoverage);
+
+  }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('assetId')!;
@@ -69,29 +74,24 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   }
 
   getDataResponse() {
-    const dateFiltersObj = localStorage.getItem('dateFilters');
-    let dateFilters : any 
-    if (dateFiltersObj) {
-      dateFilters = JSON.parse(dateFiltersObj);
-    }
-    
-    let objData: entity.PostDataByPlant = {
-      brand: "Huawei",
-      plantCode: this.assetData.plantCode,
-      ...dateFilters
-    };
-    
-    this.moduleServices.getDataRespSite(objData).subscribe({
-      next: (response: entity.DataResponseDetailsMapper[]) => {
-        this.siteResponse = response;
-        this.getDataResponseOverview();
-      },
-      error: (error) => {
-        this.showAlert = true;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.error(error)
-      }
-    })
+    this.filtersSolarCoverage$.subscribe(filters => {
+      let objData: entity.PostDataByPlant = {
+        plantCode: this.assetData.plantCode,
+        ...filters
+      };
+
+      this.moduleServices.getDataRespSite(objData).subscribe({
+        next: (response: entity.DataResponseDetailsMapper[]) => {
+          this.siteResponse = response;
+          this.getDataResponseOverview();
+        },
+        error: (error) => {
+          this.showAlert = true;
+          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+          console.error(error)
+        }
+      })
+    });
   }
 
   ngOnDestroy(): void {

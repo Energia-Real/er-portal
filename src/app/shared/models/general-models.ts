@@ -17,7 +17,6 @@ export interface User {
   token?: string;
 }
 
-
 export interface ConfirmationConfig
 {
     title?: string;
@@ -40,3 +39,35 @@ export interface ConfirmationConfig
     dismissible?: boolean;
 }
 
+
+export interface FilterState {
+  filters: {
+    requestType: string;
+    months: string[];
+  };
+  filtersBatu: {
+    months: string[];
+  };
+  filtersSolarCoverage: {
+    brand: string;
+    clientName: string;
+    months: string[];
+    requestType: number;
+  };
+}
+
+export const initialFilterState: FilterState = {
+  filters: {
+    requestType: '',
+    months: []
+  },
+  filtersBatu: {
+    months: []
+  },
+  filtersSolarCoverage: {
+    brand: '',
+    clientName: '',
+    months: [],
+    requestType: 0
+  }
+};

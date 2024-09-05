@@ -4,6 +4,7 @@ import { LayoutComponent } from './layout.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { FooterComponent } from '../footer/footer.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,9 @@ import { FooterComponent } from '../footer/footer.component';
   imports: [
     CommonModule,
     RouterModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [
     LayoutComponent,

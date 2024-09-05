@@ -104,7 +104,7 @@
 
 
 .select-mount {
-    width: 100% !important;
+    width: 150px;
     height: 35px !important;
 
     border-color: none !important;
@@ -163,6 +163,22 @@
 textarea:focus,
 select:focus {
     --tw-ring-color: transparent;
+}
+
+.input-date-hader {
+    .mdc-notched-outline__trailing,
+    .mat-date-range-input-container {
+        opacity: 0 !important;
+    }
+
+    .mat-mdc-form-field-infix,
+    .mdc-notched-outline__leading {
+        display: none !important;
+    }
+
+    svg {
+        color: #EE5427 !important;
+    }
 }
 
 .input-date {
@@ -293,7 +309,7 @@ select:focus {
 // BTNS 
 
 .btn-cancel {
-    border: 1px solid #D2D2D2!important;
+    border: 1px solid #D2D2D2 !important;
     color: #000000 !important;
     border-radius: 24px;
     padding: 5px 15px !important;
@@ -321,9 +337,11 @@ select:focus {
     transition: 150ms all ease;
     height: 35px;
     // box-shadow: 3px 3px 4px 0px #00000040;
-    user-select: none!important;
-    outline: none!important;
-    i, span {
+    user-select: none !important;
+    outline: none !important;
+
+    i,
+    span {
         font-size: 15px;
         margin: 0;
         padding: 0;
@@ -332,7 +350,9 @@ select:focus {
     }
 }
 
-.btn-action-add:hover, .btn-action-export:hover, .btn-cancel:hover {
+.btn-action-add:hover,
+.btn-action-export:hover,
+.btn-cancel:hover {
     box-shadow: 2px 2px 4px 0px #00000020;
 }
 
