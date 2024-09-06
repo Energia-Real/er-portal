@@ -8,6 +8,7 @@ const homeComponent = () => import('./pages/homeMain/home/home.component').then(
 const overviewComponent = () => import('./pages/overviewMain/overview/overview.component').then(x => x.OverviewComponent);
 const paymentsModule = () => import('./pages/paymets-main/payments-main.module').then(x => x.PaymetsMainModule);
 const clientModule = () => import('./pages/clientsMain/clients-main.module').then(x => x.ClientsMainModule);
+const energyProductionModule = () => import('./pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
 
 const routes: Routes = [
   { path: 'home', loadComponent: homeComponent, canActivate: [authGuard] },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'overview', loadComponent: overviewComponent, canActivate: [authGuard] },
   { path: 'payments', loadChildren: paymentsModule, canActivate: [authGuard] },
   { path: 'clients', loadChildren: clientModule, canActivate: [authGuard] },
+  { path: 'energyProduction', loadChildren: energyProductionModule, canActivate: [authGuard] },
   { path: '', loadChildren: authModule },
   { path: '**', redirectTo: '' }
 ];

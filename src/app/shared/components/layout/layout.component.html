@@ -6,6 +6,7 @@
       </div>
       <img src="../../../../assets/svg/logo.svg" alt="Logo" style="width: 120px;">
     </a>
+    
     <ul class="flex titles-header">
       <li class="mx-5"><a routerLink="/home" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('home') }">Home</a></li>
@@ -17,6 +18,8 @@
           [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a></li>
       <!-- <li class="mx-5"><a routerLink="/payments" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li> -->
+      <li class="mx-5"><a routerLink="/energyProduction" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('energyProduction') }"> Energy production</a></li>
     </ul>
 
     <div class="flex align-items-center">
