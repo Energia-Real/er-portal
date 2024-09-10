@@ -57,7 +57,6 @@
                                       class="file-input"
                                       accept="image/*"
                                     />
-                              
                                     <div class="image-container" *ngIf="imagePreview">
                                       <img [src]="imagePreview" alt="Selected Image" class="image-preview"/>
                                       <button type="button" class="remove-image-button" (click)="removeImage($event)">&#10005;</button>
@@ -66,6 +65,7 @@
                                   </div>
                                 </div>
                               </div>
+                              
                         </div>
 
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">

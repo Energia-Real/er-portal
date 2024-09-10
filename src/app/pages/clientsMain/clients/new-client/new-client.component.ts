@@ -15,6 +15,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   private _equipment?: any | null | undefined;
 
+
   get equipment(): any | null | undefined { return this._equipment }
 
   @Input() isOpen = false;
@@ -43,6 +44,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   editedClient: any;
 
   imagePreview: string | ArrayBuffer | null = null;
+  imageFile: File | null = null;
 
   constructor(
     private moduleServices: ClientsService,
@@ -65,17 +67,68 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  actionSave() {
-    if (!this.formData.valid) return
+  // actionSave() {
+  //   if (!this.formData.valid) return
 
-    const objData: any = { ...this.formData.value };
-    console.log('objData', objData);
-    // if (!this.editedClient?.id) delete objData.clientId
-    // if (this.editedClient?.id) this.saveDataPatch(objData);
-    // else this.saveDataPost(objData);
+  //   const objData: any = { ...this.formData.value };
+  //   console.log('objData', objData);
+  // }
+  // if (!this.editedClient?.id) delete objData.clientId
+  // if (this.editedClient?.id) this.saveDataPatch(objData);
+  // else this.saveDataPost(objData);
+
+  // actionSave() {
+  //   if (!this.formData.valid) return;
+
+  //   // Crear FormData
+  //   const formData = new FormData();
+  //   const objData: any = { ...this.formData.value };
+
+  //   // Agregar los datos del formulario a FormData
+  //   formData.append('name', objData.name);
+  //   formData.append('tipoDeClienteId', objData.tipoDeClienteId);
+
+  //   // Agregar el archivo de imagen a FormData
+  //   if (this.imageFile) {
+  //     formData.append('image', this.imageFile, this.imageFile.name);
+  //   }
+
+  //   console.log('formDataformDataformData', formData);
+  //     if (!this.editedClient?.id) delete objData.clientId
+  // if (this.editedClient?.id) this.saveDataPatch(formData);
+  // else this.saveDataPost(formData);
+
+
+  // }
+
+  actionSave() {
+    if (!this.formData.valid) return;
+
+    // Crear FormData
+    const formData = new FormData();
+
+    // Agregar los datos del formulario a FormData
+    formData.append('name', this.formData.get('name')?.value!);
+    formData.append('tipoDeClienteId', this.formData.get('tipoDeClienteId')?.value!);
+    // formData.append('clientId', this.formData.get('clientId')?.value || '');
+
+    if (this.editedClient?.id) formData.append('clientId', this.formData.get('clientId')?.value || '');
+
+
+    
+    // Agregar el archivo de imagen a FormData (si existe)
+    const imageFile = this.formData.get('image')?.value;
+    if (imageFile) {
+      formData.append('image', imageFile, imageFile.name);
+    }
+
+    if (this.editedClient?.id) this.saveDataPatch(formData);
+    else this.saveDataPost(formData);
+
   }
 
-  saveDataPost(objData: entity.DataPostClient) {
+
+  saveDataPost(objData: any) {
     this.moduleServices.postDataClient(objData).subscribe({
       next: () => { this.completionMessage() },
       error: (error) => {
@@ -85,7 +138,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  saveDataPatch(objData: entity.DataPatchClient) {
+  saveDataPatch(objData: any) {
     this.moduleServices.patchDataClient(this.editedClient?.id!, objData).subscribe({
       next: () => { this.completionMessage(true) },
       error: (error) => {
@@ -95,12 +148,14 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  onFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.formData.get('image')?.setValue(file);
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.formData.patchValue({
+        image: file
+      });
 
+      // Previsualizar la imagen
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result;
