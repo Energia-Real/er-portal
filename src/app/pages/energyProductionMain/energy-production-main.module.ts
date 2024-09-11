@@ -16,12 +16,14 @@ import { InfoCardComponent } from '@app/shared/components/info-card/info-card.co
 import { EnergyProductionComponent } from './energy-production/energy-production.component';
 import { EnergyProductionRoutingModule } from './energy-production-routing.module';
 import { LayoutComponent } from './layout/layout.component';
+import { EnergyProdUpdateComponent } from './energy-prod-update/energy-prod-update.component';
 
 
 @NgModule({
   declarations: [
     EnergyProductionComponent,
-    LayoutComponent
+    LayoutComponent,
+    EnergyProdUpdateComponent
   ],
   imports: [
   CommonModule,

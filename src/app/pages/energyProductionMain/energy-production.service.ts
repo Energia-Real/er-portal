@@ -9,7 +9,7 @@ import { Mapper } from './mapper';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientsService implements OnDestroy {
+export class EnergyProductionService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_CLIENTS_V1;
