@@ -31,6 +31,8 @@ export interface DataPatchTypeClient {
 export interface DataPostClient {
   name: string,
   tipoDeClienteId: string
+  image: any
+  clientId?: any
 }
 export interface DataPatchClient {
   clientId:  number

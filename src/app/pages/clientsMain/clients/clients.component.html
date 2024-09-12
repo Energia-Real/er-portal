@@ -23,9 +23,8 @@
         </div>
 
         <app-new-client [isOpen]="drawerOpenClient" [modeDrawer]="drawerAction"
-            [equipment]="drawerInfo"></app-new-client>
-        <app-types-clients [isOpen]="drawerOpen" [modeDrawer]="drawerAction"
-            [equipment]="drawerInfo"></app-types-clients>
+            [client]="drawerInfo"></app-new-client>
+        <app-types-clients [isOpen]="drawerOpen"></app-types-clients>
 
         <div class="c-table">
             <table mat-table [dataSource]="dataSource" matSort class="table-assets">

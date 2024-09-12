@@ -51,7 +51,16 @@ export class ClientsService implements OnDestroy {
   postDataClient(data: entity.DataPostClient) {
     const url = `${this.API_URL}/clients`;
 
-    return this.http.post<any>(url, data);
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('tipoDeClienteId', data.tipoDeClienteId);
+
+    if (data?.clientId) formData.append('clientId', data?.clientId);
+    const imageFile = data.image;
+    if (imageFile) formData.append('image', imageFile, imageFile.name);
+
+    return this.http.post<any>(url, formData);
   }
 
   patchDataClient(id:number, data: entity.DataPatchClient) {

@@ -13,19 +13,15 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 })
 export class NewClientComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  private _equipment?: any | null | undefined;
+  private _client?: any | null | undefined;
 
-
-  get equipment(): any | null | undefined { return this._equipment }
+  get client(): any | null | undefined { return this._client }
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
-  @Input() set equipment(editedData: any | null | undefined) {
-    console.log(editedData);
-
+  @Input() set client(editedData: any | null | undefined) {
     if (editedData) {
       this.editedClient = editedData;
-
       this.imagenSelectedEdit = editedData.imageBase64
       this.formData.patchValue({
         ...editedData,
@@ -72,28 +68,15 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-
   actionSave() {
     if (!this.formData.valid) return;
 
-    const formData = new FormData();
+    let objData: any = { ...this.formData.value }
+    if (this.editedClient?.id) objData.clientId = this.formData.get('clientId')?.value;
 
-    formData.append('name', this.formData.get('name')?.value!);
-    formData.append('tipoDeClienteId', this.formData.get('tipoDeClienteId')?.value!);
-
-    if (this.editedClient?.id) formData.append('clientId', this.formData.get('clientId')?.value || '');
-
-    const imageFile = this.formData.get('image')?.value;
-    
-    if (imageFile) {
-      formData.append('image', imageFile, imageFile.name);
-    }
-
-    if (this.editedClient?.id) this.saveDataPatch(formData);
-    else this.saveDataPost(formData);
-
+    if (this.editedClient?.id) this.saveDataPatch(objData);
+    else this.saveDataPost(objData);
   }
-
 
   saveDataPost(objData: any) {
     this.moduleServices.postDataClient(objData).subscribe({
@@ -116,19 +99,13 @@ export class NewClientComponent implements OnInit, OnDestroy {
   }
 
   onFileChange(event: any) {
-    console.log('onFileChange');
-    
-    this.insertedImage = true
+    this.insertedImage = true;
     const file = event.target.files[0];
-    if (file) {
-      this.formData.patchValue({
-        image: file
-      });
 
+    if (file) {
+      this.formData.patchValue({ image: file });
       const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
+      reader.onload = () => { this.imagePreview = reader.result };
       reader.readAsDataURL(file);
     }
   }
@@ -138,20 +115,19 @@ export class NewClientComponent implements OnInit, OnDestroy {
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];
       this.formData.get('image')?.setValue(file);
-
+  
       const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
+      reader.onload = () => { this.imagePreview = reader.result };
       reader.readAsDataURL(file);
     }
   }
 
-  removeImage(event: Event) {
+  removeImage(event: Event, fileInput: HTMLInputElement) {
     event.stopPropagation();
     this.imagePreview = null;
     this.imagenSelectedEdit = null;
     this.formData.get('image')?.setValue(null);
+    fileInput.value = '';
   }
 
   onDragOver(event: DragEvent) {
@@ -169,10 +145,10 @@ export class NewClientComponent implements OnInit, OnDestroy {
     this.editedClient = null;
   }
 
-  closeDrawer() {
+  closeDrawer(cancel?:boolean) {
     this.isOpen = false;
     setTimeout(() => this.cancelEdit(), 300);
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: true }));
+    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: cancel ? false : true }));
   }
 
   completionMessage(edit = false) {

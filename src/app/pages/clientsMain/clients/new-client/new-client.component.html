@@ -59,18 +59,19 @@
                                     />
                                     <div class="image-container" *ngIf="(imagenSelectedEdit && !insertedImage) || imagePreview">
                                       <img [src]="imagenSelectedEdit || imagePreview" alt="Selected Image" class="image-preview"/>
-                                      <button type="button" class="remove-image-button" (click)="removeImage($event)">&#10005;</button>
+                                      <button type="button" class="remove-image-button" (click)="removeImage($event, fileInput)">&#10005;</button>
                                     </div>
                                     <p *ngIf="!imagenSelectedEdit && !imagePreview">Drag & drop an image here, or click to select one</p>
                                   </div>
                                 </div>
                               </div>
                               
+                              
                         </div>
 
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
                             <div class="button-container d-flex justify-content-between pt-0 gap-2">
-                                <button class="btn-cancel" (click)="closeDrawer()" type="button">Cancel</button>
+                                <button class="btn-cancel" (click)="closeDrawer(true)" type="button">Cancel</button>
                                 <div>
                                     <button class="btn-action-add" type="submit">
                                         <i
