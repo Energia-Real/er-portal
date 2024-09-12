@@ -31,26 +31,10 @@
             <table mat-table [dataSource]="dataSource" matSort class="table-assets">
                 <ng-container matColumnDef="image">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Logo</th>
-                    <td mat-cell *matCellDef="let element">
-                        <!-- <img [src]="element.imageBase64" *ngIf="element.imageBase64" /> -->
+                    <td mat-cell *matCellDef="let element" style="width: 100px;">
                         <img [src]="element.imageBase64" *ngIf="element.imageBase64" alt="Client Image" />
-
-                      </td>
-                      
+                    </td>
                 </ng-container>
-
-                
-
-                <!-- {
-                    "id": "d49bf3c7-749a-4b15-a4eb-e6706b56af69",
-                    "clientId": 2,
-                    "nombre": "namePruebas2",
-                    "imageBase64": "/9j/4AAQSkZJRgABAQEAeAB4AAD/wAARCAABAAEDASIAAhEBAxEB/8QBogAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoLEAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+foBAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKCxEAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9sAhAAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQyAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/2gAMAwEAAhEDEQA/APeKKKKAP//Z",
-                    "tipoDeCliente": {
-                        "id": "4d4948d9-a805-43b0-acef-2e83a8bd7906",
-                        "tipo": "Centro Comercial"
-                    }
-                } -->
 
                 <ng-container matColumnDef="clientName">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Name of the client </th>
@@ -63,11 +47,12 @@
                         <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
                     </td>
                 </ng-container>
-           
+
                 <ng-container matColumnDef="typeClient">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Type of client</th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.tipoDeCliente?.id else notDataTable"> {{ element?.tipoDeCliente?.tipo }} </div>
+                        <div *ngIf="element?.tipoDeCliente?.id else notDataTable"> {{ element?.tipoDeCliente?.tipo }}
+                        </div>
                     </td>
                 </ng-container>
 
@@ -91,11 +76,10 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table-assets"></tr>
             </table>
 
-
             <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-          </mat-paginator>
+                [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
         </div>
     </div>
 </div>

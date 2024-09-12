@@ -25,6 +25,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
     if (editedData) {
       this.editedClient = editedData;
+
+      this.imagenSelectedEdit = editedData.imageBase64
       this.formData.patchValue({
         ...editedData,
         name: editedData?.nombre,
@@ -45,6 +47,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   imagePreview: string | ArrayBuffer | null = null;
   imageFile: File | null = null;
+
+  insertedImage:boolean = false
+  imagenSelectedEdit:any
 
   constructor(
     private moduleServices: ClientsService,
@@ -67,57 +72,19 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  // actionSave() {
-  //   if (!this.formData.valid) return
-
-  //   const objData: any = { ...this.formData.value };
-  //   console.log('objData', objData);
-  // }
-  // if (!this.editedClient?.id) delete objData.clientId
-  // if (this.editedClient?.id) this.saveDataPatch(objData);
-  // else this.saveDataPost(objData);
-
-  // actionSave() {
-  //   if (!this.formData.valid) return;
-
-  //   // Crear FormData
-  //   const formData = new FormData();
-  //   const objData: any = { ...this.formData.value };
-
-  //   // Agregar los datos del formulario a FormData
-  //   formData.append('name', objData.name);
-  //   formData.append('tipoDeClienteId', objData.tipoDeClienteId);
-
-  //   // Agregar el archivo de imagen a FormData
-  //   if (this.imageFile) {
-  //     formData.append('image', this.imageFile, this.imageFile.name);
-  //   }
-
-  //   console.log('formDataformDataformData', formData);
-  //     if (!this.editedClient?.id) delete objData.clientId
-  // if (this.editedClient?.id) this.saveDataPatch(formData);
-  // else this.saveDataPost(formData);
-
-
-  // }
 
   actionSave() {
     if (!this.formData.valid) return;
 
-    // Crear FormData
     const formData = new FormData();
 
-    // Agregar los datos del formulario a FormData
     formData.append('name', this.formData.get('name')?.value!);
     formData.append('tipoDeClienteId', this.formData.get('tipoDeClienteId')?.value!);
-    // formData.append('clientId', this.formData.get('clientId')?.value || '');
 
     if (this.editedClient?.id) formData.append('clientId', this.formData.get('clientId')?.value || '');
 
-
-    
-    // Agregar el archivo de imagen a FormData (si existe)
     const imageFile = this.formData.get('image')?.value;
+    
     if (imageFile) {
       formData.append('image', imageFile, imageFile.name);
     }
@@ -149,13 +116,15 @@ export class NewClientComponent implements OnInit, OnDestroy {
   }
 
   onFileChange(event: any) {
+    console.log('onFileChange');
+    
+    this.insertedImage = true
     const file = event.target.files[0];
     if (file) {
       this.formData.patchValue({
         image: file
       });
 
-      // Previsualizar la imagen
       const reader = new FileReader();
       reader.onload = () => {
         this.imagePreview = reader.result;
@@ -181,6 +150,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   removeImage(event: Event) {
     event.stopPropagation();
     this.imagePreview = null;
+    this.imagenSelectedEdit = null;
     this.formData.get('image')?.setValue(null);
   }
 

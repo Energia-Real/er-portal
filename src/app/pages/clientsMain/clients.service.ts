@@ -20,7 +20,7 @@ export class ClientsService implements OnDestroy {
   getClientsData(name: string, pageSize: number, page: number): Observable<entity.DataTableResponse> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
-      .set('imageSize', 50)
+      .set('imageSize', 150)
       .set('pagesize', pageSize)
       .set('page', page)
       .set('name', name);

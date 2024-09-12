@@ -57,11 +57,11 @@
                                       class="file-input"
                                       accept="image/*"
                                     />
-                                    <div class="image-container" *ngIf="imagePreview">
-                                      <img [src]="imagePreview" alt="Selected Image" class="image-preview"/>
+                                    <div class="image-container" *ngIf="(imagenSelectedEdit && !insertedImage) || imagePreview">
+                                      <img [src]="imagenSelectedEdit || imagePreview" alt="Selected Image" class="image-preview"/>
                                       <button type="button" class="remove-image-button" (click)="removeImage($event)">&#10005;</button>
                                     </div>
-                                    <p *ngIf="!imagePreview">Drag & drop an image here, or click to select one</p>
+                                    <p *ngIf="!imagenSelectedEdit && !imagePreview">Drag & drop an image here, or click to select one</p>
                                   </div>
                                 </div>
                               </div>
