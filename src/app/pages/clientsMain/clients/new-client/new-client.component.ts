@@ -143,6 +143,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
     this.formData.markAsPristine();
     this.formData.markAsUntouched();
     this.editedClient = null;
+    this.imagenSelectedEdit = null;
+    this.imagePreview = null;
   }
 
   closeDrawer(cancel?:boolean) {

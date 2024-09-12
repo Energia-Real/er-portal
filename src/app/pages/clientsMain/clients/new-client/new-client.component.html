@@ -1,7 +1,7 @@
 <div class="c-clients fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
   c-modal-lateral create-asset-main-container  " [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
     <div class="return-bar-container">
-        <button class="button-transparent" type="button" (click)="closeDrawer()">
+        <button class="button-transparent" type="button" (click)="closeDrawer(true)">
             <i class="fa-solid fa-angles-left" matTooltip="Go back"></i>
         </button>
     </div>
@@ -11,7 +11,8 @@
             <div class="mb-0">
                 <div class="grid grid-cols-1  gap-x-6 gap-y-2">
                     <div class="col-span-1 md:col-span-1">
-                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ this.editedClient?.clientId ? 'Edit' : 'Add new'}} client</h2>
+                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ this.editedClient?.clientId ?
+                            'Edit' : 'Add new'}} client</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                             <div class="col-span-1 md:col-span-1">
                                 <div class="c-input mb-0">
@@ -42,31 +43,24 @@
 
                             <div class="col-span-2 md:col-span-2">
                                 <div class="c-input mb-0">
-                                  <p class="font-medium text-gray-700">Upload client image:</p>
-                                  <div
-                                    class="drag-drop-area"
-                                    (dragover)="onDragOver($event)"
-                                    (dragleave)="onDragLeave($event)"
-                                    (drop)="onDrop($event)"
-                                    (click)="!imagePreview && fileInput.click()"
-                                  >
-                                    <input
-                                      type="file"
-                                      #fileInput
-                                      (change)="onFileChange($event)"
-                                      class="file-input"
-                                      accept="image/*"
-                                    />
-                                    <div class="image-container" *ngIf="(imagenSelectedEdit && !insertedImage) || imagePreview">
-                                      <img [src]="imagenSelectedEdit || imagePreview" alt="Selected Image" class="image-preview"/>
-                                      <button type="button" class="remove-image-button" (click)="removeImage($event, fileInput)">&#10005;</button>
+                                    <p class="font-medium text-gray-700">Upload client image:</p>
+                                    <div class="drag-drop-area" (dragover)="onDragOver($event)"
+                                        (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
+                                        (click)="!imagePreview && fileInput.click()">
+                                        <input type="file" #fileInput (change)="onFileChange($event)" class="file-input"
+                                            accept="image/*" />
+
+                                        <div class="image-container" *ngIf="imagenSelectedEdit || imagePreview">
+                                            <img [src]="imagenSelectedEdit || imagePreview" alt="Selected Image"
+                                                class="image-preview" />
+                                            <button type="button" class="remove-image-button"
+                                                (click)="removeImage($event, fileInput)">&#10005;</button>
+                                        </div>
+                                        <p *ngIf="!imagenSelectedEdit && !imagePreview">Drag & drop an image here, or
+                                            click to select one</p>
                                     </div>
-                                    <p *ngIf="!imagenSelectedEdit && !imagePreview">Drag & drop an image here, or click to select one</p>
-                                  </div>
                                 </div>
-                              </div>
-                              
-                              
+                            </div>
                         </div>
 
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
