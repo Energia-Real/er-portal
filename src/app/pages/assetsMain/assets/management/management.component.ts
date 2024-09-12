@@ -20,7 +20,6 @@ import { MatSort } from '@angular/material/sort';
 export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
   dataSource = new MatTableDataSource<any>([]);
-
   @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
