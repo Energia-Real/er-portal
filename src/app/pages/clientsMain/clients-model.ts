@@ -32,12 +32,13 @@ export interface DataPostClient {
   name: string,
   tipoDeClienteId: string
   image: any
-  clientId?: any
+  clientId?: string
 }
 export interface DataPatchClient {
-  clientId:  number
+  clientId:  string
   name: string,
   tipoDeClienteId: string
+  image?: any
 }
 
 export interface DataCatalogTypeClient {

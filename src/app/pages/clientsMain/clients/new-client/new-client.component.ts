@@ -22,7 +22,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   @Input() set client(editedData: any | null | undefined) {
     if (editedData) {
       this.editedClient = editedData;
-      this.imagenSelectedEdit = editedData.imageBase64
+      this.imagenSelectedEdit = editedData.imageBase64;
       this.formData.patchValue({
         ...editedData,
         name: editedData?.nombre,

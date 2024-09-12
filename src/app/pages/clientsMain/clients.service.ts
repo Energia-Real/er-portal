@@ -44,6 +44,7 @@ export class ClientsService implements OnDestroy {
 
   patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
     const url = `${this.API_URL}/tipodecliente/${id}`;
+    
 
     return this.http.put<any>(url, data);
   }
@@ -66,7 +67,16 @@ export class ClientsService implements OnDestroy {
   patchDataClient(id:number, data: entity.DataPatchClient) {
     const url = `${this.API_URL}/clients/${id}`;
 
-    return this.http.put<any>(url, data);
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('tipoDeClienteId', data.tipoDeClienteId);
+
+    if (data?.clientId) formData.append('clientId', data?.clientId);
+    const imageFile = data.image;
+    if (imageFile) formData.append('image', imageFile, imageFile.name);
+
+    return this.http.put<any>(url, formData);
   }
 
   ngOnDestroy() {
