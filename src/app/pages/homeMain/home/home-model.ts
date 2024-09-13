@@ -30,6 +30,7 @@ export interface DataRespSavingDetailsList {
   id: string;
   clientId: number;
   nombre: string;
+  imageBase64?: any;
 }
 
 export interface Month {

@@ -6,7 +6,12 @@
                 <div class="logo-merco" *ngIf="client?.clientId">
                     <img src="../../../../assets/img/merco.png" alt="">
                 </div>
-                {{ client.nombre }}
+                <div>
+                    <a class="truncate">
+                        {{ client.nombre }}
+                        
+                    </a>
+                </div>
             </button>
         </div>
 
