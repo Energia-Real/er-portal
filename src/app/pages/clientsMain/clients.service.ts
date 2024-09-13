@@ -1,11 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
-import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import * as entity from './clients-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
-import { DataCatalogs } from '@app/shared/models/catalogs-models';
 
 @Injectable({
   providedIn: 'root'
@@ -45,13 +44,11 @@ export class ClientsService implements OnDestroy {
   patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
     const url = `${this.API_URL}/tipodecliente/${id}`;
     
-
     return this.http.put<any>(url, data);
   }
 
   postDataClient(data: entity.DataPostClient) {
     const url = `${this.API_URL}/clients`;
-
     const formData = new FormData();
 
     formData.append('name', data.name);
@@ -64,10 +61,7 @@ export class ClientsService implements OnDestroy {
   }
 
   patchDataClient(id:number, data: entity.DataPatchClient) {
-    console.log('pathc', data);
-    
     const url = `${this.API_URL}/clients/${id}`;
-
     const formData = new FormData();
 
     formData.append('name', data.name);
