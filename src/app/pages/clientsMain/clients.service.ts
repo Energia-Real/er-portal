@@ -76,6 +76,8 @@ export class ClientsService implements OnDestroy {
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
+    console.log(formData);
+    
     return this.http.put<any>(url, formData);
   }
 

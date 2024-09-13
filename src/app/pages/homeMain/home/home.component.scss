@@ -39,6 +39,16 @@
       gap: 10px;
     }
 
+     a {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 80px;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0;
+      text-align: left;
+    }
 
     button {
       min-width: 120px;
