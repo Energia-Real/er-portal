@@ -70,10 +70,11 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   actionSave() {
     if (!this.formData.valid) return;
-
+    
     let objData: any = { ...this.formData.value }
     if (this.editedClient?.id) objData.clientId = this.formData.get('clientId')?.value;
-
+    else delete objData.clientId;
+    
     if (this.editedClient?.id) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }

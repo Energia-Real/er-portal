@@ -57,7 +57,6 @@ export class ClientsService implements OnDestroy {
     formData.append('name', data.name);
     formData.append('tipoDeClienteId', data.tipoDeClienteId);
 
-    if (data?.clientId) formData.append('clientId', data?.clientId);
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
@@ -65,6 +64,8 @@ export class ClientsService implements OnDestroy {
   }
 
   patchDataClient(id:number, data: entity.DataPatchClient) {
+    console.log('pathc', data);
+    
     const url = `${this.API_URL}/clients/${id}`;
 
     const formData = new FormData();
@@ -73,11 +74,10 @@ export class ClientsService implements OnDestroy {
     formData.append('tipoDeClienteId', data.tipoDeClienteId);
 
     if (data?.clientId) formData.append('clientId', data?.clientId);
+
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
-    console.log(formData);
-    
     return this.http.put<any>(url, formData);
   }
 
