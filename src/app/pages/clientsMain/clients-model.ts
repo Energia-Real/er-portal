@@ -10,6 +10,7 @@ export interface DataClientsTable {
   id: string;
   clientId: number;
   nombre: string;
+  imageBase64: string;
 }
 
 export interface DataPostPatchClient {
@@ -30,11 +31,14 @@ export interface DataPatchTypeClient {
 export interface DataPostClient {
   name: string,
   tipoDeClienteId: string
+  image: any
+  clientId?: string
 }
 export interface DataPatchClient {
-  clientId:  number
+  clientId:  string
   name: string,
   tipoDeClienteId: string
+  image?: any
 }
 
 export interface DataCatalogTypeClient {

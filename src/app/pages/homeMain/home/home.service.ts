@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import * as entity from './home-model';
@@ -26,8 +26,12 @@ export class HomeService {
 
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
     const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
+    const params = new HttpParams()
+    .set('imageSize', 50)
 
-    return this.http.get<entity.DataRespSavingDetailsList[]>(url)
+    return this.http.get<entity.DataRespSavingDetailsList[]>(url, { params }).pipe(
+      map((response) => Mapper.getDataClientsListMapper(response))
+    );
   }
 
   getDataSolarCovergaCo2(filters?: any) : Observable<entity.FormatCards[]> {

@@ -1,11 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
-import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import * as entity from './clients-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
-import { DataCatalogs } from '@app/shared/models/catalogs-models';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +19,10 @@ export class ClientsService implements OnDestroy {
   getClientsData(name: string, pageSize: number, page: number): Observable<entity.DataTableResponse> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
-      .set('name', name)
+      .set('imageSize', 150)
       .set('pagesize', pageSize)
-      .set('page', page);
+      .set('page', page)
+      .set('name', name);
 
     return this.http.get<entity.DataTableResponse>(url, { params }).pipe(
       map((response) => Mapper.getClientsDataMapper(response))
@@ -43,20 +43,36 @@ export class ClientsService implements OnDestroy {
 
   patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
     const url = `${this.API_URL}/tipodecliente/${id}`;
-
+    
     return this.http.put<any>(url, data);
   }
 
   postDataClient(data: entity.DataPostClient) {
     const url = `${this.API_URL}/clients`;
+    const formData = new FormData();
 
-    return this.http.post<any>(url, data);
+    formData.append('name', data.name);
+    formData.append('tipoDeClienteId', data.tipoDeClienteId);
+
+    const imageFile = data.image;
+    if (imageFile) formData.append('image', imageFile, imageFile.name);
+
+    return this.http.post<any>(url, formData);
   }
 
   patchDataClient(id:number, data: entity.DataPatchClient) {
     const url = `${this.API_URL}/clients/${id}`;
+    const formData = new FormData();
 
-    return this.http.put<any>(url, data);
+    formData.append('name', data.name);
+    formData.append('tipoDeClienteId', data.tipoDeClienteId);
+
+    if (data?.clientId) formData.append('clientId', data?.clientId);
+
+    const imageFile = data.image;
+    if (imageFile) formData.append('image', imageFile, imageFile.name);
+
+    return this.http.put<any>(url, formData);
   }
 
   ngOnDestroy() {

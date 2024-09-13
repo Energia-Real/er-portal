@@ -9,7 +9,7 @@
     <ul class="flex titles-header">
       <li class="mx-5"><a routerLink="/home" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('home') }">Home</a></li>
-      <li *ngIf="userInfo?.accessTo == 'BackOffice'" class="mx-5"><a routerLink="/plants"
+      <li class="mx-5"><a routerLink="/plants"
           class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a></li>
       <li *ngIf="userInfo?.accessTo == 'BackOffice'" class="mx-5"><a routerLink="/clients"

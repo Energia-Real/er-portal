@@ -58,4 +58,22 @@ export class Mapper {
 			costwoSolarTotal: formatsService.energyFormat(response.costwoSolarTotal),
 		}
 	}
+
+	static getDataClientsListMapper(response: entity.DataRespSavingDetailsList[]): entity.DataRespSavingDetailsList[] {
+		let dataList: entity.DataRespSavingDetailsList[] = [];
+		console.log('response', response);
+		
+
+		response?.forEach((data: entity.DataRespSavingDetailsList): void => {
+			dataList.push({
+				...data,
+				nombre: data?.nombre || '-',
+				imageBase64: data?.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ''
+			});
+		});
+
+		console.log('getDataClientsListMapper', dataList);
+
+		return dataList
+	}
 }
