@@ -20,9 +20,10 @@ export class ClientsService implements OnDestroy {
   getClientsData(name: string, pageSize: number, page: number): Observable<entity.DataTableResponse> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
-      .set('name', name)
+      .set('imageSize', 150)
       .set('pagesize', pageSize)
-      .set('page', page);
+      .set('page', page)
+      .set('name', name);
 
     return this.http.get<entity.DataTableResponse>(url, { params }).pipe(
       map((response) => Mapper.getClientsDataMapper(response))
@@ -43,6 +44,7 @@ export class ClientsService implements OnDestroy {
 
   patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
     const url = `${this.API_URL}/tipodecliente/${id}`;
+    
 
     return this.http.put<any>(url, data);
   }
@@ -50,13 +52,33 @@ export class ClientsService implements OnDestroy {
   postDataClient(data: entity.DataPostClient) {
     const url = `${this.API_URL}/clients`;
 
-    return this.http.post<any>(url, data);
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('tipoDeClienteId', data.tipoDeClienteId);
+
+    if (data?.clientId) formData.append('clientId', data?.clientId);
+    const imageFile = data.image;
+    if (imageFile) formData.append('image', imageFile, imageFile.name);
+
+    return this.http.post<any>(url, formData);
   }
 
   patchDataClient(id:number, data: entity.DataPatchClient) {
     const url = `${this.API_URL}/clients/${id}`;
 
-    return this.http.put<any>(url, data);
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('tipoDeClienteId', data.tipoDeClienteId);
+
+    if (data?.clientId) formData.append('clientId', data?.clientId);
+    const imageFile = data.image;
+    if (imageFile) formData.append('image', imageFile, imageFile.name);
+
+    console.log(formData);
+    
+    return this.http.put<any>(url, formData);
   }
 
   ngOnDestroy() {

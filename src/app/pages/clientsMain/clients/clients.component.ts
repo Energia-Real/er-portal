@@ -29,17 +29,20 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   pageSize: number = 5;
   pageIndex: number = 1;
   totalItems: number = 0;
+
+  ngAfterViewChecked() {
+    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
+    else console.error('Paginator no está definido');
+  }
+
   displayedColumns: string[] = [
+    'image',
     'clientName',
     'clientId',
     'typeClient',
     'actions'
   ];
 
-  ngAfterViewChecked() {
-    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
-    else console.error('Paginator no está definido');
-  }
 
   totalPlants: any;
 
