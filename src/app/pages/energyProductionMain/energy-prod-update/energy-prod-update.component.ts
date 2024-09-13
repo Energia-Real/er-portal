@@ -15,34 +15,31 @@ import { EnergyProductionService } from '../energy-production.service';
 })
 export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  private _equipment?: any | null | undefined;
+  private _plant?: any | null | undefined;
 
-  get equipment(): any | null | undefined { return this._equipment }
+  get plant(): any | null | undefined { return this._plant }
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
-  @Input() set equipment(editedData: any | null | undefined) {
+  @Input() set plant(editedData: any | null | undefined) {
     console.log(editedData);
+    this.editedPlant = editedData;
 
-    if (editedData) {
-      this.editedClient = editedData;
-      this.formData.patchValue({
-        ...editedData,
-        name: editedData?.nombre,
-        tipoDeClienteId: editedData?.tipoDeCliente?.id
-      })
-    }
+    this.formData.patchValue({
+      ...editedData
+    })
   }
 
   formData = this.fb.group({
-    nameSite: [{value: 'Linda Vista', disabled:true}, Validators.required],
-    month: [{value: 'September', disabled:true}, Validators.required],
-    year: [{value: '2024', disabled:true}, Validators.required],
-    energyProduction: [{value: '', disabled:false}, Validators.required],
+    siteName: [{ value: '', disabled: true }, Validators.required],
+    monthSelected: [{ value: '', disabled: true }, Validators.required],
+    monthSelectedName: [{ value: '', disabled: true }, Validators.required],
+    year: [{ value: '', disabled: true }, Validators.required],
+    yearName: [{ value: '', disabled: true }, Validators.required],
+    energyProduced: [{ value: '', disabled: false }, Validators.required],
   });
 
-  cattypesClients: entity.DataCatalogTypeClient[] = []
-  editedClient: any;
+  editedPlant: any;
 
   imagePreview: string | ArrayBuffer | null = null;
 
@@ -53,113 +50,58 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) { }
 
-  ngOnInit() {
-    this.getCatalogs();
-  }
+  ngOnInit() { }
 
-  getCatalogs() {
-    // this.moduleServices.getTypeClientsData().subscribe({
-    //   next: (response: entity.DataCatalogTypeClient[]) => this.cattypesClients = response,
-    //   error: (error) => {
-    //     this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-    //     console.error(error)
-    //   }
-    // })
-  }
-
-  actionSave() {
+  actionSave(deleteEnergyProd?:boolean) {
     if (!this.formData.valid) return
 
-    const objData: any = { ...this.formData.value };
-    console.log('objData', objData);
-    // if (!this.editedClient?.id) delete objData.clientId
-    // if (this.editedClient?.id) this.saveDataPatch(objData);
-    // else this.saveDataPost(objData);
+    const objData: any = {
+      ...this.editedPlant,
+      ...this.formData.value
+    };
+
+    delete objData.monthSelectedName;
+    delete objData.siteName;
+    delete objData.yearName;
+
+    if (deleteEnergyProd) objData.deleteEnergyProd = true;
+     else objData.deleteEnergyProd = false;
+
+    if (this.editedPlant?.energyProduced) this.saveDataPatch(objData);
+    else this.saveDataPost(objData);
   }
 
-  saveDataPost(objData: entity.DataPostClient) {
-    // this.moduleServices.postDataClient(objData).subscribe({
-    //   next: () => { this.completionMessage() },
-    //   error: (error) => {
-    //     this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-    //     console.error(error)
-    //   }
-    // })
+  saveDataPost(objData: entity.DataPostEnergyProd) {
+    this.moduleServices.postDataEnergyProd(objData).subscribe({
+      next: () => { this.completionMessage() },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        console.error(error)
+      }
+    })
   }
 
-  
-  validateInput(event: any): void {
-    const inputValue = event.target.value;
-    
-    if (inputValue <= 0) {
-      event.target.value = '';
-      this.formData.controls['energyProduction'].setValue('');
-    }
-  }
-
-  saveDataPatch(objData: entity.DataPatchClient) {
-    // this.moduleServices.patchDataClient(this.editedClient?.id!, objData).subscribe({
-    //   next: () => { this.completionMessage(true) },
-    //   error: (error) => {
-    //     this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-    //     console.error(error)
-    //   }
-    // })
-  }
-
-  onFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      // this.formData.get('image')?.setValue(file);
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    if (event.dataTransfer && event.dataTransfer.files.length > 0) {
-      const file = event.dataTransfer.files[0];
-      // this.formData.get('image')?.setValue(file);
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  removeImage(event: Event) {
-    event.stopPropagation();
-    this.imagePreview = null;
-    // this.formData.get('image')?.setValue(null);
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onDragLeave(event: DragEvent) {
-    event.preventDefault();
+  saveDataPatch(objData: entity.DataPatchEnergyProd) {
+    this.moduleServices.patchDataEnergyProd(objData).subscribe({
+      next: () => { this.completionMessage(true) },
+      error: (error) => {
+        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        console.error(error)
+      }
+    })
   }
 
   cancelEdit() {
     this.formData.reset();
     this.formData.markAsPristine();
     this.formData.markAsUntouched();
-    this.editedClient = null;
+    this.editedPlant = null;
   }
 
-  closeDrawer() {
+  closeDrawer(cancel?:boolean) {
     this.isOpen = false;
     setTimeout(() => this.cancelEdit(), 300);
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: true }));
+    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: cancel ? false : true }));
   }
 
   completionMessage(edit = false) {
@@ -167,6 +109,15 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
       .subscribe((_ => this.closeDrawer()));
+  }
+
+  validateInput(event: any): void {
+    const inputValue = event.target.value;
+
+    if (inputValue <= 0) {
+      event.target.value = '';
+      this.formData.controls['energyProduced'].setValue('');
+    }
   }
 
   ngOnDestroy(): void {

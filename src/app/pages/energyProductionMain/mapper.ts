@@ -3,23 +3,22 @@ import * as entity from './energy-production-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
-	static getClientsDataMapper(response: entity.DataTableResponse): entity.DataTableResponse {
+	static getEnergyProdDataDataMapper(response: entity.DataTableEnergyProdResponse) : entity.DataEnergyProdTable[] {
 		
-		console.log('MAPPER', response.data);
 		
-		let dataList: entity.DataClientsTable[] = [];
+		let dataList: entity.DataEnergyProdTable[] = [];
 
-		response?.data.forEach((data: entity.DataClientsTable): void => {
-
+		response?.response.energyProducedResponses.forEach((data: entity.DataEnergyProdTable): void => {
 			dataList.push({
 				...data,
-				nombre : data?.nombre || '-'
 			});
 		});
+		
 
-		return {
-			...response,
-			data: dataList
-		}
+		return dataList
+		// return {
+		// 	...response,
+		// 	data: dataList
+		// }
 	}
 }

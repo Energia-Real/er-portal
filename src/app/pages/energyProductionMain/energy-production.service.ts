@@ -5,6 +5,7 @@ import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
 import { Mapper } from './mapper';
+import * as entity from './energy-production-model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,30 @@ import { Mapper } from './mapper';
 export class EnergyProductionService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_CLIENTS_V1;
+  private API_URL = environment.API_URL_ENERGY_PERFORMANCE_V1;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  
+  getEnergyProdData(year:string): Observable<any> {
+    const url = `${this.API_URL}/GetEnergyProduced/${year}`;
+
+    return this.http.get<entity.DataTableEnergyProdResponse>(url).pipe(
+      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+    );
+  }
+
+  postDataEnergyProd(data: entity.DataPostEnergyProd) {
+    const url = `${this.API_URL}/AddEnergyProduced`;
+
+    return this.http.post<any>(url, data);
+  }
+
+  patchDataEnergyProd(data: entity.DataPatchEnergyProd) {
+    const url = `${this.API_URL}/EditEnergyProduced`;
+    
+    return this.http.put<any>(url, data);
+  }
+
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();
