@@ -67,7 +67,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     if (deleteEnergyProd) objData.deleteEnergyProd = true;
      else objData.deleteEnergyProd = false;
 
-    if (this.editedPlant?.energyProduced) this.saveDataPatch(objData);
+    if (this.editedPlant?.isCreated) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
   }
 

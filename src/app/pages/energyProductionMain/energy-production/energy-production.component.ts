@@ -24,18 +24,20 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<any>([]);
-
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatPaginator,{ static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 5;
-  pageIndex: number = 1;
+  pageIndex: number = 1 ;
   totalItems: number = 0;
-
+  
   ngAfterViewChecked() {
-    // if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
-    //  else console.error('Paginator no está definido');
-  }
+    if (this.paginator) {
+      this.paginator.pageIndex = this.pageIndex - 1; 
+    } else {
+      console.error('Paginator no está definido');
+    }
+}
 
   displayedColumns: string[] = [
     'siteName',
@@ -57,10 +59,10 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
     { value: 2024 },
   ];
 
-  selectedYear: any
+  selectedYear: any = 2024
 
-  // pageSizeSub: Subscription;
-  // pageIndexSub: Subscription;
+  pageSizeSub: Subscription;
+  pageIndexSub: Subscription;
   drawerOpenSub: Subscription;
 
   searchBar = new FormControl('');
@@ -73,30 +75,32 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
 
   editedClient: any;
 
+
   constructor(
     private store: Store,
     private notificationService: OpenModalsService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
-    // this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
-    //   this.pageSize = size;
-    //   if (this.paginator) this.paginator.pageSize = size; 
-    // });
-
-    // this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
-    //   this.pageIndex = index + 1;
-    //   if (this.paginator) this.paginator.pageIndex = index; 
-    //   // this.getDataResponse(index + 1, this.searchValue); 
-    // });
+      this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
+        this.pageSize = size;
+        if (this.paginator) {
+          this.paginator.pageSize = size; 
+        }
+      });
+  
+      this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
+        this.pageIndex = index + 1;
+        if (this.paginator) {
+          this.paginator.pageIndex = index; 
+        }
+        this.getDataResponse(index+1, this.searchValue); 
+      });
 
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
-      // if (!this.drawerOpenPlant && !this.editedClient) {
       this.drawerOpenPlant = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
       this.drawerInfo = resp.drawerInfo;
-      if (resp.needReload) this.getDataResponse();
-
-      // }
+      if (resp.needReload) this.getDataResponse(1, this.searchValue);
     });
   }
 
@@ -106,14 +110,17 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
 
   setYear() {
     this.selectedYear = this.years[0].value;
-    this.getDataResponse();
+    // this.getDataResponse();
   }
 
-  getDataResponse() {
-    this.moduleServices.getEnergyProdData(this.selectedYear).subscribe({
-      next: (response: any) => {
+  getDataResponse(page: number, name:string) {
+    this.moduleServices.getEnergyProdData(this.selectedYear, this.pageSize, page).subscribe({
+      next: (response: entity.DataEnergyProdTablMapper) => {
         console.log('getDataResponse', response);
-        this.dataSource.data = response
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page!
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -122,10 +129,10 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
     });
   }
 
-  // getServerData(event: PageEvent): void {
-  //   this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-  //   // this.getDataResponse(event.pageIndex + 1, this.searchValue);
-  // }
+  getServerData(event: PageEvent): void {
+    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    this.getDataResponse(event.pageIndex + 1, this.searchValue);
+  }
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
@@ -141,7 +148,8 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
       year : this.selectedYear,
       monthSelected : month,
       monthSelectedName : monthName,
-      energyProduced : energyProduced > 0 ? energyProduced : ''
+      energyProduced : energyProduced > 0 ? energyProduced : '',
+      isCreated : data.isCreated
     }
 
     this.editedClient = objData

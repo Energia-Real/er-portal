@@ -11,7 +11,7 @@
             <div class="mb-0">
                 <div class="grid grid-cols-1  gap-x-6 gap-y-2">
                     <div class="col-span-1 md:col-span-1">
-                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ this.editedPlant?.clientId ? 'Edit' : 'Add'}} energy production</h2>
+                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ editedPlant?.isCreated ? 'Edit' : 'Add'}} energy production</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                             <div class="col-span-1 md:col-span-1">
                                 <div class="c-input mb-0">
@@ -50,15 +50,15 @@
 
                         <div class="footer-btns col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
                             <div class="delete" >
-                                <i *ngIf="editedPlant?.energyProduced" class="fa-solid fa-trash" (click)="actionSave(true)"></i>
+                                <i matTooltip="The energy production will be eliminated." *ngIf="editedPlant?.energyProduced" class="fa-solid fa-trash" (click)="actionSave(true)"></i>
                             </div>
                             <div class="button-container d-flex justify-content-between pt-0 gap-2">
                                 <button class="btn-cancel" (click)="closeDrawer(true)" type="button">Cancel</button>
                                 <div>
                                     <button class="btn-action-add" type="submit">
                                         <i
-                                            [class]="editedPlant?.clientId ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
-                                        {{ editedPlant ? 'Edit' : 'Save' }}
+                                            [class]="editedPlant?.isCreated ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
+                                        {{ editedPlant?.isCreated ? 'Edit' : 'Save' }}
                                     </button>
                                 </div>
                             </div>

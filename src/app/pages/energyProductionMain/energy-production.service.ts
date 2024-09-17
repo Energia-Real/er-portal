@@ -17,10 +17,13 @@ export class EnergyProductionService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getEnergyProdData(year:string): Observable<any> {
+  getEnergyProdData(year:string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
     const url = `${this.API_URL}/GetEnergyProduced/${year}`;
+    const params = new HttpParams()
+    .set('pagesize', pageSize)
+    .set('page', page);
 
-    return this.http.get<entity.DataTableEnergyProdResponse>(url).pipe(
+    return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
       map((response) => Mapper.getEnergyProdDataDataMapper(response))
     );
   }
