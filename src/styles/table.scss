@@ -18,6 +18,14 @@
     font-weight: 500;
 }
 
+
+.guion-click {
+    td {
+        div {
+            cursor: pointer;
+        }
+    }
+}
 .c-table {
     max-width: 100%;
     overflow-y: auto;
