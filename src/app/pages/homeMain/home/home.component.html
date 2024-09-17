@@ -3,14 +3,11 @@
     <div>
         <div class="c-client-list">
             <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
-                <div class="logo-merco" *ngIf="client?.clientId">
-                    <img src="../../../../assets/img/merco.png" alt="">
+                <div class="logo-merco" *ngIf="client.id == '875611f7-c626-413c-bea4-bb7ddf3ac7db' || client?.imageBase64">
+                    <img [src]="client.id == '875611f7-c626-413c-bea4-bb7ddf3ac7db' ? '../../../../assets/img/merco.png' : client.imageBase64" alt="">
                 </div>
                 <div>
-                    <a class="truncate">
-                        {{ client.nombre }}
-                        
-                    </a>
+                    <a class="truncate">{{ client.nombre }}</a>
                 </div>
             </button>
         </div>
