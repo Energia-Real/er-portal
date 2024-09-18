@@ -103,6 +103,41 @@
 }
 
 
+.select-years {
+    width: 130px;
+    height: 35px !important;
+
+    border-color: none !important;
+    outline: none !important;
+
+    .mat-mdc-text-field-wrapper {
+        padding: 0 !important;
+        border: none !important;
+        outline: none !important;
+        border-color: none !important;
+    }
+
+    .mat-mdc-select {
+        outline: none !important;
+        border-color: none !important;
+        outline-offset: 0px !important;
+    }
+
+    .mat-mdc-select-multiple {
+        outline: none !important;
+        border-color: none !important;
+        outline-offset: 0px !important;
+    }
+
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex {
+        height: 35px !important;
+        display: flex;
+        align-items: center;
+        outline: none !important;
+        border-color: none !important;
+        outline-offset: 0px !important;
+    }
+}
 .select-mount {
     width: 150px;
     height: 35px !important;
