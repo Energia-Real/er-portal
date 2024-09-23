@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
-import { LayoutModule } from '@app/shared/components/layout/layout.module';
+import { SharedComponensModule } from '@app/shared/components/header/shared-components.module';
 import { Observable, Subject } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import * as entity from './home-model';
@@ -27,7 +27,7 @@ Chart.register(...registerables);
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [CommonModule, LayoutModule, MaterialModule, MessageNoDataComponent, ReactiveFormsModule, NgChartsModule],
+  imports: [CommonModule, SharedComponensModule, MaterialModule, MessageNoDataComponent, ReactiveFormsModule, NgChartsModule],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None
@@ -304,7 +304,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goDetails(id: string) {
-    this.router.navigateByUrl(`/plants/details/${id}`)
+    this.router.navigateByUrl(`er/plants/details/${id}`)
   }
 
   get searchFilters() {

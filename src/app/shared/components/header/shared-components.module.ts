@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LayoutComponent } from './layout.component';
+import { HeaderComponent } from './header.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { FooterComponent } from '../footer/footer.component';
@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    LayoutComponent,
+    HeaderComponent,
     FooterComponent
   ],
   imports: [
@@ -19,8 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    LayoutComponent,
+    HeaderComponent,
     FooterComponent
   ]
 })
-export class LayoutModule { }
+export class SharedComponensModule { }

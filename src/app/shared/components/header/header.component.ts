@@ -22,11 +22,11 @@ interface User {
   accessTo: string
 }
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss'
 })
-export class LayoutComponent implements OnDestroy {
+export class HeaderComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   userInfo: any = {};

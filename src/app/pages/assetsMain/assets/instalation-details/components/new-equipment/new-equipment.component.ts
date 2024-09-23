@@ -26,7 +26,7 @@ export class NewEquipmentComponent {
 
   @Input()
   modeDrawer: "Edit" | "Create" = "Create";
-
+  
   @Input()
   plantCode?:string;
 
