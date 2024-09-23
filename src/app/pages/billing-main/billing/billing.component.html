@@ -27,13 +27,12 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="pricing">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Pricing</th>
+            <ng-container matColumnDef="billing">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Billing</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.pricing else notDataTable"> {{ element.pricing }} </div>
+                    <div *ngIf="element?.billing else notDataTable"> {{ element.billing }} </div>
                 </td>
             </ng-container>
-
 
             <tr *matNoDataRow>
                 <td class="mat-cell" [attr.colspan]="displayedColumns.length">

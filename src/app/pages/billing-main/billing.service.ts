@@ -2,21 +2,21 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
 import { Observable, Subject, map } from 'rxjs';
-  import * as entity from './pricing-model';
+  import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PricingService implements OnDestroy {
+export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_CLIENTS_V1;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getPricingData(name: string, pageSize: number, page: number): Observable<any> {
+  getBillingData(name: string, pageSize: number, page: number): Observable<any> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
       .set('imageSize', 150)

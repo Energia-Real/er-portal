@@ -9,7 +9,7 @@ const HomeAdminModule= () => import('../pages/home-admin/home-admin.module').the
 const plantsModule = () => import('../pages/assetsMain/assets/assets.module').then(x => x.PlantsModule);
 const clientModule = () => import('../pages/clientsMain/clients-main.module').then(x => x.ClientsMainModule);
 const energyProductionModule = () => import('../pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
-const billingModule = () => import('../pages/billing/billing.module').then(x => x.BillingModule);
+const billingModule = () => import('../pages/billing-main/billing-main.module').then(x => x.BillingMainModule);
 const pricingModule = () => import('../pages/pricing-main/pricing-main.module').then(x => x.PricingMainModule);
 
 

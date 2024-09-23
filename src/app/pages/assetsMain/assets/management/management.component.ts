@@ -47,7 +47,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   totalPlants!: entity.DataSummaryProjectsMapper;
 
-  searchValue: string = '';
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 5;
@@ -75,7 +74,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
       if (this.paginator) {
         this.paginator.pageIndex = index; 
       }
-      this.getDataResponse(index+1, this.searchValue); 
+      this.getDataResponse(index+1); 
     });
   }
 
@@ -89,13 +88,10 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
     })
   }
 
-  getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, this.searchValue);
-  }
 
-  getDataResponse(page: number, name: string) {
-    this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
+
+  getDataResponse(page: number, name?: string) {
+    this.moduleServices.getDataAssetsmanagement(name!, this.pageSize, page).subscribe({
       next: (response : entity.DataManagementTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
@@ -125,6 +121,11 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
+  }
+
+  getServerData(event: PageEvent): void {
+    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    this.getDataResponse(event.pageIndex + 1);
   }
 
   ngOnDestroy(): void {
