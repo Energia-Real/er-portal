@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BillingMainComponent } from './billing-main/billing-main.component';
+import { BillingComponent } from './billing/billing.component';
 
 const routes: Routes = [
   {
-    path: '', component: BillingMainComponent,
+    path: '', component: BillingComponent,
     children: [
     ]
   }
