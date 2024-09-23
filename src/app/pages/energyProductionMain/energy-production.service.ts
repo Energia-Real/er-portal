@@ -17,11 +17,12 @@ export class EnergyProductionService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getEnergyProdData(year:string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
+  getEnergyProdData(year:string, name:string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
     const url = `${this.API_URL}/GetEnergyProduced/${year}`;
     const params = new HttpParams()
     .set('pagesize', pageSize)
-    .set('page', page);
+    .set('page', page)
+    .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
       map((response) => Mapper.getEnergyProdDataDataMapper(response))
@@ -38,6 +39,18 @@ export class EnergyProductionService implements OnDestroy {
     const url = `${this.API_URL}/EditEnergyProduced`;
     
     return this.http.put<any>(url, data);
+  }
+
+  downloadExcel(): Observable<Blob> {
+    const url = `${this.API_URL}/DownloadExcelTemplate`;
+    
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
+  loadExcel(): Observable<any> {
+    const url = `${this.API_URL}/LoadExcelTemplate`;
+
+    return this.http.get<any>(url)
   }
 
   ngOnDestroy() {

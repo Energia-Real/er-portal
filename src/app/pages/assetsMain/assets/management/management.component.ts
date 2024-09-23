@@ -24,11 +24,8 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   ngAfterViewChecked() {
-      if (this.paginator) {
-        this.paginator.pageIndex = this.pageIndex - 1; 
-      } else {
-        console.error('Paginator no está definido');
-      }
+      if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1; 
+       else console.error('Paginator no está definido');
   }
   
   displayedColumns: string[] = [
@@ -87,8 +84,6 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
       this.getDataResponse(1, content!);
     })
   }
-
-
 
   getDataResponse(page: number, name?: string) {
     this.moduleServices.getDataAssetsmanagement(name!, this.pageSize, page).subscribe({
