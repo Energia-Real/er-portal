@@ -31,12 +31,12 @@ export class LayoutComponent implements OnInit, OnDestroy{
     this.authService.getInfoUser().subscribe(role => {
       if (role.accessTo === 'BackOffice') {
         this.router.navigate(['backoffice-home'], { relativeTo: this.route });
-      } else if (role.accessTo === 'Administrator') {
+      } else if (role.accessTo === 'Admin') {
         this.router.navigate(['admin-home'], { relativeTo: this.route });
       } else if (role.accessTo === 'Clients') {
         this.router.navigate(['client-home'], { relativeTo: this.route });
       } else if (role.accessTo === 'Billing') {
-        this.router.navigate(['billing'], { relativeTo: this.route });
+        this.router.navigate(['pricing'], { relativeTo: this.route });
       } else {
         this.router.navigate(['/login']);
       }

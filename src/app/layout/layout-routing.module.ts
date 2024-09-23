@@ -28,7 +28,7 @@ const routes: Routes = [
         path: 'admin-home', 
         loadChildren: HomeAdminModule, 
         canActivate: [redirectGuard],
-        data: { roles: ['Administrator']}  
+        data: { roles: ['Admin']}  
       },
       {
         path: 'client-home', 
@@ -41,31 +41,31 @@ const routes: Routes = [
         path: 'plants',
         loadChildren:plantsModule ,
         canActivate: [redirectGuard],
-        data: { roles: ['BackOffice', 'Administrator']} 
+        data: { roles: ['BackOffice', 'Admin']} 
       },
       {
         path: 'clients',
         loadChildren: clientModule,
         canActivate: [redirectGuard],
-        data: { roles: ['BackOffice', 'Administrator']}
+        data: { roles: ['BackOffice', 'Admin']}
       },
       {
         path: 'energyProduction',
         loadChildren: energyProductionModule,
         canActivate: [redirectGuard],
-        data: { roles: ['BackOffice', 'Administrator']}
+        data: { roles: ['BackOffice', 'Admin']}
       },
       {
         path: 'billing',
         loadChildren: billingModule,
         canActivate: [redirectGuard],
-        data: { roles: ['Billing', 'Administrator']}
+        data: { roles: ['Billing', 'Admin']}
       },
       {
         path: 'pricing',
         loadChildren: pricingModule,
         canActivate: [redirectGuard],
-        data: { roles: ['Billing', 'Administrator']}
+        data: { roles: ['Billing', 'Admin']}
       }
     ]
   }
