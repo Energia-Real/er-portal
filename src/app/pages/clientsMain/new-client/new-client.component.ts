@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import * as entity from '../../clients-model';
-import { ClientsService } from '../../clients.service';
+import * as entity from '../clients-model';
+import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 @Component({
   selector: 'app-new-client',

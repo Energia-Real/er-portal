@@ -16,8 +16,8 @@ import { InfoCardComponent } from '@app/shared/components/info-card/info-card.co
 import { ClientsRoutingModule } from './clients-routing.module';
 import { ClientsComponent } from './clients/clients.component';
 import { NewEquipmentComponent } from '../assetsMain/assets/instalation-details/components/new-equipment/new-equipment.component';
-import { TypesClientsComponent } from './clients/types-clients/types-clients.component';
-import { NewClientComponent } from './clients/new-client/new-client.component';
+import { TypesClientsComponent } from './types-clients/types-clients.component';
+import { NewClientComponent } from './new-client/new-client.component';
 
 
 @NgModule({

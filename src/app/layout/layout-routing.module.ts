@@ -10,7 +10,7 @@ const plantsModule = () => import('../pages/assetsMain/assets/assets.module').th
 const clientModule = () => import('../pages/clientsMain/clients-main.module').then(x => x.ClientsMainModule);
 const energyProductionModule = () => import('../pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
 const billingModule = () => import('../pages/billing/billing.module').then(x => x.BillingModule);
-const pricingModule = () => import('../pages/pricing/pricing.module').then(x => x.PricingModule);
+const pricingModule = () => import('../pages/pricing-main/pricing-main.module').then(x => x.PricingMainModule);
 
 
 const routes: Routes = [

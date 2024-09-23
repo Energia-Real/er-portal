@@ -3,10 +3,10 @@ import { FormControl, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import * as entity from '../../clients-model';
+import * as entity from '../clients-model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { ClientsService } from '../../clients.service';
+import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
 
