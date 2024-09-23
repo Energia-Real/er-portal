@@ -16,7 +16,7 @@ export class PricingService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getClientsData(name: string, pageSize: number, page: number): Observable<entity.DataTableResponse> {
+  getPricingData(name: string, pageSize: number, page: number): Observable<any> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
       .set('imageSize', 150)
