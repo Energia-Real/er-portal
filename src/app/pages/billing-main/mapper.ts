@@ -1,18 +1,19 @@
 	import * as entity from './billing-model';
 export class Mapper {
-	static getClientsDataMapper(response: entity.DataTableResponse): entity.DataTableResponse {
-		let dataList: entity.DataClientsTable[] = [];
+	static getBillingDataMapper(response: entity.DataTableBillingResponse): entity.DataBillingTableMapper {
+		let dataList: entity.DataBillingTable[] = [];
 
-		response?.data.forEach((data: entity.DataClientsTable): void => {
+		response?.response?.billingPagedResponse?.data.forEach((data: entity.DataBillingTable): void => {
 			dataList.push({
 				...data,
-				nombre: data?.nombre || '-',
-				imageBase64: data?.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ''
+				siteName: data?.siteName || '-',
+				clientName: data?.clientName || '-',
+				billing: data?.billing || 0,
 			});
 		});
 
 		return {
-			...response,
+			...response.response.billingPagedResponse,
 			data: dataList
 		}
 	}

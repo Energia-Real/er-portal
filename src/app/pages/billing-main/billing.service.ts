@@ -16,63 +16,16 @@ export class BillingService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getBillingData(name: string, pageSize: number, page: number): Observable<any> {
-    const url = `${this.API_URL}/clients`;
+  getBillingData(name: string, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
+    const url = `${this.API_URL}/billing`;
     const params = new HttpParams()
-      .set('imageSize', 150)
       .set('pagesize', pageSize)
       .set('page', page)
       .set('name', name);
 
-    return this.http.get<entity.DataTableResponse>(url, { params }).pipe(
-      map((response) => Mapper.getClientsDataMapper(response))
+    return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
+      map((response) => Mapper.getBillingDataMapper(response))
     );
-  }
-
-  getTypeClientsData(): Observable<entity.DataCatalogTypeClient[]> {
-		const url = `${this.API_URL}/tipodecliente`;
-
-		return this.http.get<entity.DataCatalogTypeClient[]>(url);
-	}
-
-  postDataTypeClient(data: entity.DataPostTypeClient) {
-    const url = `${this.API_URL}/tipodecliente`;
-
-    return this.http.post<any>(url, data);
-  }
-
-  patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
-    const url = `${this.API_URL}/tipodecliente/${id}`;
-    
-    return this.http.put<any>(url, data);
-  }
-
-  postDataClient(data: entity.DataPostClient) {
-    const url = `${this.API_URL}/clients`;
-    const formData = new FormData();
-
-    formData.append('name', data.name);
-    formData.append('tipoDeClienteId', data.tipoDeClienteId);
-
-    const imageFile = data.image;
-    if (imageFile) formData.append('image', imageFile, imageFile.name);
-
-    return this.http.post<any>(url, formData);
-  }
-
-  patchDataClient(id:number, data: entity.DataPatchClient) {
-    const url = `${this.API_URL}/clients/${id}`;
-    const formData = new FormData();
-
-    formData.append('name', data.name);
-    formData.append('tipoDeClienteId', data.tipoDeClienteId);
-
-    if (data?.clientId) formData.append('clientId', data?.clientId);
-
-    const imageFile = data.image;
-    if (imageFile) formData.append('image', imageFile, imageFile.name);
-
-    return this.http.put<any>(url, formData);
   }
 
   ngOnDestroy() {

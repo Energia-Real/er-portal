@@ -1,18 +1,19 @@
 	import * as entity from './pricing-model';
 export class Mapper {
-	static getClientsDataMapper(response: entity.DataTableResponse): entity.DataTableResponse {
-		let dataList: entity.DataClientsTable[] = [];
+	static getPricingDataMapper(response: entity.DataTablePricingResponse): entity.DataPricingTableMapper {
+		let dataList: entity.DataPricingTable[] = [];
 
-		response?.data.forEach((data: entity.DataClientsTable): void => {
+		response?.response.pricingPagedResponse.data.forEach((data: entity.DataPricingTable): void => {
 			dataList.push({
 				...data,
-				nombre: data?.nombre || '-',
-				imageBase64: data?.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ''
+				siteName: data?.siteName || '-',
+				clientName: data?.clientName || '-',
+				pricing: data?.pricing || 0,
 			});
 		});
 
 		return {
-			...response,
+			...response.response.pricingPagedResponse,
 			data: dataList
 		}
 	}
