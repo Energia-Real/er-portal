@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
 import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
@@ -17,12 +17,12 @@ export class EnergyProductionService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getEnergyProdData(year:string, name:string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
+  getEnergyProdData(year: string, name: string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
     const url = `${this.API_URL}/GetEnergyProduced/${year}`;
     const params = new HttpParams()
-    .set('pagesize', pageSize)
-    .set('page', page)
-    .set('name', name);
+      .set('pagesize', pageSize)
+      .set('page', page)
+      .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
       map((response) => Mapper.getEnergyProdDataDataMapper(response))
@@ -37,20 +37,22 @@ export class EnergyProductionService implements OnDestroy {
 
   patchDataEnergyProd(data: entity.DataPatchEnergyProd) {
     const url = `${this.API_URL}/EditEnergyProduced`;
-    
+
     return this.http.put<any>(url, data);
   }
 
   downloadExcel(): Observable<Blob> {
     const url = `${this.API_URL}/DownloadExcelTemplate`;
-    
+
     return this.http.get(url, { responseType: 'blob' });
   }
 
-  loadExcel(): Observable<any> {
+  loadExcel(file: File): Observable<any> {
     const url = `${this.API_URL}/LoadExcelTemplate`;
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
 
-    return this.http.get<any>(url)
+    return this.http.post<any>(`${url}`, formData);
   }
 
   ngOnDestroy() {

@@ -70,6 +70,9 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   searchBar = new FormControl('');
 
+  selectedFile: File | null = null;
+
+
   constructor(
     private store: Store,
     private notificationService: OpenModalsService,
@@ -170,16 +173,23 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     });
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0]; 
+    this.loadExcel();
+  }
+
   loadExcel() {
-    this.moduleServices.loadExcel().subscribe({
-      next: (response) => {
-        this.completionMessage(true);
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
+    if (this.selectedFile) {
+      this.moduleServices.loadExcel(this.selectedFile).subscribe({
+        next: (response) => {
+          this.completionMessage(true);
+        },
+        error: error => {
+          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+          console.log(error);
+        }
+      });
+    }
   }
 
   updDraweState(estado: boolean): void {
