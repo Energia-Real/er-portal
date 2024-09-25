@@ -88,15 +88,8 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
     })
   }
 
-<<<<<<< Updated upstream
-
-
-  getDataResponse(page: number, name?: string) {
-    this.moduleServices.getDataAssetsmanagement(name!, this.pageSize, page).subscribe({
-=======
   getDataResponse(page: number, name: string) {
     this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
->>>>>>> Stashed changes
       next: (response : entity.DataManagementTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
