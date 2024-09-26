@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TokenInterceptor } from './shared/interceptor/token.interceptor';
-import { LayoutModule } from './shared/components/layout/layout.module';
+import { SharedComponensModule } from './shared/components/header/shared-components.module';
 import { LoadingInterceptor } from './core/services/loading.interceptor';
 import { CoreModule } from './core/core.module';
 import { StoreModule } from '@ngrx/store';
@@ -23,7 +23,7 @@ import { filterReducer } from './core/store/reducers/filters.reducer';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    LayoutModule,
+    SharedComponensModule,
     GoogleMapsModule,
     CoreModule,
     StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer }),

@@ -314,7 +314,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   toBack() {
-    this.router.navigateByUrl(`/plants`)
+    this.router.navigateByUrl(`er/plants`)
   }
 
   ngOnDestroy(): void {

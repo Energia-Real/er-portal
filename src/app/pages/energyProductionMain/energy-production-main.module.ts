@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LayoutModule } from '@app/shared/components/layout/layout.module';
+import { SharedComponensModule } from '@app/shared/components/header/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { HighchartsChartModule } from 'highcharts-angular';
@@ -15,14 +15,12 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';
 import { EnergyProductionComponent } from './energy-production/energy-production.component';
 import { EnergyProductionRoutingModule } from './energy-production-routing.module';
-import { LayoutComponent } from './layout/layout.component';
 import { EnergyProdUpdateComponent } from './energy-prod-update/energy-prod-update.component';
 
 
 @NgModule({
   declarations: [
     EnergyProductionComponent,
-    LayoutComponent,
     EnergyProdUpdateComponent
   ],
   imports: [
@@ -30,7 +28,7 @@ import { EnergyProdUpdateComponent } from './energy-prod-update/energy-prod-upda
     EnergyProductionRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    LayoutModule,
+    SharedComponensModule,
     ReturnBarModule,
     MaterialModule,
     InfoCardComponent,

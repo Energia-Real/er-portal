@@ -1,0 +1,64 @@
+<nav class="c-header z-10 border-b-2">
+  <div class="mx-10 flex justify-between items-center">
+    <a href="/home" class="text-white text-sm font-semibold c-version">
+      <div class="version">
+        Version: {{ version }}
+      </div>
+      <img src="../../../../assets/svg/logo.svg" alt="Logo" style="width: 120px;">
+    </a>
+    
+    <ul class="flex titles-header">
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice'"><a routerLink="backoffice-home" 
+        class="hover:text-gray-300 cursor-pointer"
+        [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }">Home</a></li>
+
+        <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin'"><a routerLink="admin-home"
+          class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }">Home</a></li>
+
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"><a routerLink="plants"
+          class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a></li>
+
+
+      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a routerLink="clients"
+          class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a></li>
+
+      
+      <!-- <li class="mx-5"><a routerLink="/payments" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li> -->
+      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a routerLink="energyProduction" 
+          class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('energyProduction') }"> Energy Production</a></li>
+      
+      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="pricing" 
+        class="hover:text-gray-300 cursor-pointer"
+        [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }"> Pricing</a></li>
+        
+      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="billing" 
+        class="hover:text-gray-300 cursor-pointer"
+        [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }"> Billing</a></li>
+    </ul>
+
+    <div class="flex align-items-center">
+      <div class="c-input mb-0">
+        <mat-form-field class="select-mount" appearance="outline">
+          <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
+            (valueChange)="searchWithFilters()">
+            <mat-option *ngFor="let month of months; let i = index" [value]="month">
+              {{ month.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <mat-icon class="custom-icon-color">account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="signOut()">Sign out</button>
+      </mat-menu>
+    </div>
+  </div>
+</nav>
