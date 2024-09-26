@@ -175,12 +175,12 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0]; 
-    this.loadExcel();
+    this.uploadExcel();
   }
 
-  loadExcel() {
+  uploadExcel() {
     if (this.selectedFile) {
-      this.moduleServices.loadExcel(this.selectedFile).subscribe({
+      this.moduleServices.uploadExcel(this.selectedFile).subscribe({
         next: (response) => {
           this.completionMessage(true);
         },
@@ -207,6 +207,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   completionMessage(load: boolean) {
     this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
+    this.getDataResponse(1, '');
   }
 
   ngOnDestroy(): void {

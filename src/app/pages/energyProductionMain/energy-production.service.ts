@@ -47,10 +47,10 @@ export class EnergyProductionService implements OnDestroy {
     return this.http.get(url, { responseType: 'blob' });
   }
 
-  loadExcel(file: File): Observable<any> {
-    const url = `${this.API_URL}/LoadExcelTemplate`;
+  uploadExcel(file: File): Observable<any> {
+    const url = `${this.API_URL}/UploadTemplateFile`;
     const formData: FormData = new FormData();
-    formData.append('file', file, file.name);
+    formData.append('excelFile', file, file.name);
 
     return this.http.post<any>(`${url}`, formData);
   }
