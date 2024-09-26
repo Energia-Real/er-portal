@@ -207,7 +207,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   completionMessage(load: boolean) {
     this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
-    this.getDataResponse(1, '');
+    this.getDataResponse(1, this.searchBar?.value || '');
   }
 
   ngOnDestroy(): void {
