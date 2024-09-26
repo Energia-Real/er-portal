@@ -71,7 +71,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
       if (this.paginator) {
         this.paginator.pageIndex = index; 
       }
-      this.getDataResponse(index+1); 
+      this.getDataResponse(index+1, ''); 
     });
   }
 
@@ -85,8 +85,8 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
     })
   }
 
-  getDataResponse(page: number, name?: string) {
-    this.moduleServices.getDataAssetsmanagement(name!, this.pageSize, page).subscribe({
+  getDataResponse(page: number, name: string) {
+    this.moduleServices.getDataAssetsmanagement(name, this.pageSize, page).subscribe({
       next: (response : entity.DataManagementTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
@@ -120,7 +120,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
 
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1);
+    this.getDataResponse(event.pageIndex + 1, '');
   }
 
   ngOnDestroy(): void {
