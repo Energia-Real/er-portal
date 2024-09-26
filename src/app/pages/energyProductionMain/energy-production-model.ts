@@ -1,7 +1,7 @@
 export interface DataTableEnergyProdResponse {
   success: boolean,
   response: {
-    energyProducedPagedResponse: {
+    pagedResponse: {
       pageSize: number,
       page: number,
       data: DataEnergyProdTable[],
