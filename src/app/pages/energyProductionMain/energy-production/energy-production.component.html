@@ -1,18 +1,42 @@
 <div class="c-main px-16">
-    <div class="d-flex justify-end">
-        <div class="c-input mb-0">
-            <mat-form-field class="select-years" appearance="outline">
-                <mat-select placeholder="Select year" [(value)]="selectedYear">
-                  <mat-option *ngFor="let year of years" [value]="year.value">
-                    {{ year.value }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-          </div>
+    <div class="d-flex justify-between gap-2">
+        <div class="search-add">
+            <form class="relative w-80 ms-auto c-search">
+                <label class="input-search">
+                    <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
+                </label>
+                <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
+                    [formControl]="searchBar">
+            </form>
+        </div>
+
+        <div class="btns-excel gap-2">
+            <button (click)="downloadExcel()">
+                <i class="fas fa-file-download"></i>
+                Download Excel
+            </button>
+
+            <button (click)="fileInput.click()">
+                <i class="fas fa-file-upload"></i>
+                Upload Excel
+            </button>
+
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
+
+            <div class="c-input mb-0">
+                <mat-form-field class="select-years" appearance="outline">
+                    <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year.value">
+                            {{ year.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
     </div>
 
     <app-energy-prod-update [isOpen]="drawerOpenPlant" [modeDrawer]="drawerAction"
-    [plant]="drawerInfo"></app-energy-prod-update>
+        [plant]="drawerInfo"></app-energy-prod-update>
 
     <div class="c-table mt-3">
         <table mat-table [dataSource]="dataSource" matSort class="table-assets guion-click">
@@ -26,14 +50,14 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>January</th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 1, 'January',element?.energyProdMonth1)">
-                        <div *ngIf="element?.energyProdMonth1 else notDataTable" > {{ element.energyProdMonth1 }} </div>
+                        <div *ngIf="element?.energyProdMonth1 else notDataTable"> {{ element.energyProdMonth1 }} </div>
                     </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="energyProdMonth2">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>February</th>
-                <td mat-cell *matCellDef="let element" >
+                <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 2, 'February',element?.energyProdMonth2)">
                         <div *ngIf="element?.energyProdMonth2 else notDataTable"> {{ element.energyProdMonth2 }} </div>
                     </div>
@@ -47,7 +71,6 @@
                         <div *ngIf="element?.energyProdMonth3 else notDataTable"> {{ element.energyProdMonth3 }} </div>
                     </div>
                 </td>
-                
             </ng-container>
 
             <ng-container matColumnDef="energyProdMonth4">
@@ -108,7 +131,8 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>October</th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 10, 'October', element?.energyProdMonth10)">
-                        <div *ngIf="element?.energyProdMonth10 else notDataTable"> {{ element.energyProdMonth10 }} </div>
+                        <div *ngIf="element?.energyProdMonth10 else notDataTable"> {{ element.energyProdMonth10 }}
+                        </div>
                     </div>
                 </td>
             </ng-container>
@@ -117,7 +141,8 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>November</th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 11, 'November', element?.energyProdMonth11)">
-                        <div *ngIf="element?.energyProdMonth11 else notDataTable"> {{ element.energyProdMonth11 }} </div>
+                        <div *ngIf="element?.energyProdMonth11 else notDataTable"> {{ element.energyProdMonth11 }}
+                        </div>
                     </div>
                 </td>
             </ng-container>
@@ -126,7 +151,8 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>December</th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 2, 'December', element?.energyProdMonth12)">
-                        <div *ngIf="element?.energyProdMonth12 else notDataTable"> {{ element.energyProdMonth12 }} </div>
+                        <div *ngIf="element?.energyProdMonth12 else notDataTable"> {{ element.energyProdMonth12 }}
+                        </div>
                     </div>
                 </td>
             </ng-container>
