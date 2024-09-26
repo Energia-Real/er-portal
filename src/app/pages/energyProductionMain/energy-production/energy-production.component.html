@@ -2,7 +2,7 @@
     <div class="d-flex justify-end">
         <div class="c-input mb-0">
             <mat-form-field class="select-years" appearance="outline">
-                <mat-select placeholder="Select year" [(value)]="selectedYear">
+                <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
                   <mat-option *ngFor="let year of years" [value]="year.value">
                     {{ year.value }}
                   </mat-option>

@@ -1,10 +1,10 @@
 export interface DataTablePricingResponse {
-  success: boolean,
+  success: boolean;
   response: {
     pricingPagedResponse: {
-      pageSize: number,
-      page: number,
-      data: DataPricingTable[],
+      pageSize: number;
+      page: number;
+      data: DataPricingTable[];
       totalItems: 0
     }
   },
@@ -14,10 +14,15 @@ export interface DataTablePricingResponse {
 }
 
 export interface DataPricingTable {
-  id : string,
-  siteName :string,
-  clientName :string,
-  pricing :number
+  plantId : string;
+  clientId : string;
+  externalId : string;
+  plantName :string;
+  clientName :string;
+  rpu :string;
+  kwh :number;
+  month :number;
+  year :number;
 }
 
 export interface ErrorRequest {

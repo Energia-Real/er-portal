@@ -6,9 +6,15 @@ export class Mapper {
 		response?.response.pricingPagedResponse.data.forEach((data: entity.DataPricingTable): void => {
 			dataList.push({
 				...data,
-				siteName: data?.siteName || '-',
+				clientId: data?.clientId || '-',
 				clientName: data?.clientName || '-',
-				pricing: data?.pricing || 0,
+				plantId: data?.plantId || '-',
+				externalId: data?.externalId || '-',
+				plantName: data?.plantName || '-',
+				rpu: data?.rpu || '-',
+				kwh: data?.kwh || 0,
+				month: data?.month || 0,
+				year: data?.year || 0,
 			});
 		});
 

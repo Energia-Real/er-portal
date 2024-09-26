@@ -16,12 +16,14 @@ export class PricingService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getPricingData(name: string, pageSize: number, page: number): Observable<entity.DataPricingTableMapper> {
+  getPricingData(filters:any, pageSize: number, page: number): Observable<entity.DataPricingTableMapper> {
     const url = `${this.API_URL}/pricing`;
     const params = new HttpParams()
       .set('pagesize', pageSize)
       .set('page', page)
-      .set('name', name);
+      .set('plantName', filters.name)
+      .set('year', filters.year)
+      .set('month', filters.month)
 
     return this.http.get<entity.DataTablePricingResponse>(url, { params }).pipe(
       map((response) => Mapper.getPricingDataMapper(response))

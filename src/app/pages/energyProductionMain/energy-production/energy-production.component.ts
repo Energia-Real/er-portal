@@ -59,6 +59,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
     { value: 2024 },
   ];
 
+
  
 
   drawerOpenPlant: boolean = false;
