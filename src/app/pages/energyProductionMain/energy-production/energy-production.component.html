@@ -1,6 +1,16 @@
 <div class="c-main px-16">
-    <div class="d-flex justify-end">
-        <div class="btns-excel">
+    <div class="d-flex justify-between gap-2">
+        <div class="search-add">
+            <form class="relative w-80 ms-auto c-search">
+                <label class="input-search">
+                    <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
+                </label>
+                <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
+                    [formControl]="searchBar">
+            </form>
+        </div>
+
+        <div class="btns-excel gap-2">
             <button (click)="downloadExcel()">
                 <i class="fas fa-file-download"></i>
                 Download Excel
@@ -15,22 +25,12 @@
 
             <div class="c-input mb-0">
                 <mat-form-field class="select-years" appearance="outline">
-                    <mat-select placeholder="Select year" [(value)]="selectedYear">
+                    <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
                         <mat-option *ngFor="let year of years" [value]="year.value">
                             {{ year.value }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
-
-            <div class="search-add">
-                <form class="relative w-80 ms-auto c-search">
-                    <label class="input-search">
-                        <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                    </label>
-                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
-                        [formControl]="searchBar">
-                </form>
             </div>
         </div>
     </div>
