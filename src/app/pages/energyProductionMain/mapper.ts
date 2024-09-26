@@ -5,14 +5,14 @@ export class Mapper {
 		console.log(response);
 		let dataList: entity.DataEnergyProdTable[] = [];
 
-		response?.response.energyProducedPagedResponse.data.forEach((data: entity.DataEnergyProdTable): void => {
+		response?.response.pagedResponse.data.forEach((data: entity.DataEnergyProdTable): void => {
 			dataList.push({
 				...data,
 			});
 		});
 		
 		return {
-			...response.response.energyProducedPagedResponse,
+			...response.response.pagedResponse,
 			data: dataList
 		}
 	}
