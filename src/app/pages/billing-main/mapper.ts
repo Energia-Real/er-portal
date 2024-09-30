@@ -3,13 +3,13 @@ export class Mapper {
 	static getBillingDataMapper(response: entity.DataTableBillingResponse): entity.DataBillingTableMapper {
 		let dataList: entity.DataBillingTable[] = [];
 
-		response?.response?.billingPagedResponse?.data.forEach((data: entity.DataBillingTable): void => {
+		response?.response?.data?.forEach((data: entity.DataBillingTable): void => {
 			dataList.push({
 				...data,
-				externalId: data?.externalId || '-',
-				clientName: data?.clientName || '-',
-				plantName: data?.plantName || '-',
-				rpu: data?.rpu || '-',
+				externalId: data?.externalId || '',
+				clientName: data?.clientName || '',
+				plantName: data?.plantName || '',
+				rpu: data?.rpu || '',
 				generatedEnergyKwh: data?.generatedEnergyKwh || 0,
 				amount: data?.amount || 0,
 				amountWithIva: data?.amountWithIva || 0,
@@ -17,7 +17,7 @@ export class Mapper {
 		});
 
 		return {
-			...response.response.billingPagedResponse,
+			...response.response,
 			data: dataList
 		}
 	}

@@ -12,15 +12,15 @@ import { Mapper } from './mapper';
 export class PricingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_CLIENTS_V1;
+  private API_URL = environment.API_URL_BILL_V1;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
   getPricingData(filters:any, pageSize: number, page: number): Observable<entity.DataPricingTableMapper> {
-    const url = `${this.API_URL}/pricing`;
+    const url = `${this.API_URL}/Tarifa/GetTarifas`;
     const params = new HttpParams()
-      .set('pagesize', pageSize)
-      .set('page', page)
+      .set('pageSize', pageSize)
+      .set('pageNumber', page)
       .set('plantName', filters.name)
       .set('year', filters.year)
       .set('month', filters.month)
@@ -29,7 +29,6 @@ export class PricingService implements OnDestroy {
       map((response) => Mapper.getPricingDataMapper(response))
     );
   }
-
 
   ngOnDestroy() {
     this.onDestroy$.next();

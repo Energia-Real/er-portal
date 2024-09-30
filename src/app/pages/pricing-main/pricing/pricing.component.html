@@ -1,5 +1,5 @@
 <div class="c-main px-16">
-    <div class="d-flex justify-between">
+    <div class="d-flex justify-between flex-wrap gap-2">
         <div class="search-add">
             <form class="relative w-80 ms-auto c-search">
                 <label class="input-search">
@@ -14,6 +14,7 @@
             <div class="c-input">
                 <mat-form-field class="select-mount" appearance="outline">
                     <mat-select placeholder="Select month" [formControl]="selectedMonth">
+                        <mat-option [value]="''">No month</mat-option>
                         <mat-option *ngFor="let month of months; let i = index" [value]="month.value">
                             {{ month.viewValue }}
                         </mat-option>

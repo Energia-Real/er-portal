@@ -12,16 +12,18 @@ import { Mapper } from './mapper';
 export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_CLIENTS_V1;
+  private API_URL = environment.API_URL_BILL_V1;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getBillingData(name: string, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
-    const url = `${this.API_URL}/billing`;
+  getBillingData(filters:any, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
+    const url = `${this.API_URL}/Facturacion/GetFacturas`;
     const params = new HttpParams()
-      .set('pagesize', pageSize)
-      .set('page', page)
-      .set('name', name);
+    .set('pageSize', pageSize)
+    .set('pageNumber', page)
+    .set('plantName', filters.name)
+    .set('year', filters.year)
+    .set('month', filters.month)
 
     return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
       map((response) => Mapper.getBillingDataMapper(response))

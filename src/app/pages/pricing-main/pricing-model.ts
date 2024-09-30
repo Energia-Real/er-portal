@@ -1,16 +1,11 @@
 export interface DataTablePricingResponse {
-  success: boolean;
   response: {
-    pricingPagedResponse: {
-      pageSize: number;
-      page: number;
-      data: DataPricingTable[];
-      totalItems: 0
-    }
-  },
-  errors: {
-    errors: ErrorRequest[]
-  }
+    pageSize: number; 
+    page: number;   
+    data: DataPricingTable[];
+    totalItems: number; 
+  };
+  errors?: ErrorRequest[]; 
 }
 
 export interface DataPricingTable {
@@ -26,14 +21,13 @@ export interface DataPricingTable {
 }
 
 export interface ErrorRequest {
-  tipo: string;
-  field: string;
-  descripcion: string;
+  message: string;
+  code: string;
 }
 
 export interface DataPricingTableMapper {
   pageSize: number,
   page: number,
   data: DataPricingTable[],
-  totalItems: 0
+  totalItems: number
 }

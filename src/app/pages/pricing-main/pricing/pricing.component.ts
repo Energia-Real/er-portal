@@ -58,7 +58,7 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   ];
 
   searchBar = new FormControl('');
-  selectedMonth = new FormControl('');
+  selectedMonth = new FormControl(new Date().getMonth() + 1);
 
   selectedYear: any = 2024
 
@@ -80,16 +80,13 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
       this.pageIndex = index + 1;
       if (this.paginator) this.paginator.pageIndex = index;
-      this.getDataResponse(index + 1, '', '');
+      this.getDataResponse(index + 1, '', this.selectedMonth?.value);
     });
   }
 
-  ngOnInit(): void {
-  };
-
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, content!, this.selectedMonth.value ? this.searchBar.value : '');
+      this.getDataResponse(1, content!, this.selectedMonth.value ? this.selectedMonth.value : '');
     })
 
     this.selectedMonth.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
@@ -106,12 +103,16 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.getPricingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataPricingTableMapper) => {
+        console.log(response);
+        
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = page!
       },
       error: error => {
+        console.log(error);
+        
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
