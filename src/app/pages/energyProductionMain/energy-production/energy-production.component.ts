@@ -11,7 +11,7 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { DrawerGeneral } from '@app/shared/models/general-models';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
-import { Subject, Subscription } from 'rxjs';
+import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
 import { EnergyProductionService } from '../energy-production.service';
 import * as entity from '../energy-production-model';
 
@@ -20,7 +20,7 @@ import * as entity from '../energy-production-model';
   templateUrl: './energy-production.component.html',
   styleUrl: './energy-production.component.scss'
 })
-export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
+export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<any>([]);
@@ -52,15 +52,12 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
-     else console.error('Paginator no está definido');
+    else console.error('Paginator no está definido');
   }
 
   years: { value: number }[] = [
     { value: 2024 },
   ];
-
-
- 
 
   drawerOpenPlant: boolean = false;
   drawerAction: "Create" | "Edit" = "Create";
@@ -72,6 +69,9 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
   searchValue: string = '';
 
   searchBar = new FormControl('');
+
+  selectedFile: File | null = null;
+
 
   constructor(
     private store: Store,
@@ -101,12 +101,18 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
     this.setYear()
   };
 
+  ngAfterViewInit(): void {
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
+      this.getDataResponse(1, content!);
+    })
+  }
+
   setYear() {
     this.selectedYear = this.years[0].value;
   }
 
   getDataResponse(page: number, name: string) {
-    this.moduleServices.getEnergyProdData(this.selectedYear, this.pageSize, page).subscribe({
+    this.moduleServices.getEnergyProdData(this.selectedYear, name, this.pageSize, page).subscribe({
       next: (response: entity.DataEnergyProdTablMapper) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
@@ -118,15 +124,6 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
         console.log(error);
       }
     });
-  }
-
-  getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, this.searchValue);
-  }
-
-  navigate(link: string) {
-    this.router.navigateByUrl(link);
   }
 
   editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyProduced: number) {
@@ -158,8 +155,59 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked {
     this.updDraweState(this.drawerOpenPlant);
   }
 
+  downloadExcel() {
+    this.moduleServices.downloadExcel().subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'ExcelTemplate.xlsx';
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: error => {
+        this.notificationService.notificacion('Talk to the administrator.', 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0]; 
+    this.uploadExcel();
+  }
+
+  uploadExcel() {
+    if (this.selectedFile) {
+      this.moduleServices.uploadExcel(this.selectedFile).subscribe({
+        next: (response) => {
+          this.completionMessage(true);
+        },
+        error: error => {
+          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+          console.log(error);
+        }
+      });
+    }
+  }
+
   updDraweState(estado: boolean): void {
     this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
+  }
+
+  getServerData(event: PageEvent): void {
+    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    this.getDataResponse(event.pageIndex + 1, this.searchValue);
+  }
+
+  navigate(link: string) {
+    this.router.navigateByUrl(link);
+  }
+
+  completionMessage(load: boolean) {
+    this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
+    this.getDataResponse(1, this.searchBar?.value || '');
   }
 
   ngOnDestroy(): void {
