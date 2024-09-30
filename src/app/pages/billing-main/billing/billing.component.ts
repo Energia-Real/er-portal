@@ -28,41 +28,16 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
-    'siteName',
+    'rpu',
     'clientName',
-    'billing',
+    'plantName',
+    'generatedEnergyKwh',
+    'amount',
+    'amountWithIva',
   ];
 
   pageSizeSub: Subscription;
   pageIndexSub: Subscription;
-
-  dataDummy: any[] = [
-    {
-      siteName: 'Buena vista',
-      clientName: 'Merco',
-      billing: 10,
-    },
-    {
-      siteName: 'Buena vista 2',
-      clientName: 'Merco 2',
-      billing: 102,
-    },
-    {
-      siteName: 'Buena vista 3',
-      clientName: 'Merco 3',
-      billing: 103,
-    },
-    {
-      siteName: 'Buena vista 4',
-      clientName: 'Merco 4',
-      billing: 104,
-    },
-    {
-      siteName: 'Buena vista 5',
-      clientName: 'Merco 5',
-      billing: 105,
-    },
-  ]
 
   searchBar = new FormControl('');
 
@@ -90,41 +65,34 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
-  
-  ngOnInit(): void {
-  };
-
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getDataResponse(1, content!);
     })
   }
 
-
-  getDataResponse(page: number, name?: string) {
-    // this.moduleServices.getbillingData(name!, this.pageSize, page).subscribe({
-    //   next: (response: any) => {
-    //     this.dataSource.data = response?.data;
-    this.dataSource.data = this.dataDummy
-    //     this.totalItems = response?.totalItems;
-    //     this.dataSource.sort = this.sort;
-    //     this.pageIndex = page!
-    //   },
-    //   error: error => {
-    //     this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-    //     console.log(error);
-    //   }
-    // });
+  getDataResponse(page: number, name: string) {
+    this.moduleServices.getBillingData(name, this.pageSize, page).subscribe({
+      next: (response: entity.DataBillingTableMapper) => {
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page!
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
   }
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
   }
 
-
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1);
+    this.getDataResponse(event.pageIndex + 1, '');
   }
 
   ngOnDestroy(): void {

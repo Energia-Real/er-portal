@@ -14,10 +14,13 @@ export interface DataTableBillingResponse {
 }
 
 export interface DataBillingTable {
-  id : string,
-  siteName :string,
-  clientName :string,
-  billing :number
+  externalId : string;
+  plantName : string;
+  clientName : string;
+  amount : number;
+  amountWithIva : number;
+  rpu : string;
+  generatedEnergyKwh : number;
 }
 
 export interface ErrorRequest {

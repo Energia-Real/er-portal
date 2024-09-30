@@ -57,13 +57,10 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     { value: 12, viewValue: 'December' }
   ];
 
-
   searchBar = new FormControl('');
   selectedMonth = new FormControl('');
 
   selectedYear: any = 2024
-
-
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -94,21 +91,19 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getDataResponse(1, content!, this.selectedMonth.value ? this.searchBar.value : '');
     })
-    
+
     this.selectedMonth.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getDataResponse(1, this.searchBar.value ? this.searchBar.value : '', content)
     })
   }
 
-  getDataResponse(page: number, name: string, month:any) {
+  getDataResponse(page: number, name: string, month: any) {
     const filters: any = {
       name,
-      year : this.selectedYear,
-      month : month,
+      month,
+      year: this.selectedYear
     };
 
-    console.log(filters);
-    
     this.moduleServices.getPricingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataPricingTableMapper) => {
         this.dataSource.data = response?.data;
