@@ -103,16 +103,13 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.getPricingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataPricingTableMapper) => {
-        console.log(response);
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = page
       },
       error: error => {
-        console.log(error);
-        
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
     });
@@ -124,7 +121,7 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, '', '');
+    this.getDataResponse(event.pageIndex + 1, '', this.selectedMonth?.value);
   }
 
   ngOnDestroy(): void {

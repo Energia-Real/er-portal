@@ -31,9 +31,9 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'rpu',
     'clientName',
     'plantName',
-    'generatedEnergyKwh',
-    'amount',
-    'amountWithIva',
+    'kwh',
+    // 'amount',
+    // 'amountWithIva',
   ];
 
   years: { value: number }[] = [
@@ -111,7 +111,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
         this.pageIndex = page
       },
       error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
     });
@@ -123,7 +123,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, '', '');
+    this.getDataResponse(event.pageIndex + 1, '', this.selectedMonth?.value);
   }
 
   ngOnDestroy(): void {

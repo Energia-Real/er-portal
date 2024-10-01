@@ -8,13 +8,13 @@ export interface DataTableBillingResponse {
   errors?: ErrorRequest[];
 }
 
-
 export interface DataBillingTable {
   externalId: string;
   plantName: string;
   clientName: string;
   amount: number;
   amountWithIva: number;
+  kwh: string;
   rpu: string;
   generatedEnergyKwh: number;
 }

@@ -56,13 +56,13 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="generatedEnergyKwh">
+            <ng-container matColumnDef="kwh">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Generated energy Kwh</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.generatedEnergyKwh else notDataTable"> {{ element.generatedEnergyKwh }} </div>
+                    <div *ngIf="element?.kwh else notDataTable"> {{ element.kwh }} </div>
                 </td>
             </ng-container>
-
+<!-- 
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
                 <td mat-cell *matCellDef="let element">
@@ -75,7 +75,7 @@
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.amountWithIva else notDataTable"> {{ element.amountWithIva }} </div>
                 </td>
-            </ng-container>
+            </ng-container> -->
 
             <tr *matNoDataRow>
                 <td class="mat-cell" [attr.colspan]="displayedColumns.length">
