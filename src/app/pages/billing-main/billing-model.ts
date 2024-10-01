@@ -1,48 +1,32 @@
-export interface DataTableResponse {
-  page: number;
-  pageSize: number;
-  totalItems: number;
-  data: DataClientsTable[]
+export interface DataTableBillingResponse {
+  response: {
+    pageSize: number;
+    page: number;
+    data: DataBillingTable[];
+    totalItems: number;
+  };
+  errors?: ErrorRequest[];
 }
 
-
-export interface DataClientsTable {
-  id: string;
-  clientId: number;
-  nombre: string;
-  imageBase64: string;
+export interface DataBillingTable {
+  externalId: string;
+  plantName: string;
+  clientName: string;
+  amount: number;
+  amountWithIva: number;
+  kwh: string;
+  rpu: string;
+  generatedEnergyKwh: number;
 }
 
-export interface DataPostPatchClient {
-  id?: string;
-  clientId?: number;
-  nombre?: string;
+export interface DataBillingTableMapper {
+  pageSize: number,
+  page: number,
+  data: DataBillingTable[],
+  totalItems: number
 }
 
-export interface DataPostTypeClient {
-  id?: string;
-  description?: string;
-}
-export interface DataPatchTypeClient {
-  id?: string;
-  tipo: string;
-}
-
-export interface DataPostClient {
-  name: string,
-  tipoDeClienteId: string
-  image: any
-  clientId?: string
-}
-export interface DataPatchClient {
-  clientId:  string
-  name: string,
-  tipoDeClienteId: string
-  image?: any
-}
-
-export interface DataCatalogTypeClient {
-  id: string;
-  description: string;
-  tipo: string;
+export interface ErrorRequest {
+  message: string;
+  code: string;
 }

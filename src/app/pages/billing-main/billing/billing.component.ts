@@ -28,45 +28,41 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
-    'siteName',
+    'rpu',
     'clientName',
-    'billing',
+    'plantName',
+    'kwh',
+    // 'amount',
+    // 'amountWithIva',
   ];
+
+  years: { value: number }[] = [
+    { value: 2024 },
+  ];
+
+  months: { value: number, viewValue: string }[] = [
+    { value: 1, viewValue: 'January' },
+    { value: 2, viewValue: 'February' },
+    { value: 3, viewValue: 'March' },
+    { value: 4, viewValue: 'April' },
+    { value: 5, viewValue: 'May' },
+    { value: 6, viewValue: 'June' },
+    { value: 7, viewValue: 'July' },
+    { value: 8, viewValue: 'August' },
+    { value: 9, viewValue: 'September' },
+    { value: 10, viewValue: 'October' },
+    { value: 11, viewValue: 'November' },
+    { value: 12, viewValue: 'December' }
+  ];
+
 
   pageSizeSub: Subscription;
   pageIndexSub: Subscription;
 
-  dataDummy: any[] = [
-    {
-      siteName: 'Buena vista',
-      clientName: 'Merco',
-      billing: 10,
-    },
-    {
-      siteName: 'Buena vista 2',
-      clientName: 'Merco 2',
-      billing: 102,
-    },
-    {
-      siteName: 'Buena vista 3',
-      clientName: 'Merco 3',
-      billing: 103,
-    },
-    {
-      siteName: 'Buena vista 4',
-      clientName: 'Merco 4',
-      billing: 104,
-    },
-    {
-      siteName: 'Buena vista 5',
-      clientName: 'Merco 5',
-      billing: 105,
-    },
-  ]
-
   searchBar = new FormControl('');
+  selectedMonth = new FormControl(new Date().getMonth() + 1);
 
-  searchValue: string = '';
+  selectedYear: any = 2024
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -86,45 +82,48 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
       this.pageIndex = index + 1;
       if (this.paginator) this.paginator.pageIndex = index;
-      this.getDataResponse(index + 1, this.searchValue);
+      this.getDataResponse(index + 1, '', this.selectedMonth?.value);
     });
   }
 
-  
-  ngOnInit(): void {
-  };
-
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, content!);
+      this.getDataResponse(1, content!, this.selectedMonth.value ? this.selectedMonth.value : '');
+    })
+
+    this.selectedMonth.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
+      this.getDataResponse(1, this.searchBar.value ? this.searchBar.value : '', content)
     })
   }
 
+  getDataResponse(page: number, name: string, month: any) {
+    const filters: any = {
+      name,
+      month,
+      year: this.selectedYear
+    };
 
-  getDataResponse(page: number, name?: string) {
-    // this.moduleServices.getbillingData(name!, this.pageSize, page).subscribe({
-    //   next: (response: any) => {
-    //     this.dataSource.data = response?.data;
-    this.dataSource.data = this.dataDummy
-    //     this.totalItems = response?.totalItems;
-    //     this.dataSource.sort = this.sort;
-    //     this.pageIndex = page!
-    //   },
-    //   error: error => {
-    //     this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-    //     console.log(error);
-    //   }
-    // });
+    this.moduleServices.getBillingData(filters, this.pageSize, page).subscribe({
+      next: (response: entity.DataBillingTableMapper) => {
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page
+      },
+      error: error => {
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
   }
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
   }
 
-
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1);
+    this.getDataResponse(event.pageIndex + 1, '', this.selectedMonth?.value);
   }
 
   ngOnDestroy(): void {

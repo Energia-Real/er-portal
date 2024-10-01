@@ -1,18 +1,23 @@
-	import * as entity from './billing-model';
+import * as entity from './billing-model';
 export class Mapper {
-	static getClientsDataMapper(response: entity.DataTableResponse): entity.DataTableResponse {
-		let dataList: entity.DataClientsTable[] = [];
-
-		response?.data.forEach((data: entity.DataClientsTable): void => {
+	static getBillingDataMapper(response: entity.DataTableBillingResponse): entity.DataBillingTableMapper {
+		let dataList: entity.DataBillingTable[] = [];
+		response?.response?.data?.forEach((data: entity.DataBillingTable): void => {
 			dataList.push({
 				...data,
-				nombre: data?.nombre || '-',
-				imageBase64: data?.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ''
+				externalId: data?.externalId || '',
+				clientName: data?.clientName || '',
+				plantName: data?.plantName || '',
+				rpu: data?.rpu || '',
+				generatedEnergyKwh: data?.generatedEnergyKwh || 0,
+				amount: data?.amount || 0,
+				amountWithIva: data?.amountWithIva || 0,
+				kwh: data?.kwh || '0',
 			});
 		});
 
 		return {
-			...response,
+			...response.response,
 			data: dataList
 		}
 	}
