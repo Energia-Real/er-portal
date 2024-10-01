@@ -1,16 +1,11 @@
 export interface DataTableEnergyProdResponse {
-  success: boolean,
   response: {
-    pagedResponse: {
-      pageSize: number,
-      page: number,
-      data: DataEnergyProdTable[],
-      totalItems: 0
-    }
-  },
-  errors: {
-    errors: ErrorRequest[]
-  }
+    pageSize: number;
+    page: number;
+    data: DataEnergyProdTable[];
+    totalItems: number;
+  };
+  errors?: ErrorRequest[];
 }
 
 export interface DataEnergyProdTable {
@@ -35,12 +30,10 @@ export interface DataEnergyProdTable {
 export interface DataTableEnergyEstResponse {
   success: boolean,
   response: {
-    energyEstimatedPagedResponse: {
       pageSize: number,
       page: number,
       data: DataEnergyEstTable[],
-      totalItems: 0
-    }
+      totalItems: number
   },
   errors: {
     errors: ErrorRequest[]
@@ -69,14 +62,14 @@ export interface DataEnergyProdTablMapper {
   pageSize: number,
   page: number,
   data: DataEnergyProdTable[],
-  totalItems: 0
+  totalItems: number
 }
 
 export interface DataEnergyProdTablMapper {
   pageSize: number,
   page: number,
   data: DataEnergyProdTable[],
-  totalItems: 0
+  totalItems: number
 }
 
 
