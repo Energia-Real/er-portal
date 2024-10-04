@@ -42,7 +42,7 @@
     </ul>
 
     <div class="flex align-items-center">
-      <div class="c-input mb-0">
+      <!-- <div class="c-input mb-0">
         <mat-form-field class="select-mount" appearance="outline">
           <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
             (valueChange)="searchWithFilters()">
@@ -51,7 +51,63 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+      </div> -->
+
+
+      <div class="c-month-button">
+
+        <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
+          <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + currentYear : 'Start' }}</h1>
+          <span class="material-symbols-outlined">calendar_month</span>
+        </button>
+      
+        <mat-menu #monthMenu1="matMenu" class="custom-menu">
+          <div class="years"><p>2024</p></div>
+          <div class="month-grid">
+            <button mat-menu-item *ngFor="let month of months" 
+              [ngClass]="{
+                'selected-month': selectedStartMonth?.value === month.value,
+                'unselected-month': selectedStartMonth?.value !== month.value
+              }" 
+              (click)="selectStartMonth(month, startMenuTrigger)">
+              {{ month.name }}
+            </button>
+          </div>
+        </mat-menu>
+      
+        <p>To</p>
+      
+        <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
+          <h1>{{ selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End' }}</h1>
+          <span class="material-symbols-outlined">calendar_month</span>
+        </button>
+      
+        <mat-menu #monthMenu2="matMenu" class="custom-menu">
+          <div class="years"><p>2024</p></div>
+          <div class="month-grid">
+            <button mat-menu-item *ngFor="let month of months" 
+              [ngClass]="{
+                'selected-month': selectedEndMonth?.value === month.value,
+                'unselected-month': selectedEndMonth?.value !== month.value
+              }" 
+              (click)="selectEndMonth(month, endMenuTrigger)">
+              {{ month.name }}
+            </button>
+          </div>
+      
+          <div class="single">
+            <mat-checkbox class="check-color"></mat-checkbox>
+            <p>Consider a single month only</p>
+          </div>
+          
+        </mat-menu>
+      
       </div>
+      
+
+
+
+
 
       <button [matMenuTriggerFor]="menu" mat-icon-button>
         <mat-icon class="custom-icon-color">account_circle</mat-icon>

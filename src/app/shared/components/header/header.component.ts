@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
@@ -9,6 +9,7 @@ import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/s
 import { Store } from '@ngrx/store';
 import { FilterState } from '@app/shared/models/general-models';
 import { selectFilters } from '@app/core/store/selectors/filters.selector';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 interface User {
   id: string,
@@ -34,24 +35,32 @@ export class HeaderComponent implements OnDestroy {
 
   version = packageJson.version;
 
-  months: { value: string, viewValue: string }[] = [
-    { value: '01', viewValue: 'January' },
-    { value: '02', viewValue: 'February' },
-    { value: '03', viewValue: 'March' },
-    { value: '04', viewValue: 'April' },
-    { value: '05', viewValue: 'May' },
-    { value: '06', viewValue: 'June' },
-    { value: '07', viewValue: 'July' },
-    { value: '08', viewValue: 'August' },
-    { value: '09', viewValue: 'September' },
-    { value: '10', viewValue: 'October' },
-    { value: '11', viewValue: 'November' },
-    { value: '12', viewValue: 'December' }
+  months: { name: string, value: string }[] = [
+    { name: 'Jan', value: '01' },
+    { name: 'Feb', value: '02' },
+    { name: 'Mar', value: '03' },
+    { name: 'Apr', value: '04' },
+    { name: 'May', value: '05' },
+    { name: 'Jun', value: '06' },
+    { name: 'Jul', value: '07' },
+    { name: 'Aug', value: '08' },
+    { name: 'Sep', value: '09' },
+    { name: 'Oct', value: '10' },
+    { name: 'Nov', value: '11' },
+    { name: 'Dec', value: '12' },
   ];
 
-  selectedMonths: any[] = [];
+  selectedStartMonth: any;
+  selectedEndMonth: any;
 
-  currentYear = new Date().getFullYear();
+  currentYear = new Date().getFullYear().toString().slice(-2); 
+
+  selectedMonth: { name: string; value: string } | null = null; // Mes seleccionado con nombre y valor
+  @Output() monthSelected = new EventEmitter<{ month: string, year: any }>();
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger; // Referencia al menú disparador
+  isOpen = false; 
+
+  selectedMonths:any[] = []
 
   constructor(
     private accountService: AuthService,
@@ -76,6 +85,18 @@ export class HeaderComponent implements OnDestroy {
   setMonths() {
     this.selectedMonths = [this.months[5], this.months[6]];
     this.searchWithFilters();
+  }
+
+  selectStartMonth(month: any, menuTrigger: MatMenuTrigger): void {
+    this.selectedStartMonth = month;
+    console.log(`Mes de inicio seleccionado: ${month.name} (${month.value})`); 
+    menuTrigger.closeMenu(); 
+  }
+
+  selectEndMonth(month: any, menuTrigger: MatMenuTrigger): void {
+    this.selectedEndMonth = month;
+    console.log(`Mes de fin seleccionado: ${month.name} (${month.value})`);
+    menuTrigger.closeMenu(); 
   }
 
   searchWithFilters() {
