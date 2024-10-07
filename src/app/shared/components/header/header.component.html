@@ -42,27 +42,15 @@
     </ul>
 
     <div class="flex align-items-center">
-      <!-- <div class="c-input mb-0">
-        <mat-form-field class="select-mount" appearance="outline">
-          <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple
-            (valueChange)="searchWithFilters()">
-            <mat-option *ngFor="let month of months; let i = index" [value]="month">
-              {{ month.viewValue }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div> -->
-
-
       <div class="c-month-button">
-
+  
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
           <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + currentYear : 'Start' }}</h1>
           <span class="material-symbols-outlined">calendar_month</span>
         </button>
       
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
-          <div class="years"><p>2024</p></div>
+          <div class="years"><p>{{ currentYear2 }}</p></div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" 
               [ngClass]="{
@@ -83,7 +71,7 @@
         </button>
       
         <mat-menu #monthMenu2="matMenu" class="custom-menu">
-          <div class="years"><p>2024</p></div>
+          <div class="years"><p>{{ currentYear }}</p></div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" 
               [ngClass]="{
@@ -94,14 +82,7 @@
               {{ month.name }}
             </button>
           </div>
-      
-          <div class="single">
-            <mat-checkbox class="check-color"></mat-checkbox>
-            <p>Consider a single month only</p>
-          </div>
-          
         </mat-menu>
-      
       </div>
       
 
