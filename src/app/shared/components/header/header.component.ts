@@ -53,15 +53,15 @@ export class HeaderComponent implements OnDestroy {
   selectedStartMonth: any;
   selectedEndMonth: any;
 
-  currentYear = new Date().getFullYear().toString().slice(-2); 
-  currentYear2 = new Date().getFullYear(); 
+  currentYear = new Date().getFullYear().toString().slice(-2);
+  currentYearComplete = new Date().getFullYear();
 
-  selectedMonth: { name: string; value: string } | null = null; // Mes seleccionado con nombre y valor
+  selectedMonth: { name: string; value: string } | null = null;
   @Output() monthSelected = new EventEmitter<{ month: string, year: any }>();
-  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger; // Referencia al menú disparador
-  isOpen = false; 
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
+  isOpen = false;
 
-  selectedMonths:any[] = []
+  selectedMonths: any[] = []
 
   constructor(
     private accountService: AuthService,
@@ -72,48 +72,58 @@ export class HeaderComponent implements OnDestroy {
   ngOnInit(): void {
     this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe(filtersState => {
       if (filtersState && filtersState.months.length > 0) {
-        this.selectedMonths = this.months.filter(month =>  
+        this.selectedMonths = this.months.filter(month =>
           filtersState.months.includes(`${this.currentYear}-${month.value}-01`)
         );
-        this.selectedStartMonth = this.selectedMonths[0]; // Ajusta esto según tus necesidades
-        this.selectedEndMonth = this.selectedMonths[1]; // Ajusta esto según tus necesidades
+        this.selectedStartMonth = this.selectedMonths[0];
+        this.selectedEndMonth = this.selectedMonths[this.selectedMonths.length - 1];
       } else {
-        this.setMonths();
+        this.setDefaultMonths();
       }
     });
 
     this.getInfoUser();
   }
 
-  setMonths() {
-    // this.selectedMonths = [this.months[5], this.months[6]];
-    // this.searchWithFilters();
+  setDefaultMonths() {
+    this.selectedStartMonth = this.months[5];
+    this.selectedEndMonth = this.months[6];
+    // this.updateSelectedMonths();
+  }
 
-    this.selectedStartMonth = this.months[5]; // Junio como ejemplo
-    this.selectedEndMonth = this.months[6]; // Julio como ejemplo
+  selectStartMonth(month: any, menuTrigger: MatMenuTrigger): void {
+    this.selectedStartMonth = month;
+    this.updateSelectedMonths();
+    console.log(`Mes de inicio seleccionado: ${month.name} (${month.value})`);
+    menuTrigger.closeMenu();
+  }
+
+  selectEndMonth(month: any, menuTrigger: MatMenuTrigger): void {
+    this.selectedEndMonth = month;
+    this.updateSelectedMonths();
+    console.log(`Mes de fin seleccionado: ${month.name} (${month.value})`);
+    menuTrigger.closeMenu();
+  }
+
+  updateSelectedMonths() {
+    if (this.selectedStartMonth && this.selectedEndMonth) {
+      const startIndex = this.months.findIndex(m => m.value === this.selectedStartMonth.value);
+      const endIndex = this.months.findIndex(m => m.value === this.selectedEndMonth.value);
+
+      if (startIndex !== -1 && endIndex !== -1) {
+        const selectedRange = this.months.slice(
+          Math.min(startIndex, endIndex),
+          Math.max(startIndex, endIndex) + 1
+        );
+
+        this.selectedMonths = selectedRange;
+        console.log(`Rango de meses seleccionado: ${this.selectedMonths.map(m => m.name).join(', ')}`);
+      }
+    }
+
     this.searchWithFilters();
   }
- // Función para seleccionar el mes de inicio
- selectStartMonth(month: any, menuTrigger: MatMenuTrigger): void {
-  this.selectedStartMonth = month;
-  this.updateSelectedMonths(); // Actualiza el array de meses seleccionados
-  console.log(`Mes de inicio seleccionado: ${month.name} (${month.value})`);
-  menuTrigger.closeMenu(); // Cierra el menú al seleccionar
-}
 
-// Función para seleccionar el mes de fin
-selectEndMonth(month: any, menuTrigger: MatMenuTrigger): void {
-  this.selectedEndMonth = month;
-  this.updateSelectedMonths(); // Actualiza el array de meses seleccionados
-  console.log(`Mes de fin seleccionado: ${month.name} (${month.value})`);
-  menuTrigger.closeMenu(); // Cierra el menú al seleccionar
-}
-
-// Actualiza el array de meses seleccionados y despacha las acciones de NgRx
-updateSelectedMonths() {
-  this.selectedMonths = [this.selectedStartMonth, this.selectedEndMonth];
-  this.searchWithFilters();
-}
   searchWithFilters() {
     let filtersBatu: any = {};
     let filters: any = {};
@@ -122,23 +132,21 @@ updateSelectedMonths() {
       clientName: "Merco",
       months: []
     }
-    
+
     if (this.selectedMonths.length) {
-      filters.requestType = 'Month'
-      filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
+      filters.requestType = 'Month';
+      filters.months = this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
 
-      filtersSolarCoverage.requestType = 2
-      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
-      filtersBatu.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value);
-      
-      // this.store.dispatch(setFilters({ filters }));
-      // this.store.dispatch(setFiltersBatu({ filtersBatu }));
-      // this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+      filtersSolarCoverage.requestType = 2;
+      filtersSolarCoverage.months = this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
+      filtersBatu.months = this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`);
 
+      this.store.dispatch(setFilters({ filters }));
+      this.store.dispatch(setFiltersBatu({ filtersBatu }));
+      this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
       console.log('filters', filters);
       console.log('filtersBatu', filtersBatu);
       console.log('filtersSolarCoverage', filtersSolarCoverage);
-      
     }
   }
 
