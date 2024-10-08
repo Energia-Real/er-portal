@@ -30,6 +30,20 @@ export class PricingService implements OnDestroy {
     );
   }
 
+  downloadExcel(): Observable<Blob> {
+    const url = `${this.API_URL}/FileManagement/DownloadTemplateExcel`;
+
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
+  uploadExcel(file: File): Observable<any> {
+    const url = `${this.API_URL}/FileManagement/UploadTemplate`;
+    const formData: FormData = new FormData();
+    formData.append('excelFile', file, file.name);
+
+    return this.http.post<any>(`${url}`, formData);
+  }
+
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();

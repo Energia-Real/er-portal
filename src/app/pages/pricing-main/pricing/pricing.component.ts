@@ -60,7 +60,9 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   searchBar = new FormControl('');
   selectedMonth = new FormControl(new Date().getMonth() + 1);
 
-  selectedYear: any = 2024
+  selectedYear: any = 2024;
+
+  selectedFile: File | null = null;
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -115,6 +117,43 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
+  downloadExcel() {
+    this.moduleServices.downloadExcel().subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'ExcelTemplate.xlsx';
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: error => {
+        this.notificationService.notificacion('Talk to the administrator.', 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0]; 
+    this.uploadExcel();
+  }
+
+  uploadExcel() {
+    if (this.selectedFile) {
+      this.moduleServices.uploadExcel(this.selectedFile).subscribe({
+        next: (response) => {
+          this.completionMessage(true);
+        },
+        error: error => {
+          this.notificationService.notificacion(error?.error?.detail, 'alert');
+          console.log(error?.error?.detail);
+        }
+      });
+    }
+  }
+
   navigate(link: string) {
     this.router.navigateByUrl(link);
   }
@@ -122,6 +161,11 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     this.getDataResponse(event.pageIndex + 1, '', this.selectedMonth?.value);
+  }
+
+  completionMessage(load: boolean) {
+    this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
+    this.getDataResponse(1, this.searchBar?.value || '', this.selectedMonth);
   }
 
   ngOnDestroy(): void {
