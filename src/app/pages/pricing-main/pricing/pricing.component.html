@@ -10,8 +10,20 @@
             </form>
         </div>
 
-        <div class="d-flex justify-end gap-2">
-            <div class="c-input">
+        <div class="btns-excel gap-2">
+            <button (click)="downloadExcel()">
+                <i class="fas fa-file-download"></i>
+                Download Excel
+            </button>
+
+            <button (click)="fileInput.click()">
+                <i class="fas fa-file-upload"></i>
+                Upload Excel
+            </button>
+
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
+
+            <div class="c-input mb-0">
                 <mat-form-field class="select-mount" appearance="outline">
                     <mat-select placeholder="Select month" [formControl]="selectedMonth">
                         <mat-option [value]="''">No month</mat-option>
@@ -21,7 +33,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-
+         
             <div class="c-input mb-0">
                 <mat-form-field class="select-years" appearance="outline">
                     <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
