@@ -9,10 +9,9 @@ export class Mapper {
 				clientName: data?.clientName || '',
 				plantName: data?.plantName || '',
 				rpu: data?.rpu || '',
-				generatedEnergyKwh: data?.generatedEnergyKwh || 0,
 				amount: data?.amount || 0,
 				amountWithIva: data?.amountWithIva || 0,
-				kwh: data?.kwh || '0',
+				generatedEnergyKwh: data?.generatedEnergyKwh || 0,
 			});
 		});
 
