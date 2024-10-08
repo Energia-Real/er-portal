@@ -14,7 +14,6 @@ export interface DataBillingTable {
   clientName: string;
   amount: number;
   amountWithIva: number;
-  kwh: string;
   rpu: string;
   generatedEnergyKwh: number;
 }
