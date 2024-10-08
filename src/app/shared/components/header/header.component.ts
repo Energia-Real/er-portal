@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { FilterState, UserV2 } from '@app/shared/models/general-models';
 import { selectFilters } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -37,6 +38,8 @@ export class HeaderComponent implements OnDestroy {
   currentYear = new Date().getFullYear().toString().slice(-2);
   currentYearComplete = new Date().getFullYear();
   selectedMonths: { name: string; value: string }[] = [];
+
+  singleMonth = new FormControl('')
 
   constructor(
     private accountService: AuthService,

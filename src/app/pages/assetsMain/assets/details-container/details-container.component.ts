@@ -192,12 +192,12 @@ export class DetailsContainerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   verifyInformation(assetData: entity.DataPlant) {
-    if (assetData?.plantCode && "Huawei" == 'Huawei') {
+    if (assetData?.plantCode && assetData?.inverterBrand[0] == 'Huawei') {
       this.showNotdata = false
       this.getDataRespSystem({ brand: "Huawei", plantCode: assetData.plantCode })
     } else {
       this.showNotdata = true;
-      if ("Huawei" != 'Huawei') this.modalMessage.push('The information provided includes an inverter brand that has not yet been implemented.');
+      if (assetData?.plantCode && assetData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('The information provided includes an inverter brand that has not yet been implemented.');
       else this.modalMessage.push('Information does not include plant code or inverter brand.');
       this.loadingSystem = false;
     }
