@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { FormBuilder } from '@angular/forms';
 import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { FilterState } from '@app/shared/models/general-models';

@@ -31,9 +31,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'rpu',
     'clientName',
     'plantName',
-    'kwh',
-    // 'amount',
-    // 'amountWithIva',
+    'generatedEnergyKwh',
   ];
 
   years: { value: number }[] = [

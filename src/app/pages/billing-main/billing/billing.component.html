@@ -56,10 +56,10 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="kwh">
+            <ng-container matColumnDef="generatedEnergyKwh">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Generated energy Kwh</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.kwh else notDataTable"> {{ element.kwh }} </div>
+                    <div *ngIf="element?.generatedEnergyKwh else notDataTable"> {{ element.generatedEnergyKwh }} </div>
                 </td>
             </ng-container>
 <!-- 
