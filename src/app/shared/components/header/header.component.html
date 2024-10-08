@@ -51,7 +51,7 @@
 
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
           <div class="years">
-            <p>{{ currentYear }}</p>
+            <p>{{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [ngClass]="{
@@ -72,7 +72,7 @@
 
         <mat-menu #monthMenu2="matMenu" class="custom-menu">
           <div class="years">
-            <p>{{ currentYear }}</p>
+            <p>{{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [ngClass]="{
