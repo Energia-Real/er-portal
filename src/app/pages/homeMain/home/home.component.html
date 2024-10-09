@@ -1,7 +1,7 @@
 <app-header routeActive="/home"></app-header>
 <main class="grid md:grid-cols-2 md:gap-4 c-home c-main">
     <div>
-        <div class="c-client-list">
+       <!--  <div class="c-client-list">
             <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
                 <div class="logo-merco" *ngIf="client.id == '875611f7-c626-413c-bea4-bb7ddf3ac7db' || client?.imageBase64">
                     <img [src]="client.id == '875611f7-c626-413c-bea4-bb7ddf3ac7db' ? '../../../../assets/img/merco.png' : client.imageBase64" alt="">
@@ -10,19 +10,7 @@
                     <a class="truncate">{{ client.nombre }}</a>
                 </div>
             </button>
-        </div>
-
-        <div class="c-card-section c-card-section-m">
-            <h2 class="text-er-orange text-base font-normal">Solar Coverage & CO2 Savings</h2>
-            <div [ngClass]="{'flex-center': !solarCovergaCo2?.length}">
-                <div class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 text-center div-groups"
-                    *ngIf="solarCovergaCo2?.length else notDataTable">
-                    <div *ngFor="let data of solarCovergaCo2">
-                        <h2 class="mb-0"> {{ data.value }}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div> -->
 
         <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
@@ -53,14 +41,21 @@
             </div>
         </div>
 
-        <div class="c-graph">
-            <!-- <div class="flex justify-end">
-                <button mat-stroked-button>
-                    Export PDF Report
-                    <mat-icon>favorite</mat-icon>
-                </button>
-            </div> -->
-            <div class="graph">
+        <div class="c-card-section c-card-section-m">
+            <h2 class="text-er-orange text-base font-normal">Solar Coverage & CO2 Savings</h2>
+            <div [ngClass]="{'flex-center': !solarCovergaCo2?.length}">
+                <div class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 text-center div-groups"
+                    *ngIf="solarCovergaCo2?.length else notDataTable">
+                    <div *ngFor="let data of solarCovergaCo2">
+                        <h2 class="mb-0"> {{ data.value }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="c-graph" >
+            
+            <div class="graph" >
                 <canvas baseChart [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions">
                 </canvas>
             </div>
@@ -107,6 +102,10 @@
                 </button>
             </div>
         </div> -->
+
+        <div class="c-card-section c-card-section-m c-mapa ">
+            <app-mapa></app-mapa>
+        </div>
         <div class="table-container-scroll mt-3 mb-5">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>

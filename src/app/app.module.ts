@@ -23,7 +23,6 @@ import { filterReducer } from './core/store/reducers/filters.reducer';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedComponensModule,
     GoogleMapsModule,
     CoreModule,
     StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer }),
