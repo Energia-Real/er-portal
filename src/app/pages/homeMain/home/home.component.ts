@@ -227,7 +227,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
       }
     })
   }
@@ -239,7 +238,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
       }
     })
   }
@@ -283,10 +281,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
+      this.updtChart();
+
       return;
     }
 
-    this.selection.select(...this.dataSource.data);
+      this.selection.select(...this.dataSource.data);
     this.updtChart();
   }
 

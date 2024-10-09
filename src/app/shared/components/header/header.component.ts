@@ -52,6 +52,8 @@ export class HeaderComponent implements OnDestroy {
 
   currentYear = new Date().getFullYear();
 
+  selectedStates: string[] = [];
+
   constructor(
     private accountService: AuthService,
     private router: Router,
@@ -60,6 +62,7 @@ export class HeaderComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe(filtersState => {
+      this.selectedStates = filtersState.states;
       if (filtersState && filtersState.months.length > 0) {
         this.selectedMonths = this.months.filter(month =>  
           filtersState.months.includes(`${this.currentYear}-${month.value}-01`)
@@ -89,7 +92,7 @@ export class HeaderComponent implements OnDestroy {
     if (this.selectedMonths.length) {
       filters.requestType = 'Month'
       filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
-
+      filters.states = this.selectedStates;
       filtersSolarCoverage.requestType = 2
       filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
       filtersBatu.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value);
