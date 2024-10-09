@@ -14,30 +14,41 @@
 
         <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
-            <div class="grid md:grid-cols-4 gap-4 text-center div-groups">
+            <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
-                        savingsDetails.totalEnergyConsumption }} <br> kWh</h2>
-                    <p class="text-sm">Total Energy <br> Consumption</p>
+                        savingsDetails.totalEnergyConsumption }} <span>kWh</span> </h2>
+                    <p>Total Energy <br> Consumption</p>
+                    <div class="linea"></div>
                 </div>
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
-                        savingsDetails.totalEnergyProduction }} <br> kWh</h2>
-                    <p class="text-sm">Total Energy <br> Production</p>
+                        savingsDetails.totalEnergyProduction }} <span>kWh</span></h2>
+                    <p>Total Energy <br> Production</p>
+                    <div class="linea"></div>
+                </div>
+                <div>
+                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> $969,156 </h2>
+                    <p>CFE Cost without Solar</p>
+                    <div class="linea"></div>
+                </div>
+                <div class="total-saving" >
+                    <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> $56,292</h2>
+                    <p>Total Savings </p>
                 </div>
 
-                <div>
+                <!-- <div>
                     <h2 *ngIf="dataClientsBatu?.noExist else notDataTable"> {{
                         dataClientsBatu.costwoSolarTotal }}</h2>
-                    <p class="text-sm">CFE <br> Cost without Solar <br> <span class="wi-progress">Work in
+                    <p>CFE <br> Cost without Solar <br> <span class="wi-progress">Work in
                             progress</span></p>
                 </div>
 
                 <div>
                     <h2 *ngIf="dataClientsBatu?.noExist else notDataTable"> {{
                         dataClientsBatu.totalSaving }}</h2>
-                    <p class="text-sm">Total <br> Saving <br> <span class="wi-progress">Work in progress</span></p>
-                </div>
+                    <p>Total <br> Saving <br> <span class="wi-progress">Work in progress</span></p>
+                </div> -->
             </div>
         </div>
 

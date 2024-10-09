@@ -10,6 +10,52 @@
 
   .c-card-section {
     margin-top: 10px;
+    padding: 25px 15px;
+
+    >h1 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .div-groups-saving {
+      .total-saving {
+        h1, p {
+          color: #57B1B1!important;
+        }
+      }
+
+      >div {
+        border-right-width: none !important;
+        position: relative;
+
+        h2 {
+          font-size: 24px;
+          font-weight: 500;
+          margin: 0;
+
+          span {
+            font-size: 12px;
+            font-weight: 500;
+          }
+        }
+
+        p {
+          margin-top: 8px;
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 14px;
+        }
+
+        .linea {
+          width: 1px;
+          height: 34px;
+          background: #CFCFCF;
+          position: absolute;
+          right: 0;
+          top: 16px;
+        }
+      }
+    }
   }
 
   .c-card-section-m {
@@ -27,7 +73,7 @@
     }
   }
 
-  .c-mapa{
+  .c-mapa {
     border: 0px solid #E5E7EB !important;
   }
 
@@ -43,7 +89,7 @@
       gap: 10px;
     }
 
-     a {
+    a {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -84,20 +130,15 @@
     }
   }
 
-
-
   .c-graph {
     margin-top: 10px;
 
     >.row {
-      // margin-bottom: 11px;
       display: flex;
       justify-content: flex-end;
     }
 
     .graph {
-      // height: 690px;
-      // height: calc(100vh - 155px);
       display: flex;
       justify-content: center;
       align-items: center;
