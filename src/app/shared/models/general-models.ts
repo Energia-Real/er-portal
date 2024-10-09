@@ -44,6 +44,7 @@ export interface FilterState {
   filters: {
     requestType: string;
     months: string[];
+    states: string[];
   };
   filtersBatu: {
     months: string[];
@@ -59,7 +60,8 @@ export interface FilterState {
 export const initialFilterState: FilterState = {
   filters: {
     requestType: '',
-    months: []
+    months: [],
+    states:[]
   },
   filtersBatu: {
     months: []
