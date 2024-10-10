@@ -17,6 +17,18 @@ export interface User {
   token?: string;
 }
 
+export interface UserV2 {
+  id: string,
+  email: string,
+  persona: {
+    id: string,
+    nombres: string,
+    apellidos: string
+  },
+  clientes: null,
+  accessTo: string
+}
+
 export interface ConfirmationConfig
 {
     title?: string;
@@ -44,7 +56,7 @@ export interface FilterState {
   filters: {
     requestType: string;
     months: string[];
-    states: string[];
+    states?: string[];
   };
   filtersBatu: {
     months: string[];

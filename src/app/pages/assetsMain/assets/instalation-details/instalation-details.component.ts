@@ -88,10 +88,10 @@ export class InstalationDetailsComponent implements OnInit, AfterViewInit, OnDes
 
   getInstalationsInverterMonitoring(data: entity.Instalations) {
     let instalations = data.equipment;
-    this.assetService.getInstalationsInverterMonitoring(this.assetData.plantCode).subscribe((data: entity.InverterMonitoring) => {
+    this.assetService.getInstalationsInverterMonitoring(this.assetData?.plantCode).subscribe((data: entity.InverterMonitoring) => {
       this.notifyParent.emit(data.inverterSystemStatus);  
 
-      if (data.invertersStatus.length) {
+      if (data?.invertersStatus?.length) {
         let InvertersStatus = data?.invertersStatus;
         instalations.forEach((item: any) => {
           const matchingItem = InvertersStatus.find((obj: any) => obj.sn === item.serialNumber);
