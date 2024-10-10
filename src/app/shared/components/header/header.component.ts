@@ -61,13 +61,6 @@ export class HeaderComponent implements OnDestroy {
   subscribeToFilters() {
     this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe((filtersState) => {
       if (filtersState && filtersState.months.length > 0) {
-        const formattedMonths = this.formatSelectedMonths();
-        if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
-          this.selectedMonths = this.months.filter(month =>
-            filtersState.months.includes(`${this.currentYearComplete}-${month.value}-01`)
-          );
-          this.updateStartAndEndMonth();
-        }
       } else {
         this.setDefaultMonths();
       }
@@ -77,62 +70,48 @@ export class HeaderComponent implements OnDestroy {
   setDefaultMonths() {
     this.selectedStartMonth = this.months[5];
     this.selectedEndMonth = this.months[6];
-    this.updateSelectedMonths();
+    this.searchWithFilters()
   }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
-    this.updateSelectedMonths();
+
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedEndMonth = month;
-    this.updateSelectedMonths();
     menuTrigger.closeMenu();
   }
 
-  updateStartAndEndMonth() {
-    if (this.selectedMonths.length > 0) {
-      this.selectedStartMonth = this.selectedMonths[0];
-      this.selectedEndMonth = this.selectedMonths[this.selectedMonths.length - 1];
-    }
-  }
-
-  updateSelectedMonths() {
-    if (this.selectedStartMonth && this.selectedEndMonth) {
-      const startIndex = this.months.findIndex(m => m.value === this.selectedStartMonth.value);
-      const endIndex = this.months.findIndex(m => m.value === this.selectedEndMonth.value);
-      this.selectedMonths = this.months.slice(
-        Math.min(startIndex, endIndex),
-        Math.max(startIndex, endIndex) + 1
-      );
-    }
-    this.searchWithFilters();
-  }
-
-  formatSelectedMonths(): string[] {
-    return this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
-  }
-
   searchWithFilters() {
-    if (this.selectedMonths.length > 0) {
-      const formattedMonths = this.formatSelectedMonths();
+    console.log('searchWithFilters');
+    console.log('START', this.selectedStartMonth);
+    console.log('END', this.selectedEndMonth);
+    
 
-      const filters = { requestType: 'Month', months: formattedMonths };
-      const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
-      const filtersSolarCoverage = {
-        brand: "huawei",
-        clientName: "Merco",
-        requestType: 2,
-        months: formattedMonths
-      };
+    // if (this.selectedMonths.length > 0) {
+    //   const formattedMonths = this.formatSelectedMonths();
 
-      this.store.dispatch(setFilters({ filters }));
-      this.store.dispatch(setFiltersBatu({ filtersBatu }));
-      this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
-    }
+    //   const filters = { requestType: 'Month', months: formattedMonths };
+    //   const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
+    //   const filtersSolarCoverage = {
+    //     brand: "huawei",
+    //     clientName: "Merco",
+    //     requestType: 2,
+    //     months: formattedMonths
+    //   };
+
+
+    //   console.log(filtersBatu);
+
+    //   this.store.dispatch(setFilters({ filters }));
+    //   // this.store.dispatch(setFiltersBatu({ filtersBatu }));
+    //   this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+    // }
   }
+
+ 
 
   signOut() {
     localStorage.removeItem('userEnergiaReal');
