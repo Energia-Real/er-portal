@@ -1,3 +1,4 @@
+
 .c-home {
   .mdc-text-field--outlined {
     --mdc-outlined-text-field-container-shape: 28px;
@@ -12,7 +13,7 @@
     margin-top: 10px;
     padding: 25px 15px;
 
-    >h1 {
+    >h2 {
       font-size: 16px;
       font-weight: 700;
     }
@@ -29,9 +30,9 @@
         position: relative;
 
         h2 {
-          font-size: 24px;
+          font-size: 24px!important;
           font-weight: 500;
-          margin: 0;
+          margin-bottom: 10px!important;
 
           span {
             font-size: 12px;
@@ -58,9 +59,38 @@
     }
   }
 
-  .c-card-section-m {
-    margin-top: 18px;
+  .solar-coverage {
+    width: 212px;
+    height: 232px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    >div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        margin-bottom: 16px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #EE5427;
+      }
+      p {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 700;
+      }
+    }
   }
+
 
   .logo-merco {
     width: 20px;
