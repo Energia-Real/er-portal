@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
+import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { FilterState, UserV2 } from '@app/shared/models/general-models';
 import { selectFilters } from '@app/core/store/selectors/filters.selector';
@@ -51,14 +51,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadUserInfo();
+    this.subscribeToFilters();
+
   }
-  
+
   ngAfterViewInit(): void {
     this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(content => {
-      if (content) this.selectedEndMonth.value = ''
-      this.searchWithFilters()
+      if (content) {
+        this.selectedEndMonth.value = ''
+        this.searchWithFilters()
+      }
     })
-    this.subscribeToFilters();
   }
 
   loadUserInfo() {
@@ -67,37 +70,87 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscribeToFilters() {
     this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe((filtersState) => {
-      console.log('subscribeToFilters', filtersState);
-      this.setDefaultMonths();
+      if (filtersState && filtersState.months.length > 0) {
+        const formattedMonths = this.formatSelectedMonths();
+        if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
+          this.selectedMonths = this.months.filter(month =>
+            filtersState.months.includes(`${this.currentYearComplete}-${month.value}-01`)
+          );
+          this.updateStartAndEndMonth();
+        }
+      } else {
+        this.setDefaultMonths();
+      }
     });
   }
 
   setDefaultMonths() {
     this.selectedStartMonth = this.months[5];
     this.selectedEndMonth = this.months[6];
-    this.searchWithFilters()
+    this.updateSelectedMonths();
   }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
-    this.searchWithFilters()
+    this.updateSelectedMonths();
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedEndMonth = month;
-    this.searchWithFilters()
+    this.updateSelectedMonths();
     menuTrigger.closeMenu();
   }
 
-  searchWithFilters() {
-    const generalFilters = {
-      startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
-      endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
+  updateStartAndEndMonth() {
+    if (this.selectedMonths.length > 0) {
+      this.selectedStartMonth = this.selectedMonths[0];
+      this.selectedEndMonth = this.selectedMonths[this.selectedMonths.length - 1];
     }
+  }
 
-    console.log('GENERAL', generalFilters);
-    this.store.dispatch(setGeneralFilters({ generalFilters }));
+  updateSelectedMonths() {
+    if (this.selectedStartMonth && this.selectedEndMonth) {
+      const startIndex = this.months.findIndex(m => m.value === this.selectedStartMonth.value);
+      const endIndex = this.months.findIndex(m => m.value === this.selectedEndMonth.value);
+      this.selectedMonths = this.months.slice(
+        Math.min(startIndex, endIndex),
+        Math.max(startIndex, endIndex) + 1
+      );
+    }
+    this.searchWithFilters();
+  }
+
+  formatSelectedMonths(): string[] {
+    return this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
+  }
+
+  searchWithFilters() {
+    if (this.selectedMonths.length > 0) {
+      const formattedMonths = this.formatSelectedMonths();
+
+      const filters = { requestType: 'Month', months: formattedMonths };
+      const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
+      const filtersSolarCoverage = {
+        brand: "huawei",
+        clientName: "Merco",
+        requestType: 2,
+        months: formattedMonths
+      };
+
+      const generalFilters = {
+        startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
+        endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
+      }
+
+      console.log('generalFilters', generalFilters);
+      console.log('filtersSolarCoverage', filtersSolarCoverage);
+
+      this.store.dispatch(setGeneralFilters({ generalFilters }));
+      this.store.dispatch(setFilters({ filters }));
+      this.store.dispatch(setFiltersBatu({ filtersBatu }));
+      this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+    }
   }
 
   signOut() {
