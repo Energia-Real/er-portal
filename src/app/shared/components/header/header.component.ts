@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
+import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { FilterState, UserV2 } from '@app/shared/models/general-models';
 import { selectFilters } from '@app/core/store/selectors/filters.selector';
@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   userInfo!: UserV2;
@@ -51,6 +51,13 @@ export class HeaderComponent implements OnDestroy {
 
   ngOnInit(): void {
     this.loadUserInfo();
+  }
+  
+  ngAfterViewInit(): void {
+    this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(content => {
+      if (content) this.selectedEndMonth.value = ''
+      this.searchWithFilters()
+    })
     this.subscribeToFilters();
   }
 
@@ -60,10 +67,8 @@ export class HeaderComponent implements OnDestroy {
 
   subscribeToFilters() {
     this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe((filtersState) => {
-      if (filtersState && filtersState.months.length > 0) {
-      } else {
-        this.setDefaultMonths();
-      }
+      console.log('subscribeToFilters', filtersState);
+      this.setDefaultMonths();
     });
   }
 
@@ -75,43 +80,25 @@ export class HeaderComponent implements OnDestroy {
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
-
+    this.searchWithFilters()
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedEndMonth = month;
+    this.searchWithFilters()
     menuTrigger.closeMenu();
   }
 
   searchWithFilters() {
-    console.log('searchWithFilters');
-    console.log('START', this.selectedStartMonth);
-    console.log('END', this.selectedEndMonth);
-    
+    const generalFilters = {
+      startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
+      endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
+    }
 
-    // if (this.selectedMonths.length > 0) {
-    //   const formattedMonths = this.formatSelectedMonths();
-
-    //   const filters = { requestType: 'Month', months: formattedMonths };
-    //   const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
-    //   const filtersSolarCoverage = {
-    //     brand: "huawei",
-    //     clientName: "Merco",
-    //     requestType: 2,
-    //     months: formattedMonths
-    //   };
-
-
-    //   console.log(filtersBatu);
-
-    //   this.store.dispatch(setFilters({ filters }));
-    //   // this.store.dispatch(setFiltersBatu({ filtersBatu }));
-    //   this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
-    // }
+    console.log('GENERAL', generalFilters);
+    this.store.dispatch(setGeneralFilters({ generalFilters }));
   }
-
- 
 
   signOut() {
     localStorage.removeItem('userEnergiaReal');

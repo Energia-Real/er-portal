@@ -35,6 +35,7 @@ Chart.register(...registerables);
 export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   filters$!: Observable<FilterState['filters']>;
+  generalFilters$!: Observable<FilterState['generalFilters']>;
   filtersBatu$!: Observable<FilterState['filtersBatu']>;
   filtersSolarCoverage$!: Observable<FilterState['filtersSolarCoverage']>;
 
@@ -182,6 +183,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private store: Store<{ filters: FilterState }>
   ) {
     this.filters$ = this.store.select(state => state.filters.filters);
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
     this.filtersBatu$ = this.store.select(state => state.filters.filtersBatu);
     this.filtersSolarCoverage$ = this.store.select(state => state.filters.filtersSolarCoverage);
   }
@@ -212,6 +214,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filters$.subscribe(filters => { if (filters?.months?.length) this.getDataClients(filters) });
     this.filtersSolarCoverage$.subscribe(filtersSolarCoverage => { 
       if (filtersSolarCoverage?.months?.length) this.getDataSolarCovergaCo2(filtersSolarCoverage)
+    });
+    this.generalFilters$.subscribe(generalFilters => { 
+      console.log('HOME GENERAL FILTERS', generalFilters);
+      // this.getDataClients(generalFilters)
+      // this.getDataSolarCovergaCo2(generalFilters)
     });
   }
 

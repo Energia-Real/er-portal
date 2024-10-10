@@ -6,6 +6,11 @@ export const setFilters = createAction(
   props<{ filters: FilterState['filters'] }>()
 );
 
+export const setGeneralFilters = createAction(
+  '[Filter] Set Filters',
+  props<{ generalFilters: FilterState['generalFilters'] }>()
+);
+
 export const setFiltersBatu = createAction(
   '[Filter] Set Filters Batu',
   props<{ filtersBatu: FilterState['filtersBatu'] }>()

@@ -66,7 +66,7 @@
         <p>To</p>
 
         <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
-          <h1>{{ selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End' }}</h1>
+          <h1>{{ selectedEndMonth.value ? selectedEndMonth.name + ' ' + currentYear : 'End' }}</h1>
           <span class="material-symbols-outlined">calendar_month</span>
         </button>
 

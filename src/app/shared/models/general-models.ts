@@ -58,6 +58,10 @@ export interface FilterState {
     months: string[];
     states?: string[];
   };
+  generalFilters: {
+    startDate: string;
+    endDate: string | null;
+  };
   filtersBatu: {
     months: string[];
   };
@@ -74,6 +78,10 @@ export const initialFilterState: FilterState = {
     requestType: '',
     months: [],
     states:[]
+  },
+  generalFilters: {
+    startDate: '',
+    endDate: '',
   },
   filtersBatu: {
     months: []
