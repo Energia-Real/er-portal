@@ -66,7 +66,8 @@
         <p>To</p>
 
         <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
-          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End') }}</h1>
+          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End') }}
+          </h1>
           <span class="material-symbols-outlined">calendar_month</span>
         </button>
 
@@ -75,19 +76,14 @@
             <p>{{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
-            <button 
-              mat-menu-item 
-              *ngFor="let month of months" 
-              [disabled]="singleMonth.value"
-              [ngClass]="{
+            <button mat-menu-item *ngFor="let month of months" [disabled]="singleMonth.value" [ngClass]="{
                 'selected-month': selectedEndMonth?.value === month.value,
                 'unselected-month': selectedEndMonth?.value !== month.value
-              }" 
-              (click)="selectEndMonth(month, endMenuTrigger)">
+              }" (click)="selectEndMonth(month, endMenuTrigger)">
               {{ month.name }}
             </button>
           </div>
-        
+
           <div class="single">
             <mat-checkbox [formControl]="singleMonth" class="check-color"></mat-checkbox>
             <p>Consider a single month only</p>
