@@ -58,6 +58,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((isSingleMonthSelected) => {
       if (isSingleMonthSelected) {
         this.selectedEndMonth = null;
+        this.selectedMonths.pop()
         this.searchWithFilters();
       }
     });
@@ -124,6 +125,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formatSelectedMonths(): string[] {
     return this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
+    
   }
 
   searchWithFilters() {
