@@ -33,13 +33,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   selectedStartMonth = this.months[5];
-  selectedEndMonth = this.months[6];
+  selectedEndMonth : any = this.months[6];
 
   currentYear = new Date().getFullYear().toString().slice(-2);
   currentYearComplete = new Date().getFullYear();
   selectedMonths: { name: string; value: string }[] = [];
 
-  singleMonth = new FormControl('')
+  singleMonth = new FormControl(false)
 
   selectedStates: string[] = [];
 
@@ -56,12 +56,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(content => {
-      if (content) {
-        this.selectedEndMonth.value = ''
-        this.searchWithFilters()
+    this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((isSingleMonthSelected) => {
+      if (isSingleMonthSelected) {
+        this.selectedEndMonth = null;
+        this.searchWithFilters();
       }
-    })
+    });
   }
 
   loadUserInfo() {
@@ -96,10 +96,18 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     menuTrigger.closeMenu();
   }
 
+  // selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
+  //   this.selectedEndMonth = month;
+  //   this.updateSelectedMonths();
+  //   menuTrigger.closeMenu();
+  // }
+
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
-    this.selectedEndMonth = month;
-    this.updateSelectedMonths();
-    menuTrigger.closeMenu();
+    if (!this.singleMonth.value) { // Solo permite seleccionar si el checkbox está desmarcado
+      this.selectedEndMonth = month;
+      this.updateSelectedMonths();
+      menuTrigger.closeMenu();
+    }
   }
 
   updateStartAndEndMonth() {
