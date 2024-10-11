@@ -185,8 +185,9 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
           this.completionMessage(true);
         },
         error: error => {
-          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-          console.log(error);
+          const msg = error?.error?.detail.replace(/- /g, '<br>- ')
+          this.notificationService.notificacion(msg, 'alert');
+          console.log(error?.error);
         }
       });
     }

@@ -117,6 +117,11 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0]; 
+    this.uploadExcel();
+  }
+
   downloadExcel() {
     this.moduleServices.downloadExcel().subscribe({
       next: (response: Blob) => {
@@ -135,11 +140,6 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0]; 
-    this.uploadExcel();
-  }
-
   uploadExcel() {
     if (this.selectedFile) {
       this.moduleServices.uploadExcel(this.selectedFile).subscribe({
@@ -147,8 +147,9 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
           this.completionMessage(true);
         },
         error: error => {
-          this.notificationService.notificacion(error?.error?.detail, 'alert');
-          console.log(error?.error?.detail);
+          const msg = error?.error?.detail.replace(/- /g, '<br>- ')
+          this.notificationService.notificacion(msg, 'alert');
+          console.log(error?.error);
         }
       });
     }
