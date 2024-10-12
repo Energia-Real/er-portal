@@ -13,5 +13,8 @@ import { ConfirmationConfig } from '@app/shared/models/general-models';
   imports      : [NgIf, MaterialModule, NgClass]
 })
 export class ModalConfirmationComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationConfig) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationConfig) {
+    console.log(data);
+    
+  }
 }

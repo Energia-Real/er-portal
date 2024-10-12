@@ -75,6 +75,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   getDataResponse() {
     this.filtersSolarCoverage$.subscribe(filters => {
+      console.log(filters);
+      
       let objData: entity.PostDataByPlant = {
         plantCode: this.assetData.plantCode,
         ...filters

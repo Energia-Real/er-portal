@@ -1,56 +1,45 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
 import { Subject, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
+import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { FilterState } from '@app/shared/models/general-models';
+import { FilterState, UserV2 } from '@app/shared/models/general-models';
 import { selectFilters } from '@app/core/store/selectors/filters.selector';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { FormControl } from '@angular/forms';
 
-interface User {
-  id: string,
-  email: string,
-  persona: {
-    id: string,
-    nombres: string,
-    apellidos: string
-  },
-  clientes: null,
-  accessTo: string
-}
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  userInfo: any = {};
+  userInfo!: UserV2;
   @Input() routeActive = '';
+  @Output() monthSelected = new EventEmitter<{ month: string; year: number }>();
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 
   version = packageJson.version;
 
-  months: { value: string, viewValue: string }[] = [
-    { value: '01', viewValue: 'January' },
-    { value: '02', viewValue: 'February' },
-    { value: '03', viewValue: 'March' },
-    { value: '04', viewValue: 'April' },
-    { value: '05', viewValue: 'May' },
-    { value: '06', viewValue: 'June' },
-    { value: '07', viewValue: 'July' },
-    { value: '08', viewValue: 'August' },
-    { value: '09', viewValue: 'September' },
-    { value: '10', viewValue: 'October' },
-    { value: '11', viewValue: 'November' },
-    { value: '12', viewValue: 'December' }
+  months = [
+    { name: 'Jan', value: '01' }, { name: 'Feb', value: '02' }, { name: 'Mar', value: '03' },
+    { name: 'Apr', value: '04' }, { name: 'May', value: '05' }, { name: 'Jun', value: '06' },
+    { name: 'Jul', value: '07' }, { name: 'Aug', value: '08' }, { name: 'Sep', value: '09' },
+    { name: 'Oct', value: '10' }, { name: 'Nov', value: '11' }, { name: 'Dec', value: '12' }
   ];
 
-  selectedMonths: any[] = [];
+  selectedStartMonth = this.months[5];
+  selectedEndMonth: any = this.months[6];
 
-  currentYear = new Date().getFullYear();
+  currentYear = new Date().getFullYear().toString().slice(-2);
+  currentYearComplete = new Date().getFullYear();
+  selectedMonths: { name: string; value: string }[] = [];
+
+  singleMonth = new FormControl(false);
 
   selectedStates: string[] = [];
 
@@ -61,42 +50,106 @@ export class HeaderComponent implements OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe(filtersState => {
-      this.selectedStates = filtersState.states;
-      if (filtersState && filtersState.months.length > 0) {
-        this.selectedMonths = this.months.filter(month =>  
-          filtersState.months.includes(`${this.currentYear}-${month.value}-01`)
-        );
-      } else {
-        this.setMonths();
-      }
-    });
-
-    this.getInfoUser();
+    this.loadUserInfo();
+    this.subscribeToFilters();
   }
 
-  setMonths() {
-    this.selectedMonths = [this.months[5], this.months[6]];
+  ngAfterViewInit(): void {
+    this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((isSingleMonthSelected) => {
+      if (isSingleMonthSelected) {
+        this.selectedEndMonth = null;
+        this.selectedMonths.pop()
+        this.searchWithFilters();
+      }
+    });
+  }
+
+  loadUserInfo() {
+    this.accountService.getInfoUser().subscribe((data: UserV2) => this.userInfo = data);
+  }
+
+  subscribeToFilters() {
+    this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe((filtersState) => {
+      if (filtersState && filtersState.months.length > 0) {
+        const formattedMonths = this.formatSelectedMonths();
+        if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
+          this.selectedMonths = this.months.filter(month =>
+            filtersState.months.includes(`${this.currentYearComplete}-${month.value}-01`)
+          );
+          this.updateStartAndEndMonth();
+        }
+      } else {
+        this.setDefaultMonths();
+      }
+    });
+  }
+
+  setDefaultMonths() {
+    this.selectedStartMonth = this.months[5];
+    this.selectedEndMonth = this.months[6];
+    this.updateSelectedMonths();
+  }
+
+  selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
+    this.selectedStartMonth = month;
+    this.updateSelectedMonths();
+    menuTrigger.closeMenu();
+  }
+
+  selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
+    if (!this.singleMonth.value) {
+      this.selectedEndMonth = month;
+      this.updateSelectedMonths();
+      menuTrigger.closeMenu();
+    }
+  }
+
+  updateStartAndEndMonth() {
+    if (this.selectedMonths.length > 0) {
+      this.selectedStartMonth = this.selectedMonths[0];
+      this.selectedEndMonth = this.selectedMonths[this.selectedMonths.length - 1];
+    }
+  }
+
+  updateSelectedMonths() {
+    if (this.selectedStartMonth && this.selectedEndMonth) {
+      const startIndex = this.months.findIndex(m => m.value === this.selectedStartMonth.value);
+      const endIndex = this.months.findIndex(m => m.value === this.selectedEndMonth.value);
+      this.selectedMonths = this.months.slice(
+        Math.min(startIndex, endIndex),
+        Math.max(startIndex, endIndex) + 1
+      );
+    }
     this.searchWithFilters();
   }
 
-  searchWithFilters() {
-    let filtersBatu: any = {};
-    let filters: any = {};
-    let filtersSolarCoverage: any = {
-      brand: "huawei",
-      clientName: "Merco",
-      months: []
-    }
+  formatSelectedMonths(): string[] {
+    return this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
     
-    if (this.selectedMonths.length) {
-      filters.requestType = 'Month'
-      filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
-      filters.states = this.selectedStates;
-      filtersSolarCoverage.requestType = 2
-      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value + '-01');
-      filtersBatu.months = this.selectedMonths.map(month => this.currentYear + '-' + month.value);
-      
+  }
+
+  searchWithFilters() {
+    if (this.selectedMonths.length > 0) {
+      const formattedMonths = this.formatSelectedMonths();
+
+      const filters = { requestType: 'Month', months: formattedMonths };
+      const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
+      const filtersSolarCoverage = {
+        brand: "huawei",
+        clientName: "Merco",
+        requestType: 2,
+        months: formattedMonths
+      };
+
+      const generalFilters = {
+        startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
+        endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
+      }
+
+      console.log('generalFilters', generalFilters);
+      console.log('filtersSolarCoverage', filtersSolarCoverage);
+
+      this.store.dispatch(setGeneralFilters({ generalFilters }));
       this.store.dispatch(setFilters({ filters }));
       this.store.dispatch(setFiltersBatu({ filtersBatu }));
       this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
@@ -108,14 +161,8 @@ export class HeaderComponent implements OnDestroy {
     this.router.navigate(['/account/login']);
   }
 
-  getInfoUser() {
-    this.accountService.getInfoUser().subscribe((data: User) => {
-      this.userInfo = data;
-    })
-  }
-
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

@@ -100,6 +100,10 @@ span {
   }
 }
 
+.text-er-orange {
+  color: #EE5427;
+}
+
 .width-100 {
   width: 100%;
   ;
@@ -196,6 +200,7 @@ select {
   .mdc-checkbox__background {
     border-color: red !important;
     background-color: red !important;
+    padding: 0;
   }
 }
 
@@ -835,7 +840,7 @@ input[type="number"]:focus {
     }
 
     h2 {
-      height: 35px;
+      // height: 35px;
       font-size: 18px;
       line-height: 20px;
     }
