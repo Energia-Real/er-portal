@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
-import { Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Subject, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
@@ -69,21 +69,21 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   subscribeToFilters() {
-    this.store.select(selectFilters).pipe(takeUntil(this.onDestroy$)).subscribe((filtersState) => {
-      if (filtersState && filtersState.months.length > 0) {
-        const formattedMonths = this.formatSelectedMonths();
-        if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
-          this.selectedMonths = this.months.filter(month =>
-            filtersState.months.includes(`${this.currentYearComplete}-${month.value}-01`)
-          );
-          this.updateStartAndEndMonth();
-        }
-      } else {
-        this.setDefaultMonths();
-      }
-    });
+    this.store.select(selectFilters).pipe(
+        distinctUntilChanged((prev, curr) => JSON.stringify(prev.months) == JSON.stringify(curr.months)),
+        takeUntil(this.onDestroy$)
+      ).subscribe((filtersState) => {
+        if (filtersState && filtersState?.months?.length) {
+          const formattedMonths = this.formatSelectedMonths();
+          
+          if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
+            this.selectedMonths = this.months.filter(month => filtersState.months.includes(`${this.currentYearComplete}-${month.value}-01`));
+            this.updateStartAndEndMonth();
+          }
+        } else this.setDefaultMonths();
+      });
   }
-
+  
   setDefaultMonths() {
     this.selectedStartMonth = this.months[5];
     this.selectedEndMonth = this.months[6];
@@ -105,7 +105,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateStartAndEndMonth() {
-    if (this.selectedMonths.length > 0) {
+    if (this.selectedMonths.length) {
       this.selectedStartMonth = this.selectedMonths[0];
       this.selectedEndMonth = this.selectedMonths[this.selectedMonths.length - 1];
     }
@@ -125,13 +125,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   formatSelectedMonths(): string[] {
     return this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
-    
   }
 
   searchWithFilters() {
     if (this.selectedMonths.length > 0) {
       const formattedMonths = this.formatSelectedMonths();
-
+      const generalFilters = {
+        startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
+        endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
+      };
+  
       const filters = { requestType: 'Month', months: formattedMonths };
       const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
       const filtersSolarCoverage = {
@@ -140,22 +143,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         requestType: 2,
         months: formattedMonths
       };
-
-      const generalFilters = {
-        startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
-        endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
-      }
-
-      console.log('generalFilters', generalFilters);
-      console.log('filtersSolarCoverage', filtersSolarCoverage);
-
-      this.store.dispatch(setGeneralFilters({ generalFilters }));
-      this.store.dispatch(setFilters({ filters }));
-      this.store.dispatch(setFiltersBatu({ filtersBatu }));
-      this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+  
+      this.store.select(selectFilters).pipe(take(1)).subscribe((currentFiltersState:any) => {
+        if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
+        if (JSON.stringify(currentFiltersState.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
+        if (JSON.stringify(currentFiltersState.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
+        if (JSON.stringify(currentFiltersState.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+      });
     }
   }
-
+  
   signOut() {
     localStorage.removeItem('userEnergiaReal');
     this.router.navigate(['/account/login']);

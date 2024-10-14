@@ -105,8 +105,8 @@
   ::ng-deep .custom-menu {
     margin-top: 5px;
     box-shadow: none !important;
-    border: 1px solid #9E9E9E;
-  
+    // border: 1px solid #9E9E9E;
+    border: 2px solid #E5E7EB;
     .years {
       padding: 0px 20px;
       margin: 0;
@@ -128,6 +128,7 @@
     color: #FFFFFF !important;
     min-height: unset !important;
     font-size: 16px;
+    text-align: center;
   }
   
   .unselected-month {
