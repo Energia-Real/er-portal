@@ -961,3 +961,20 @@ input[type="number"]:focus {
     padding-top: 3%;
   }
 }
+
+.tippy-box[data-theme~='custom'] {
+  background-color: #373D3F; 
+  color: #ffffff; 
+  border-radius: 10px;
+  padding:16px;
+  font-size: 14px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tippy-box[data-theme~='custom'] .tippy-arrow {
+  color: #373D3F;
+}
+
+.tippy-box[data-animation='fill'] .tippy-content {
+  background-color: #373D3F; 
+}

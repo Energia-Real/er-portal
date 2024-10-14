@@ -6,12 +6,14 @@ import { MaterialModule } from '@app/shared/material/material.module';
 import { FooterComponent } from '../footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapaComponent } from '../mapa/mapa.component';
+import { TooltipComponent } from '../tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
-    MapaComponent
+    MapaComponent,
+    TooltipComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { MapaComponent } from '../mapa/mapa.component';
   exports: [
     HeaderComponent,
     FooterComponent,
-    MapaComponent
+    MapaComponent,
+    TooltipComponent
   ]
 })
 export class SharedComponensModule { }

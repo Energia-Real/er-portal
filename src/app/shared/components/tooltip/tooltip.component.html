@@ -1,0 +1,11 @@
+<div class="tooltip-content">
+    <strong>{{ title }}</strong>
+    <mat-divider class="custom-divider mt-1 mb-1"></mat-divider>
+    <div *ngIf="infoAdicional && infoAdicional.length>0">
+        <div *ngFor="let info of infoAdicional">
+            <span class="block">{{info.subtitle}}</span>
+            <strong class="mb-1 block">{{ info.content }}</strong>
+        </div>
+        <mat-divider  *ngIf="infoAdicional && infoAdicional.length" class="custom-divider mt-1 mb-1"></mat-divider>
+    </div>
+  </div>      
