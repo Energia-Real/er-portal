@@ -155,7 +155,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   
   signOut() {
     localStorage.removeItem('userEnergiaReal');
-    this.router.navigate(['/account/login']);
+    this.router.navigate(['']);
   }
 
   ngOnDestroy(): void {

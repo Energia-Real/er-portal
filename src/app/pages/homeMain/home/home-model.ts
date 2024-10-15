@@ -26,6 +26,12 @@ export interface DataRespSavingDetailsMapper {
   }
 }
 
+export interface statesResumeTooltip {
+  estado : string;
+  plantas: number;
+  totalEnergyProduction: number;
+}
+
 export interface DataRespSavingDetailsList {
   id: string;
   clientId: number;

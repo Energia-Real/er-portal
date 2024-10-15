@@ -24,6 +24,11 @@ export class HomeService {
     );
   }
 
+  getDataStates(filters?: string): Observable<entity.statesResumeTooltip[]> {
+    const url = `${environment.API_URL_CLIENTS_V1}/projects/statesResume`;
+    return this.http.post<entity.statesResumeTooltip[]>(url, filters)
+  }
+
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
     const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
     const params = new HttpParams()

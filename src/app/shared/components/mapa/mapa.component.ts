@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, OnInit,  ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnInit, ViewContainerRef } from '@angular/core';
 import * as L from 'leaflet';
 import geojson from '../../../../assets/geojsons/mexicoHigh.json'; // Ajusta la ruta a tu archivo GeoJSON
 import { GeoJsonObject } from 'geojson';
@@ -9,7 +9,9 @@ import { Observable } from 'rxjs';
 import tippy, { Instance } from 'tippy.js';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 import 'tippy.js/animations/scale.css';
-
+import * as entity from '../../../pages/homeMain/home/home-model';
+import { HomeService } from '@app/pages/homeMain/home/home.service';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
 
 @Component({
   selector: 'app-mapa',
@@ -19,35 +21,69 @@ import 'tippy.js/animations/scale.css';
 export class MapaComponent implements AfterViewInit {
 
   private tippyInstance!: Instance | null;
-  
+  tooltipsInfo: entity.statesResumeTooltip[] = [];
 
   selectedStates: string[] = [];
   filters$!: Observable<FilterState['filters']>;
   filters!: FilterState['filters'];
-  
 
   constructor(
     private store: Store<{ filters: FilterState }>,
     private el: ElementRef,
     private viewContainerRef: ViewContainerRef,
-    private injector: Injector
-  ){
+    private injector: Injector,
+    private homeService: HomeService,
+    private notificationService: OpenModalsService,
+  ) {
     this.filters$ = this.store.select(state => state.filters.filters);
-    this.filters$.subscribe(filters => {this.filters=filters });
+    this.filters$.subscribe(filters => {
+      this.filters = filters;
+      this.getTooltipInfo(filters);
+    });
   }
 
   ngAfterViewInit() {
+    // Los tooltips se generan después de que se obtienen los datos
+  }
+
+  getTooltipInfo(filters?: any) {
+    this.homeService.getDataStates(filters).subscribe({
+      next: (response: entity.statesResumeTooltip[]) => {
+        this.tooltipsInfo = response;
+        console.log(response);
+
+        // Crear los tooltips una vez que los datos han sido cargados
+        this.createTooltips();
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+      }
+    });
+  }
+
+  createTooltips() {
     const estados = this.el.nativeElement.querySelectorAll('path');
 
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
+      const dataEstado = this.tooltipsInfo.find(item => item.estado.toLowerCase() === nombreEstado?.toLowerCase());
+      console.log(dataEstado);
 
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';
-      tooltipContent.instance.infoAdicional =[
-        { subtitle: 'Active plants', content: 'x plants '  },
-        { subtitle: 'Total kWh', content: '0,000,000 kWh' }
-      ]
+      
+      if (dataEstado) {
+        tooltipContent.instance.infoAdicional = [
+          { subtitle: 'Active plants', content: `${dataEstado.plantas} plants` },
+          { subtitle: 'Total kWh', content: `${dataEstado.totalEnergyProduction.toLocaleString()} kWh` }
+        ];
+      } else {
+        tooltipContent.instance.infoAdicional = [
+          { subtitle: 'Active plants', content: '0 plants' },
+          { subtitle: 'Total kWh', content: '0 kWh' }
+        ];
+      }
+
       tippy(estado, {
         content: tooltipContent.location.nativeElement,
         allowHTML: true,
@@ -56,7 +92,6 @@ export class MapaComponent implements AfterViewInit {
         theme: 'custom',
         trigger: 'mouseenter',
         animation: 'scale'
-
       });
     });
   }
@@ -69,21 +104,22 @@ export class MapaComponent implements AfterViewInit {
     const index = this.selectedStates.indexOf(stateId);
     if (index === -1) {
       this.selectedStates.push(stateId);
-      let filters = { 
-        ...this.filters, 
-        states: [...this.selectedStates] 
+      let filters = {
+        ...this.filters,
+        states: [...this.selectedStates]
       };
-      console.log(filters)
+      console.log(filters);
       this.store.dispatch(setFilters({ filters }));
 
     } else {
       this.selectedStates.splice(index, 1);
-      let filters = { 
-        ...this.filters, 
-        states: [...this.selectedStates] 
+      let filters = {
+        ...this.filters,
+        states: [...this.selectedStates]
       };
-      console.log(filters)
-      this.store.dispatch(setFilters({ filters }));    }
+      console.log(filters);
+      this.store.dispatch(setFilters({ filters }));
+    }
   }
 
   createComponent(component: any): ComponentRef<any> {
