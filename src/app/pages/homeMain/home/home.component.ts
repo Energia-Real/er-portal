@@ -159,6 +159,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   showLoader: boolean = true;
   userInfo: any
   dataClientsList: entity.DataRespSavingDetailsList[] = []
+  dataTooltipsInfo: entity.statesResumeTooltip[] = []
+
   dataClientsBatu: any
 
   savingsDetails: any = {
@@ -211,7 +213,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getFilters() {
-    this.filters$.subscribe(filters => { if (filters?.months?.length) this.getDataClients(filters) });
+    this.filters$.subscribe(filters => { if (filters?.months?.length) {
+      this.getDataClients(filters);
+      this.getTooltipInfo(filters);
+    } });
     this.filtersSolarCoverage$.subscribe(filtersSolarCoverage => { 
       if (filtersSolarCoverage?.months?.length) this.getDataSolarCovergaCo2(filtersSolarCoverage)
     });
@@ -242,6 +247,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.homeService.getDataClientsList().subscribe({
       next: (response: entity.DataRespSavingDetailsList[]) => {
         this.dataClientsList = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+      }
+    })
+  }
+
+  getTooltipInfo(filters?: any) {
+    this.homeService.getDataStates(filters).subscribe({
+      next: (response: entity.statesResumeTooltip[]) => {
+        this.dataTooltipsInfo = response;
+        console.log(response)
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
