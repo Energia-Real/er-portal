@@ -1,17 +1,6 @@
 <app-header routeActive="/home"></app-header>
-<main class="grid md:grid-cols-2 md:gap-4 c-home c-main">
-    <div>
-       <!--  <div class="c-client-list">
-            <button mat-stroked-button *ngFor="let client of dataClientsList; let first = first; ">
-                <div class="logo-merco" *ngIf="client.id == '875611f7-c626-413c-bea4-bb7ddf3ac7db' || client?.imageBase64">
-                    <img [src]="client.id == '875611f7-c626-413c-bea4-bb7ddf3ac7db' ? '../../../../assets/img/merco.png' : client.imageBase64" alt="">
-                </div>
-                <div>
-                    <a class="truncate">{{ client.nombre }}</a>
-                </div>
-            </button>
-        </div> -->
-
+<main class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5 c-home c-main">
+    <div class="col-span-2 md:col-span-1">
         <div class="c-card-section">
             <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
@@ -32,35 +21,28 @@
                     <p>CFE Cost without Solar</p>
                     <div class="linea"></div>
                 </div>
-                <div class="total-saving" >
+                <div class="total-saving">
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> $56,292</h2>
                     <p>Total Savings </p>
                 </div>
-
-                <!-- <div>
-                    <h2 *ngIf="dataClientsBatu?.noExist else notDataTable"> {{
-                        dataClientsBatu.costwoSolarTotal }}</h2>
-                    <p>CFE <br> Cost without Solar <br> <span class="wi-progress">Work in
-                            progress</span></p>
-                </div>
-
-                <div>
-                    <h2 *ngIf="dataClientsBatu?.noExist else notDataTable"> {{
-                        dataClientsBatu.totalSaving }}</h2>
-                    <p>Total <br> Saving <br> <span class="wi-progress">Work in progress</span></p>
-                </div> -->
             </div>
         </div>
 
-        <div class="c-card-section  solar-coverage">
+        <div class="c-card-section solar-coverage">
             <div>
                 <img src="../../../../assets/icons/solar-coverage.png" alt="">
                 <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
                 <p>56.19%</p>
             </div>
         </div>
+    </div>
 
-        <div class="c-graph" >
+    <div class="col-span-2 md:col-span-1">
+        <app-mapa></app-mapa>
+    </div>
+
+    <div class="col-span-2 md:col-span-1">
+        <div class="c-graph">
             <div class="graph">
                 <canvas baseChart [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions">
                 </canvas>
@@ -68,50 +50,7 @@
         </div>
     </div>
 
-    <div>
-        <!-- <div class="row c-filters">
-            <div class="col-md-4 col-sm-4">
-                <mat-button-toggle-group [formControl]="dayOrMount" class="input-toggle" name="fontStyle"
-                    aria-label="Font Style">
-                    <mat-button-toggle value="month">Month</mat-button-toggle>
-                </mat-button-toggle-group>
-            </div>
-
-            <div class="col-md-8 col-sm-8">
-                <div class="c-input" *ngIf="dayOrMount.value == 'month'">
-                    <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Start date - End date" [(value)]="selectedMonths" multiple>
-                            <mat-option *ngFor="let month of months; let i = index" [value]="month">
-                                {{ month.viewValue }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <form [formGroup]="formFilters" *ngIf="dayOrMount.value == 'day'">
-                    <mat-form-field appearance="outline" class="input-date">
-                        <mat-date-range-input [rangePicker]="date"
-                            [comparisonStart]="formFilters.value['rangeDateStart']"
-                            [comparisonEnd]="formFilters.value['rangeDateEnd']">
-                            <input matStartDate placeholder="Start date" formControlName="rangeDateStart" />
-                            <input matEndDate placeholder="End date" formControlName="rangeDateEnd" />
-                        </mat-date-range-input>
-
-                        <mat-datepicker-toggle matIconSuffix [for]="date"></mat-datepicker-toggle>
-                        <mat-date-range-picker #date></mat-date-range-picker>
-                    </mat-form-field>
-                </form>
-
-                <button [disabled]="!searchFilters" [matTooltip]="!searchFilters ? 'Select date.' : ''"
-                    class="btn-action-add" (click)="searchWithFilters()">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-        </div> -->
-
-        <div class="c-card-section c-card-section-m c-mapa ">
-            <app-mapa ></app-mapa>
-        </div>
+    <div class="col-span-2 md:col-span-1">
         <div class="table-container-scroll mt-3 mb-5">
             <table mat-table [dataSource]="dataSource" matSort>
                 <caption></caption>
@@ -218,6 +157,8 @@
             </table>
         </div>
     </div>
+
+
 </main>
 <app-footer></app-footer>
 
