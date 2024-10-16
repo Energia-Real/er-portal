@@ -105,6 +105,8 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.getPricingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataPricingTableMapper) => {
+        console.log(response);
+
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
@@ -112,13 +114,16 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       },
       error: error => {
         // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
+        this.dataSource.data = error?.response?.data;
+        this.totalItems = error?.response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page
       }
     });
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0]; 
+    this.selectedFile = event.target.files[0];
     this.uploadExcel();
   }
 
