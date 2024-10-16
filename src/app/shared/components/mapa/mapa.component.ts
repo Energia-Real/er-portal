@@ -1,14 +1,11 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnInit, ViewContainerRef } from '@angular/core';
-import * as L from 'leaflet';
-import geojson from '../../../../assets/geojsons/mexicoHigh.json'; // Ajusta la ruta a tu archivo GeoJSON
-import { GeoJsonObject } from 'geojson';
-import { setFilters, setFiltersBatu, setFiltersSolarCoverage } from '@app/core/store/actions/filters.actions';
+import anime from 'animejs/lib/anime.es.js';
+import { setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { FilterState } from '@app/shared/models/general-models';
 import { Observable } from 'rxjs';
 import tippy, { Instance } from 'tippy.js';
 import { TooltipComponent } from '../tooltip/tooltip.component';
-import 'tippy.js/animations/scale.css';
 import * as entity from '../../../pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -91,7 +88,17 @@ export class MapaComponent implements AfterViewInit {
         arrow: true,
         theme: 'custom',
         trigger: 'mouseenter',
-        animation: 'scale'
+        onShow(instance) {
+          const tooltip = instance.popper;
+          tooltip.classList.remove('hide'); 
+          tooltip.classList.add('show'); 
+        },
+        onHide(instance) {
+          const tooltip = instance.popper;
+          tooltip.classList.remove('show'); 
+          tooltip.classList.add('hide'); 
+        }
+  
       });
     });
   }
