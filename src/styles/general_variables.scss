@@ -359,6 +359,41 @@ select:focus {
 }
 
 
+.btn-upload {
+    background: #FCFCFC;
+    color: #f56e46 !important;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    padding: 5px 15px !important;
+    border-radius: 100px !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 150ms all ease;
+    height: 35px;
+    user-select: none !important;
+    outline: none !important;
+
+    i {
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+        width: 15px;
+        height: 15px;
+        color: #f56e46
+    }
+    span {
+        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        color: #f56e46
+    }
+}
+
 .btn-action-add {
     background: #f56e46 !important;
     color: white !important;
@@ -373,20 +408,26 @@ select:focus {
     gap: 8px;
     transition: 150ms all ease;
     height: 35px;
-    // box-shadow: 3px 3px 4px 0px #00000040;
     user-select: none !important;
     outline: none !important;
 
-    i,
-    span {
+    i {
         font-size: 15px;
         margin: 0;
         padding: 0;
         width: 15px;
         height: 15px;
     }
+    span {
+        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+    }
 }
 
+.btn-upload:hover,
 .btn-action-add:hover,
 .btn-action-export:hover,
 .btn-cancel:hover {
@@ -446,8 +487,8 @@ select:focus {
     display: flex;
     position: relative;
     align-items: center;
-    justify-content: flex-end;
-    // gap: 10px;
+    // justify-content: flex-end;
+    gap: 15px;
     flex-wrap: wrap;
 
     button {

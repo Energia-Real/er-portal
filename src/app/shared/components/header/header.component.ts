@@ -70,14 +70,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscribeToFilters() {
     this.store.select(selectFilters).pipe(
-        distinctUntilChanged((prev, curr) => JSON.stringify(prev.months) == JSON.stringify(curr.months)),
+        distinctUntilChanged((prev, curr) => JSON.stringify(prev?.months) == JSON.stringify(curr?.months)),
         takeUntil(this.onDestroy$)
       ).subscribe((filtersState) => {
         if (filtersState && filtersState?.months?.length) {
           const formattedMonths = this.formatSelectedMonths();
           
           if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
-            this.selectedMonths = this.months.filter(month => filtersState.months.includes(`${this.currentYearComplete}-${month.value}-01`));
+            this.selectedMonths = this.months.filter(month => filtersState?.months.includes(`${this.currentYearComplete}-${month.value}-01`));
             this.updateStartAndEndMonth();
           }
         } else this.setDefaultMonths();
@@ -145,10 +145,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       };
   
       this.store.select(selectFilters).pipe(take(1)).subscribe((currentFiltersState:any) => {
-        if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
-        if (JSON.stringify(currentFiltersState.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
-        if (JSON.stringify(currentFiltersState.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
-        if (JSON.stringify(currentFiltersState.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+        if (JSON.stringify(currentFiltersState?.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
+        if (JSON.stringify(currentFiltersState?.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
+        if (JSON.stringify(currentFiltersState?.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
+        if (JSON.stringify(currentFiltersState?.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
       });
     }
   }

@@ -1,47 +1,58 @@
 <div class="c-main px-16">
-    <div class="d-flex justify-between flex-wrap gap-2">
-        <div class="search-add">
-            <form class="relative w-80 ms-auto c-search">
-                <label class="input-search">
-                    <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                </label>
-                <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
-                    [formControl]="searchBar">
-            </form>
+    <div class="grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
+
+
+        <div class="col-span-1">
+            <div class="btns-excel">
+                <button class="btn-action-add">
+                    <span class="material-symbols-outlined">download</span>
+                    Download .xlsx
+                </button>
+    
+                <button class="btn-upload" (click)="fileInput.click()">
+                    <span class="material-symbols-outlined">upload</span>
+                    Bulk upload
+                </button>
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
+    
+            </div>
+           
         </div>
 
-        <div class="btns-excel gap-2">
-            <button (click)="downloadExcel()">
-                <i class="fas fa-file-download"></i>
-                Download Excel
-            </button>
 
-            <button (click)="fileInput.click()">
-                <i class="fas fa-file-upload"></i>
-                Upload Excel
-            </button>
-
-            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
-
-            <div class="c-input mb-0">
-                <mat-form-field class="select-mount" appearance="outline">
-                    <mat-select placeholder="Select month" [formControl]="selectedMonth">
-                        <mat-option [value]="''">No month</mat-option>
-                        <mat-option *ngFor="let month of months; let i = index" [value]="month.value">
-                            {{ month.viewValue }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+        <div class="col-span-1 d-flex justify-center">
+            <div class="search-add">
+                <form class="relative w-80 ms-auto c-search">
+                    <label class="input-search">
+                        <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
+                    </label>
+                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Plant name"
+                        [formControl]="searchBar">
+                </form>
             </div>
-         
-            <div class="c-input mb-0">
-                <mat-form-field class="select-years" appearance="outline">
-                    <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
-                        <mat-option *ngFor="let year of years" [value]="year.value">
-                            {{ year.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+        </div>
+
+        <div class="col-span-1">
+            <div class="d-flex justify-end gap-2">
+                <div class="c-input">
+                    <mat-form-field class="select-mount" appearance="outline">
+                        <mat-select placeholder="Select month" [formControl]="selectedMonth">
+                            <mat-option *ngFor="let month of months; let i = index" [value]="month.value">
+                                {{ month.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="c-input mb-0">
+                    <mat-form-field class="select-years" appearance="outline">
+                        <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
+                            <mat-option *ngFor="let year of years" [value]="year.value">
+                                {{ year.value }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
     </div>
@@ -56,7 +67,7 @@
             </ng-container>
 
             <ng-container matColumnDef="clientName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name of the client</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plant name</th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
                 </td>
