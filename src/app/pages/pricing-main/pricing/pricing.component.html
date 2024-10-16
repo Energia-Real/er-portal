@@ -67,23 +67,16 @@
             </ng-container>
 
             <ng-container matColumnDef="clientName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plant name</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Client name</th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="plantName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name of the site</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plant name</th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.plantName else notDataTable"> {{ element.plantName }} </div>
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
                 </td>
             </ng-container>
 
@@ -91,6 +84,14 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.month else notDataTable"> {{ getMonthName(element.month) }} </div>
+                </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="year">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
                 </td>
             </ng-container>
 

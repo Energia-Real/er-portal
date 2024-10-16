@@ -31,8 +31,8 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'rpu',
     'clientName',
     'plantName',
-    'year',
     'month',
+    'year',
     'kwh',
   ];
   pageSizeSub: Subscription;
