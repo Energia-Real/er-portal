@@ -1,9 +1,4 @@
-<!-- <div class="c-modal-confirmation">
-
-</div> -->
-
 <div class="relative flex flex-col w-full h-full">
-
     <ng-container *ngIf="data.dismissible">
         <div class="absolute top-0 right-0 pt-4 pr-4">
             <button mat-icon-button [matDialogClose]="undefined">
@@ -16,19 +11,17 @@
         <ng-container *ngIf="data?.icon?.show">
             <div class="flex flex-0 items-center justify-center w-10 h-10 sm:mr-4 rounded-full" [ngClass]="
             {
-                'modalSuccess': data?.icon?.color === 'success',
-                'modalQuestion': data?.icon?.color === 'question',
-                'modalError': data?.icon?.color === 'error',
-                'modalAlert': data?.icon?.color === 'alert'
+                'modalSuccess': data.icon?.color === 'success',
+                'modalQuestion': data.icon?.color === 'question',
+                'modalError': data.icon?.color === 'error',
+                'modalAlert': data.icon?.color === 'alert'
             }">
-                <mat-icon class="text-current">{{data?.icon?.name}}</mat-icon>
-
+                <mat-icon class="text-current">{{data.icon?.name}}</mat-icon>
             </div>
         </ng-container>
 
         <ng-container *ngIf="data.title || data.message">
             <div class="flex flex-col items-center sm:items-start  sm:mt-0 space-y-1 text-center sm:text-left">
-
                 <ng-container *ngIf="data.title">
                     <div class="text-xl leading-6 font-medium" [innerHTML]="data.title"></div>
                 </ng-container>
@@ -38,25 +31,22 @@
                 </ng-container>
             </div>
         </ng-container>
-
     </div>
 
     <ng-container *ngIf="data.actions?.confirm?.show || data.actions?.cancel?.show">
         <div
             class="flex items-center justify-center sm:justify-end px-6 py-3 space-x-3 bg-gray-50 dark:bg-black dark:bg-opacity-10">
-
             <ng-container *ngIf="data.actions?.cancel?.show">
                 <button class="btn-cancel" [matDialogClose]="false">
-                    {{data?.actions?.cancel?.label}}
+                    {{data.actions?.cancel?.label}}
                 </button>
             </ng-container>
 
             <ng-container *ngIf="data?.actions?.confirm?.show">
                 <button class="btn-action-add" [matDialogClose]="true">
-                    {{data?.actions?.confirm?.label}}
+                    {{data.actions?.confirm?.label}}
                 </button>
             </ng-container>
         </div>
     </ng-container>
-
 </div>
