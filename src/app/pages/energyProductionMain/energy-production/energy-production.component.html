@@ -1,6 +1,29 @@
 <div class="c-main px-16">
     <div class="d-flex justify-between gap-2">
-        <div class="search-add">
+        <div class="btns-excel gap-2">
+            <div class="relative w-52  ms-auto c-search">
+                <mat-form-field class="select-years select-type" appearance="outline">
+                    <mat-select [disabled]="false"  [(value)]="selectedEnergyType" (selectionChange)="onEnergyTypeChange($event)">
+                        <mat-option *ngFor="let type of energyTypes" [value]="type.value">
+                            {{ type.description }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div class="c-input mb-0">
+                <mat-form-field class="select-years" appearance="outline">
+                    <mat-select [disabled]="false" placeholder="Select year" [(value)]="selectedYear">
+                        <mat-option *ngFor="let year of years" [value]="year.value">
+                            {{ year.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="btns-excel gap-2">
+
             <form class="relative w-80 ms-auto c-search">
                 <label class="input-search">
                     <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
@@ -8,9 +31,7 @@
                 <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
                     [formControl]="searchBar">
             </form>
-        </div>
 
-        <div class="btns-excel gap-2">
             <button (click)="downloadExcel()">
                 <i class="fas fa-file-download"></i>
                 Download Excel
@@ -23,15 +44,7 @@
 
             <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
 
-            <div class="c-input mb-0">
-                <mat-form-field class="select-years" appearance="outline">
-                    <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
-                        <mat-option *ngFor="let year of years" [value]="year.value">
-                            {{ year.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+            
         </div>
     </div>
 

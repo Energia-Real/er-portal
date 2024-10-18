@@ -29,6 +29,31 @@ export class EnergyProductionService implements OnDestroy {
     );
   }
 
+  getEnergyConsumptionData(year: string, name: string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
+    const url = `${this.API_URL}/GetEnergyConsumption/${year}`;
+    const params = new HttpParams()
+      .set('pagesize', pageSize)
+      .set('page', page)
+      .set('name', name);
+
+    return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
+      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+    );
+  }
+
+  getEnergyEstimatedData(year: string, name: string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
+    const url = `${this.API_URL}/GetEnergyEstimated/${year}`;
+    const params = new HttpParams()
+      .set('pagesize', pageSize)
+      .set('page', page)
+      .set('name', name);
+
+    return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
+      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+    );
+  }
+
+
   postDataEnergyProd(data: entity.DataPostEnergyProd) {
     const url = `${this.API_URL}/AddEnergyProduced`;
 

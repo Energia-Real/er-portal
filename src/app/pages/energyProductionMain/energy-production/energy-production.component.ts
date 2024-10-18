@@ -59,6 +59,12 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     { value: 2024 },
   ];
 
+  energyTypes: {value:number,description:string}[]=[
+    {value:1,description:"Energy production"},
+    {value:2,description:"Energy consumption"},
+    {value:3,description:"Energy estimated"},
+  ];
+
   drawerOpenPlant: boolean = false;
   drawerAction: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
@@ -71,6 +77,8 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   searchBar = new FormControl('');
 
   selectedFile: File | null = null;
+
+  selectedEnergyType: number= 1; 
 
 
   constructor(
@@ -86,14 +94,14 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
       this.pageIndex = index + 1;
       if (this.paginator) this.paginator.pageIndex = index;
-      this.getDataResponse(index + 1, this.searchValue);
+      this.getData(index + 1, this.searchValue);
     });
 
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
       this.drawerOpenPlant = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
       this.drawerInfo = resp.drawerInfo;
-      if (resp.needReload) this.getDataResponse(1, this.searchValue);
+      if (resp.needReload) this.getData(1, this.searchValue);
     });
   }
 
@@ -103,7 +111,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, content!);
+      this.getData(1,content)
     })
   }
 
@@ -125,6 +133,39 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
       }
     });
   }
+
+  getConsumptionDataResponse(page: number, name: string) {
+    this.moduleServices.getEnergyConsumptionData(this.selectedYear, name, this.pageSize, page).subscribe({
+      next: (response: entity.DataEnergyProdTablMapper) => {
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page!
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  getEstimatedDataResponse(page: number, name: string) {
+    this.moduleServices.getEnergyEstimatedData(this.selectedYear, name, this.pageSize, page).subscribe({
+      next: (response: entity.DataEnergyProdTablMapper) => {
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page!
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+
+
 
   editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyProduced: number) {
     let objData: any = {
@@ -199,7 +240,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, this.searchValue);
+    this.getData(event.pageIndex + 1, this.searchValue);
   }
 
   navigate(link: string) {
@@ -209,6 +250,33 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   completionMessage(load: boolean) {
     this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
     this.getDataResponse(1, this.searchBar?.value || '');
+  }
+
+  onEnergyTypeChange(event: any): void {
+    const selectedValue = event.value; 
+    this.selectedEnergyType=selectedValue;
+    console.log(selectedValue)
+    if(selectedValue==1){
+      this.getDataResponse(1, "");
+    }
+    if(selectedValue==2){
+      this.getConsumptionDataResponse(1, "");
+    }
+    if(selectedValue==3){
+      this.getEstimatedDataResponse(1, "");
+    }
+  }
+
+  getData(page:number,content?: string | null){
+    if(this.selectedEnergyType==1){
+      this.getDataResponse(page, content!);
+    }
+    if(this.selectedEnergyType==2){
+      this.getConsumptionDataResponse(page, content!);
+    }
+    if(this.selectedEnergyType==3){
+      this.getEstimatedDataResponse(page, content!);
+    }
   }
 
   ngOnDestroy(): void {
