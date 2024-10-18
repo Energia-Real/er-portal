@@ -50,7 +50,7 @@ const routes: Routes = [
         data: { roles: ['BackOffice', 'Admin']}
       },
       {
-        path: 'energyProduction',
+        path: 'energy',
         loadChildren: energyProductionModule,
         canActivate: [redirectGuard],
         data: { roles: ['BackOffice', 'Admin']}

@@ -28,8 +28,8 @@
           [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li> -->
 
       <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
-          routerLink="energyProduction" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('energyProduction') }"> Energy Production</a></li>
+          routerLink="energy" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }"> Energy  </a></li>
 
       <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="pricing"
           class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }">
