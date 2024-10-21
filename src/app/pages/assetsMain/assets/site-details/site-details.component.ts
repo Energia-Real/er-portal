@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { FilterState } from '@app/shared/models/general-models';
+import { environment } from '@environment/environment';
 
 @Component({
   selector: 'app-site-details',
@@ -56,7 +57,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
     setTimeout(() => {
       this.loaderMap = false;
-      this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.google.com/maps/embed/v1/view?key=AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k&center=' + this.assetData?.latitude + ',' + this.assetData?.longitude + '&zoom=18&maptype=satellite');
+      this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed/v1/view?key=${environment.GOOGLE_API_KEY}&center=` + this.assetData?.latitude + ',' + this.assetData?.longitude + '&zoom=18&maptype=satellite');
     }, 100)
   }
 
