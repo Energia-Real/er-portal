@@ -469,6 +469,17 @@ select {
 .c-search {
   input {
     border: 1px solid #949191 !important;
+    height: 35px;
+    display: flex; 
+    align-items: center; 
+    padding-left: 30px; 
+    font-size: 14px; 
+    
+    &::placeholder {
+      font-size: 11px;
+      color: #6E6E6E;
+      line-height: normal; 
+    }
   }
 }
 
