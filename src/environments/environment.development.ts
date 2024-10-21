@@ -10,5 +10,6 @@ export const environment = {
   API_URL_ENERGY_PERFORMANCE_V1: "https://er-projects-energy-performance-dev.azurewebsites.net/api/v1",
   API_URL_BILL_V1: "https://er-projects-bill-dev.azurewebsites.net/api",
   APP: 'backoffice',
-  GOOGLE_API_KEY: 'AIzaSyAO4bqxxS4-CkLR_vY1RKJNwDanh5vyvq8',
+  GOOGLE_API_KEY: 'AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k',
+  TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau'
 };

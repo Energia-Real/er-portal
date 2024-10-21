@@ -11,6 +11,7 @@ import * as entity from '../assets-model';
 import { Loader } from '@googlemaps/js-api-loader';
 import { DataRespSavingDetailsList } from '@app/pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
+import { environment } from '@environment/environment';
 
 @Component({
   selector: 'app-new-plant',
@@ -221,7 +222,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   mapTo() {
     const loader = new Loader({
-      apiKey: 'AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k',
+      apiKey: environment.GOOGLE_API_KEY,
       version: 'weekly',
       libraries: ['places']
     });
