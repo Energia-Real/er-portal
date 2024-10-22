@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
 import { Observable, Subject, map } from 'rxjs';
-  import * as entity from './pricing-model';
+import * as entity from './pricing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 
@@ -16,7 +16,7 @@ export class PricingService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getPricingData(filters:any, pageSize: number, page: number): Observable<entity.DataPricingTableMapper> {
+  getPricingData(filters: any, pageSize: number, page: number): Observable<entity.DataPricingTableMapper> {
     const url = `${this.API_URL}/Tarifa/GetTarifas`;
     const params = new HttpParams()
       .set('pageSize', pageSize)

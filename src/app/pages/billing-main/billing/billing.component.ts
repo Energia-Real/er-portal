@@ -111,8 +111,21 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       error: error => {
         // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
+        this.dataSource.data = error?.response?.data;
+        this.totalItems = error?.response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = page
       }
     });
+  }
+
+  getMonthName(month: number) {
+    const months = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+  
+    return months[month - 1];
   }
 
   navigate(link: string) {

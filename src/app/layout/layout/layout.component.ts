@@ -18,27 +18,29 @@ export class LayoutComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute
   ) {
 
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          this.routeActive = this.router.url;
-        }
-      });
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.routeActive = this.router.url;
+    });
       
     
   }
 
   ngOnInit(): void {
     this.authService.getInfoUser().subscribe(role => {
-      if (role.accessTo === 'BackOffice') {
-        this.router.navigate(['backoffice-home'], { relativeTo: this.route });
-      } else if (role.accessTo === 'Admin') {
-        this.router.navigate(['admin-home'], { relativeTo: this.route });
-      } else if (role.accessTo === 'Clients') {
-        this.router.navigate(['client-home'], { relativeTo: this.route });
-      } else if (role.accessTo === 'Billing') {
-        this.router.navigate(['pricing'], { relativeTo: this.route });
-      } else {
-        this.router.navigate(['/login']);
+      console.log(this.router.url)
+      if (this.router.url === '/er') {
+        if (role.accessTo === 'BackOffice') {
+          this.router.navigate(['backoffice-home'], { relativeTo: this.route });
+        } else if (role.accessTo === 'Admin') {
+          this.router.navigate(['admin-home'], { relativeTo: this.route });
+        } else if (role.accessTo === 'Clients') {
+          this.router.navigate(['client-home'], { relativeTo: this.route });
+        } else if (role.accessTo === 'Billing') {
+          this.router.navigate(['pricing'], { relativeTo: this.route });
+        } else {
+          this.router.navigate(['/login']);
+        }
       }
     });
   }

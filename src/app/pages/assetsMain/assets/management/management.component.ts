@@ -29,7 +29,7 @@ export class ManagementComponent implements OnDestroy, AfterViewChecked, AfterVi
   }
   
   displayedColumns: string[] = [
-    'siteName', 
+    'plantName', 
     'rpu', 
     'clientName', 
     'clientId', 

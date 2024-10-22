@@ -2,7 +2,7 @@
 export class Mapper {
 	static getPricingDataMapper(response: entity.DataTablePricingResponse): entity.DataPricingTableMapper {
 		let dataList: entity.DataPricingTable[] = [];
-		
+
 		response?.response?.data.forEach((data: entity.DataPricingTable): void => {
 			dataList.push({
 				...data,

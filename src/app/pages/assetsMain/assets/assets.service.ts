@@ -83,13 +83,13 @@ export class AssetsService implements OnDestroy {
   getWeatherData(lat: number, long: number) {
     let latitude = lat.toString();
     let longitude = long.toString();
-    return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${latitude},${longitude}&apikey=8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau`);
+    return this.http.get<any>(`https://api.tomorrow.io/v4/weather/realtime?location=${latitude},${longitude}&apikey=${environment.TOMORROW_KEY}`);
   }
 
   getPlaceAddress(lat: number, long: number) {
     const params = new HttpParams()
       .set('latlng', `${lat},${long}`)
-      .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
+      .set('key', environment.GOOGLE_API_KEY);
 
     return this.http.get<any>(`https://maps.googleapis.com/maps/api/geocode/json?`, { params })
   }
@@ -98,7 +98,7 @@ export class AssetsService implements OnDestroy {
     const params = new HttpParams()
       .set('location', `${lat},${long}`)
       .set('timestamp', `${Math.floor(Date.now() / 1000)}`)
-      .set('key', "AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k");
+      .set('key', environment.GOOGLE_API_KEY);
 
     return this.http.get<entity.DataLocalTime>(`https://maps.googleapis.com/maps/api/timezone/json?`, { params }).pipe(
       map((response) => Mapper.getLocalTimeOfPlaceMapper(response))
