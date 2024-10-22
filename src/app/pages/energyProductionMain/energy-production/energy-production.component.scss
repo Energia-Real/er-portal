@@ -11,4 +11,7 @@
     font-size: 12px !important; 
   }
 
+  ::ng-deep .mat-pseudo-checkbox.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal {
+    display: none !important;
+  }
   

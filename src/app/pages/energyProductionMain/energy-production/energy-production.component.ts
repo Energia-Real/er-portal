@@ -14,11 +14,16 @@ import { Store } from '@ngrx/store';
 import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
 import { EnergyProductionService } from '../energy-production.service';
 import * as entity from '../energy-production-model';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-energy-production',
   templateUrl: './energy-production.component.html',
-  styleUrl: './energy-production.component.scss'
+  styleUrl: './energy-production.component.scss',
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() } 
+  ]
 })
 export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
@@ -113,6 +118,12 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getData(1,content)
     })
+  }
+
+  changePageSize(event: any) {
+    this.pageSize = event.value;
+    this.paginator.pageSize = this.pageSize;
+    this.paginator._changePageSize(this.pageSize);
   }
 
   setYear() {
@@ -283,4 +294,15 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
   }
+}
+
+export function getPaginatorIntl() {
+  const paginatorIntl = new MatPaginatorIntl();
+
+  paginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {
+    const totalPages = Math.ceil(length / pageSize);  
+    return `${page + 1} of ${totalPages}`; 
+  };
+
+  return paginatorIntl;
 }

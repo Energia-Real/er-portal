@@ -73,6 +73,17 @@
         line-height: 18px;
         vertical-align: top;
         padding-top: 15px;
+        padding-right: 0px;
+        padding-left: 0px;
+        
+        
+        .target{
+            background-color: #F8F8F8;
+            padding:4px  8px;
+            border-radius:8px;
+            border: 1px solid #EDEDED !important;
+            font-size:10px;
+        }
     }
 }
 
