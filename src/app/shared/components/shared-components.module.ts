@@ -1,19 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from './header.component';
+import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@app/shared/material/material.module';
-import { FooterComponent } from '../footer/footer.component';
+import { FooterComponent } from './footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MapaComponent } from '../mapa/mapa.component';
-import { TooltipComponent } from '../tooltip/tooltip.component';
+import { MapaComponent } from './mapa/mapa.component';
+import { TooltipComponent } from './tooltip/tooltip.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FooterComponent,
     MapaComponent,
-    TooltipComponent
+    TooltipComponent,
+    NotificationComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { TooltipComponent } from '../tooltip/tooltip.component';
     HeaderComponent,
     FooterComponent,
     MapaComponent,
-    TooltipComponent
+    TooltipComponent,
+    NotificationComponent
   ]
 })
 export class SharedComponensModule { }

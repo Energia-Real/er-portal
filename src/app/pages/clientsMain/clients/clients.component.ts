@@ -67,7 +67,12 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   editedClient: any;
 
-  constructor(private store: Store, private moduleServices: ClientsService, private notificationService: OpenModalsService, private router: Router) {
+  constructor(
+    private store: Store, 
+    private moduleServices: ClientsService, 
+    private notificationService: OpenModalsService, 
+    private router: Router,
+  ) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
       if (this.paginator) this.paginator.pageSize = size;

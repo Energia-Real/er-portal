@@ -1,0 +1,60 @@
+.notification-icon{
+    height:auto ;
+    width: 88px;
+    padding-right: 24px;
+    padding-top: 5.5px;
+    padding-bottom: 5.5px;
+}
+.circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .add-circle {
+    background-color:rgba(87, 177, 177, 0.8);
+  }
+  
+  .cancel-circle {
+    background-color: rgba(253, 191, 111, 0.8);
+  }
+  
+  .edit-circle {
+    background-color: rgba(87, 177, 177, 0.8);
+  }
+  
+  .delete-circle {
+    background-color: rgba(227, 26, 28, 0.8)
+  }
+  
+  .mat-icon {
+    color: white; 
+  }
+  
+.notification-body{
+    margin-left: 10px;
+    strong{
+        font-size: 16px;
+        display:block;
+    }
+    span{
+        display: block;
+        font-size: 14px;
+
+    }
+    .warn{
+        color: #E31A1C;
+        font-weight: 500;
+    }
+
+}
+
+.mat-divider{
+    margin: 24px;
+}
+button{
+    min-width: 194px;
+}

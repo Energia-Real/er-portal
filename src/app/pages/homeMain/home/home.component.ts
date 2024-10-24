@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
-import { SharedComponensModule } from '@app/shared/components/header/shared-components.module';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { Observable, Subject } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import * as entity from './home-model';

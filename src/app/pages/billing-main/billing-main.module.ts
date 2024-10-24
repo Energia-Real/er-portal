@@ -3,7 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BillingComponent } from './billing/billing.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedComponensModule } from '@app/shared/components/header/shared-components.module';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';
