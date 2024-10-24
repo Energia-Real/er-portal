@@ -10,6 +10,8 @@ import { selectFilters } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
 
+declare var gtag: Function;
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -70,20 +72,20 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   subscribeToFilters() {
     this.store.select(selectFilters).pipe(
-        distinctUntilChanged((prev, curr) => JSON.stringify(prev?.months) == JSON.stringify(curr?.months)),
-        takeUntil(this.onDestroy$)
-      ).subscribe((filtersState) => {
-        if (filtersState && filtersState?.months?.length) {
-          const formattedMonths = this.formatSelectedMonths();
-          
-          if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
-            this.selectedMonths = this.months.filter(month => filtersState?.months.includes(`${this.currentYearComplete}-${month.value}-01`));
-            this.updateStartAndEndMonth();
-          }
-        } else this.setDefaultMonths();
-      });
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev?.months) == JSON.stringify(curr?.months)),
+      takeUntil(this.onDestroy$)
+    ).subscribe((filtersState) => {
+      if (filtersState && filtersState?.months?.length) {
+        const formattedMonths = this.formatSelectedMonths();
+
+        if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
+          this.selectedMonths = this.months.filter(month => filtersState?.months.includes(`${this.currentYearComplete}-${month.value}-01`));
+          this.updateStartAndEndMonth();
+        }
+      } else this.setDefaultMonths();
+    });
   }
-  
+
   setDefaultMonths() {
     this.selectedStartMonth = this.months[5];
     this.selectedEndMonth = this.months[6];
@@ -134,7 +136,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
         endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
       };
-  
+
       const filters = { requestType: 'Month', months: formattedMonths };
       const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
       const filtersSolarCoverage = {
@@ -143,19 +145,39 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         requestType: 2,
         months: formattedMonths
       };
-  
-      this.store.select(selectFilters).pipe(take(1)).subscribe((currentFiltersState:any) => {
+
+      this.store.select(selectFilters).pipe(take(1)).subscribe((currentFiltersState: any) => {
         if (JSON.stringify(currentFiltersState?.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
-        if (JSON.stringify(currentFiltersState?.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
+        if (JSON.stringify(currentFiltersState?.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));
         if (JSON.stringify(currentFiltersState?.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
         if (JSON.stringify(currentFiltersState?.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
       });
     }
   }
-  
+
   signOut() {
     localStorage.removeItem('userEnergiaReal');
     this.router.navigate(['']);
+  }
+
+
+  /** Google Analytics
+ * Registra un evento de clic en el menú.
+ * @param menuItem - El nombre del ítem del menú que se ha clicado.
+ * Captura la ruta actual, el nivel de acceso del usuario y la marca de tiempo del clic.
+ */
+  trackMenuClick(menuItem: string) {
+    const currentRoute = this.router.url;
+    const userAccess = this.userInfo?.accessTo;
+
+    gtag('event', 'menu_click', {
+      'debug_mode': true,
+      'event_category': 'navigation',
+      'event_label': menuItem,
+      'current_route': currentRoute,
+      'user_access': userAccess,
+      'timestamp': new Date().toISOString()
+    });
   }
 
   ngOnDestroy(): void {

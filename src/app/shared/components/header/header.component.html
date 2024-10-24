@@ -8,36 +8,47 @@
     </a>
 
     <ul class="flex titles-header">
-      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice'"><a routerLink="backoffice-home"
-          class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }">Home</a></li>
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice'">
+        <a routerLink="backoffice-home" class="hover:text-gray-300 cursor-pointer" 
+           [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }"
+           (click)="trackMenuClick('BackOffice Home')">Home</a>
+      </li>
 
-      <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin'"><a routerLink="admin-home"
-          class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }">Home</a></li>
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin'">
+        <a routerLink="admin-home" class="hover:text-gray-300 cursor-pointer"
+           [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }"
+           (click)="trackMenuClick('Admin Home')">Home</a>
+      </li>
 
-      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"><a
-          routerLink="plants" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a></li>
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'">
+        <a routerLink="plants" class="hover:text-gray-300 cursor-pointer"
+           [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }"
+           (click)="trackMenuClick('Plants')">Plants</a>
+      </li>
 
-      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
-          routerLink="clients" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a></li>
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'">
+        <a routerLink="clients" class="hover:text-gray-300 cursor-pointer"
+           [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }"
+           (click)="trackMenuClick('Clients')">Clients</a>
+      </li>
 
-      <!-- <li class="mx-5"><a routerLink="/payments" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li> -->
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'">
+        <a routerLink="energy" class="hover:text-gray-300 cursor-pointer"
+           [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }"
+           (click)="trackMenuClick('Energy')">Energy</a>
+      </li>
 
-      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
-          routerLink="energy" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }"> Energy  </a></li>
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'">
+        <a routerLink="pricing" class="hover:text-gray-300 cursor-pointer"
+           [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }"
+           (click)="trackMenuClick('Pricing')">Pricing</a>
+      </li>
 
-      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="pricing"
-          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }">
-          Pricing</a></li>
-
-      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="billing"
-          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }">
-          Billing</a></li>
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'">
+        <a routerLink="billing" class="hover:text-gray-300 cursor-pointer"
+           [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }"
+           (click)="trackMenuClick('Billing')">Billing</a>
+      </li>
     </ul>
 
     <div class="flex align-items-center">
