@@ -14,7 +14,5 @@ import { ConfirmationConfig } from '@app/shared/models/general-models';
 })
 export class ModalConfirmationComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationConfig) {
-    console.log(data);
-    
   }
 }

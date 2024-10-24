@@ -47,8 +47,6 @@ export class MapaComponent implements AfterViewInit {
     this.homeService.getDataStates(filters).subscribe({
       next: (response: entity.statesResumeTooltip[]) => {
         this.tooltipsInfo = response;
-        console.log(response);
-
         // Crear los tooltips una vez que los datos han sido cargados
         this.createTooltips();
       },
@@ -64,7 +62,6 @@ export class MapaComponent implements AfterViewInit {
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
       const dataEstado = this.tooltipsInfo.find(item => item.estado.toLowerCase() === nombreEstado?.toLowerCase());
-      console.log(dataEstado);
 
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';

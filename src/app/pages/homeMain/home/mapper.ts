@@ -61,9 +61,6 @@ export class Mapper {
 
 	static getDataClientsListMapper(response: entity.DataRespSavingDetailsList[]): entity.DataRespSavingDetailsList[] {
 		let dataList: entity.DataRespSavingDetailsList[] = [];
-		console.log('response', response);
-		
-
 		response?.forEach((data: entity.DataRespSavingDetailsList): void => {
 			dataList.push({
 				...data,
@@ -71,8 +68,6 @@ export class Mapper {
 				imageBase64: data?.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ''
 			});
 		});
-
-		console.log('getDataClientsListMapper', dataList);
 
 		return dataList
 	}

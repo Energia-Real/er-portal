@@ -24,6 +24,14 @@ export class HomeService {
     );
   }
 
+  getDataSavingDetails(filters?: string): Observable<any> {
+    const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
+
+    return this.http.post<any>(url, filters).pipe(
+      map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
+    );
+  }
+
   getDataStates(filters?: string): Observable<entity.statesResumeTooltip[]> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/statesResume`;
     return this.http.post<entity.statesResumeTooltip[]>(url, filters)

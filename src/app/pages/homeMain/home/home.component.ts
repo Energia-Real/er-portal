@@ -191,6 +191,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // this.getDataSavingDetails();
+
     this.getFilters();
     this.getInfoUser();
     this.getDataClientsList();
@@ -217,9 +219,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.getDataClients(filters);
       this.getTooltipInfo(filters);
     } });
+
     this.filtersSolarCoverage$.subscribe(filtersSolarCoverage => { 
       if (filtersSolarCoverage?.months?.length) this.getDataSolarCovergaCo2(filtersSolarCoverage)
     });
+    
     this.generalFilters$.subscribe(generalFilters => { 
       console.log('HOME GENERAL FILTERS', generalFilters);
       // this.getDataClients(generalFilters)
@@ -227,6 +231,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  getDataSavingDetails(filters?: any) {
+    this.homeService.getDataSavingDetails(filters).subscribe({
+      next: (response: any) => {
+        console.log('getDataSavingDetails', response);
+        
+       
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+      }
+    })
+  }
+  
   getDataClients(filters?: any) {
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {

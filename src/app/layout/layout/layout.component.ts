@@ -28,7 +28,6 @@ export class LayoutComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.authService.getInfoUser().subscribe(role => {
-      console.log(this.router.url)
       if (this.router.url === '/er') {
         if (role.accessTo === 'BackOffice') {
           this.router.navigate(['backoffice-home'], { relativeTo: this.route });
