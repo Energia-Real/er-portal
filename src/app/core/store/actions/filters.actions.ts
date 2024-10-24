@@ -7,7 +7,7 @@ export const setFilters = createAction(
 );
 
 export const setGeneralFilters = createAction(
-  '[Filter] Set Filters',
+  '[Filter] Set Filters General',
   props<{ generalFilters: FilterState['generalFilters'] }>()
 );
 
