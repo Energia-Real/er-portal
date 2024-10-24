@@ -145,10 +145,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       };
   
       this.store.select(selectFilters).pipe(take(1)).subscribe((currentFiltersState:any) => {
-        if (JSON.stringify(currentFiltersState?.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
-        if (JSON.stringify(currentFiltersState?.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
-        if (JSON.stringify(currentFiltersState?.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
-        if (JSON.stringify(currentFiltersState?.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
+        if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
+        if (JSON.stringify(currentFiltersState.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
+        if (JSON.stringify(currentFiltersState.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
+        if (JSON.stringify(currentFiltersState.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
       });
     }
   }

@@ -3,6 +3,11 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 export const selectFilterState = createFeatureSelector<FilterState>('filters');
 
+export const selectCompleteFilterState = createSelector(
+  selectFilterState,
+  (state: FilterState) => state
+);
+
 export const selectFilters = createSelector(
   selectFilterState,
   (state: FilterState) => state.filters
