@@ -6,12 +6,22 @@ import { Subject } from 'rxjs';
 import * as entity from '../clients-model';
 import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { notificationData } from '@app/shared/models/general-models';
+
 @Component({
   selector: 'app-new-client',
   templateUrl: './new-client.component.html',
   styleUrl: './new-client.component.scss'
 })
 export class NewClientComponent implements OnInit, OnDestroy {
+  ADD=NOTIFICATION_CONSTANTS.ADD;
+  CANCEL=NOTIFICATION_CONSTANTS.CANCEL;
+  EDIT=NOTIFICATION_CONSTANTS.EDIT;
+  DELETE=NOTIFICATION_CONSTANTS.DELETE;
+
   private onDestroy$ = new Subject<void>();
   private _client?: any | null | undefined;
 
@@ -51,7 +61,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
     private store: Store,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -68,7 +79,12 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  actionSave() {
+  actionButton(){
+    if (this.editedClient?.id) this.createNotification(this.EDIT);
+    else this.createNotification(this.ADD);
+  }
+
+  actionSave() { 
     if (!this.formData.valid) return;
     
     let objData: any = { ...this.formData.value }
@@ -164,5 +180,62 @@ export class NewClientComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
+  }
+
+  createNotification(notificationType:string): void {
+    var dataNotification:notificationData;
+    switch(notificationType){
+      case this.ADD:
+        dataNotification= { 
+          type: NOTIFICATION_CONSTANTS.ADD,
+          title:NOTIFICATION_CONSTANTS.ADD_CLIENT_TITLE,
+          content:NOTIFICATION_CONSTANTS.ADD_CLIENT_CONTENT,
+          warn: NOTIFICATION_CONSTANTS.ADD_CLIENT_WARN,
+          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+        }
+        this.openDialog(dataNotification);
+        break; 
+      case this.EDIT:
+        dataNotification= { 
+          type: NOTIFICATION_CONSTANTS.EDIT,
+          title:NOTIFICATION_CONSTANTS.GLOBAL_EDIT_TITLE,
+          content:NOTIFICATION_CONSTANTS.GLOBAL_EDIT_CONTENT,
+          warn: NOTIFICATION_CONSTANTS.GLOBAL_EDIT_WARN,
+          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+        }
+        this.openDialog(dataNotification);
+        break;
+      case this.CANCEL:
+        dataNotification= { 
+            type: NOTIFICATION_CONSTANTS.CANCEL,
+            title:NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_TITLE,
+            content:NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_CONTENT,
+            buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+          }
+          this.openDialog(dataNotification);
+          break;
+    }
+  }
+
+  openDialog(dataNotification:notificationData){
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',     
+      data: dataNotification
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.confirmed) {
+        switch(result.action){
+          case this.ADD:
+            this.actionSave()
+            return;
+          case this.EDIT:
+            this.actionSave()
+            return;
+          case this.CANCEL: 
+            this.closeDrawer(true)
+        }
+      } else {
+        console.log('Acción cancelada');
+      }    });
   }
 }
