@@ -5,24 +5,31 @@
             <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
-                        savingsDetails.totalEnergyConsumption }} <span>kWh</span> </h2>
+                    <h2 *ngIf="savingsDetails?.totalenergyConsumption else notDataTable"> {{
+                        savingsDetails.totalenergyConsumption }} <br> <span>kWh</span> </h2>
                     <p>Total Energy <br> Consumption</p>
                     <div class="linea"></div>
                 </div>
                 <div>
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
-                        savingsDetails.totalEnergyProduction }} <span>kWh</span></h2>
+                        savingsDetails.totalEnergyProduction }} <br> <span>kWh</span></h2>
                     <p>Total Energy <br> Production</p>
                     <div class="linea"></div>
                 </div>
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> $969,156 </h2>
-                    <p>CFE Cost without Solar</p>
-                    <div class="linea"></div>
+                    <div style="width: 90%;">
+                        <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithOutSolar else notDataTable">
+                            ${{ savingsDetails.cfeCostWithOutSolar }} <br>
+                        </h2>
+                        <p>CFE Cost without Solar</p>
+                        <div class="linea"></div>
+                    </div>
+
                 </div>
                 <div class="total-saving">
-                    <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> $56,292</h2>
+                    <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
+                        ${{ savingsDetails.totalSavings }} <br>
+                    </h2>
                     <p>Total Savings </p>
                 </div>
             </div>
@@ -32,13 +39,31 @@
             <div>
                 <img src="../../../../assets/icons/solar-coverage.png" alt="">
                 <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
-                <p>56.19%</p>
+                <p>{{ solarCoverage }}%</p>
             </div>
         </div>
     </div>
 
     <div class="col-span-2 md:col-span-1">
         <app-mapa></app-mapa>
+    </div>
+
+    <div class="col-span-2 md:col-span-1">
+        <div class="c-card-section">
+            <h2 class="text-er-orange text-base font-normal">Economic savings</h2>
+            <div class="d-flex justify-center align-center text-center">
+                <p class="wi-progress">Work in progress<span>...</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-span-2 md:col-span-1">
+        <div class="c-card-section">
+            <h2 class="text-er-orange text-base font-normal">Solar coverage by location</h2>
+            <div class="d-flex justify-content-center align-center text-center">
+                <p class="wi-progress">Work in progress<span>...</span></p>
+            </div>
+        </div>
     </div>
 
     <div class="col-span-2 md:col-span-1">
