@@ -37,7 +37,7 @@ export class Mapper {
 		};
 	}
 
-	static getDataSolarCoverga(response: entity.DataSolarCoverga, formatsService: FormatsService): entity.FormatCards[] {
+	static getDataSolarCoverage(response: entity.DataSolarCoverage, formatsService: FormatsService): entity.FormatCards[] {
 		let dataList: entity.FormatCards[] = [];
 		if (response.data.length > 1) {
 			response.data.forEach((data: entity.FormatCards, i): void => {

@@ -5,18 +5,16 @@ export interface FiltersSavingDetails {
   endDate: string | null;
 }
 
-export interface SavingDetailsResponse {
-  totalEnergyConsumption: string;
-  totalEnergyProduction: string;
-  cfeCostWithoutSolar: string;
-  totalSavings: string;
+export interface FiltersClients {
+  months:string[]
+  requestType: string;
 }
 
-export interface filtersSolarCoverage {
-  brand: string;
-  clientName: string;
-  months: string[];
-  requestType: number;
+export interface SavingDetailsResponse {
+  totalenergyConsumption: string;
+  totalEnergyProduction: string;
+  cfeCostWithOutSolar: string;
+  totalSavings: string;
 }
 
 export interface PeriodicElement {
@@ -64,7 +62,7 @@ export interface Month {
   viewValue: string;
 }
 
-export interface DataSolarCoverga {
+export interface DataSolarCoverage {
   success: boolean;
   errorMessage: string;
   errorCode: 204,

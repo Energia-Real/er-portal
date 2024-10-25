@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import * as entity from './home-model';
@@ -10,13 +10,12 @@ import { FormatsService } from '@app/shared/services/formats.service';
   providedIn: 'root'
 })
 export class HomeService {
-
   constructor(
     private http: HttpClient,
     public formatsService: FormatsService
   ) { }
 
-  getDataClients(filters?: string): Observable<entity.DataRespSavingDetailsMapper> {
+  getDataClients(filters: entity.FiltersClients): Observable<entity.DataRespSavingDetailsMapper> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails`;
 
     return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
@@ -47,21 +46,21 @@ export class HomeService {
     );
   }
 
-  getDataSolarCoverga(filters: entity.filtersSolarCoverage) : Observable<entity.FormatCards[]> {
-    const url = `${environment.API_URL_PROXY_V1}/integrators/proxy/GetGlobalSolarCoverage`;
+  getDataSolarCoverage(filters: entity.FiltersSavingDetails) : Observable<string> {
+    const url = `${environment.API_URL_CLIENTS_V1}/projects/solar-coverage`;
+    const params = new HttpParams()
+    .set('client', filters.clientId)
+    .set('start_date', filters.startDate)
+    .set('end_date', filters.endDate!)
 
-    return this.http.post<entity.DataSolarCoverga>(url, filters).pipe(
-      map((response) => Mapper.getDataSolarCoverga(response, this.formatsService))
-    );
+    return this.http.get<string>(url, { params })
   }
 
-  // getDataCoverageSavings(): Observable<entity.DataRespSavingDetailsList[]> {
   getDataBatuSavings(id?: string, filters?: any): Observable<any> {
     const url = `${environment.API_URL_BATU_V1}/GetBatu/${id}`;
 
     return this.http.post<any>(url, filters).pipe(
       map((response) => Mapper.getDataBatuSavings(response, this.formatsService))
     );
-    // return this.http.get<entity.DataRespSavingDetailsList[]>(url)
   }
 }

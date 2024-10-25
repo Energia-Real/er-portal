@@ -38,8 +38,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   filters$!: Observable<FilterState['filters']>;
   generalFilters$!: Observable<FilterState['generalFilters']>;
-  filtersBatu$!: Observable<FilterState['filtersBatu']>;
-  filtersSolarCoverage$!: Observable<FilterState['filtersSolarCoverage']>;
   months: { value: string, viewValue: string }[] = [
     { value: '01', viewValue: 'January' },
     { value: '02', viewValue: 'February' },
@@ -147,7 +145,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
 
   currentYear = new Date().getFullYear();
+
   selectedEndMonth: number = new Date().getMonth() + 1;
+ 
+  solarCoverage: string = '';
 
   dayOrMount = new FormControl('month');
 
@@ -155,7 +156,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   showLoader: boolean = true;
 
   selectedMonths: any[] = [];
-  solarCoverga!: entity.FormatCards[];
   dataClientsList: entity.DataRespSavingDetailsList[] = [];
   dataTooltipsInfo: entity.statesResumeTooltip[] = [];
 
@@ -176,8 +176,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {
     this.filters$ = this.store.select(state => state.filters.filters);
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
-    this.filtersBatu$ = this.store.select(state => state.filters.filtersBatu);
-    this.filtersSolarCoverage$ = this.store.select(state => state.filters.filtersSolarCoverage);
   }
 
   ngOnInit(): void {
@@ -199,7 +197,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           data: [],
           label: 'Energy Consumption',
           backgroundColor: 'rgba(87, 177, 177, 1)',
-
         }
       ]
     };
@@ -212,26 +209,19 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getTooltipInfo(filters);
       }
     });
-
-    this.filtersSolarCoverage$.subscribe((filtersSolarCoverage: entity.filtersSolarCoverage) => {
-      if (filtersSolarCoverage?.months?.length) this.getDataSolarCoverga(filtersSolarCoverage)
-    });
   }
 
   getDataSavingDetails(filters: entity.FiltersSavingDetails) {
     this.homeService.getDataSavingDetails({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
-      next: (response: entity.SavingDetailsResponse) => {
-        console.log('getDataSavingDetails', response);
-        this.savingsDetails = response
-
-      },
+      next: (response: entity.SavingDetailsResponse) => this.savingsDetails = response,
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
       }
     })
   }
 
-  getDataClients(filters?: any) {
+  getDataClients(filters: entity.FiltersClients) {
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
@@ -242,6 +232,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
       }
     })
   }
@@ -251,12 +242,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: (response: entity.DataRespSavingDetailsList[]) => {
         this.generalFilters$.subscribe((generalFilters: entity.FiltersSavingDetails) => {
           this.dataClientsList = response;
-          this.getDataSavingDetails(generalFilters)
+          this.getDataSavingDetails(generalFilters);
+          this.getDataSolarCoverga(generalFilters);
         });
-
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
+  }
+
+  getDataSolarCoverga(filters: entity.FiltersSavingDetails) {
+    this.homeService.getDataSolarCoverage({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
+      next: (response: string) => this.solarCoverage = response,
+      error: (error) => {
+        console.error(error)
       }
     })
   }
@@ -267,18 +268,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.dataTooltipsInfo = response;
       },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-      }
-    })
-  }
-
-  getDataSolarCoverga(filters: entity.filtersSolarCoverage) {
-    this.homeService.getDataSolarCoverga(filters).subscribe({
-      next: (response: entity.FormatCards[]) => {
-        this.solarCoverga = response;
-      },
-      error: (error) => {
-        console.error(error)
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
       }
     })
   }
