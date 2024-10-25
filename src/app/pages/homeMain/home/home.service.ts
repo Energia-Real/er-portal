@@ -23,12 +23,10 @@ export class HomeService {
     );
   }
 
-  getDataSavingDetails(filters: entity.FiltersSavingDetails): Observable<any> {
+  getDataSavingDetails(filters: entity.FiltersSavingDetails): Observable<entity.SavingDetailsResponse> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
 
-    return this.http.post<any>(url, filters).pipe(
-      map((response) => Mapper.getDataSavingDetailsMapper(response))
-    );
+    return this.http.post<any>(url, filters);
   }
 
   getDataStates(filters?: string): Observable<entity.statesResumeTooltip[]> {
@@ -54,13 +52,5 @@ export class HomeService {
     .set('end_date', filters.endDate!)
 
     return this.http.get<string>(url, { params })
-  }
-
-  getDataBatuSavings(id?: string, filters?: any): Observable<any> {
-    const url = `${environment.API_URL_BATU_V1}/GetBatu/${id}`;
-
-    return this.http.post<any>(url, filters).pipe(
-      map((response) => Mapper.getDataBatuSavings(response, this.formatsService))
-    );
   }
 }

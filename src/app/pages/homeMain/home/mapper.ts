@@ -51,14 +51,6 @@ export class Mapper {
 		return dataList
 	}
 
-	static getDataBatuSavings(response: any, formatsService: FormatsService) {
-		return {
-			totalSaving: formatsService.energyFormat(response.totalSaving),
-			cO2Saving: formatsService.energyFormat(response.cO2Saving),
-			costwoSolarTotal: formatsService.energyFormat(response.costwoSolarTotal),
-		}
-	}
-
 	static getDataClientsListMapper(response: entity.DataRespSavingDetailsList[]): entity.DataRespSavingDetailsList[] {
 		let dataList: entity.DataRespSavingDetailsList[] = [];
 		response?.forEach((data: entity.DataRespSavingDetailsList): void => {
