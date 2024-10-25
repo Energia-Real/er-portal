@@ -71,11 +71,4 @@ export class Mapper {
 
 		return dataList
 	}
-
-	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse): entity.SavingDetailsResponse {
-
-	
-
-		return response
-	}
 }
