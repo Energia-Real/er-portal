@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AssetsRoutingModule } from './assets-routing.module';
 import { ManagementComponent } from './management/management.component';
 import { DetailsContainerComponent } from './details-container/details-container.component';
-import { SharedComponensModule } from '@app/shared/components/header/shared-components.module';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { SiteDetailsComponent } from './site-details/site-details.component';

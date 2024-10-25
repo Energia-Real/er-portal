@@ -37,18 +37,18 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   totalItems: number = 0;
   displayedColumns: string[] = [
     'siteName',
-    'energyProdMonth1',
-    'energyProdMonth2',
-    'energyProdMonth3',
-    'energyProdMonth4',
-    'energyProdMonth5',
-    'energyProdMonth6',
-    'energyProdMonth7',
-    'energyProdMonth8',
-    'energyProdMonth9',
-    'energyProdMonth10',
-    'energyProdMonth11',
-    'energyProdMonth12',
+    'energyMonth1',
+    'energyMonth2',
+    'energyMonth3',
+    'energyMonth4',
+    'energyMonth5',
+    'energyMonth6',
+    'energyMonth7',
+    'energyMonth8',
+    'energyMonth9',
+    'energyMonth10',
+    'energyMonth11',
+    'energyMonth12',
   ];
 
   pageSizeSub: Subscription;

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PricingComponent } from './pricing/pricing.component';
 import { PricingRoutingModule } from './pricing-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedComponensModule } from '@app/shared/components/header/shared-components.module';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';

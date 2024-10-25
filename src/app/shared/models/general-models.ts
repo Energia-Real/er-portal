@@ -1,3 +1,5 @@
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+
 export type IForm<T> = {
   [K in keyof T]?: any;
 }
@@ -71,6 +73,14 @@ export interface FilterState {
     months: string[];
     requestType: number;
   };
+}
+
+export interface notificationData{
+  type:     string,
+  title:    string,
+  content?:  string,
+  warn?:     string, 
+  buttonAction?: string
 }
 
 export const initialFilterState: FilterState = {
