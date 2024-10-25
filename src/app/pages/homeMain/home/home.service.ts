@@ -24,11 +24,11 @@ export class HomeService {
     );
   }
 
-  getDataSavingDetails(filters?: string): Observable<any> {
+  getDataSavingDetails(filters: entity.FiltersSavingDetails): Observable<any> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
 
     return this.http.post<any>(url, filters).pipe(
-      map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
+      map((response) => Mapper.getDataSavingDetailsMapper(response))
     );
   }
 
@@ -47,11 +47,11 @@ export class HomeService {
     );
   }
 
-  getDataSolarCovergaCo2(filters?: any) : Observable<entity.FormatCards[]> {
+  getDataSolarCoverga(filters: entity.filtersSolarCoverage) : Observable<entity.FormatCards[]> {
     const url = `${environment.API_URL_PROXY_V1}/integrators/proxy/GetGlobalSolarCoverage`;
 
-    return this.http.post<entity.DataSolarCovergaCo2>(url, filters).pipe(
-      map((response) => Mapper.getDataSolarCovergaCo2(response, this.formatsService))
+    return this.http.post<entity.DataSolarCoverga>(url, filters).pipe(
+      map((response) => Mapper.getDataSolarCoverga(response, this.formatsService))
     );
   }
 

@@ -37,7 +37,7 @@ export class Mapper {
 		};
 	}
 
-	static getDataSolarCovergaCo2(response: entity.DataSolarCovergaCo2, formatsService: FormatsService): entity.FormatCards[] {
+	static getDataSolarCoverga(response: entity.DataSolarCoverga, formatsService: FormatsService): entity.FormatCards[] {
 		let dataList: entity.FormatCards[] = [];
 		if (response.data.length > 1) {
 			response.data.forEach((data: entity.FormatCards, i): void => {
@@ -70,5 +70,12 @@ export class Mapper {
 		});
 
 		return dataList
+	}
+
+	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse): entity.SavingDetailsResponse {
+
+	
+
+		return response
 	}
 }

@@ -17,12 +17,16 @@
                     <div class="linea"></div>
                 </div>
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> $969,156 </h2>
+                    <h2 *ngIf="savingsDetails?.cfeCostWithoutSolar else notDataTable">
+                        {{ savingsDetails.cfeCostWithoutSolar }}
+                    </h2>
                     <p>CFE Cost without Solar</p>
                     <div class="linea"></div>
                 </div>
                 <div class="total-saving">
-                    <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> $56,292</h2>
+                    <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
+                        {{ savingsDetails.totalSavings }}
+                    </h2>
                     <p>Total Savings </p>
                 </div>
             </div>

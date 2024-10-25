@@ -1,4 +1,24 @@
 
+export interface FiltersSavingDetails {
+  clientId?:any
+  startDate: string;
+  endDate: string | null;
+}
+
+export interface SavingDetailsResponse {
+  totalEnergyConsumption: string;
+  totalEnergyProduction: string;
+  cfeCostWithoutSolar: string;
+  totalSavings: string;
+}
+
+export interface filtersSolarCoverage {
+  brand: string;
+  clientName: string;
+  months: string[];
+  requestType: number;
+}
+
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -44,7 +64,7 @@ export interface Month {
   viewValue: string;
 }
 
-export interface DataSolarCovergaCo2 {
+export interface DataSolarCoverga {
   success: boolean;
   errorMessage: string;
   errorCode: 204,
