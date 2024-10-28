@@ -1,4 +1,4 @@
-import { Component, Input ,OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CatalogEquipment, Equipment } from '../../../../plants-model';
 import { Store } from '@ngrx/store';
@@ -8,13 +8,13 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { PlantsService } from '@app/pages/plants-main/plants.service';
 
 export interface EquipmentForm {
-  inverterBrand: FormControl<number|null>;
-  inverterModel: FormControl<number|null>;
-  moduleBrand:FormControl<number|null>;
-  moduleModel: FormControl<number|null>;
-  moduleQty: FormControl<number|null>;
-  tilt: FormControl<number|null>;
-  orientation:FormControl<number|null>;
+  inverterBrand: FormControl<number | null>;
+  inverterModel: FormControl<number | null>;
+  moduleBrand: FormControl<number | null>;
+  moduleModel: FormControl<number | null>;
+  moduleQty: FormControl<number | null>;
+  tilt: FormControl<number | null>;
+  orientation: FormControl<number | null>;
 }
 @Component({
   selector: 'app-new-equipment',
@@ -26,9 +26,9 @@ export class NewEquipmentComponent {
 
   @Input()
   modeDrawer: "Edit" | "Create" = "Create";
-  
+
   @Input()
-  plantCode?:string;
+  plantCode?: string;
 
   private _equipment?: Equipment | null | undefined;
   @Input()
@@ -40,10 +40,10 @@ export class NewEquipmentComponent {
     return this._equipment;
   }
 
-  inverterBrands: CatalogEquipment[]=[];
-  inverterModels: CatalogEquipment[]=[];
-  moduleBrands:   CatalogEquipment[]=[];
-  moduleModels:   CatalogEquipment[]=[];
+  inverterBrands: CatalogEquipment[] = [];
+  inverterModels: CatalogEquipment[] = [];
+  moduleBrands: CatalogEquipment[] = [];
+  moduleModels: CatalogEquipment[] = [];
 
   loading: boolean = false;
 
@@ -64,9 +64,9 @@ export class NewEquipmentComponent {
     private store: Store
   ) { }
 
-  ngOnInit(){
-    this.getInverterBrandsCatalog(); 
-    this.getModuleBrandsCatalog(); 
+  ngOnInit() {
+    this.getInverterBrandsCatalog();
+    this.getModuleBrandsCatalog();
 
     this.formData.get('inverterBrand')?.valueChanges.subscribe(value => {
       if (value) {
@@ -77,7 +77,7 @@ export class NewEquipmentComponent {
     });
     this.formData.get('moduleBrand')?.valueChanges.subscribe(value => {
       if (value) {
-        this.getModuleModelsCatalog(value);        
+        this.getModuleModelsCatalog(value);
       } else {
         this.formData.get('moduleModel')?.disable();
       }
@@ -121,12 +121,12 @@ export class NewEquipmentComponent {
 
   closeDrawer() {
     this.isOpen = false;
-    this.store.dispatch(updateDrawer({drawerOpen:false, drawerAction: "Create", drawerInfo: null,needReload:true}));
+    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: true }));
     this.resetForm();
   }
 
   actionSave() {
-    let equipment:Equipment = {};
+    let equipment: Equipment = {};
     const inverterBrandValue = this.formData.get('inverterBrand')?.value;
     const inverterModelValue = this.formData.get('inverterModel')?.value;
     const moduleBrandValue = this.formData.get('moduleBrand')?.value;
@@ -155,49 +155,49 @@ export class NewEquipmentComponent {
     if (orientationValue !== null && orientationValue !== undefined) {
       equipment.orientation = orientationValue;
     }
-    if(this.plantCode){
-      equipment.projectExternalId=this.plantCode;
+    if (this.plantCode) {
+      equipment.projectExternalId = this.plantCode;
     }
 
-    if(this.modeDrawer=="Create"){
+    if (this.modeDrawer == "Create") {
       console.log("saving ...")
-      this.moduleService.createInstalations(equipment).subscribe(resp=>{
+      this.moduleService.createInstalations(equipment).subscribe(resp => {
         this.closeDrawer();
       })
     }
-    if(this.modeDrawer=="Edit"){
+    if (this.modeDrawer == "Edit") {
       console.log("editing ....")
 
       this.moduleService.patchInstalation(
         this._equipment?.equipmentId,
-        equipment).subscribe(resp=>{
+        equipment).subscribe(resp => {
           this.closeDrawer();
 
-      })
+        })
     }
     this.resetForm();
   }
 
-  getInverterBrandsCatalog(){
-    this.moduleService.getInverterBrands().subscribe(resp=>{
-      this.inverterBrands=resp; 
+  getInverterBrandsCatalog() {
+    this.moduleService.getInverterBrands().subscribe(resp => {
+      this.inverterBrands = resp;
     })
   }
-  getInverterModelsCatalog(id:number){
-    this.moduleService.getInverterModels(id).subscribe(resp=>{
-      this.inverterModels=resp; 
+  getInverterModelsCatalog(id: number) {
+    this.moduleService.getInverterModels(id).subscribe(resp => {
+      this.inverterModels = resp;
       this.formData.get('inverterModel')?.enable();
     })
   }
-  getModuleBrandsCatalog(){
-    this.moduleService.getModuleBrands().subscribe(resp=>{
-      this.moduleBrands=resp; 
+  getModuleBrandsCatalog() {
+    this.moduleService.getModuleBrands().subscribe(resp => {
+      this.moduleBrands = resp;
     })
   }
-  getModuleModelsCatalog(id:number){
-    this.moduleService.getModuleModels(id).subscribe(resp=>{
+  getModuleModelsCatalog(id: number) {
+    this.moduleService.getModuleModels(id).subscribe(resp => {
       this.formData.get('moduleModel')?.enable();
-      this.moduleModels=resp; 
+      this.moduleModels = resp;
     })
   }
   resetForm() {
@@ -213,6 +213,6 @@ export class NewEquipmentComponent {
     this.formData.get('inverterModel')?.disable();
     this.formData.get('moduleModel')?.disable();
   }
-  
+
 
 }

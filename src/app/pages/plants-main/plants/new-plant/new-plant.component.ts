@@ -5,13 +5,13 @@ import { Subject, takeUntil } from 'rxjs';
 import { CatalogsService } from '@app/shared/services/catalogs.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import moment from 'moment';
-import * as entityCatalogs from '../../../shared/models/catalogs-models';
-import * as entity from '../plants-model';
+import * as entityCatalogs from '../../../../shared/models/catalogs-models';
+import * as entity from '../../plants-model';
 import { Loader } from '@googlemaps/js-api-loader';
 import { DataRespSavingDetailsList } from '@app/pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
 import { environment } from '@environment/environment';
-import { PlantsService } from '../plants.service';
+import { PlantsService } from '../../plants.service';
 
 @Component({
   selector: 'app-new-plant',

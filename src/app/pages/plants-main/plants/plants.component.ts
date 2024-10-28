@@ -25,7 +25,7 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 5;
-  pageIndex: number = 1 ;
+  pageIndex: number = 1;
   totalItems: number = 0;
   pageSizeSub: Subscription;
   pageIndexSub: Subscription;
@@ -36,16 +36,16 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   }
 
   displayedColumns: string[] = [
-    'plantName', 
-    'rpu', 
-    'clientName', 
-    'clientId', 
-    'commissionDate', 
-    'inverterQty', 
-    'systemSize', 
-    'nominalPower', 
-    'assetStatus', 
-    'googleMapAdress', 
+    'plantName',
+    'rpu',
+    'clientName',
+    'clientId',
+    'commissionDate',
+    'inverterQty',
+    'systemSize',
+    'nominalPower',
+    'assetStatus',
+    'googleMapAdress',
     'actions'
   ];
 
@@ -57,23 +57,23 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   totalPlants!: entity.DataSummaryProjectsMapper;
 
   constructor(
-    private store: Store, 
-    private moduleServices: PlantsService, 
-    private notificationService: OpenModalsService, 
+    private store: Store,
+    private moduleServices: PlantsService,
+    private notificationService: OpenModalsService,
     private router: Router
   ) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
-      if (this.paginator) this.paginator.pageSize = size; 
+      if (this.paginator) this.paginator.pageSize = size;
     });
 
     this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
       this.pageIndex = index + 1;
-      if (this.paginator) this.paginator.pageIndex = index; 
-      this.getPlants(index+1, ''); 
+      if (this.paginator) this.paginator.pageIndex = index;
+      this.getPlants(index + 1, '');
     });
   }
-  
+
   ngOnInit(): void {
     this.getSummaryProjects();
   };
@@ -86,7 +86,7 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
   getPlants(page: number, name: string) {
     this.moduleServices.getPlants(name, this.pageSize, page).subscribe({
-      next: (response : entity.DataManagementTableResponse) => {
+      next: (response: entity.DataManagementTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
@@ -101,7 +101,7 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
 
   getSummaryProjects() {
     this.moduleServices.getSummaryProjects().subscribe({
-      next: (response : entity.DataSummaryProjectsMapper) => {
+      next: (response: entity.DataSummaryProjectsMapper) => {
         this.totalPlants = response;
         this.loadingtotalPlants = false
       },

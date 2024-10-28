@@ -18,11 +18,9 @@ import { PlantsDetailComponent } from './plant-detail-home/plant-details/plant-d
 import { SitePerformanceComponent } from './plant-detail-home/site-performance/site-performance.component';
 import { SavingsComponent } from './plant-detail-home/savings/savings.component';
 import { ModalExportDataComponent } from './plant-detail-home/site-performance/modal-export-data/modal-export-data.component';
-import { EnergyProductionDrawerComponent } from './plant-detail-home/site-performance/components/energy-production-drawer/energy-production-drawer.component';
-import { NewPlantComponent } from './new-plant/new-plant.component';
-// import { NewEquipmentComponent } from '../assetsMain/assets/instalation-details/components/new-equipment/new-equipment.component';
 import { PlantsComponent } from './plants/plants.component';
 import { NewEquipmentComponent } from './plant-detail-home/savings/components/new-equipment/new-equipment.component';
+import { NewPlantComponent } from './plants/new-plant/new-plant.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +30,6 @@ import { NewEquipmentComponent } from './plant-detail-home/savings/components/ne
     PlantsDetailComponent,
     ModalExportDataComponent,
     NewPlantComponent,
-    // EnergyProductionDrawerComponent,
     NewEquipmentComponent,
     PlantsComponent
   ],

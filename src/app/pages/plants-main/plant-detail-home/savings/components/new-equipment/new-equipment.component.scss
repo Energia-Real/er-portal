@@ -5,24 +5,25 @@
     width: 32px;
     height: 31px;
 
-    button, i {
+    button,
+    i {
         color: #EE5427;
     }
 }
 
 .create-asset-header-container {
- h2 {
-      font-size: 30px;
-      margin-bottom: 10px;
+    h2 {
+        font-size: 30px;
+        margin-bottom: 10px;
     }
 }
 
 .separate {
     font-size: 15px;
     font-weight: 500;
-  }
+}
 
-  .drawerEquipment { 
+.drawerEquipment {
     overflow-y: scroll;
     height: 100vh;
 }

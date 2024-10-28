@@ -19,7 +19,6 @@ export class Mapper {
 			dataList.push({
 				title: data.title,
 				description: formattedValue ?? null,
-				// tooltip: data?.title?.toLocaleLowerCase()?.includes('life time energy consumptio') ? 'Energy consumption since the solar installation was commissioned.' : ''
 			});
 		});
 
@@ -78,7 +77,7 @@ export class Mapper {
 		});
 		dataList.push({
 			title: 'Age of the site',
-			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'year'}` ?? null
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
 		});
 
 		dataList.push({
@@ -137,9 +136,8 @@ export class Mapper {
 		return localTime?.format('hh:mm A');
 	}
 
-	// static getInstalacionesMapper(response: entity.Instalations): entity.Instalations {
 	static getInstalacionesMapper(response: any): entity.Instalations {
-		let instalaciones:entity.Equipment[] = [];
+		let instalaciones: entity.Equipment[] = [];
 		instalaciones.push({
 			equipmentId: "0",
 			moduloQty: 0,

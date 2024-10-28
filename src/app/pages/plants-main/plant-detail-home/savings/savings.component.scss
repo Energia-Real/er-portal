@@ -1,12 +1,11 @@
 .c-install {
 
     .c-card-info {
-        // display: flex;
         width: 100%;
-        // justify-content: end!important;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
     }
+
     .header-chart {
         >h1 {
             font-size: 11px;
@@ -22,7 +21,6 @@
         height: calc(100vh - 400px);
         display: block;
         width: 100%;
-        height: auto;
     }
 
     .pdf {
@@ -65,12 +63,11 @@ ngx-image-zoom {
 
 
 .sombreado {
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
-  }
-
+    z-index: 1000;
+}

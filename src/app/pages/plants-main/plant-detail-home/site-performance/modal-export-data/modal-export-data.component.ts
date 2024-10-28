@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
@@ -7,21 +7,18 @@ import { Subject } from 'rxjs';
   templateUrl: './modal-export-data.component.html',
   styleUrl: './modal-export-data.component.scss'
 })
-export class ModalExportDataComponent implements OnInit, OnDestroy {
+export class ModalExportDataComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   constructor(
-		@Inject(MAT_DIALOG_DATA) public data: any,
-		private dialogRef: MatDialogRef<any>,
-	) {}
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<any>,
+  ) { }
 
-  ngOnInit(): void {
-    
-  }
 
   closeModal() {
-		this.dialogRef.close({
-      close : true
+    this.dialogRef.close({
+      close: true
     })
   }
 

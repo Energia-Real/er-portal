@@ -12,9 +12,7 @@
       .c-header-details {
         display: flex;
         align-items: start;
-        // width: 26%;
         vertical-align: middle;
-        // flex-wrap: wrap;
       }
   
       .info-asset-container {
@@ -38,18 +36,14 @@
   
       .info-weather-container {
         display: inline-block;
-        // padding-left: 40px;
         vertical-align: middle;
   
         .weather-flex-container {
           width: 100%;
           display: flex;
-          // display: inline-flex;
           overflow-y: hidden;
           overflow-x: auto;
           align-items: flex-start;
-          // gap: 40px;
-          // flex-wrap: wrap;
           justify-content: space-between;
           
           .card-weather-container {
