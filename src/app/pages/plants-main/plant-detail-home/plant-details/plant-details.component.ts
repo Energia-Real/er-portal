@@ -8,7 +8,7 @@ import { SitePerformanceComponent } from '../site-performance/site-performance.c
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
-  selector: 'app-plants-detail',
+  selector: 'app-plant-detail',
   templateUrl: './plant-details.component.html',
   styleUrl: './plant-details.component.scss'
 })

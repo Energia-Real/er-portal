@@ -1,118 +1,75 @@
-.home-main-container {
-    padding-bottom: 4%;
-    width: 100%;
-  
-    .home-header-container {
-      padding: .5% 4%;
-      border-bottom: 1px solid #E3E3E3;
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
+.c-plant-details {
+  padding-bottom: 4%;
+  width: 100%;
+  min-height: 160px;
+
+  .app-return {
+    position: absolute;
+    left: -40px;
+  }
+
+  .c-address {
+    width: 80%;
+
+    h1 {
+      font-size: 32px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 500;
       
-      .c-header-details {
-        display: flex;
-        align-items: start;
-        vertical-align: middle;
+      span {
+        font-weight: 500;
+        color: #4F4F4F;
       }
-  
-      .info-asset-container {
-        display: inline-block;
-        vertical-align: middle;
-  
-        h1 {
-          font-size: 32px;
-          font-weight: 400;
+    }
+  }
+
+  .c-information {
+    height: 106px;
+    border-radius: 24px;
+    border: 1px solid #D2D2D2;
+    display: flex;
+    flex-wrap: wrap;
+
+    > div {
+      flex: 1 1 16.66%;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      padding: 10px;
+
+      .linea {
+        width: 1px;
+        height: 34px;
+        background: #CFCFCF;
+        position: absolute;
+        right: 0;
+        top: 50%; 
+        transform: translateY(-50%);
+      }
+
+      .content {
+        text-align: center;
+
+        .check {
+          color: #22C55E;
         }
-  
+
         p {
           font-size: 12px;
-          font-weight: 600;
+          font-weight: 500;
+          margin-bottom: 8px;
         }
-  
-        span {
-          font-weight: 400;
-        }
-      }
-  
-      .info-weather-container {
-        display: inline-block;
-        vertical-align: middle;
-  
-        .weather-flex-container {
-          width: 100%;
-          display: flex;
-          overflow-y: hidden;
-          overflow-x: auto;
-          align-items: flex-start;
-          justify-content: space-between;
-          
-          .card-weather-container {
-            margin: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 84px;
-            border-radius: 16px;
-            border: 1px solid #D2D2D2;
-            text-align: center;
-            padding: 10px;
-            vertical-align: middle;
-            height: 84px;
-  
-            .card-value {
-              font-size: 22px;
-              font-weight: 400;
-            }
-  
-            p {
-              margin-bottom: 10px;
-            }
-  
-            i {
-              font-size: 22px;
-            }
-          }
-  
-          .card-weather-center {
-            width: auto;
-            vertical-align: top;
-  
-            p:first-child {
-              margin-bottom: 10px;
-            }
-          }
+        
+        span, i {
+          font-size: 24px;
         }
       }
     }
   }
-  
-  .main-container {
-    padding: 1% 4%;
-    display: flex;
-    justify-content: start;
-    .mat-tab {
-      background-color: #EE5427 !important;
-  
-    }
-  
-    .nav-tabs {
-      border: none;
-  
-      .active {
-        background-color: #EE5427;
-        color: #FFF;
-      }
-    }
-  
-    .home-tab-container {
-      padding-top: 30px;
-    }
-  }
-  
-  :host ::ng-deep .mat-mdc-tab {
-    border: none;
-    color: #000;
-    background-color: #F8F8F8;
-    border-radius: 15px;
-    margin-right: 10px;
-  }
+}
