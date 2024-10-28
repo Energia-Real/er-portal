@@ -15,7 +15,6 @@ import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';
 import { ClientsRoutingModule } from './clients-routing.module';
 import { ClientsComponent } from './clients/clients.component';
-import { NewEquipmentComponent } from '../assetsMain/assets/instalation-details/components/new-equipment/new-equipment.component';
 import { TypesClientsComponent } from './types-clients/types-clients.component';
 import { NewClientComponent } from './new-client/new-client.component';
 

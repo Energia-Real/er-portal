@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { updateDrawer } from '../actions/drawer.actions';
-import { Equipment } from '@app/pages/assetsMain/assets/assets-model';
+import { Equipment } from '@app/pages/plants-main/plants-model';
 
 export interface DrawerState {
   drawerOpen: boolean;

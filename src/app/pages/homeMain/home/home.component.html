@@ -17,14 +17,13 @@
                     <div class="linea"></div>
                 </div>
                 <div>
-                    <div style="width: 90%;">
+                    <div>
                         <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithOutSolar else notDataTable">
                             ${{ savingsDetails.cfeCostWithOutSolar }} <br>
                         </h2>
                         <p>CFE Cost without Solar</p>
                         <div class="linea"></div>
                     </div>
-
                 </div>
                 <div class="total-saving">
                     <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
@@ -182,9 +181,8 @@
             </table>
         </div>
     </div>
-
-
 </main>
+
 <app-footer></app-footer>
 
 <ng-template #notDataTable>
