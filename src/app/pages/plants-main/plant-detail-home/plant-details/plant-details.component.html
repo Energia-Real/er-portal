@@ -1,0 +1,74 @@
+<div class="c-plant-details">
+  <div class="c-main plant-header grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
+    <div class="col-span-1 position-relative">
+      <app-return-bar class="app-return"></app-return-bar>
+
+      <div class="c-address">
+        <h1 *ngIf="plantData?.siteName else notData">{{ plantData.siteName }}</h1>
+        <p>Approximate address: <span *ngIf="addressPlace else notData">{{addressPlace}}</span>
+      </div>
+    </div>
+
+    <div class="col-span-2">
+      <div class="c-information">
+        <div>
+          <div class="content" *ngIf="weatherData else notData">
+             <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
+             <i  class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content">
+            <p>Local time</p>
+            <span *ngIf="timeZonePlace else notData">{{ timeZonePlace }}</span>
+          </div>
+
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content">
+            <p>System size</p>
+            <span *ngIf="plantData.systemSize else notData">{{ plantData.systemSize }} kW</span>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content">
+            <p>AC capacity</p>
+            <span>{{ plantData.nominalPowerAC }} kW</span>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content">
+            <p>Status</p>
+            <mat-icon *ngIf="plantData.assetStatusIcon else notData" [matTooltip]="plantData.descriptionStatus">{{ plantData.assetStatusIcon }} </mat-icon>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content">
+            <p>System</p>
+            <div *ngIf="dataRespoSystem else notData">
+              <i class="check" *ngIf="inverterSystemStatus" class="fa-solid fa-check mb-2"></i>
+              <i *ngIf="!inverterSystemStatus" class="fa-solid fa-xmark mb-2"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<ng-template #notData>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>

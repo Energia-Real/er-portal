@@ -1,4 +1,4 @@
-import { Equipment } from '@app/pages/assetsMain/assets/assets-model';
+import { Equipment } from '@app/pages/plants-main/plants-model';
 import { createAction, props } from '@ngrx/store';
 
 export const updateDrawer = createAction(

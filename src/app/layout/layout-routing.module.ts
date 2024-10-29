@@ -6,7 +6,7 @@ import { HomeComponent } from '@app/pages/homeMain/home/home.component';
 
 const HomeBackOfficeModule = () => import('../pages/home-back-office/home-back-office.module').then(x => x.HomeBackOfficeModule);
 const HomeAdminModule= () => import('../pages/home-admin/home-admin.module').then(x => x.HomeAdminModule);
-const plantsModule = () => import('../pages/assetsMain/assets/assets.module').then(x => x.PlantsModule);
+const plantsModule = () => import('../pages/plants-main/plants-main.module').then(x => x.PlantsMainModule);
 const clientModule = () => import('../pages/clientsMain/clients-main.module').then(x => x.ClientsMainModule);
 const energyProductionModule = () => import('../pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
 const billingModule = () => import('../pages/billing-main/billing-main.module').then(x => x.BillingMainModule);

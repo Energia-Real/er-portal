@@ -1,0 +1,75 @@
+.c-plant-details {
+  padding-bottom: 4%;
+  width: 100%;
+  min-height: 160px;
+
+  .app-return {
+    position: absolute;
+    left: -40px;
+  }
+
+  .c-address {
+    width: 80%;
+
+    h1 {
+      font-size: 32px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 500;
+      
+      span {
+        font-weight: 500;
+        color: #4F4F4F;
+      }
+    }
+  }
+
+  .c-information {
+    height: 106px;
+    border-radius: 24px;
+    border: 1px solid #D2D2D2;
+    display: flex;
+    flex-wrap: wrap;
+
+    > div {
+      flex: 1 1 16.66%;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      padding: 10px;
+
+      .linea {
+        width: 1px;
+        height: 34px;
+        background: #CFCFCF;
+        position: absolute;
+        right: 0;
+        top: 50%; 
+        transform: translateY(-50%);
+      }
+
+      .content {
+        text-align: center;
+
+        .check {
+          color: #22C55E;
+        }
+
+        p {
+          font-size: 12px;
+          font-weight: 500;
+          margin-bottom: 8px;
+        }
+        
+        span, i {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
