@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TokenInterceptor } from './shared/interceptor/token.interceptor';
-import { LayoutModule } from './shared/components/layout/layout.module';
+import { SharedComponensModule } from './shared/components/shared-components.module';
 import { LoadingInterceptor } from './core/services/loading.interceptor';
 import { CoreModule } from './core/core.module';
 import { StoreModule } from '@ngrx/store';
@@ -15,7 +15,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { drawerReducer } from './core/store/reducers/drawer.reducer';
-import { ClientsComponent } from './pages/clientsMain/clients/clients.component';
+import { filterReducer } from './core/store/reducers/filters.reducer';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -23,10 +23,9 @@ import { ClientsComponent } from './pages/clientsMain/clients/clients.component'
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    LayoutModule,
     GoogleMapsModule,
     CoreModule,
-    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer}),
+    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
   ],
   providers: [

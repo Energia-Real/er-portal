@@ -37,7 +37,7 @@ export class Mapper {
 		};
 	}
 
-	static getDataSolarCovergaCo2(response: entity.DataSolarCovergaCo2, formatsService: FormatsService): entity.FormatCards[] {
+	static getDataSolarCoverage(response: entity.DataSolarCoverage, formatsService: FormatsService): entity.FormatCards[] {
 		let dataList: entity.FormatCards[] = [];
 		if (response.data.length > 1) {
 			response.data.forEach((data: entity.FormatCards, i): void => {
@@ -51,11 +51,16 @@ export class Mapper {
 		return dataList
 	}
 
-	static getDataBatuSavings(response: any, formatsService: FormatsService) {
-		return {
-			totalSaving: formatsService.energyFormat(response.totalSaving),
-			cO2Saving: formatsService.energyFormat(response.cO2Saving),
-			costwoSolarTotal: formatsService.energyFormat(response.costwoSolarTotal),
-		}
+	static getDataClientsListMapper(response: entity.DataRespSavingDetailsList[]): entity.DataRespSavingDetailsList[] {
+		let dataList: entity.DataRespSavingDetailsList[] = [];
+		response?.forEach((data: entity.DataRespSavingDetailsList): void => {
+			dataList.push({
+				...data,
+				nombre: data?.nombre || '-',
+				imageBase64: data?.imageBase64 ? `data:image/jpeg;base64,${data.imageBase64}` : ''
+			});
+		});
+
+		return dataList
 	}
 }

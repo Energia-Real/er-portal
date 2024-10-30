@@ -1,0 +1,101 @@
+<nav class="c-header z-10">
+  <div class="mx-10 flex justify-between items-center">
+    <a href="/home" class="text-white text-sm font-semibold c-version">
+      <div class="version">
+        Version: {{ version }}
+      </div>
+      <img src="../../../../assets/svg/logo.svg" alt="Logo" style="width: 120px;">
+    </a>
+
+    <ul class="flex titles-header">
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice'"><a routerLink="backoffice-home"
+          class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }">Home</a></li>
+
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin'"><a routerLink="admin-home"
+          class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }">Home</a></li>
+
+      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"><a
+          routerLink="plants" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a></li>
+
+      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
+          routerLink="clients" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a></li>
+
+      <!-- <li class="mx-5"><a routerLink="/payments" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li> -->
+
+      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
+          routerLink="energy" class="hover:text-gray-300 cursor-pointer"
+          [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }"> Energy  </a></li>
+
+      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="pricing"
+          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }">
+          Pricing</a></li>
+
+      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="billing"
+          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }">
+          Billing</a></li>
+    </ul>
+
+    <div class="flex align-items-center">
+      <div class="c-month-button">
+
+        <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
+          <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + currentYear : 'Start' }}</h1>
+          <span class="material-symbols-outlined">calendar_month</span>
+        </button>
+
+        <mat-menu #monthMenu1="matMenu" class="custom-menu">
+          <div class="years">
+            <p>{{ currentYearComplete }}</p>
+          </div>
+          <div class="month-grid">
+            <button mat-menu-item *ngFor="let month of months" [ngClass]="{
+                'selected-month': selectedStartMonth.value === month.value,
+                'unselected-month': selectedStartMonth.value !== month.value
+              }" (click)="selectStartMonth(month, startMenuTrigger)">
+              {{ month.name }}
+            </button>
+          </div>
+        </mat-menu>
+
+        <p>To</p>
+
+        <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
+          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End') }}
+          </h1>
+          <span class="material-symbols-outlined">calendar_month</span>
+        </button>
+
+        <mat-menu #monthMenu2="matMenu" class="custom-menu">
+          <div class="years">
+            <p>{{ currentYearComplete }}</p>
+          </div>
+          <div class="month-grid">
+            <button mat-menu-item *ngFor="let month of months" [disabled]="singleMonth.value" [ngClass]="{
+                'selected-month': selectedEndMonth?.value === month.value,
+                'unselected-month': selectedEndMonth?.value !== month.value
+              }" (click)="selectEndMonth(month, endMenuTrigger)">
+              {{ month.name }}
+            </button>
+          </div>
+
+          <div class="single">
+            <mat-checkbox [formControl]="singleMonth" class="check-color"></mat-checkbox>
+            <p>Consider a single month only</p>
+          </div>
+        </mat-menu>
+      </div>
+
+      <button [matMenuTriggerFor]="menu" mat-icon-button>
+        <mat-icon class="custom-icon-color">account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="signOut()">Sign out</button>
+      </mat-menu>
+    </div>
+  </div>
+</nav>

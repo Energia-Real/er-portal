@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
-import { LayoutModule } from '@app/shared/components/layout/layout.module';
-import { Subject, takeUntil } from 'rxjs';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
+import { Observable, Subject } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import * as entity from './home-model';
 import { Router } from '@angular/router';
@@ -18,30 +18,44 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { AuthService } from '@app/auth/auth.service';
-import { User } from '@app/shared/models/general-models';
+import { FilterState } from '@app/shared/models/general-models';
+import { Store } from '@ngrx/store';
 
 Chart.register(...registerables);
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [CommonModule, LayoutModule, MaterialModule, MessageNoDataComponent, ReactiveFormsModule, NgChartsModule],
+  imports: [CommonModule, SharedComponensModule, MaterialModule, MessageNoDataComponent, ReactiveFormsModule, NgChartsModule],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  dataSource = new MatTableDataSource<any>([]);
-  lineChartData!: ChartConfiguration<'bar'>['data'];
-  labels = [];
-  data = [5, 4, 3]
-
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
-
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
+  filters$!: Observable<FilterState['filters']>;
+  generalFilters$!: Observable<FilterState['generalFilters']>;
+  months: { value: string, viewValue: string }[] = [
+    { value: '01', viewValue: 'January' },
+    { value: '02', viewValue: 'February' },
+    { value: '03', viewValue: 'March' },
+    { value: '04', viewValue: 'April' },
+    { value: '05', viewValue: 'May' },
+    { value: '06', viewValue: 'June' },
+    { value: '07', viewValue: 'July' },
+    { value: '08', viewValue: 'August' },
+    { value: '09', viewValue: 'September' },
+    { value: '10', viewValue: 'October' },
+    { value: '11', viewValue: 'November' },
+    { value: '12', viewValue: 'December' }
+  ];
+
+  dataSource = new MatTableDataSource<any>([]);
+  labels = [];
+  data = [5, 4, 3]
   displayedColumns: string[] = [
     'siteName',
     'energyConsumption',
@@ -51,7 +65,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     'siteStatus'
   ];
 
-
+  lineChartData!: ChartConfiguration<'bar'>['data'];
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     animation: {
@@ -127,45 +141,29 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     },
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
-  
 
-  months: { value: string, viewValue: string }[] = [
-    { value: '01', viewValue: 'January' },
-    { value: '02', viewValue: 'February' },
-    { value: '03', viewValue: 'March' },
-    { value: '04', viewValue: 'April' },
-    { value: '05', viewValue: 'May' },
-    { value: '06', viewValue: 'June' },
-    { value: '07', viewValue: 'July' },
-    { value: '08', viewValue: 'August' },
-    { value: '09', viewValue: 'September' },
-    { value: '10', viewValue: 'October' },
-    { value: '11', viewValue: 'November' },
-    { value: '12', viewValue: 'December' }
-  ];
+  selection = new SelectionModel<entity.PeriodicElement>(true, []);
 
   currentYear = new Date().getFullYear();
-  dayOrMount = new FormControl('month');
-  selectedMonths: any[] = [];
+
   selectedEndMonth: number = new Date().getMonth() + 1;
-  selection = new SelectionModel<entity.PeriodicElement>(true, []);
-  allRowsInit = true;
+ 
+  solarCoverage: string = '';
 
+  dayOrMount = new FormControl('month');
+
+  allRowsInit: boolean = true;
   showLoader: boolean = true;
-  userInfo: any
-  dataClientsList: entity.DataRespSavingDetailsList[] = []
-  dataClientsBatu: any
 
-  savingsDetails: any = {
-    totalEnergyConsumption: 0,
-    totalEnergyProduction: 0
-  }
+  selectedMonths: any[] = [];
+  dataClientsList: entity.DataRespSavingDetailsList[] = [];
+  dataTooltipsInfo: entity.statesResumeTooltip[] = [];
 
-  solarCovergaCo2!: entity.FormatCards[];
+  savingsDetails!: entity.SavingDetailsResponse;
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
-    rangeDateEnd: [{ value: '', disabled: false }],
+    rangeDateEnd: [{ value: '', disabled: false }]
   });
 
   constructor(
@@ -174,13 +172,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService,
     private formatsService: FormatsService,
-    private accountService: AuthService
-  ) { }
+    private store: Store<{ filters: FilterState }>
+  ) {
+    this.filters$ = this.store.select(state => state.filters.filters);
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+  }
 
   ngOnInit(): void {
-    this.getInfoUser();
-    this.setMonths();
+    this.getFilters();
     this.getDataClientsList();
+    this.initiLineChartData();
+  }
+
+  initiLineChartData() {
     this.lineChartData = {
       labels: this.labels,
       datasets: [
@@ -193,83 +197,42 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
           data: [],
           label: 'Energy Consumption',
           backgroundColor: 'rgba(87, 177, 177, 1)',
-
         }
       ]
     };
   }
 
-  ngAfterViewInit(): void {
-    this.dayOrMount.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe( _ => {
-      this.searchWithFilters();
+  getFilters() {
+    this.filters$.subscribe(filters => {
+      if (filters?.months?.length) {
+        this.getDataClients(filters);
+        this.getTooltipInfo(filters);
+      }
+    });
+  }
+
+  getDataSavingDetails(filters: entity.FiltersSavingDetails) {
+    this.homeService.getDataSavingDetails({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
+      next: (response: entity.SavingDetailsResponse) => this.savingsDetails = response,
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
     })
   }
 
-  setMonths() {
-    this.selectedMonths = [this.months[5], this.months[6]];
-  }
-
-  searchWithFilters() {
-    let filtersBatu: any = {};
-    let filters: any = {};
-    let filtersSolarCoverage: any = {
-      brand: "huawei",
-      clientName: "Merco",
-      months: []
-    }
-
-    if (this.dayOrMount?.value == 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value) {
-      filters.requestType = 'Day'
-      filters.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM-DD')}`,
-      filters.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
-
-      filtersSolarCoverage.requestType = 1;
-      filtersSolarCoverage.startDate = `${moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM-DD')}`,
-      filtersSolarCoverage.endDate = `${moment(this.formFilters?.get('rangeDateEnd')?.value!).format('YYYY-MM-DD')}`
-
-      filtersBatu.months = [moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM')]
-      if (moment(this.formFilters?.get('rangeDateStart')?.value).format('YYYY-MM') != moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY-MM')) {
-        filtersBatu.months.push(moment(this.formFilters?.get('rangeDateEnd')?.value).format('YYYY-MM'))
-      }
-
-    } else if (this.dayOrMount?.value == 'month' && this.selectedMonths.length) {
-      filters.requestType = 'Month'
-      filters.months = this.selectedMonths.map(month => `${this.currentYear}-${month.value}-01`);
-
-      filtersSolarCoverage.requestType = 2
-      filtersSolarCoverage.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value+'-01');
-      filtersBatu.months = this.selectedMonths.map(month => this.currentYear+'-'+month.value);
-    }
-
-    this.getDataClients(filters, filtersBatu)
-    this.getDataSolarCovergaCo2(filtersSolarCoverage);
-
-    delete filtersSolarCoverage.clientName;
-    if (filtersSolarCoverage.requestType) localStorage.setItem('dateFilters', JSON.stringify(filtersSolarCoverage));
-  }
-
-
-  getDataClients(filters?: any, filtersBatu?:any) {
+  getDataClients(filters: entity.FiltersClients) {
     this.homeService.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
-        console.log('response.data', response.data);
-        
         this.dataSource.data = response.data
-        this.savingsDetails = response.savingDetails;
         this.dataSource.sort = this.sort;
         this.selection.clear();
         this.toggleAllRows();
         this.allRowsInit = false;
-
-        if (filtersBatu?.months?.length) {
-          filtersBatu.energyProduction = response.savingDetails.totalEnergyProduction ? parseFloat(response.savingDetails.totalEnergyProduction.replace(/,/g, '')) : 0;
-          delete filtersBatu.requestType
-          this.getDataBatuSavings(filtersBatu);
-        }
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
+        console.log(error);
       }
     })
   }
@@ -277,42 +240,37 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   getDataClientsList() {
     this.homeService.getDataClientsList().subscribe({
       next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.dataClientsList = response;
-        this.searchWithFilters()
+        this.generalFilters$.subscribe((generalFilters: entity.FiltersSavingDetails) => {
+          this.dataClientsList = response;
+          this.getDataSavingDetails(generalFilters);
+          this.getDataSolarCoverga(generalFilters);
+        });
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
+  }
+
+  getDataSolarCoverga(filters: entity.FiltersSavingDetails) {
+    this.homeService.getDataSolarCoverage({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
+      next: (response: string) => this.solarCoverage = response,
+      error: (error) => {
         console.error(error)
       }
     })
   }
 
-  getDataSolarCovergaCo2(filters?: string) {
-    this.homeService.getDataSolarCovergaCo2(filters).subscribe({
-      next: (response: entity.FormatCards[]) => {
-        this.solarCovergaCo2 = response;
+  getTooltipInfo(filters?: any) {
+    this.homeService.getDataStates(filters).subscribe({
+      next: (response: entity.statesResumeTooltip[]) => {
+        this.dataTooltipsInfo = response;
       },
       error: (error) => {
-        this.dataClientsBatu = null;
-        console.error(error)
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
       }
-    })
-  }
-
-  getDataBatuSavings(filters?: string) {
-    this.homeService.getDataBatuSavings(this.dataClientsList[0]?.id, filters).subscribe({
-      next: (response: any) => {
-        this.dataClientsBatu = response;
-      },
-      error: (error) => {
-        this.dataClientsBatu = null;
-        console.error(error)
-      }
-    })
-  }
-  getInfoUser() {
-    this.accountService.getInfoUser().subscribe((data: User) => {
-      this.userInfo = data;
     })
   }
 
@@ -325,6 +283,8 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleAllRows() {
     if (this.isAllSelected()) {
       this.selection.clear();
+      this.updtChart();
+
       return;
     }
 
@@ -335,26 +295,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   toggleRow(row: any) {
     this.selection.toggle(row);
     this.updtChart();
-  }
-
-  checkboxLabel(row?: entity.PeriodicElement): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-
-  goDetails(id: string) {
-    this.router.navigateByUrl(`/plants/details/${id}`)
-  }
-
-  get searchFilters() {
-    if (!this.dayOrMount) return false;
-    const daySelected = this.dayOrMount.value === 'day' && this.formFilters?.get('rangeDateStart')?.value && this.formFilters?.get('rangeDateEnd')?.value;
-    const monthSelected = this.dayOrMount.value === 'month' && this.selectedMonths.length;
-
-    return daySelected || monthSelected;
   }
 
   updtChart() {
@@ -370,21 +310,29 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   mappingData(dataSelected: entity.DataRespSavingDetails[]): any {
     let labels = dataSelected.map(item => item.siteName);
-  
     let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
     let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
-  
+
     return {
       labels: labels,
       energyConsumption: energyConsumption,
       energyProduction: energyProduction
     }
   }
-  
+
   convertToISO8601(month: string): string {
     const year = new Date().getFullYear();
     const date = moment(`${year}-${month}-01`).startOf('month').toISOString();
     return date;
+  }
+
+  checkboxLabel(row?: entity.PeriodicElement): string {
+    if (!row) return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  goDetails(id: string) {
+    this.router.navigateByUrl(`er/plants/details/${id}`)
   }
 
   ngOnDestroy(): void {

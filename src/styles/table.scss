@@ -12,10 +12,21 @@
 
 .column-ipervinculo {
     cursor: pointer;
+    color: #F97316;
 }
 
 .column-ipervinculo:hover {
-    font-weight: 500;
+    font-weight: 600;
+}
+
+
+.guion-click {
+    td {
+        div {
+            cursor: pointer;
+
+        }
+    }
 }
 
 .c-table {
@@ -51,7 +62,7 @@
 
 .table-assets {
     border-collapse: separate;
-    border-spacing: 0 1em!important;
+    border-spacing: 0 1em !important;
     font-size: 11px;
 
     thead tr,
@@ -61,6 +72,18 @@
         border-color: none !important;
         line-height: 18px;
         vertical-align: top;
+        padding-top: 15px;
+        padding-right: 0px;
+        padding-left: 0px;
+        
+        
+        .target{
+            background-color: #F8F8F8;
+            padding:4px  8px;
+            border-radius:8px;
+            border: 1px solid #EDEDED !important;
+            font-size:10px;
+        }
     }
 }
 
@@ -72,12 +95,16 @@
     }
 }
 
-.tr-table-assets {
+.tr-table {
     td {
         border-top-width: 1px;
         border-bottom-width: 1px;
         background-color: #F9F9F9;
         padding: 30px 15px;
+
+        >div {
+            font-weight: 500 !important;
+        }
 
         &:first-child {
             border-radius: 16px 0 0 16px;
@@ -137,7 +164,7 @@ tr {
     align-items: center;
     border-radius: 12px;
     border: 1px solid #EDEDED;
-    padding: 4px 8px ;
+    padding: 4px 8px;
     cursor: pointer;
 }
 
@@ -157,32 +184,32 @@ tr {
     overflow-x: hidden;
 
     thead {
-      position: sticky;
-      margin-bottom: 10px;
-      top: 0;
-      z-index: 1;
-      background-color: white;
+        position: sticky;
+        margin-bottom: 10px;
+        top: 0;
+        z-index: 1;
+        background-color: white;
     }
 
-    th {
-    //   height: 65px;
+    td {
+        font-weight: 500;
     }
 
     .ms-edge thead {
-      position: -webkit-sticky;
+        position: -webkit-sticky;
     }
 
     .mat-table {
-      width: 100%;
+        width: 100%;
     }
 
     .mat-table td,
     .mat-table th {
-      padding: 8px;
+        padding: 8px;
     }
 
     .header-table {
-      margin: 0;
-      line-height: 18px;
+        margin: 0;
+        line-height: 18px;
     }
-  }
+}

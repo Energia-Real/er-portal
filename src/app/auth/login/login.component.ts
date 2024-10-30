@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe({
         next: (response: any) => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/plants' : '/home'}`;
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/er' : '/er'}`;
           this.router.navigateByUrl(returnUrl);
         },
         error: (err) => {

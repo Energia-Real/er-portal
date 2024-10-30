@@ -1,0 +1,120 @@
+.c-clients {
+  z-index: 3;
+
+  .table-container-scroll {
+    height: calc(100vh - 470px);
+  }
+
+  mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 28px;
+  }
+
+  .footer-btns {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+
+    .delete {
+      i {
+        font-size: 20px;
+        cursor: pointer;
+        color: #e74c3c;
+      }
+
+      i:hover {
+        color: #c0392b;
+      }
+    }
+  }
+
+  .drag-drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .drag-drop-area.active {
+    border-color: #3f51b5;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .file-input {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+
+  .drag-drop-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 5px;
+  }
+
+
+  .drag-drop-area {
+    display: flex;
+    min-height: 150px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 5px;
+  }
+
+  .remove-image-button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 0, 0, 0.7);
+    border: none;
+    border-radius: 100%;
+    width: 24px;
+    color: white;
+    height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+  }
+}

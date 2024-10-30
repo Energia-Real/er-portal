@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LayoutModule } from '@app/shared/components/layout/layout.module';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { HighchartsChartModule } from 'highcharts-angular';
@@ -14,16 +14,13 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';
 import { ClientsRoutingModule } from './clients-routing.module';
-import { LayoutComponent } from './layout/layout.component';
 import { ClientsComponent } from './clients/clients.component';
-import { NewEquipmentComponent } from '../assetsMain/assets/instalation-details/components/new-equipment/new-equipment.component';
-import { TypesClientsComponent } from './clients/types-clients/types-clients.component';
-import { NewClientComponent } from './clients/new-client/new-client.component';
+import { TypesClientsComponent } from './types-clients/types-clients.component';
+import { NewClientComponent } from './new-client/new-client.component';
 
 
 @NgModule({
   declarations: [
-    LayoutComponent,
     ClientsComponent,
     TypesClientsComponent,
     NewClientComponent,
@@ -33,7 +30,7 @@ import { NewClientComponent } from './clients/new-client/new-client.component';
     ClientsRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    LayoutModule,
+    SharedComponensModule,
     ReturnBarModule,
     MaterialModule,
     InfoCardComponent,

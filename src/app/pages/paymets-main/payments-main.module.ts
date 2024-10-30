@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SelectPayComponent } from './select-pay/select-pay.component';
 import { AssetsRoutingModule } from './payments-routing.module';
 import { LayoutComponent } from './layout/layout.component';
-import { LayoutModule } from '@app/shared/components/layout/layout.module';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 import { ModalPayComponent } from './modal-pay/modal-pay.component';
@@ -19,7 +19,7 @@ import { ModalPayComponent } from './modal-pay/modal-pay.component';
   imports: [
     CommonModule,
     AssetsRoutingModule,
-    LayoutModule,
+    SharedComponensModule,
     MaterialModule,
     MessageNoDataComponent
   ],

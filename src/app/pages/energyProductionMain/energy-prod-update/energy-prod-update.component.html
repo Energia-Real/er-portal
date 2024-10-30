@@ -1,0 +1,71 @@
+<div class="c-clients fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
+  c-modal-lateral create-asset-main-container  " [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
+    <div class="return-bar-container">
+        <button class="button-transparent" type="button" (click)="closeDrawer(true)">
+            <i class="fa-solid fa-angles-left" matTooltip="Go back"></i>
+        </button>
+    </div>
+    <div class="mx-auto text-center w-full">
+        <h2 class="m-0">Energy production</h2>
+        <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
+            <div class="mb-0">
+                <div class="grid grid-cols-1  gap-x-6 gap-y-2">
+                    <div class="col-span-1 md:col-span-1">
+                        <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ editedPlant?.isCreated ? 'Edit' : 'Add'}} energy production</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input mb-0">
+                                    <p class="font-medium text-gray-700">Name of site:</p>
+                                    <mat-form-field appearance="outline" class="w-full input-ER">
+                                        <input formControlName="siteName" placeholder="Name of site" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input mb-0">
+                                    <p class="font-medium text-gray-700">Month:</p>
+                                    <mat-form-field appearance="outline" class="w-full input-ER">
+                                        <input formControlName="monthSelectedName" placeholder="Month" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input mb-0">
+                                    <p class="font-medium text-gray-700">Year :</p>
+                                    <mat-form-field appearance="outline" class="w-full input-ER">
+                                        <input formControlName="year" placeholder="Year" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                         
+                            <div class="col-span-1 md:col-span-1">
+                                <div class="c-input mb-0">
+                                    <p class="font-medium text-gray-700">Energy production:</p>
+                                    <mat-form-field appearance="outline" class="w-full input-ER">
+                                        <input  (input)="validateInput($event)" type="number" min="1" formControlName="energyProduced" placeholder="Energy production" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer-btns col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
+                            <div class="delete" >
+                                <i matTooltip="The energy production will be eliminated." *ngIf="editedPlant?.energyProduced" class="fa-solid fa-trash" (click)="actionSave(true)"></i>
+                            </div>
+                            <div class="button-container d-flex justify-content-between pt-0 gap-2">
+                                <button class="btn-cancel" (click)="closeDrawer(true)" type="button">Cancel</button>
+                                <div>
+                                    <button class="btn-action-add" type="submit">
+                                        <i
+                                            [class]="editedPlant?.isCreated ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
+                                        {{ editedPlant?.isCreated ? 'Edit' : 'Save' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
