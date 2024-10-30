@@ -68,7 +68,7 @@
 
   <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 position-relative">
-      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="2"
         (selectedTabChange)="onTabChange($event)">
 
         <mat-tab label="Site details">
@@ -79,8 +79,12 @@
           <app-site-performance *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-performance>
         </mat-tab>
 
+        <!-- <mat-tab label="Inverter details">
+          <app-inverter-detail *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData" (notifyParent)="systemStatus($event)"></app-inverter-detail>
+        </mat-tab> -->
+
         <mat-tab label="Savings">
-          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData" (notifyParent)="systemStatus($event)"></app-savings>
+          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-savings>
         </mat-tab>
 
       </mat-tab-group>

@@ -101,6 +101,40 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
+
+  sitePerformance = {
+    firstTwo: [{
+      title: 'System generation',
+      description: '794,738.86 kWh',
+    },
+    {
+      title: 'Total consumption',
+      description: '000,000.00 kWh',
+    },
+    ],
+
+    remaining: [
+      {
+        title: 'Exported generation',
+        description: '000,000.00 kWh',
+        extra: '+2% compared to the previous month.'
+      },
+      {
+        title: 'CFE network consumption.',
+        description: '000,000.00 kWh',
+        extra: '-4% compared to the previous month.'
+      },
+      {
+        title: 'Solar coverage',
+        description: '000,000.00 kWh',
+      },
+      {
+        title: 'Performance',
+        description: '000,000.00 kWh',
+      },
+    ]
+  }
+
   formFilters = this.formBuilder.group({
     start: [{ value: '', disabled: false }],
     end: [{ value: '', disabled: false }],

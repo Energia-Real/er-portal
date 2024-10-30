@@ -118,7 +118,7 @@ export interface DataResponseDetailsCard {
   description: string | Date | null;
   tooltip?: string
 }
-export interface DataResponseDetailsMapper {
+export interface DataResponseMapper {
   firstTwo : any
   remaining : any
 }

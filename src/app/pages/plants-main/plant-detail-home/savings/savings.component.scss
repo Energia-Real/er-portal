@@ -1,73 +1,70 @@
-.c-install {
+.c-card-info-saving {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
 
-    .c-card-info {
-        width: 100%;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-
+    >div {
+        min-height: 80px;
     }
 
-    .header-chart {
-        >h1 {
-            font-size: 11px;
-            font-weight: 400;
-            color: #6E6E6E;
-            text-align: right;
-            line-height: 10px;
-            margin-bottom: 10px !important;
-        }
+    .card-container-50 {
+        flex: 1 1 48%;
     }
 
-    .ngx-image {
-        height: calc(100vh - 400px);
-        display: block;
-        width: 100%;
+    .card-container-33 {
+        flex: 1 1 30%;
     }
 
-    .pdf {
-        width: 100%;
-        height: calc(100vh - 300px);
-        z-index: 9999;
-        margin: 0px;
+    .card-info {
+        border: 1px solid #D2D2D2;
+        height: auto;
+        min-height: 80px;
+        padding: 13px 20px;
+        border-radius: 24px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0;
 
-        .pdfViewer .page {
+        >div {
             display: flex;
             justify-content: center;
-            background: red;
+            flex-direction: column;
+        }
+
+        img {
+            margin-right: 20px;
+        }
+
+        h1 {
+            color: #EE5427;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 14px;
+            margin-bottom: 0px;
+        }
+
+        h2 {
+            color: #000000;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 0;
         }
     }
 }
 
-::ng-deep .pdfViewer .page {
-    margin: 0 !important;
+.graphic-performance {
+    padding-left: 20px;
+    background: #F9F9F9;
+    padding: 20px 10px 10px 10px;
+    border: 1px solid #E2E2E2;
+    border-radius: 16px;
+    width: 100%;
+    height: 80%;
     display: flex;
-    justify-content: center;
-    background: red;
-    width: unset !important;
     align-items: center;
-    height: 100% !important;
-
-    .canvasWrapper {
-
-        height: 100% !important;
-    }
-}
-
-div {
-    margin-bottom: 20px;
-}
-
-ngx-image-zoom {
-    width: 100%;
-    height: auto;
+    justify-content: center;
+    height: 350px;
 }
 
 
-.sombreado {
-    background-color: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-}
