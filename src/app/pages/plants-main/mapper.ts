@@ -3,26 +3,39 @@ import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
-	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
+	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper {
 
-		let dataList: entity.DataResponseDetailsMapper[] = [];
+		let dataList: entity.DataResponseDetailsCard[] = [];
 
 		response?.forEach((data: entity.DataDetails): void => {
 			let formattedValue: string = data.value;
-
-			if (data.value.includes('.') || data.value === '0') formattedValue = formatsService.energyFormat(parseFloat(data.value));
-			else formattedValue = formatsService.dateFormat(data.value);
-			if (data?.title?.toLocaleLowerCase()?.includes('coverage')) formattedValue += '%';
-			else if (data?.title?.toLocaleLowerCase()?.includes('energy production')
-				|| data?.title?.toLocaleLowerCase()?.includes('energy consumption')) formattedValue += ' kWh';
-
+		
+			if (data.value.includes('.') || data.value === '0') {
+				formattedValue = formatsService.energyFormat(parseFloat(data.value));
+			} else {
+				formattedValue = formatsService.dateFormat(data.value);
+			}
+		
+			if (data?.title?.toLocaleLowerCase()?.includes('coverage')) {
+				formattedValue += '%';
+			} else if (
+				data?.title?.toLocaleLowerCase()?.includes('energy production') ||
+				data?.title?.toLocaleLowerCase()?.includes('energy consumption')
+			) {
+				formattedValue += ' kWh';
+			}
+		
 			dataList.push({
 				title: data.title,
 				description: formattedValue ?? null,
 			});
 		});
-
-		return dataList
+		
+		return {
+			firstTwo: dataList.slice(0, 5),
+			remaining: dataList.slice(5),
+		}
+		
 	}
 
 	static getPlantsMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
@@ -68,8 +81,8 @@ export class Mapper {
 		}
 	}
 
-	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient, formatsService: FormatsService): entity.DataResponseDetailsMapper[] {
-		let dataList: entity.DataResponseDetailsMapper[] = [];
+	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient, formatsService: FormatsService): entity.DataResponseDetailsCard[] {
+		let dataList: entity.DataResponseDetailsCard[] = [];
 
 		dataList.push({
 			title: 'RPU',
@@ -97,7 +110,7 @@ export class Mapper {
 		return dataList
 	}
 
-	static mapToClientData(mapperData: entity.DataResponseDetailsMapper): Partial<entity.DataResponseDetailsClient> {
+	static mapToClientData(mapperData: entity.DataResponseDetailsCard): Partial<entity.DataResponseDetailsClient> {
 		const clientData: Partial<entity.DataResponseDetailsClient> = {};
 
 		switch (mapperData.title) {

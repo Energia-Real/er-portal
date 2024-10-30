@@ -113,10 +113,14 @@ export interface DataManagementTableMapper {
 
 }
 
-export interface DataResponseDetailsMapper {
+export interface DataResponseDetailsCard {
   title: string;
   description: string | Date | null;
   tooltip?: string
+}
+export interface DataResponseDetailsMapper {
+  firstTwo : any
+  remaining : any
 }
 
 export interface ResponseSystem {

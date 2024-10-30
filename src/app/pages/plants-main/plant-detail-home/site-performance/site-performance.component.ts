@@ -138,7 +138,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getEstimateds() {
-    this.moduleServices.getEstimatedEnergy(this.plantData.inverterBrand[0], this.plantData.plantCode).subscribe({
+    this.moduleServices.getEstimatedEnergy(this.plantData?.inverterBrand[0], this.plantData?.plantCode).subscribe({
       next: (response) => {
         const inverterPowerData = response.map(item => this.formatsService.graphFormat(item.inverterPower));
         const estimatedInverterPowerData = response.map(item => this.formatsService.graphFormat(item.estimatedEnergyMWh));

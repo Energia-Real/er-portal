@@ -1,4 +1,3 @@
-<p>saving works!</p>
 <div class="c-global c-install  grid grid-cols-1 md:grid-cols-2">
   <div class="c-graph">
     <div *ngIf="showAlert" class="alert alert-warning">
@@ -15,12 +14,12 @@
         Add new equipment
       </button>
       <app-new-equipment class="draweEquipment" [isOpen]="drawerOpen" [modeDrawer]="drawerAction"
-        [plantCode]="plantData.id" [equipment]="drawerInfo"></app-new-equipment>
+        [plantCode]="plantData?.id" [equipment]="drawerInfo"></app-new-equipment>
     </div>
     <div class="c-card-info" *ngIf="!showAlert else notData">
       <div class="c-card-info" *ngIf="!showAlert&&instalations else notData">
         <div class="card-info" *ngFor="let instalation of instalations.equipment; let i = index">
-          <app-info-card [info]="instalation" [fromEquipments]=true [materialIconName]="materialIcon"></app-info-card>
+        <app-info-card [tapName]="'savings'" [info]="instalation" [fromEquipments]=true [materialIconName]="materialIcon"></app-info-card>
         </div>
       </div>
     </div>

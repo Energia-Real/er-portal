@@ -1,5 +1,5 @@
-<div class="c-plant-details">
-  <div class="c-main plant-header grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
+<div class="c-main c-plant-details">
+  <div class="plant-header grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 position-relative">
       <app-return-bar class="app-return"></app-return-bar>
 
@@ -13,8 +13,8 @@
       <div class="c-information">
         <div>
           <div class="content" *ngIf="weatherData else notData">
-             <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
-             <i  class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
+            <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
+            <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
           </div>
           <div class="linea"></div>
         </div>
@@ -31,7 +31,7 @@
         <div>
           <div class="content">
             <p>System size</p>
-            <span *ngIf="plantData.systemSize else notData">{{ plantData.systemSize }} kW</span>
+            <span *ngIf="plantData?.systemSize else notData">{{ plantData?.systemSize }} kW</span>
           </div>
           <div class="linea"></div>
         </div>
@@ -39,7 +39,7 @@
         <div>
           <div class="content">
             <p>AC capacity</p>
-            <span>{{ plantData.nominalPowerAC }} kW</span>
+            <span>{{ plantData?.nominalPowerAC }} kW</span>
           </div>
           <div class="linea"></div>
         </div>
@@ -47,7 +47,8 @@
         <div>
           <div class="content">
             <p>Status</p>
-            <mat-icon *ngIf="plantData.assetStatusIcon else notData" [matTooltip]="plantData.descriptionStatus">{{ plantData.assetStatusIcon }} </mat-icon>
+            <mat-icon *ngIf="plantData?.assetStatusIcon else notData" [matTooltip]="plantData.descriptionStatus">{{
+              plantData?.assetStatusIcon }} </mat-icon>
           </div>
           <div class="linea"></div>
         </div>
@@ -64,6 +65,28 @@
       </div>
     </div>
   </div>
+
+  <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+    <div class="col-span-1 position-relative">
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
+        (selectedTabChange)="onTabChange($event)">
+
+        <mat-tab label="Site details">
+          <app-site-details *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-details>
+        </mat-tab>
+
+        <mat-tab label="Site performance">
+          <app-site-performance *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-performance>
+        </mat-tab>
+
+        <mat-tab label="Savings">
+          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData" (notifyParent)="systemStatus($event)"></app-savings>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+  </div>
+
 </div>
 
 

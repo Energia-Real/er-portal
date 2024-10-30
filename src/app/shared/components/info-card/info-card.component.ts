@@ -21,6 +21,7 @@ import { PlantsService } from '@app/pages/plants-main/plants.service';
   ]
 })
 export class InfoCardComponent {
+  @Input() tapName: string = '';
   @Input() info: any;
   @Input() executeFunction!: Function;
   @Input() tooltipText!: string;
