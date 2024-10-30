@@ -238,11 +238,14 @@ select {
   }
 }
 
-.c-card-info {
-  // display: flex;
-  // flex-wrap: wrap;
-  // gap: 14px;
+.separator-cards {
+  width: 100%;
+  height: 1px !important;
+  background: #E2E2E2;
+  min-height: unset !important;
+}
 
+.c-card-info {
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -250,8 +253,6 @@ select {
   .card-info {
     border: 1px solid #D2D2D2;
     height: auto;
-    // width: 48%;
-    // padding: 16px 24px 16px 24px;
     padding: 13px 20px 13px 20px;
     gap: 10px;
     border-radius: 24px;
@@ -269,8 +270,6 @@ select {
         font-size: 14px;
         font-weight: 600;
         line-height: 14.65px;
-        // margin-bottom: 16px;
-        // width: 86%;
         min-height: 30px;
         padding-bottom: 6%;
       }
@@ -428,6 +427,7 @@ select {
     color: #000000;
     font-weight: 500;
   }
+
   .mat-mdc-tab .mdc-tab-indicator__content--underline {
     border-color: #EE5427 !important;
   }

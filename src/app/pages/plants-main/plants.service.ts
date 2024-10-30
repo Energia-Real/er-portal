@@ -27,7 +27,7 @@ export class PlantsService implements OnDestroy {
     );
   }
 
-  getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsMapper[]> {
+  getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsCard[]> {
     const url = `${this.API_URL}/projects/${assetId}`;
     return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
       map((response) => Mapper.getDataRespOverviewMapper(response, this.formatsService))
@@ -47,7 +47,7 @@ export class PlantsService implements OnDestroy {
     return this.http.get<any>(url);
   }
 
-  getDataRespSite(data: entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper[]> {
+  getDataRespSite(data: entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper> {
     const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
 
     return this.http.post<entity.DataResponseDetails>(url, data).pipe(
