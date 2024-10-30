@@ -1,5 +1,5 @@
 import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
-import * as entity from '../pricing-model';
+import * as entity from '../rates-model';
 import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -7,17 +7,17 @@ import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Router } from '@angular/router';
-import { PricingService } from '../pricing.service';
+import { RatesService } from '../rates.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 
 @Component({
-  selector: 'app-pricing',
-  templateUrl: './pricing.component.html',
-  styleUrl: './pricing.component.scss'
+  selector: 'app-rates',
+  templateUrl: './rates.component.html',
+  styleUrl: './rates.component.scss'
 })
-export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
+export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<any>([]);
@@ -73,7 +73,7 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     private store: Store,
     private notificationService: OpenModalsService,
     private router: Router,
-    private moduleServices: PricingService) {
+    private moduleServices: RatesService) {
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
       if (this.paginator) this.paginator.pageSize = size;
