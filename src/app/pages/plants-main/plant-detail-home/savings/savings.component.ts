@@ -18,7 +18,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   drawerOpenSub: Subscription;
 
-  @Input() plantData!: entity.DataPlant;
+  @Input() plantData: entity.DataPlant | any;
   @Input() notData!: boolean;
   @Output() notifyParent: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -38,7 +38,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private assetService: PlantsService,
+    private mopduleService: PlantsService,
     private store: Store
   ) {
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
@@ -52,11 +52,11 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    this.getSavings(this.plantData.id)
+    this.getSavings(this.plantData?.id)
   }
 
   getSavings(plantCode: string) {
-    this.assetService.getSavings(plantCode).subscribe(data => {
+    this.mopduleService.getSavings(plantCode).subscribe(data => {
       this.instalations = data;
       this.pdfSrc = this.sanitizeUrl(data.equipmentPath + "#zoom=85");
       this.getInverterMonitoring(data);
@@ -65,7 +65,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   getInverterMonitoring(data: entity.Instalations) {
     let instalations = data.equipment;
-    this.assetService.getInverterMonitoring(this.plantData?.plantCode).subscribe((data: entity.InverterMonitoring) => {
+    this.mopduleService.getInverterMonitoring(this.plantData?.plantCode).subscribe((data: entity.InverterMonitoring) => {
       this.notifyParent.emit(data.inverterSystemStatus);
 
       if (data?.invertersStatus?.length) {

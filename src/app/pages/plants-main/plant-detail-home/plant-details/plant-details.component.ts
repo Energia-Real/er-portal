@@ -168,7 +168,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.sitePerformanceComponent &&
+    if (this.sitePerformanceComponent && 
        this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
   }
 
