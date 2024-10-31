@@ -15,7 +15,7 @@ export interface DataBillingTable {
   amount: number;
   amountWithIva: number;
   rpu: string;
-  generatedEnergyKwh: number;
+  generatedEnergyKwh: string;
 }
 
 export interface DataBillingTableMapper {

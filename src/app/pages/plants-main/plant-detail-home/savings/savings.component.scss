@@ -1,4 +1,4 @@
-.c-card-info-saving {
+.c-card-info-savings {
     height: auto;
     display: flex;
     flex-wrap: wrap;
@@ -28,8 +28,9 @@
 
         >div {
             display: flex;
-            justify-content: center;
+            align-items: start;
             flex-direction: column;
+            justify-content: center;
         }
 
         img {

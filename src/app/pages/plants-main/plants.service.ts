@@ -17,7 +17,7 @@ export class PlantsService implements OnDestroy {
   private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
   private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
 
-  constructor(private http: HttpClient, public formatsService: FormatsService) { }
+  constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
   getDataById(id: string | null): Observable<entity.DataPlant> {
     const url = `${this.API_URL}/projects/${id}`;

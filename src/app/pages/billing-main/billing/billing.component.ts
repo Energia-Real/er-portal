@@ -109,12 +109,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
         this.pageIndex = page
       },
       error: error => {
-        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
-        this.dataSource.data = error?.response?.data;
-        this.totalItems = error?.response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = page
       }
     });
   }

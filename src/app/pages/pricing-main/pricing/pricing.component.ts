@@ -106,18 +106,14 @@ export class PricingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.moduleServices.getPricingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataPricingTableMapper) => {
         console.log(response);
-
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = page
       },
       error: error => {
-        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        this.dataSource.data = error?.response?.data;
-        this.totalItems = error?.response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = page
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
       }
     });
   }
