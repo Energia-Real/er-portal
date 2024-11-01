@@ -10,7 +10,7 @@ const plantsModule = () => import('../pages/plants-main/plants-main.module').the
 const clientModule = () => import('../pages/clientsMain/clients-main.module').then(x => x.ClientsMainModule);
 const energyProductionModule = () => import('../pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
 const billingModule = () => import('../pages/billing-main/billing-main.module').then(x => x.BillingMainModule);
-const pricingModule = () => import('../pages/pricing-main/pricing-main.module').then(x => x.PricingMainModule);
+const ratesModule = () => import('../pages/rates-main/rates-main.module').then(x => x.RatesMainModule);
 
 
 const routes: Routes = [
@@ -62,8 +62,8 @@ const routes: Routes = [
         data: { roles: ['Billing', 'Admin']}
       },
       {
-        path: 'pricing',
-        loadChildren: pricingModule,
+        path: 'rates',
+        loadChildren: ratesModule,
         canActivate: [redirectGuard],
         data: { roles: ['Billing', 'Admin']}
       }
