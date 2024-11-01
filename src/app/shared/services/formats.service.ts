@@ -29,4 +29,13 @@ export class FormatsService {
   graphFormat(content: number): number {
     return parseFloat(content.toFixed(2));
   }
+
+  moneyFormat(amount: number) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(amount);
+  }
 }

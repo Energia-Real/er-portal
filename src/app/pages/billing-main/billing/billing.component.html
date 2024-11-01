@@ -74,6 +74,20 @@
                 </td>
             </ng-container>
 
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element?.amount else notDataTable"> {{ element.amount }} </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amountWithIva">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>IVA</th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element?.amountWithIva else notDataTable"> {{ element.amountWithIva }} </div>
+                </td>
+            </ng-container>
+
             <tr *matNoDataRow>
                 <td class="mat-cell" [attr.colspan]="displayedColumns.length">
                     <h5 class="text-center my-5">No results found.</h5>

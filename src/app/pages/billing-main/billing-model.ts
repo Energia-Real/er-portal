@@ -12,8 +12,8 @@ export interface DataBillingTable {
   externalId: string;
   plantName: string;
   clientName: string;
-  amount: number;
-  amountWithIva: number;
+  amount: string;
+  amountWithIva: string;
   rpu: string;
   generatedEnergyKwh: string;
 }

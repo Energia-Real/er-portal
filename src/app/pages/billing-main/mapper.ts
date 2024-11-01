@@ -10,8 +10,8 @@ export class Mapper {
 				clientName: data?.clientName || '',
 				plantName: data?.plantName || '',
 				rpu: data?.rpu || '',
-				amount: data?.amount || 0,
-				amountWithIva: data?.amountWithIva || 0,
+				amount: formatsService.moneyFormat(parseFloat(data.amount)),
+				amountWithIva: formatsService.moneyFormat(parseFloat(data.amountWithIva)),
 				generatedEnergyKwh: formatsService.energyFormat(data.generatedEnergyKwh)
 			});
 		});

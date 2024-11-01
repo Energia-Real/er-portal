@@ -30,7 +30,7 @@
         <div class="col-span-2 md:col-span-1">
             <div class="highcharts">
                 <div class="charts">
-                    <div class="graphic-performance" *ngIf="displayChart" style="display: flex; height: 433px;">
+                    <div class="graphic-performance" *ngIf="displayChart">
                         <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'" [data]="lineChartData"
                             [options]="lineChartOptions" [legend]="lineChartLegend">
                         </canvas>
