@@ -32,6 +32,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'clientName',
     'plantName',
     'generatedEnergyKwh',
+    'rate',
     'amount',
     'amountWithIva',
   ];
@@ -105,8 +106,6 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.getBillingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
-        console.log(response.data);
-        
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;

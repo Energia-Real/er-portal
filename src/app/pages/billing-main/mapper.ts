@@ -10,6 +10,7 @@ export class Mapper {
 				clientName: data?.clientName || '',
 				plantName: data?.plantName || '',
 				rpu: data?.rpu || '',
+				rate: formatsService.moneyFormat(parseFloat(data.rate)),
 				amount: formatsService.moneyFormat(parseFloat(data.amount)),
 				amountWithIva: formatsService.moneyFormat(parseFloat(data.amountWithIva)),
 				generatedEnergyKwh: formatsService.energyFormat(data.generatedEnergyKwh)

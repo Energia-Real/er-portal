@@ -12,6 +12,7 @@ export interface DataBillingTable {
   externalId: string;
   plantName: string;
   clientName: string;
+  rate: string;
   amount: string;
   amountWithIva: string;
   rpu: string;
