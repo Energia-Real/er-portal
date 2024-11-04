@@ -32,6 +32,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'clientName',
     'plantName',
     'generatedEnergyKwh',
+    'energyGeneration',
     'rate',
     'amount',
     'amountWithIva',
@@ -56,6 +57,71 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     { value: 12, viewValue: 'December' }
   ];
 
+  dummy: any[] = [
+    {
+      "externalId": "a166eb36-d5a9-475a-8ed8-fb8679ba5cf9",
+      "plantName": "Paraje San Jose",
+      "clientName": "Merco",
+      "rpu": "888230206911",
+      "generatedEnergyKwh": "47,347",
+      "amount": "$85,224.06",
+      "amountWithIva": "$98,859.91",
+      "month": 8,
+      "year": 2024,
+      "rate": ""
+    },
+    {
+      "externalId": "4811fea7-fc73-4bc8-87af-ce6aa71beb0a",
+      "plantName": "Saltillo",
+      "clientName": "Merco",
+      "rpu": "350170707525",
+      "generatedEnergyKwh": "19,736",
+      "amount": "$27,629.70",
+      "amountWithIva": "$32,050.45",
+      "month": 8,
+      "year": 2024,
+      "rate": ""
+    },
+    {
+      "externalId": "8202d708-9ed9-46cb-a26c-329673feef1d",
+      "plantName": "CEDIS",
+      "clientName": "Merco",
+      "rpu": "415150700090",
+      "generatedEnergyKwh": "72,123",
+      "amount": "$100,972.20",
+      "amountWithIva": "$117,127.75",
+      "month": 8,
+      "year": 2024,
+      "rate": ""
+    },
+    {
+      "externalId": "374da3e2-dc54-4f7e-9a9c-bd297c562c6d",
+      "plantName": "Paseo Monclova",
+      "clientName": "Merco",
+      "rpu": "369190400241",
+      "generatedEnergyKwh": "96,975",
+      "amount": "$203,647.08",
+      "amountWithIva": "$236,230.61",
+      "month": 8,
+      "year": 2024,
+      "rate": ""
+    },
+    {
+      "externalId": "5bc7c0c8-12af-48b4-a1c7-a6afcb17cb42",
+      "plantName": "Santa Elena",
+      "clientName": "Merco",
+      "rpu": "371221207155",
+      "generatedEnergyKwh": "46,807",
+      "amount": "$112,336.80",
+      "amountWithIva": "$130,310.69",
+      "month": 8,
+      "year": 2024,
+      "rate": ""
+    }
+  ]
+
+
+  modifiedElements: any[] = [];
 
   pageSizeSub: Subscription;
   pageIndexSub: Subscription;
@@ -106,7 +172,9 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.getBillingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
-        this.dataSource.data = response?.data;
+        console.log(response?.data);
+        // this.dataSource.data = response?.data;
+        this.dataSource.data = this.dummy;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = page
@@ -117,12 +185,21 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
+  addToModifiedElements(element: any) {
+    if (!this.modifiedElements.some(el => el === element)) this.modifiedElements.push(element);
+  }
+
+  updateModifiedElements() {
+    console.log('Listos para actualizar:', this.modifiedElements);
+    // this.modifiedElements = [];
+  }
+
   getMonthName(month: number) {
     const months = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
-  
+
     return months[month - 1];
   }
 
