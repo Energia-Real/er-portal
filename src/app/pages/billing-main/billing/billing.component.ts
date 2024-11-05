@@ -31,7 +31,8 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'rpu',
     'clientName',
     'plantName',
-    'generatedEnergyKwh',
+    'year',
+    'month',
     'energyGeneration',
     'rate',
     'amount',
@@ -72,54 +73,22 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       "rate": ""
     },
     {
-      "externalId": "4811fea7-fc73-4bc8-87af-ce6aa71beb0a",
-      "plantName": "Saltillo",
+      "externalId": "a166eb36-d5a9-475a-8ed8-fb8679ba5cf9",
+      "plantName": "Paraje San Jose",
       "clientName": "Merco",
-      "rpu": "350170707525",
-      "generatedEnergyKwh": "19,736",
-      "amount": "$27,629.70",
-      "amountWithIva": "$32,050.45",
-      "month": 8,
-      "year": 2024,
-      "rate": ""
-    },
-    {
-      "externalId": "8202d708-9ed9-46cb-a26c-329673feef1d",
-      "plantName": "CEDIS",
-      "clientName": "Merco",
-      "rpu": "415150700090",
-      "generatedEnergyKwh": "72,123",
-      "amount": "$100,972.20",
-      "amountWithIva": "$117,127.75",
-      "month": 8,
-      "year": 2024,
-      "rate": ""
-    },
-    {
-      "externalId": "374da3e2-dc54-4f7e-9a9c-bd297c562c6d",
-      "plantName": "Paseo Monclova",
-      "clientName": "Merco",
-      "rpu": "369190400241",
-      "generatedEnergyKwh": "96,975",
-      "amount": "$203,647.08",
-      "amountWithIva": "$236,230.61",
-      "month": 8,
-      "year": 2024,
-      "rate": ""
-    },
-    {
-      "externalId": "5bc7c0c8-12af-48b4-a1c7-a6afcb17cb42",
-      "plantName": "Santa Elena",
-      "clientName": "Merco",
-      "rpu": "371221207155",
-      "generatedEnergyKwh": "46,807",
-      "amount": "$112,336.80",
-      "amountWithIva": "$130,310.69",
+      "energyGeneration": "5",
+      "rpu": "888230206911",
+      "generatedEnergyKwh": "100,347",
+      "amount": "$85,224.06",
+      "amountWithIva": "$98,859.91",
       "month": 8,
       "year": 2024,
       "rate": ""
     }
   ]
+
+  formatTimer: any;
+
 
   modifiedElements: any[] = [];
 
@@ -186,8 +155,8 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   }
 
   trackChanges(element: any) {
-    const hasValue = element.energyGeneration !== null && element.energyGeneration !== '';
-    const isModified = element.energyGeneration !== element.originalEnergyGeneration;
+    const hasValue = element.generatedEnergyKwh !== null && element.generatedEnergyKwh !== '';
+    const isModified = element.generatedEnergyKwh !== element.originalgeneratedEnergyKwh;
     const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
 
     if (isModified) {
@@ -207,7 +176,31 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   updateModifiedElements() {
     console.log(this.modifiedElements);
-    // this.modifiedElements = [];
+  }
+ 
+  handleInput(event: any, element: any, isBlurEvent: boolean = false) {
+    const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
+    event.target.value = cleanedValue;
+
+    if (isBlurEvent || !this.formatTimer) {
+      if (this.formatTimer) clearTimeout(this.formatTimer);
+
+      this.formatTimer = setTimeout(() => {
+        const formattedValue = this.getFormattedValue(cleanedValue);
+        element.generatedEnergyKwh = formattedValue;
+        event.target.value = formattedValue;
+      }, isBlurEvent ? 0 : 300);
+    }
+  }
+
+  private getFormattedValue(value: string): string {
+    const numberValue = parseFloat(value);
+    return !isNaN(numberValue)
+      ? numberValue.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        })
+      : '';
   }
 
   getMonthName(month: number) {

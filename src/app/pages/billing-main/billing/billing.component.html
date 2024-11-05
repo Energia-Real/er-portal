@@ -8,7 +8,7 @@
                 </button>
 
                 <button class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': modifiedElements.length}"
-                 (click)="updateModifiedElements()">
+                    (click)="updateModifiedElements()">
                     <span class="material-symbols-outlined">save</span>
                     Apply changes
                 </button>
@@ -82,30 +82,32 @@
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="generatedEnergyKwh">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Generated energy Kwh</th>
+            <ng-container matColumnDef="year">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.generatedEnergyKwh else notDataTable"> {{ element.generatedEnergyKwh }} </div>
+                    <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Generation Month</th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element?.month else notDataTable"> {{ getMonthName(element.month) }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="energyGeneration">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Energy generation</th>
                 <td mat-cell *matCellDef="let element">
-                  <div class="c-input c-table-energy-input">
-                    <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                      <input
-                        type="number"
-                        placeholder="000,000.00"
-                        matInput
-                        [(ngModel)]="element.energyGeneration"
-                        (ngModelChange)="trackChanges(element)"
-                      >
-                    </mat-form-field>
-                    <span>kWh</span>
-                  </div>
+                    <div class="c-input c-table-energy-input">
+                        <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                            <input type="text" placeholder="000,000.00" matInput [value]="element.generatedEnergyKwh"
+                                (keyup)="handleInput($event, element)" (blur)="handleInput($event, element, true)">
+                        </mat-form-field>
+                        <span>kWh</span>
+                    </div>
                 </td>
-              </ng-container>
+            </ng-container>
 
             <ng-container matColumnDef="rate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
