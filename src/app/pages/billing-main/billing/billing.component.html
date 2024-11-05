@@ -101,8 +101,13 @@
                 <td mat-cell *matCellDef="let element">
                     <div class="c-input c-table-energy-input">
                         <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                            <input type="text" placeholder="000,000.00" matInput [value]="element.generatedEnergyKwh"
-                                (keyup)="handleInput($event, element)" (blur)="handleInput($event, element, true)">
+                            <input 
+                            type="text" 
+                            placeholder="000,000.00" matInput 
+                            [(ngModel)]="element.generatedEnergyKwh"
+                            (keyup)="handleInput($event, element)" 
+                            (ngModelChange)="trackChanges(element)"
+                            (blur)="handleInput($event, element, true)">
                         </mat-form-field>
                         <span>kWh</span>
                     </div>

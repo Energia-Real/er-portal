@@ -66,6 +66,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       "energyGeneration": "5",
       "rpu": "888230206911",
       "generatedEnergyKwh": "47,347",
+      "originalGeneratedEnergyKwh": "47,347",
       "amount": "$85,224.06",
       "amountWithIva": "$98,859.91",
       "month": 8,
@@ -73,12 +74,13 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       "rate": ""
     },
     {
-      "externalId": "a166eb36-d5a9-475a-8ed8-fb8679ba5cf9",
+      "externalId": "a166eb3-d539-475a-8ed8-fb8639ba5cf9",
       "plantName": "Paraje San Jose",
       "clientName": "Merco",
       "energyGeneration": "5",
       "rpu": "888230206911",
-      "generatedEnergyKwh": "100,347",
+      "generatedEnergyKwh": null,
+      "originalGeneratedEnergyKwh": null,
       "amount": "$85,224.06",
       "amountWithIva": "$98,859.91",
       "month": 8,
@@ -154,30 +156,23 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
-  trackChanges(element: any) {
-    const hasValue = element.generatedEnergyKwh !== null && element.generatedEnergyKwh !== '';
-    const isModified = element.generatedEnergyKwh !== element.originalgeneratedEnergyKwh;
-    const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
-
-    if (isModified) {
-      if (index === -1) {
-        this.modifiedElements.push({ ...element });
-      } else {
-        this.modifiedElements[index] = { ...element };
-      }
-    }
-
-    if (!hasValue && index > -1) {
-      this.modifiedElements.splice(index, 1);
-    }
-
-    console.log(this.modifiedElements);
-  }
-
   updateModifiedElements() {
-    console.log(this.modifiedElements);
+    console.log('Registros para actualizar:', this.modifiedElements);
   }
- 
+
+  trackChanges(element: any) {
+    const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
+    const isOriginalEnergyNull = element.originalGeneratedEnergyKwh === null;
+    const isEnergyChanged = element.originalGeneratedEnergyKwh !== element.generatedEnergyKwh;
+    const isEnergyCleared = element.generatedEnergyKwh === null || element.generatedEnergyKwh === '';
+  
+    if (isOriginalEnergyNull && element.generatedEnergyKwh !== null && index === -1) this.modifiedElements.push({ ...element });
+    else if (isEnergyChanged && index === -1) this.modifiedElements.push({ ...element });
+    else if (!isOriginalEnergyNull && !isEnergyChanged && index !== -1) this.modifiedElements.splice(index, 1);
+    else if (isOriginalEnergyNull && isEnergyCleared && index !== -1) this.modifiedElements.splice(index, 1);
+  }
+  
+
   handleInput(event: any, element: any, isBlurEvent: boolean = false) {
     const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
     event.target.value = cleanedValue;
@@ -193,7 +188,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     }
   }
 
-  private getFormattedValue(value: string): string {
+  getFormattedValue(value: string): string {
     const numberValue = parseFloat(value);
     return !isNaN(numberValue)
       ? numberValue.toLocaleString('en-US', {
