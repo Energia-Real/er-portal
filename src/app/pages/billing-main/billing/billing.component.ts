@@ -62,6 +62,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       "externalId": "a166eb36-d5a9-475a-8ed8-fb8679ba5cf9",
       "plantName": "Paraje San Jose",
       "clientName": "Merco",
+      "energyGeneration": "5",
       "rpu": "888230206911",
       "generatedEnergyKwh": "47,347",
       "amount": "$85,224.06",
@@ -119,7 +120,6 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       "rate": ""
     }
   ]
-
 
   modifiedElements: any[] = [];
 
@@ -185,12 +185,28 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
-  addToModifiedElements(element: any) {
-    if (!this.modifiedElements.some(el => el === element)) this.modifiedElements.push(element);
+  trackChanges(element: any) {
+    const hasValue = element.energyGeneration !== null && element.energyGeneration !== '';
+    const isModified = element.energyGeneration !== element.originalEnergyGeneration;
+    const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
+
+    if (isModified) {
+      if (index === -1) {
+        this.modifiedElements.push({ ...element });
+      } else {
+        this.modifiedElements[index] = { ...element };
+      }
+    }
+
+    if (!hasValue && index > -1) {
+      this.modifiedElements.splice(index, 1);
+    }
+
+    console.log(this.modifiedElements);
   }
 
   updateModifiedElements() {
-    console.log('Listos para actualizar:', this.modifiedElements);
+    console.log(this.modifiedElements);
     // this.modifiedElements = [];
   }
 

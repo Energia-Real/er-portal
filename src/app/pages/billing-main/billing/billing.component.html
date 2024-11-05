@@ -92,18 +92,20 @@
             <ng-container matColumnDef="energyGeneration">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Energy generation</th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="c-input c-table-energy-input">
-                        <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                            <input type="number" placeholder="000,000.00" matInput
-                                [(ngModel)]="element.energyGeneration" (ngModelChange)="addToModifiedElements(element)">
-                        </mat-form-field>
-                        <span>kWh</span>
-                    </div>
+                  <div class="c-input c-table-energy-input">
+                    <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                      <input
+                        type="number"
+                        placeholder="000,000.00"
+                        matInput
+                        [(ngModel)]="element.energyGeneration"
+                        (ngModelChange)="trackChanges(element)"
+                      >
+                    </mat-form-field>
+                    <span>kWh</span>
+                  </div>
                 </td>
-            </ng-container>
-
-            <button (click)="updateModifiedElements()">Actualizar Modificados</button>
-
+              </ng-container>
 
             <ng-container matColumnDef="rate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
