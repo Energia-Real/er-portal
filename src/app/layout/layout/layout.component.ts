@@ -36,7 +36,7 @@ export class LayoutComponent implements OnInit, OnDestroy{
         } else if (role.accessTo === 'Clients') {
           this.router.navigate(['client-home'], { relativeTo: this.route });
         } else if (role.accessTo === 'Billing') {
-          this.router.navigate(['pricing'], { relativeTo: this.route });
+          this.router.navigate(['rates'], { relativeTo: this.route });
         } else {
           this.router.navigate(['/login']);
         }

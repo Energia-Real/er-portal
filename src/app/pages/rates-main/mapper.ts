@@ -1,4 +1,4 @@
-	import * as entity from './pricing-model';
+	import * as entity from './rates-model';
 export class Mapper {
 	static getPricingDataMapper(response: entity.DataTablePricingResponse): entity.DataPricingTableMapper {
 		let dataList: entity.DataPricingTable[] = [];

@@ -2,14 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
 import { Observable, Subject, map } from 'rxjs';
-import * as entity from './pricing-model';
+import * as entity from './rates-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PricingService implements OnDestroy {
+export class RatesService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_BILL_V1;
