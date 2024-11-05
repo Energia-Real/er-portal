@@ -79,8 +79,12 @@
           <app-site-performance *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-performance>
         </mat-tab>
 
+        <!-- <mat-tab label="Inverter details">
+          <app-inverter-detail *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData" (notifyParent)="systemStatus($event)"></app-inverter-detail>
+        </mat-tab> -->
+
         <mat-tab label="Savings">
-          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData" (notifyParent)="systemStatus($event)"></app-savings>
+          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-savings>
         </mat-tab>
 
       </mat-tab-group>

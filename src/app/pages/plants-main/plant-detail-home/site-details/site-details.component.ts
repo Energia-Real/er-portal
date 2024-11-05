@@ -29,7 +29,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   loaderMap: boolean = true;
   materialIcon: string = 'help_outline'
 
-  siteDetails!: entity.DataResponseDetailsMapper;
+  siteDetails!: entity.DataResponseMapper;
 
   drawerOpen: boolean = false
   showAlert: boolean = false
@@ -67,7 +67,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
       };
 
       this.moduleServices.getDataRespSite(objData).subscribe({
-        next: (response: entity.DataResponseDetailsMapper) => {
+        next: (response: entity.DataResponseMapper) => {
           this.siteDetails = response;
           this.getOverview();
         },

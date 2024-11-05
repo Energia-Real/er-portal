@@ -21,6 +21,7 @@ import { ModalExportDataComponent } from './plant-detail-home/site-performance/m
 import { PlantsComponent } from './plants/plants.component';
 import { NewEquipmentComponent } from './plant-detail-home/savings/components/new-equipment/new-equipment.component';
 import { NewPlantComponent } from './plants/new-plant/new-plant.component';
+import { InverterDetailComponent } from './plant-detail-home/inverter-detail/inverter-detail.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { NewPlantComponent } from './plants/new-plant/new-plant.component';
     ModalExportDataComponent,
     NewPlantComponent,
     NewEquipmentComponent,
-    PlantsComponent
+    PlantsComponent,
+    InverterDetailComponent
   ],
   imports: [
     CommonModule,

@@ -14,7 +14,7 @@ export class BillingService implements OnDestroy {
 
   private API_URL = environment.API_URL_BILL_V1;
 
-  constructor(private http: HttpClient, public formatsService: FormatsService) { }
+  constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
   getBillingData(filters:any, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
     const url = `${this.API_URL}/Facturacion/GetFacturas`;
@@ -26,7 +26,7 @@ export class BillingService implements OnDestroy {
     .set('month', filters.month)
 
     return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
-      map((response) => Mapper.getBillingDataMapper(response))
+      map((response) => Mapper.getBillingDataMapper(response, this.formatsService))
     );
   }
 

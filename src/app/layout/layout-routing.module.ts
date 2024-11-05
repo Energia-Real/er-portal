@@ -41,7 +41,7 @@ const routes: Routes = [
         path: 'plants',
         loadChildren:plantsModule ,
         canActivate: [redirectGuard],
-        data: { roles: ['BackOffice', 'Admin']} 
+        data: { roles: ['BackOffice', 'Admin', 'Clients']} 
       },
       {
         path: 'clients',

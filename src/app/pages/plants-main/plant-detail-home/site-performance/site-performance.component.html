@@ -1,53 +1,44 @@
-<div class="row c-global c-site-performance">
-    <div class="col-md-12">
-        <div class="c-data">
-            <!-- <button class="btn-action-add">
-                <i class="fa-solid fa-arrows-rotate"></i>
-                Refresh Data
-            </button> -->
-            <!-- <button class="btn-action-export" (click)="exportData()">
-                <i class="fa-solid fa-file-export"></i>
-                Export data
-            </button> -->
+<div class="c-global c-site-performance">
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-2 md:col-span-1">
+            <div class="c-card-info-main" *ngIf="!showAlert else notData">
+                <div *ngFor="let data of sitePerformance?.firstTwo; let idx = index"
+                    [ngClass]="{'card-container-50': idx < 2, 'card-container-33': idx >= 2}">
+                    <div class="card-info">
+                        <h1>{{ data.title }}</h1>
+                        <h2>{{ data.description }}</h2>
+                    </div>
+                </div>
+
+                <div class="separator-cards"></div>
+
+                <div *ngFor="let data of sitePerformance?.remaining; let idx = index" class="card-container-50">
+                    <div class="card-info">
+                        <h1 [ngStyle]="{ 
+                            'color': idx === 0 ? '#57B1B1' : 
+                                     idx === 1 ? '#792430' : '#EE5427' 
+                          }">{{ data.title }}</h1>
+                        <h2>{{ data.description }}</h2>
+                        <h3 *ngIf="data.extra">
+                            <span>{{ data.extra }}</span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-span-2 md:col-span-1">
+            <div class="highcharts">
+                <div class="charts">
+                    <div class="graphic-performance" *ngIf="displayChart">
+                        <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'" [data]="lineChartData"
+                            [options]="lineChartOptions" [legend]="lineChartLegend">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <ng-container *ngIf="!showAlert else notData">
-        <div class="col-md-6 col-sm-12 col-lg-6">
-            <div class="row">
-                <div class="col-md-6 col-lg-12 mt-2">
-                    <div class="highcharts">
-                        <div class="charts">
-                            <div class="graphic-performance" *ngIf="displayChart" style="display: flex; height: 433px;">
-                                <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'"
-                                    [data]="lineChartData" [options]="lineChartOptions" [legend]="lineChartLegend">
-                                </canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-sm-12 col-lg-6" style="height: 433px;">
-            <div class="row">
-                <div class="col-md-12 col-lg-12 mt-2">
-                    <div class="highcharts">
-                        <div class="charts">
-                            <div class="graphic-performance pt-0" *ngIf="displayChart">
-                                <!-- Work In Progress   -->
-                                <span class="wi-progress">Work in
-                                    progress</span>
-                                <div class="loader">
-                                    <div class="dot" *ngFor="let dot of dots"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ng-container>
 </div>
 
 <ng-template #notData>

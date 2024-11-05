@@ -3,7 +3,7 @@ import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
-	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper {
+	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseMapper {
 
 		let dataList: entity.DataResponseDetailsCard[] = [];
 

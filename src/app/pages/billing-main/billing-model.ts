@@ -12,10 +12,11 @@ export interface DataBillingTable {
   externalId: string;
   plantName: string;
   clientName: string;
-  amount: number;
-  amountWithIva: number;
+  rate: string;
+  amount: string;
+  amountWithIva: string;
   rpu: string;
-  generatedEnergyKwh: number;
+  generatedEnergyKwh: string;
 }
 
 export interface DataBillingTableMapper {
