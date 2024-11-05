@@ -31,9 +31,9 @@
           routerLink="energy" class="hover:text-gray-300 cursor-pointer"
           [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }"> Energy  </a></li>
 
-      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="pricing"
-          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }">
-          Pricing</a></li>
+      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="rates"
+          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('rates') }">
+          Rates</a></li>
 
       <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="billing"
           class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }">
