@@ -47,11 +47,11 @@ export class PlantsService implements OnDestroy {
     return this.http.get<any>(url);
   }
 
-  getDataRespSite(data: entity.PostDataByPlant): Observable<entity.DataResponseMapper> {
-    const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
+  getSiteDetails(id: string): Observable<entity.DataResponseMapper> {
+    const url = `${this.API_URL}/projects/GetSiteDetailByPlant/${id}`;
 
-    return this.http.post<entity.DataResponseDetails>(url, data).pipe(
-      map((response) => Mapper.getDataRespSiteMapper(response?.data, this.formatsService))
+    return this.http.get<entity.DataSiteDetails>(url).pipe(
+      map((response) => Mapper.getSiteDetailsMapper(response, this.formatsService))
     );
   }
 

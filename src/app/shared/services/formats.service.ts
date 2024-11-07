@@ -40,12 +40,22 @@ export class FormatsService {
     }).format(amount);
   }
 
-  getMonthName(month: number) {
+  getMonthName(month: number)  : string{
     const months = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
 
     return months[month - 1];
+  }
+
+  formatContractDuration(duration: { years: number; months: number; days: number }): string {
+    const { years, months, days } = duration;
+  
+    const yearText = years ? `${years} año(s)` : '';
+    const monthText = months ? `${months} mes(es)` : '';
+    const dayText = days ? `${days} día(s)` : '';
+  
+    return [yearText, monthText, dayText].filter(Boolean).join(' ');
   }
 }

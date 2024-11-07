@@ -29,7 +29,10 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   loaderMap: boolean = true;
   materialIcon: string = 'help_outline'
 
-  siteDetails!: entity.DataResponseMapper;
+  siteDetails: entity.DataResponseMapper = {
+    primaryElements: [],
+    additionalItems: []
+  };
 
   drawerOpen: boolean = false
   showAlert: boolean = false
@@ -60,30 +63,11 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   }
 
   getSiteDetails() {
-    this.filtersSolarCoverage$.subscribe(filters => {
-      let objData: entity.PostDataByPlant = {
-        plantCode: this.plantData.plantCode,
-        ...filters
-      };
-
-      this.moduleServices.getDataRespSite(objData).subscribe({
-        next: (response: entity.DataResponseMapper) => {
-          this.siteDetails = response;
-          this.getOverview();
-        },
-        error: (error) => {
-          this.showAlert = true;
-          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-          console.error(error)
-        }
-      })
-    });
-  }
-
-  getOverview() {
-    this.moduleServices.getDataRespOverview(this.id).subscribe({
-      next: (response: entity.DataResponseDetailsCard[]) => {
-        this.siteDetails.remaining.push(...response)
+    this.moduleServices.getSiteDetails(this.id).subscribe({
+      next: (response: entity.DataResponseMapper) => {
+        console.log(response);
+        this.siteDetails.primaryElements = response.primaryElements;
+        this.siteDetails.additionalItems = response.additionalItems;
       },
       error: (error) => {
         this.showAlert = true;

@@ -11,7 +11,6 @@ export interface DataRespSavingDetailsList {
   nombre: string;
 }
 
-
 export interface Example {
   name: string;
   position: number;
@@ -109,18 +108,30 @@ export interface DataManagementTable {
   }[];
 }
 
-export interface DataManagementTableMapper {
-
-}
-
 export interface DataResponseDetailsCard {
   title: string;
   description: string | Date | null;
   tooltip?: string
 }
 export interface DataResponseMapper {
-  firstTwo : any
-  remaining : any
+  primaryElements: any[]
+  additionalItems: any[]
+}
+
+export interface DataSiteDetails {
+  lastConnectionTimestamp: string;
+  systemSize: number;
+  panels: number;
+  contractDuration: {
+    years: number;
+    months: number;
+    days: number;
+  },
+  rpu: string;
+  ageOfTheSite: number;
+  installDate: string;
+  cod: string
+  commissionDate: string
 }
 
 export interface ResponseSystem {
@@ -129,7 +140,6 @@ export interface ResponseSystem {
   errorCode: 0,
   data: DataResponseSystem
 }
-
 
 export interface DataResponseSystem {
   real_health_state: string
@@ -175,7 +185,6 @@ export interface DataPlant {
     moduloModel: any;
   }[];
 }
-
 
 export interface DataPostPatchPlant {
   id?: string;

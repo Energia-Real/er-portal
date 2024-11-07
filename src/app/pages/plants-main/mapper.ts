@@ -3,39 +3,59 @@ import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 
 export class Mapper {
-	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseMapper {
+	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService): entity.DataResponseMapper {
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
 
-		let dataList: entity.DataResponseDetailsCard[] = [];
-
-		response?.forEach((data: entity.DataDetails): void => {
-			let formattedValue: string = data.value;
-		
-			if (data.value.includes('.') || data.value === '0') {
-				formattedValue = formatsService.energyFormat(parseFloat(data.value));
-			} else {
-				formattedValue = formatsService.dateFormat(data.value);
-			}
-		
-			if (data?.title?.toLocaleLowerCase()?.includes('coverage')) {
-				formattedValue += '%';
-			} else if (
-				data?.title?.toLocaleLowerCase()?.includes('energy production') ||
-				data?.title?.toLocaleLowerCase()?.includes('energy consumption')
-			) {
-				formattedValue += ' kWh';
-			}
-		
-			dataList.push({
-				title: data.title,
-				description: formattedValue ?? null,
-			});
+		primaryElements.push({
+			title: 'Last connection timeStamp',
+			description: formatsService.dateFormat(response.lastConnectionTimestamp)
 		});
-		
+
+		primaryElements.push({
+			title: 'System size',
+			description: formatsService.energyFormat(response.systemSize)
+		});
+
+		primaryElements.push({
+			title: 'Panels',
+			description: formatsService.energyFormat(response.panels)
+		});
+
+		primaryElements.push({
+			title: 'PPA Duration',
+			description: formatsService.formatContractDuration(response.contractDuration)
+		});
+
+		additionalItems.push({
+			title: 'RPU',
+			description: response.rpu
+		});
+
+		additionalItems.push({
+			title: 'Age of the site',
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
+		});
+
+		additionalItems.push({
+			title: 'Install date',
+			description: formatsService.dateFormat(response.installDate)
+		});
+
+		additionalItems.push({
+			title: 'COD',
+			description: formatsService.dateFormat(response.cod)
+		});
+
+		additionalItems.push({
+			title: 'Commission date',
+			description: formatsService.dateFormat(response.commissionDate)
+		});
+
 		return {
-			firstTwo: dataList.slice(0, 5),
-			remaining: dataList.slice(5),
+			primaryElements,
+			additionalItems
 		}
-		
 	}
 
 	static getPlantsMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
