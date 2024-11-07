@@ -92,7 +92,7 @@
             <ng-container matColumnDef="month">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Generation Month</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.month else notDataTable"> {{ getMonthName(element.month) }} </div>
+                    <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
                 </td>
             </ng-container>
 
@@ -104,9 +104,7 @@
                             <input 
                             type="text" 
                             placeholder="000,000.00" matInput 
-                            [(ngModel)]="element.generatedEnergyKwh"
-                            (keyup)="handleInput($event, element)" 
-                            (ngModelChange)="trackChanges(element)"
+                            [(ngModel)]="element.formattedGeneratedEnergyKwh"
                             (blur)="handleInput($event, element, true)">
                         </mat-form-field>
                         <span>kWh</span>
@@ -117,21 +115,21 @@
             <ng-container matColumnDef="rate">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.rate else notDataTable"> {{ element.rate }} </div>
+                    <div *ngIf="element?.rate else notDataTable"> {{ element.formattedRate }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.amount else notDataTable"> {{ element.amount }} </div>
+                    <div *ngIf="element?.amount else notDataTable"> {{ element.formattedAmount }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="amountWithIva">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>IVA</th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.amountWithIva else notDataTable"> {{ element.amountWithIva }} </div>
+                    <div *ngIf="element?.amountWithIva else notDataTable"> {{ element.formattedAmountWithIva }} </div>
                 </td>
             </ng-container>
 

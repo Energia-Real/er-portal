@@ -30,6 +30,12 @@ export class BillingService implements OnDestroy {
     );
   }
 
+  saveBillingTableData(requestData:any[]): Observable<any> {
+    const url = `${this.API_URL}/Facturacion/ConfirmFactura`;
+
+    return this.http.post<any>(url, requestData)
+  }
+
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();

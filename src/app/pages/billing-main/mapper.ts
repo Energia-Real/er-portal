@@ -10,10 +10,17 @@ export class Mapper {
 				clientName: data?.clientName || '',
 				plantName: data?.plantName || '',
 				rpu: data?.rpu || '',
-				rate: formatsService.moneyFormat(parseFloat(data.rate)),
-				amount: formatsService.moneyFormat(parseFloat(data.amount)),
-				amountWithIva: formatsService.moneyFormat(parseFloat(data.amountWithIva)),
-				generatedEnergyKwh: formatsService.energyFormat(data.generatedEnergyKwh)
+				rate: data.rate,
+				amount: data.amount,
+				amountWithIva: data.amountWithIva,
+				month: data.month,
+				formattedMonth: formatsService.getMonthName(data.month),
+				formattedRate: formatsService.moneyFormat(parseFloat(data.rate)),
+				formattedAmount: formatsService.moneyFormat(parseFloat(data.amount)),
+				formattedAmountWithIva: formatsService.moneyFormat(parseFloat(data.amountWithIva)),
+				generatedEnergyKwh: data.generatedEnergyKwh,
+				originalGeneratedEnergyKwh: data.generatedEnergyKwh,
+				formattedGeneratedEnergyKwh: formatsService.energyFormat(data.generatedEnergyKwh)
 			});
 		});
 

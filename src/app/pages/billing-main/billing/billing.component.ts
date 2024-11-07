@@ -58,39 +58,8 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     { value: 12, viewValue: 'December' }
   ];
 
-  dummy: any[] = [
-    {
-      "externalId": "a166eb36-d5a9-475a-8ed8-fb8679ba5cf9",
-      "plantName": "Paraje San Jose",
-      "clientName": "Merco",
-      "energyGeneration": "5",
-      "rpu": "888230206911",
-      "generatedEnergyKwh": "47,347",
-      "originalGeneratedEnergyKwh": "47,347",
-      "amount": "$85,224.06",
-      "amountWithIva": "$98,859.91",
-      "month": 8,
-      "year": 2024,
-      "rate": ""
-    },
-    {
-      "externalId": "a166eb3-d539-475a-8ed8-fb8639ba5cf9",
-      "plantName": "Paraje San Jose",
-      "clientName": "Merco",
-      "energyGeneration": "5",
-      "rpu": "888230206911",
-      "generatedEnergyKwh": null,
-      "originalGeneratedEnergyKwh": null,
-      "amount": "$85,224.06",
-      "amountWithIva": "$98,859.91",
-      "month": 8,
-      "year": 2024,
-      "rate": ""
-    }
-  ]
 
   formatTimer: any;
-
 
   modifiedElements: any[] = [];
 
@@ -143,9 +112,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.getBillingData(filters, this.pageSize, page).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
-        console.log(response?.data);
-        // this.dataSource.data = response?.data;
-        this.dataSource.data = this.dummy;
+        this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = page
@@ -157,55 +124,67 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   }
 
   updateModifiedElements() {
-    console.log('Registros para actualizar:', this.modifiedElements);
+    this.modifiedElements.forEach(data => {
+      delete data.formattedGeneratedEnergyKwh;
+      delete data.originalGeneratedEnergyKwh;
+      delete data.formattedAmount;
+      delete data.formattedAmountWithIva;
+      delete data.formattedRate;
+      delete data.formattedMonth;
+    });
+
+    this.moduleServices.saveBillingTableData(this.modifiedElements).subscribe({
+      next: (response: any) => {
+        console.log(response?.data);
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
+
+  handleInput(event: any, element: any, isBlurEvent: boolean = false) {
+    const cleanedValue: any = this.cleanFormattedValue(event.target.value);
+
+    element.generatedEnergyKwh = cleanedValue;
+    element.formattedGeneratedEnergyKwh = this.getFormattedValue(cleanedValue);
+
+    if (isBlurEvent) event.target.value = element.formattedGeneratedEnergyKwh;
+    this.trackChanges(element);
   }
 
   trackChanges(element: any) {
     const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
-    const isOriginalEnergyNull = element.originalGeneratedEnergyKwh === null;
-    const isEnergyChanged = element.originalGeneratedEnergyKwh !== element.generatedEnergyKwh;
-    const isEnergyCleared = element.generatedEnergyKwh === null || element.generatedEnergyKwh === '';
-  
-    if (isOriginalEnergyNull && element.generatedEnergyKwh !== null && index === -1) this.modifiedElements.push({ ...element });
+
+    const cleanedOriginalEnergy = this.cleanFormattedValue(element.originalGeneratedEnergyKwh);
+    const cleanedCurrentEnergy = this.cleanFormattedValue(element.generatedEnergyKwh);
+
+    const isEnergyChanged = cleanedOriginalEnergy !== cleanedCurrentEnergy;
+    const isEnergyCleared = cleanedCurrentEnergy === null;
+
+    if (isEnergyCleared && index !== -1) this.modifiedElements.splice(index, 1);
     else if (isEnergyChanged && index === -1) this.modifiedElements.push({ ...element });
-    else if (!isOriginalEnergyNull && !isEnergyChanged && index !== -1) this.modifiedElements.splice(index, 1);
-    else if (isOriginalEnergyNull && isEnergyCleared && index !== -1) this.modifiedElements.splice(index, 1);
+    else if (!isEnergyChanged && index !== -1) this.modifiedElements.splice(index, 1);
+    else if (isEnergyChanged && index >= 0) this.modifiedElements[index] = { ...element };
   }
-  
 
-  handleInput(event: any, element: any, isBlurEvent: boolean = false) {
-    const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
-    event.target.value = cleanedValue;
-
-    if (isBlurEvent || !this.formatTimer) {
-      if (this.formatTimer) clearTimeout(this.formatTimer);
-
-      this.formatTimer = setTimeout(() => {
-        const formattedValue = this.getFormattedValue(cleanedValue);
-        element.generatedEnergyKwh = formattedValue;
-        event.target.value = formattedValue;
-      }, isBlurEvent ? 0 : 300);
-    }
+  cleanFormattedValue(value: any): number | null {
+    if (!value) return null;
+    const cleanedValue = value.toString().replace(/[^\d.-]/g, '');
+    const parsedValue = parseFloat(cleanedValue);
+    return isNaN(parsedValue) ? null : parsedValue;
   }
 
   getFormattedValue(value: string): string {
     const numberValue = parseFloat(value);
     return !isNaN(numberValue)
       ? numberValue.toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })
       : '';
   }
 
-  getMonthName(month: number) {
-    const months = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
-
-    return months[month - 1];
-  }
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
