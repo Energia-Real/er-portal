@@ -16,22 +16,22 @@ export class BillingService implements OnDestroy {
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
-  getBillingData(filters:any, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
+  getBillingData(filters: any, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
     const url = `${this.API_URL}/Facturacion/GetFacturas`;
     const params = new HttpParams()
-    .set('pageSize', pageSize)
-    .set('pageNumber', page)
-    .set('plantName', filters.name)
-    .set('year', filters.year)
-    .set('month', filters.month)
+      .set('pageSize', pageSize)
+      .set('pageNumber', page)
+      .set('plantName', filters.name)
+      .set('year', filters.year)
+      .set('month', filters.month)
 
     return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
       map((response) => Mapper.getBillingDataMapper(response, this.formatsService))
     );
   }
 
-  saveBillingTableData(requestData:any[]): Observable<any> {
-    const url = `${this.API_URL}/Facturacion/ConfirmFactura`;
+  saveBillingTableData(requestData: any[]): Observable<any> {
+    const url = `${this.API_URL}/Facturacion/ConfirmFacturas`;
 
     return this.http.post<any>(url, requestData)
   }
