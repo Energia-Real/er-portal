@@ -125,7 +125,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
     this.moduleServices.saveBillingTableData(this.modifiedElements).subscribe({
       next: (response: any) => {
-        console.log(response?.data);
+        this.completionMessage()
       },
       error: error => {
         console.log(error);
@@ -183,6 +183,11 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
+  }
+
+  completionMessage() {
+    this.notificationService.notificacion(`"Energy generation has been updated."`, 'save')
+    this.getBilling(this.searchBar?.value!);
   }
 
   ngOnDestroy(): void {
