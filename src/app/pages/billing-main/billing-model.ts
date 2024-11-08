@@ -37,3 +37,12 @@ export interface ErrorRequest {
   message: string;
   code: string;
 }
+
+export interface FiltersBilling {
+  clientId?:any
+  startDate: string;
+  endDate: string | null;
+  plantName: string;
+  pageSize: number;
+  page: number;
+}

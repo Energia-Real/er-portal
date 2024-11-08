@@ -41,9 +41,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.plantData);
-    console.log(this.notData);
-    
     if (this.notData) this.showAlert = true;
     else this.getDataClient();
   }
@@ -51,7 +48,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
   getSavings(filters:GeneralFilters) {
     this.moduleServices.getSavingsDetails(filters).subscribe({
       next: (response: entity.DataResponseArraysMapper) => {
-        console.log(response);
         this.savingDetails = response;
       },
       error: (error) => {

@@ -16,14 +16,14 @@ export class BillingService implements OnDestroy {
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
-  getBillingData(filters: any, pageSize: number, page: number): Observable<entity.DataBillingTableMapper> {
+  getBillingData(filters: entity.FiltersBilling): Observable<entity.DataBillingTableMapper> {
     const url = `${this.API_URL}/Facturacion/GetFacturas`;
     const params = new HttpParams()
-      .set('pageSize', pageSize)
-      .set('pageNumber', page)
-      .set('plantName', filters.name)
-      .set('year', filters.year)
-      .set('month', filters.month)
+      .set('pageSize', filters.pageSize)
+      .set('pageNumber', filters.page)
+      .set('plantName', filters.plantName)
+      .set('startDate', filters.startDate)
+      .set('endDate', filters.endDate!)
 
     return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
       map((response) => Mapper.getBillingDataMapper(response, this.formatsService))

@@ -1,6 +1,6 @@
 import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import * as entity from '../billing-model';
-import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,6 +11,7 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
+import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
 
 @Component({
   selector: 'app-billing',
@@ -19,6 +20,8 @@ import { updatePagination } from '@app/core/store/actions/paginator.actions';
 })
 export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -38,38 +41,16 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'amount',
     'amountWithIva',
   ];
-
-  years: { value: number }[] = [
-    { value: 2024 },
-  ];
-
-  months: { value: number, viewValue: string }[] = [
-    { value: 1, viewValue: 'January' },
-    { value: 2, viewValue: 'February' },
-    { value: 3, viewValue: 'March' },
-    { value: 4, viewValue: 'April' },
-    { value: 5, viewValue: 'May' },
-    { value: 6, viewValue: 'June' },
-    { value: 7, viewValue: 'July' },
-    { value: 8, viewValue: 'August' },
-    { value: 9, viewValue: 'September' },
-    { value: 10, viewValue: 'October' },
-    { value: 11, viewValue: 'November' },
-    { value: 12, viewValue: 'December' }
-  ];
-
+  pageSizeSub!: Subscription;
+  pageIndexSub!: Subscription;
 
   formatTimer: any;
 
   modifiedElements: any[] = [];
 
-  pageSizeSub: Subscription;
-  pageIndexSub: Subscription;
-
   searchBar = new FormControl('');
-  selectedMonth = new FormControl(new Date().getMonth() + 1);
 
-  selectedYear: any = 2024
+  generalFilters!: GeneralFilters
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -77,47 +58,56 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   }
 
   constructor(
-    private store: Store,
+    private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
     private router: Router,
-    private moduleServices: BillingService) {
-    this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
-      this.pageSize = size;
-      if (this.paginator) this.paginator.pageSize = size;
-    });
+    private moduleServices: BillingService,
+  ) {
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
 
-    this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
-      this.pageIndex = index + 1;
-      if (this.paginator) this.paginator.pageIndex = index;
-      this.getDataResponse(index + 1, '', this.selectedMonth?.value);
-    });
+    combineLatest([
+      this.generalFilters$.pipe(distinctUntilChanged()),
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([generalFilters, pageSize, pageIndex]) => {
+        this.generalFilters = generalFilters;
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex + 1;
+
+        if (this.paginator) {
+          this.paginator.pageSize = pageSize;
+          this.paginator.pageIndex = pageIndex;
+        }
+
+        this.getBilling();
+      });
   }
 
   ngAfterViewInit(): void {
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, content!, this.selectedMonth.value ? this.selectedMonth.value : '');
-    })
-
-    this.selectedMonth.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, this.searchBar.value ? this.searchBar.value : '', content)
-    })
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$), distinctUntilChanged()).subscribe(content => {
+      this.getBilling(content!);
+    });
   }
 
-  getDataResponse(page: number, name: string, month: any) {
-    const filters: any = {
-      name,
-      month,
-      year: this.selectedYear
+  getBilling(searchTerm: string = '') {
+    const filters = {
+      plantName: searchTerm,
+      pageSize: this.pageSize,
+      page: this.pageIndex,
+      ...this.generalFilters
     };
 
-    this.moduleServices.getBillingData(filters, this.pageSize, page).subscribe({
+    this.moduleServices.getBillingData(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
-        this.pageIndex = page
+        this.pageIndex = filters.page;
       },
       error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
     });
@@ -185,14 +175,14 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       : '';
   }
 
-
   navigate(link: string) {
     this.router.navigateByUrl(link);
   }
 
   getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, '', this.selectedMonth?.value);
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    }
   }
 
   ngOnDestroy(): void {

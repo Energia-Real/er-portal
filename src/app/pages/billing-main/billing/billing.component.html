@@ -33,30 +33,6 @@
                 </form>
             </div>
         </div>
-
-        <div class="col-span-1">
-            <div class="d-flex justify-end gap-2 flex-wrap">
-                <div class="c-input">
-                    <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Select month" [formControl]="selectedMonth">
-                            <mat-option *ngFor="let month of months; let i = index" [value]="month.value">
-                                {{ month.viewValue }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <div class="c-input mb-0">
-                    <mat-form-field class="select-years" appearance="outline">
-                        <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
-                            <mat-option *ngFor="let year of years" [value]="year.value">
-                                {{ year.value }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="c-table mt-3">
