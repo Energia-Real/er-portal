@@ -1,6 +1,6 @@
 import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import * as entity from '../rates-model';
-import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,6 +11,7 @@ import { RatesService } from '../rates.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
+import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
 
 @Component({
   selector: 'app-rates',
@@ -19,6 +20,8 @@ import { updatePagination } from '@app/core/store/actions/paginator.actions';
 })
 export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -35,34 +38,14 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
     'year',
     'kwh',
   ];
-  pageSizeSub: Subscription;
-  pageIndexSub: Subscription;
-
-  years: { value: number }[] = [
-    { value: 2024 },
-  ];
-
-  months: { value: number, viewValue: string }[] = [
-    { value: 1, viewValue: 'January' },
-    { value: 2, viewValue: 'February' },
-    { value: 3, viewValue: 'March' },
-    { value: 4, viewValue: 'April' },
-    { value: 5, viewValue: 'May' },
-    { value: 6, viewValue: 'June' },
-    { value: 7, viewValue: 'July' },
-    { value: 8, viewValue: 'August' },
-    { value: 9, viewValue: 'September' },
-    { value: 10, viewValue: 'October' },
-    { value: 11, viewValue: 'November' },
-    { value: 12, viewValue: 'December' }
-  ];
+  pageSizeSub!: Subscription;
+  pageIndexSub!: Subscription;
 
   searchBar = new FormControl('');
-  selectedMonth = new FormControl(new Date().getMonth() + 1);
-
-  selectedYear: any = 2024;
 
   selectedFile: File | null = null;
+
+  generalFilters!: GeneralFilters
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -70,46 +53,52 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
   }
 
   constructor(
-    private store: Store,
+    private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
     private router: Router,
     private moduleServices: RatesService) {
-    this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
-      this.pageSize = size;
-      if (this.paginator) this.paginator.pageSize = size;
-    });
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
 
-    this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
-      this.pageIndex = index + 1;
-      if (this.paginator) this.paginator.pageIndex = index;
-      this.getDataResponse(index + 1, '', this.selectedMonth?.value);
-    });
+    combineLatest([
+      this.generalFilters$.pipe(distinctUntilChanged()),
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([generalFilters, pageSize, pageIndex]) => {
+        this.generalFilters = generalFilters;
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex + 1;
+
+        if (this.paginator) {
+          this.paginator.pageSize = pageSize;
+          this.paginator.pageIndex = pageIndex;
+        }
+
+        this.getRates();
+      });
   }
 
   ngAfterViewInit(): void {
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, content!, this.selectedMonth.value ? this.selectedMonth.value : '');
-    })
-
-    this.selectedMonth.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataResponse(1, this.searchBar.value ? this.searchBar.value : '', content)
-    })
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$), distinctUntilChanged()).subscribe(content => {
+      this.getRates(content!);
+    });
   }
 
-  getDataResponse(page: number, name: string, month: any) {
-    const filters: any = {
-      name,
-      month,
-      year: this.selectedYear
+  getRates(searchTerm: string = '') {
+    const filters = {
+      plantName: searchTerm,
+      pageSize: this.pageSize,
+      page: this.pageIndex,
+      ...this.generalFilters
     };
 
-    this.moduleServices.getPricingData(filters, this.pageSize, page).subscribe({
+    this.moduleServices.getPricingData(filters).subscribe({
       next: (response: entity.DataPricingTableMapper) => {
-        console.log(response);
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
-        this.pageIndex = page
+        this.pageIndex = filters.page;
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -161,7 +150,7 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
       "January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"
     ];
-  
+
     return months[month - 1];
   }
 
@@ -169,14 +158,16 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
     this.router.navigateByUrl(link);
   }
 
+
   getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataResponse(event.pageIndex + 1, '', this.selectedMonth?.value);
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    }
   }
 
   completionMessage(load: boolean) {
     this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
-    this.getDataResponse(1, this.searchBar?.value || '', this.selectedMonth);
+    this.getRates(this.searchBar?.value!);
   }
 
   ngOnDestroy(): void {

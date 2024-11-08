@@ -18,7 +18,7 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { FilterState } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 
 Chart.register(...registerables);
@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private homeService: HomeService,
+    private moduleServices: HomeService,
     private router: Router,
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService,
@@ -211,8 +211,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDataSavingDetails(filters: entity.FiltersSavingDetails) {
-    this.homeService.getDataSavingDetails({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
+  getDataSavingDetails(filters: GeneralFilters) {
+    this.moduleServices.getDataSavingDetails(filters).subscribe({
       next: (response: entity.SavingDetailsResponse) => this.savingsDetails = response,
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -222,7 +222,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getDataClients(filters: entity.FiltersClients) {
-    this.homeService.getDataClients(filters).subscribe({
+    this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
         this.dataSource.sort = this.sort;
@@ -238,12 +238,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getDataClientsList() {
-    this.homeService.getDataClientsList().subscribe({
+    this.moduleServices.getDataClientsList().subscribe({
       next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.generalFilters$.subscribe((generalFilters: entity.FiltersSavingDetails) => {
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
           this.dataClientsList = response;
-          this.getDataSavingDetails(generalFilters);
-          this.getDataSolarCoverga(generalFilters);
+          this.getDataSavingDetails({clientId : response[0].clientId, ...generalFilters});
+          this.getDataSolarCoverga({clientId : response[0].clientId, ...generalFilters});
         });
       },
       error: (error) => {
@@ -253,8 +253,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataSolarCoverga(filters: entity.FiltersSavingDetails) {
-    this.homeService.getDataSolarCoverage({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
+  getDataSolarCoverga(filters: entity.GeneralFilters) {
+    this.moduleServices.getDataSolarCoverage(filters).subscribe({
       next: (response: string) => this.solarCoverage = response,
       error: (error) => {
         console.error(error)
@@ -263,7 +263,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getTooltipInfo(filters?: any) {
-    this.homeService.getDataStates(filters).subscribe({
+    this.moduleServices.getDataStates(filters).subscribe({
       next: (response: entity.statesResumeTooltip[]) => {
         this.dataTooltipsInfo = response;
       },

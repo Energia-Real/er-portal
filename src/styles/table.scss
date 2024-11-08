@@ -69,20 +69,20 @@
     th {
         border: none;
         color: #792430;
-        border-color: none !important;
+        // border-color: none !important;
         line-height: 18px;
         vertical-align: top;
         padding-top: 15px;
         padding-right: 0px;
-        padding-left: 0px;
-        
-        
-        .target{
+        padding-left: 15px;
+
+
+        .target {
             background-color: #F8F8F8;
-            padding:4px  8px;
-            border-radius:8px;
+            padding: 4px 8px;
+            border-radius: 8px;
             border: 1px solid #EDEDED !important;
-            font-size:10px;
+            font-size: 10px;
         }
     }
 }
@@ -104,6 +104,7 @@
 
         >div {
             font-weight: 500 !important;
+            font-size: 14px;
         }
 
         &:first-child {
@@ -211,5 +212,26 @@ tr {
     .header-table {
         margin: 0;
         line-height: 18px;
+    }
+}
+
+
+// INPUTS 
+.c-table-energy-input {
+    position: relative;
+    margin-bottom: 0!important;
+    padding-top: 22.4px;
+    .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input,
+    .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+        width: 80% !important;
+    }
+
+    span {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 14px;
+        font-weight: 500;
     }
 }

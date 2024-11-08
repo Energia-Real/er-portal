@@ -104,7 +104,7 @@
 
 
 .select-years {
-    width:95px;
+    width: 95px;
     height: 35px !important;
     border-color: none !important;
     outline: none !important;
@@ -343,6 +343,45 @@ select:focus {
 
 // BTNS 
 
+.btn-action-apply-changes {
+    background: #FCFCFC !important;
+    color: #D1D1D1 !important;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .5px;
+    padding: 5px 15px !important;
+    border-radius: 100px !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 150ms all ease;
+    height: 35px;
+    user-select: none !important;
+    outline: none !important;
+
+    i {
+        font-size: 15px;
+        margin: 0;
+        padding: 0;
+        width: 15px;
+        height: 15px;
+    }
+
+    span {
+        font-size: 20px;
+        margin: 0;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.apply-changes-active {
+    color: #f56e46 !important;
+    border: 1px solid #f56e46!important;
+}
+
 .btn-cancel {
     border: 1px solid #D2D2D2 !important;
     color: #000000 !important;
@@ -382,6 +421,7 @@ select:focus {
         height: 15px;
         color: #f56e46
     }
+
     span {
         font-size: 20px;
         margin: 0;
@@ -416,6 +456,7 @@ select:focus {
         width: 15px;
         height: 15px;
     }
+
     span {
         font-size: 20px;
         margin: 0;
@@ -455,6 +496,7 @@ select:focus {
     border-radius: 100px !important;
     border: none !important;
 }
+
 .btn-action-notification {
     background: #f56e46 !important;
     color: white !important;
@@ -506,7 +548,6 @@ select:focus {
     display: flex;
     position: relative;
     align-items: center;
-    // justify-content: flex-end;
     gap: 15px;
     flex-wrap: wrap;
 
@@ -515,7 +556,6 @@ select:focus {
             color: #f56e46 !important;
         }
 
-        color: 949191 !important;
         font-size: 14px;
         font-weight: 500;
         letter-spacing: .5px;
@@ -529,7 +569,6 @@ select:focus {
         user-select: none !important;
         outline: none !important;
         border: 1px solid #949191;
-        
     }
 
     .primary-button {
@@ -539,14 +578,11 @@ select:focus {
     }
 
     .neutro-button {
-        color: #EE6A0A  !important;
+        color: #EE6A0A !important;
         background-color: #FCFCFC !important;
         border: none !important;
     }
-
-   
 }
-
 
 .c-card-info-main {
     height: auto;

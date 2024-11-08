@@ -60,7 +60,8 @@
         border: 1px solid #E2E2E2;
         border-radius: 16px;
         width: 100%;
-        height: 370px!important;
+        height: calc(100vh - 400px);
+        min-height: 360px;
         display: flex;
         align-items: center;
         justify-content: center;
