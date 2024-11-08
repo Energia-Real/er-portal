@@ -31,6 +31,17 @@ export interface UserV2 {
   accessTo: string
 }
 
+export interface GeneralFilters {
+  clientId?:any
+  startDate: string;
+  endDate: string | null;
+}
+
+export interface DataResponseArraysMapper {
+  primaryElements: any[]
+  additionalItems: any[]
+}
+
 export interface ConfirmationConfig
 {
     title?: string;

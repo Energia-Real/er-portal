@@ -23,6 +23,25 @@ export interface PostDataByPlant {
   plantCode: string;
 }
 
+export interface getSavingsDetailsMapper {
+  cfeSubtotal: string;
+  erCfeSubtotal: string;
+  erSubtotal: string;
+  expenditureWithoutEr: string;
+  savings: string;
+}
+export interface getSavingsDetails {
+  success: true,
+  response: {
+    cfeSubtotal: string;
+    erSubtotal: string;
+    erCfeSubtotal: string;
+    expenditureWithoutEr: string;
+    savings: string;
+  },
+  errors: any
+}
+
 export interface DataResponseDetailsClient {
   id: string
   subClientId: number
@@ -112,8 +131,9 @@ export interface DataResponseDetailsCard {
   title: string;
   description: string | Date | null;
   tooltip?: string
+  icon?: string
 }
-export interface DataResponseMapper {
+export interface DataResponseArraysMapper {
   primaryElements: any[]
   additionalItems: any[]
 }

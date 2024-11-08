@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FilterState } from '@app/shared/models/general-models';
+import { DataResponseArraysMapper, FilterState } from '@app/shared/models/general-models';
 import { Observable, Subject, Subscription } from 'rxjs';
 import * as entity from '../../plants-model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -29,7 +29,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   loaderMap: boolean = true;
   materialIcon: string = 'help_outline'
 
-  siteDetails: entity.DataResponseMapper = {
+  siteDetails: DataResponseArraysMapper = {
     primaryElements: [],
     additionalItems: []
   };
@@ -64,8 +64,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   getSiteDetails() {
     this.moduleServices.getSiteDetails(this.id).subscribe({
-      next: (response: entity.DataResponseMapper) => {
-        console.log(response);
+      next: (response: DataResponseArraysMapper) => {
         this.siteDetails.primaryElements = response.primaryElements;
         this.siteDetails.additionalItems = response.additionalItems;
       },

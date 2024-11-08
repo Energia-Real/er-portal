@@ -1,9 +1,10 @@
 import * as moment from 'moment-timezone';
 import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
+import { DataResponseArraysMapper } from '@app/shared/models/general-models';
 
 export class Mapper {
-	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService): entity.DataResponseMapper {
+	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService): DataResponseArraysMapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
@@ -213,6 +214,46 @@ export class Mapper {
 		return {
 			...response,
 			equipment: instalaciones
+		}
+	}
+
+	static getSavingsDetailsMapper(response: entity.getSavingsDetailsMapper): entity.DataResponseArraysMapper {
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
+
+		primaryElements.push({
+			title: 'CFE Subtotal',
+			description: `$${response.cfeSubtotal}`,
+			icon: '../../../../../assets/icons/cfe-subtotal.png'
+		});
+
+		primaryElements.push({
+			title: 'ER Subtotal',
+			description: `$${response.erSubtotal}`,
+			icon: '../../../../../assets/icons/er-subtotal.png'
+		});
+
+		primaryElements.push({
+			title: 'ER + CFE Subtotal',
+			description: `$${response.erCfeSubtotal}`,
+			icon: '../../../../../assets/icons/ercfe-subtotal.png'
+		});
+
+		primaryElements.push({
+			title: 'Expenditure without ER',
+			description: `$${response.expenditureWithoutEr}`,
+			icon: '../../../../../assets/icons/expenditure.png'
+		});
+
+		additionalItems.push({
+			title: 'Savings',
+			description: `$${response.savings}`,
+			icon: '../../../../../assets/icons/saving.png'
+		});
+
+		return {
+			primaryElements,
+			additionalItems
 		}
 	}
 }

@@ -5,6 +5,7 @@ import * as entity from './home-model';
 import { Mapper } from './mapper';
 import { environment } from '@environment/environment';
 import { FormatsService } from '@app/shared/services/formats.service';
+import { GeneralFilters } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class HomeService {
     );
   }
 
-  getDataSavingDetails(filters: entity.FiltersSavingDetails): Observable<entity.SavingDetailsResponse> {
+  getDataSavingDetails(filters: GeneralFilters): Observable<entity.SavingDetailsResponse> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
 
     return this.http.post<any>(url, filters);
@@ -44,7 +45,7 @@ export class HomeService {
     );
   }
 
-  getDataSolarCoverage(filters: entity.FiltersSavingDetails) : Observable<string> {
+  getDataSolarCoverage(filters: entity.GeneralFilters) : Observable<string> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/solar-coverage`;
     const params = new HttpParams()
     .set('client', filters.clientId)

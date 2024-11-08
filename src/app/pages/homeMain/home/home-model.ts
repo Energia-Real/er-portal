@@ -1,5 +1,5 @@
 
-export interface FiltersSavingDetails {
+export interface GeneralFilters {
   clientId?:any
   startDate: string;
   endDate: string | null;
