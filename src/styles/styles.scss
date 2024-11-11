@@ -167,6 +167,8 @@ select {
   }
 }
 
+
+
 .wi-progress {
   font-size: 10px !important;
   color: #EE5427;
@@ -474,6 +476,25 @@ select {
     color: #EE5427;
   }
 }
+.mat-mdc-snack-bar-container {
+  background-color: #F6F6F6 !important;  
+  color: #000000 !important;             
+  border-radius: 10px;                    
+  //text-align: center;                    
+}
+
+.mdc-snackbar__surface {
+  background-color: inherit !important;  
+  color: inherit !important;             
+}
+
+.mdc-snackbar__label {
+  font-size: 16px;
+  line-height: 1.5;
+  color: inherit !important;
+}
+
+
 
 .c-input-group {
   display: flex;

@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapaComponent } from './mapa/mapa.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ConfirmationSnackbarComponent } from './confirmation-snackbar/confirmation-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { NotificationComponent } from './notification/notification.component';
     FooterComponent,
     MapaComponent,
     TooltipComponent,
-    NotificationComponent
+    NotificationComponent,
+    ConfirmationSnackbarComponent
   ],
   imports: [
     CommonModule,

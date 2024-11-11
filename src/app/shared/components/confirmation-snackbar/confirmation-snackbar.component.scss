@@ -1,0 +1,39 @@
+.circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.complete-circle {
+    background-color:rgba(117, 255, 117, 0.78);
+    color: #21D026 !important;
+    svg {
+        stroke-width: 2px; 
+      }
+}
+
+.snack-body{
+    margin-left: 21px;
+    strong{
+        font-size: 16px  !important;
+        font-weight: 700  !important;
+        display:block !important;
+    }
+    span{
+        display: block  !important;
+        font-size: 16px  !important;
+        color: #7F7F7F !important;
+        font-weight: 500  !important;
+    }
+    .warn{
+        color: #E31A1C;
+        font-weight: 500;
+    }
+
+}
+.custom-snackbar-container{
+    display: flex;
+}

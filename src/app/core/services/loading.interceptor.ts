@@ -5,6 +5,7 @@ import { catchError, finalize } from 'rxjs/operators';
 import { LoadingService } from './loading.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '@environment/environment';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
@@ -17,10 +18,13 @@ export class LoadingInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    
     if (this.activeRequests === 0) {
       this.loadingService.show();
     }
-    this.activeRequests++;
+    if( !req.url.startsWith(environment.API_URL_NOTIFICATIONS)){
+      this.activeRequests++;
+    }
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {

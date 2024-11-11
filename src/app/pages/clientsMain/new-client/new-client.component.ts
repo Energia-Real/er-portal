@@ -9,7 +9,11 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
-import { notificationData } from '@app/shared/models/general-models';
+import { notificationData, NotificationMessages } from '@app/shared/models/general-models';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import{NotificationServiceData,EditNotificationStatus}from '@app/shared/models/general-models';
+import { AuthService } from '@app/auth/auth.service';
+import { NotificationService } from '@app/shared/services/notification.service';
 
 @Component({
   selector: 'app-new-client',
@@ -17,13 +21,14 @@ import { notificationData } from '@app/shared/models/general-models';
   styleUrl: './new-client.component.scss'
 })
 export class NewClientComponent implements OnInit, OnDestroy {
-  ADD=NOTIFICATION_CONSTANTS.ADD;
-  CANCEL=NOTIFICATION_CONSTANTS.CANCEL;
-  EDIT=NOTIFICATION_CONSTANTS.EDIT;
+  ADD=NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
+  CANCEL=NOTIFICATION_CONSTANTS.CANCEL_TYPE;
+  EDIT=NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
   DELETE=NOTIFICATION_CONSTANTS.DELETE;
 
   private onDestroy$ = new Subject<void>();
   private _client?: any | null | undefined;
+  private notificationId?: string;
 
   get client(): any | null | undefined { return this._client }
 
@@ -56,17 +61,24 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   insertedImage:boolean = false
   imagenSelectedEdit:any
+  user:any;
 
   constructor(
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
     private store: Store,
     private fb: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private notificationDataService: NotificationDataService,
+    private authService: AuthService,
+    private notificationsService: NotificationService
   ) { }
 
   ngOnInit() {
     this.getCatalogs();
+    this.authService.getInfoUser().subscribe(res=>{
+      this.user=res
+    })
   }
 
   getCatalogs() {
@@ -79,39 +91,24 @@ export class NewClientComponent implements OnInit, OnDestroy {
     })
   }
 
-  actionButton(){
-    if (this.editedClient?.id) this.createNotification(this.EDIT);
-    else this.createNotification(this.ADD);
+  actionSave(){
+    if (this.editedClient?.id) this.createNotificationModal(this.EDIT);
+    else this.createNotificationModal(this.ADD);
   }
 
-  actionSave() { 
-    if (!this.formData.valid) return;
-    
+ 
+
+  saveDataPost(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
-    if (this.editedClient?.id) objData.clientId = this.formData.get('clientId')?.value;
-    else delete objData.clientId;
-    
-    if (this.editedClient?.id) this.saveDataPatch(objData);
-    else this.saveDataPost(objData);
-  }
-
-  saveDataPost(objData: any) {
-    this.moduleServices.postDataClient(objData).subscribe({
-      next: () => { this.completionMessage() },
-      error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-        console.error(error)
-      }
+    delete objData.clientId;
+    this.moduleServices.postDataClient(objData,notificationmessages).subscribe({
     })
   }
 
-  saveDataPatch(objData: any) {
-    this.moduleServices.patchDataClient(this.editedClient?.id!, objData).subscribe({
-      next: () => { this.completionMessage(true) },
-      error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-        console.error(error)
-      }
+  saveDataPatch(notificationmessages:NotificationMessages) {
+    let objData: any = { ...this.formData.value }
+    if (this.editedClient?.id) objData.clientId = this.formData.get('clientId')?.value;
+    this.moduleServices.patchDataClient(this.editedClient?.id!, objData,notificationmessages).subscribe({
     })
   }
 
@@ -176,66 +173,75 @@ export class NewClientComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe((_ => this.closeDrawer()));
   }
+ 
+
+  createNotificationModal(notificationType:string){
+    const dataNotificationModal:notificationData|undefined = this.notificationDataService.clientsNotificationData(notificationType);
+    const dataNotificationService:NotificationServiceData= {
+                                                            userId:this.user.id,
+                                                            descripcion:dataNotificationModal?.title,
+                                                            notificationTypeId:dataNotificationModal?.typeId,
+                                                            notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.INPROGRESS_STATUS).id
+                                                          } 
+    this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      this.notificationId=res.response.externalId;
+    })
+    
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',     
+      data: dataNotificationModal
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.confirmed && this.notificationId) {
+        switch(result.action){
+          case this.ADD:
+            let snackMessagesAdd:NotificationMessages = {
+              completedTitle:NOTIFICATION_CONSTANTS.ADD_CLIENT_COMPLETE_TITLE,
+              completedContent:NOTIFICATION_CONSTANTS.ADD_CLIENT_COMPLETE_CONTENT,
+              errorTitle:'',
+              errorContent:'',
+              notificationId:this.notificationId
+            }
+            this.saveDataPost(snackMessagesAdd);
+            this.closeDrawer(true)
+            return;
+          case this.EDIT:
+            let snackMessagesEdit:NotificationMessages = {
+              completedTitle:NOTIFICATION_CONSTANTS.EDIT_CLIENT_COMPLETE_TITLE,
+              completedContent:NOTIFICATION_CONSTANTS.EDIT_CLIENT_COMPLETE_CONTENT,
+              errorTitle:'',
+              errorContent:'',
+              notificationId:this.notificationId
+            }
+            this.saveDataPatch(snackMessagesEdit)
+            this.closeDrawer(true)
+            return;
+          case this.CANCEL: 
+            let editStatusData={
+              externalId: this.notificationId,
+              status: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id
+            }
+            this.notificationsService.updateNotificationStatus(editStatusData).subscribe(res=>{})
+            this.closeDrawer(true)
+            return 
+        }
+      } else {
+        if(this.notificationId){
+          const editStatusData:EditNotificationStatus={
+            externalId: this.notificationId,
+            status: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.CANCELED_STATUS).id
+          }
+          this.notificationsService.updateNotificationStatus(editStatusData).subscribe(res=>{})
+        }
+      }    
+    });
+  }
+
+
+
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
-  }
-
-  createNotification(notificationType:string): void {
-    var dataNotification:notificationData;
-    switch(notificationType){
-      case this.ADD:
-        dataNotification= { 
-          type: NOTIFICATION_CONSTANTS.ADD,
-          title:NOTIFICATION_CONSTANTS.ADD_CLIENT_TITLE,
-          content:NOTIFICATION_CONSTANTS.ADD_CLIENT_CONTENT,
-          warn: NOTIFICATION_CONSTANTS.ADD_CLIENT_WARN,
-          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
-        }
-        this.openDialog(dataNotification);
-        break; 
-      case this.EDIT:
-        dataNotification= { 
-          type: NOTIFICATION_CONSTANTS.EDIT,
-          title:NOTIFICATION_CONSTANTS.GLOBAL_EDIT_TITLE,
-          content:NOTIFICATION_CONSTANTS.GLOBAL_EDIT_CONTENT,
-          warn: NOTIFICATION_CONSTANTS.GLOBAL_EDIT_WARN,
-          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
-        }
-        this.openDialog(dataNotification);
-        break;
-      case this.CANCEL:
-        dataNotification= { 
-            type: NOTIFICATION_CONSTANTS.CANCEL,
-            title:NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_TITLE,
-            content:NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_CONTENT,
-            buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
-          }
-          this.openDialog(dataNotification);
-          break;
-    }
-  }
-
-  openDialog(dataNotification:notificationData){
-    const dialogRef = this.dialog.open(NotificationComponent, {
-      width: '540px',     
-      data: dataNotification
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.confirmed) {
-        switch(result.action){
-          case this.ADD:
-            this.actionSave()
-            return;
-          case this.EDIT:
-            this.actionSave()
-            return;
-          case this.CANCEL: 
-            this.closeDrawer(true)
-        }
-      } else {
-        console.log('Acción cancelada');
-      }    });
   }
 }

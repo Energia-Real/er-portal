@@ -11,9 +11,9 @@ import { notificationData } from '@app/shared/models/general-models';
 })
 export class NotificationComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
-  ADD=NOTIFICATION_CONSTANTS.ADD;
-  CANCEL=NOTIFICATION_CONSTANTS.CANCEL;
-  EDIT=NOTIFICATION_CONSTANTS.EDIT;
+  ADD=NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
+  CANCEL=NOTIFICATION_CONSTANTS.CANCEL_TYPE;
+  EDIT=NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
   DELETE=NOTIFICATION_CONSTANTS.DELETE;
 
 
@@ -28,8 +28,8 @@ export class NotificationComponent implements OnDestroy {
     this.dialogRef.close();
   }
 
-  sendEventToParent(type:string): void {
-    const eventData = { confirmed: true, action: type }; 
+  sendEventToParent(type:string, confirm: boolean): void {
+    const eventData = { confirmed: confirm, action: type }; 
     this.dialogRef.close(eventData);
   }
 
