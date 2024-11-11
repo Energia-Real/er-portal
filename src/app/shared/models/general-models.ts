@@ -77,6 +77,7 @@ export interface FilterState {
 
 export interface notificationData{
   type:     string,
+  typeId?:   number|undefined,
   title:    string,
   content?:  string,
   warn?:     string, 
@@ -103,3 +104,29 @@ export const initialFilterState: FilterState = {
     requestType: 0
   }
 };
+
+export interface NotificationServiceData {
+  userId: string;
+  descripcion: string|undefined;
+  notificationTypeId: number|undefined;
+  notificationStatusId: number;
+}
+
+export interface EditNotificationStatus {
+  externalId: string;
+  status: string;
+}
+
+export interface SnackData{
+  type:"COMPLETE"|"FAILED",
+  title:string,
+  subtitle:string
+}
+
+export interface NotificationMessages{
+  completedTitle:string,
+  completedContent:string,
+  errorTitle:string,
+  errorContent:string,
+  notificationId:string
+}
