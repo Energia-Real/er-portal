@@ -1,13 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as entity from '../../plants-model';
-import { Subject, Subscription } from 'rxjs';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 import Highcharts from 'highcharts';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { ActivatedRoute } from '@angular/router';
+import { DataResponseArraysMapper, FilterState } from '@app/shared/models/general-models';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
-import { DrawerGeneral } from '@app/shared/models/general-models';
-import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { GeneralFilters } from '@app/pages/homeMain/home/home-model';
 
 @Component({
   selector: 'app-savings',
@@ -16,103 +18,61 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 })
 export class SavingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  drawerOpenSub: Subscription;
-
   @Input() plantData: entity.DataPlant | any;
   @Input() notData!: boolean;
-  @Output() notifyParent: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
-  pdfSrc: SafeResourceUrl = '';
   showAlert: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
-  images: string[] = [];
-  renderedImage: string | null = null;
-  materialIcon: string = 'edit';
-  drawerAction: "Create" | "Edit" = "Create";
-  drawerInfo: entity.Equipment | null | undefined = null;
-  instalations!: entity.Instalations;
-  needReload: boolean = false;
-  drawerOpen: boolean = false;
+  dots = Array(3).fill(0);
+
+  savingDetails: DataResponseArraysMapper = {
+    primaryElements: [],
+    additionalItems: []
+  };
 
   constructor(
-    private sanitizer: DomSanitizer,
-    private mopduleService: PlantsService,
-    private store: Store
+    private moduleServices: PlantsService,
+    private notificationService: OpenModalsService,
+    private store: Store<{ filters: FilterState }>
   ) {
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
-      this.drawerOpen = resp.drawerOpen;
-      this.drawerAction = resp.drawerAction;
-      this.drawerInfo = resp.drawerInfo;
-      this.needReload = resp.needReload;
-      if (this.needReload) this.reloadData();
-    });
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
   }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    this.getSavings(this.plantData?.id)
+    else this.getDataClient();
   }
 
-  getSavings(plantCode: string) {
-    this.mopduleService.getSavings(plantCode).subscribe(data => {
-      this.instalations = data;
-      this.pdfSrc = this.sanitizeUrl(data.equipmentPath + "#zoom=85");
-      this.getInverterMonitoring(data);
-    })
-  }
-
-  getInverterMonitoring(data: entity.Instalations) {
-    let instalations = data.equipment;
-    this.mopduleService.getInverterMonitoring(this.plantData?.plantCode).subscribe((data: entity.InverterMonitoring) => {
-      this.notifyParent.emit(data.inverterSystemStatus);
-
-      if (data?.invertersStatus?.length) {
-        let InvertersStatus = data?.invertersStatus;
-
-        instalations.forEach((item: any) => {
-          const matchingItem = InvertersStatus.find((obj: any) => obj.sn === item.serialNumber);
-          if (matchingItem) item.status = matchingItem.status;
-          else item.status = null;
-        });
+  getSavings(filters:GeneralFilters) {
+    this.moduleServices.getSavingsDetails(filters).subscribe({
+      next: (response: entity.DataResponseArraysMapper) => {
+        this.savingDetails = response;
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
       }
-
-      this.instalations.equipment = instalations
     })
   }
 
-  getGoogleDriveEmbedLink(link: string): string {
-    const fileIdMatch = link.match(/[-\w]{25,}/);
-    if (fileIdMatch && fileIdMatch[0]) return `https://drive.google.com/file/d/${fileIdMatch[0]}/preview`;
-    return '';
-  }
-
-  sanitizeUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  reloadData() {
-    this.getSavings(this.plantData?.plantCode);
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: false }));
-  }
-
-  onPageRendered(event: CustomEvent): void {
-    const canvas: HTMLCanvasElement = event.target as HTMLCanvasElement;
-    this.renderedImage = canvas.toDataURL('image/png');
-  }
-
-  toggleDrawer() {
-    this.updDraweState(!this.drawerOpen);
-  }
-
-  updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
+  getDataClient() {
+    this.moduleServices.getDataClient().subscribe({
+      next: (response: entity.DataRespSavingDetailsList[]) => {
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.getSavings({clientId : response[0].clientId, ...generalFilters});
+        });
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
   }
-
 }

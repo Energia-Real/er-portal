@@ -31,3 +31,12 @@ export interface DataPricingTableMapper {
   data: DataPricingTable[],
   totalItems: number
 }
+
+export interface FiltersRates {
+  clientId?:any
+  startDate: string;
+  endDate: string | null;
+  plantName: string;
+  pageSize: number;
+  page: number;
+}
