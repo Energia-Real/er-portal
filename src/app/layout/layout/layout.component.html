@@ -1,3 +1,112 @@
-<app-header [routeActive]="routeActive"></app-header>
-<router-outlet></router-outlet>
-<app-footer ></app-footer>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-content">
+
+      <div class="logo">
+        <a href="/home" class="text-white text-sm font-semibold c-version">
+          <div class="version">
+            <!-- Version: {{ version }} -->
+          </div>
+          <div>
+
+            <img class="logo-white" src="../../../../assets/icons/logo001.svg" alt="Logo">
+            <!-- <img class="logo-white" src="../../../../assets/icons/Logo-002.svg" alt="Logo"> -->
+          </div>
+        </a>
+      </div>
+
+      <div class="sidebar-user">
+        <img src="../../../../assets/icons/icon-white.png" alt="Logo">
+        <p>USER</p>
+      </div>
+
+      <div class="linea"></div>
+
+      <ul class="flex flex-col titles-header">
+        <li>
+          <img src="../../../assets/icons/home-icon.svg" alt="Home">
+          <a routerLink="backoffice-home" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }">Home</a>
+        </li>
+
+        <li>
+          <img src="../../../assets/icons/home-icon.svg" alt="Home">
+          <a routerLink="admin-home" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }">Home</a>
+        </li>
+
+        <li>
+          <img src="../../../assets/icons/plants-icon.svg" alt="Plants">
+          <a routerLink="plants" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a>
+        </li>
+
+        <li>
+          <img src="../../../assets/icons/clients-icon.svg" alt="Clients">
+          <a routerLink="clients" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a>
+        </li>
+
+        <li>
+          <img src="../../../assets/icons/energy-icon.svg" alt="Energy">
+          <a routerLink="energy" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }">Energy</a>
+        </li>
+
+        <li>
+          <img src="../../../assets/icons/rates-icon.svg" alt="Rates">
+          <a routerLink="rates" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('rates') }">Rates</a>
+        </li>
+
+        <li>
+          <img src="../../../assets/icons/invoices-icon.svg" alt="Invoice">
+          <a routerLink="billing" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }">Invoice</a>
+        </li>
+        <!-- <li *ngIf="userInfo?.accessTo == 'BackOffice'">
+          <a routerLink="backoffice-home"
+            class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }">Home</a>
+        </li>
+
+        <li *ngIf="userInfo?.accessTo == 'Admin'">
+          <a routerLink="admin-home"
+            class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }">Home</a>
+        </li>
+
+        <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'">
+          <a routerLink="plants" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a>
+        </li>
+
+        <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'">
+          <a routerLink="clients" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a>
+        </li>
+
+        <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'">
+          <a routerLink="energy" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }">Energy</a>
+        </li>
+
+        <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'">
+          <a routerLink="rates" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('rates') }">Rates</a>
+        </li>
+
+        <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'">
+          <a routerLink="billing" class="hover:text-gray-300 cursor-pointer"
+            [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }">Invoice</a>
+        </li> -->
+      </ul>
+    </div>
+  </div>
+
+  <div class="content">
+    <app-header [routeActive]="routeActive"></app-header>
+    <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  </div>
+</div>

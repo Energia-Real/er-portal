@@ -2,6 +2,7 @@ import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject } from 'rxjs';
 import { AuthService } from '@app/auth/auth.service';
+import { UserV2 } from '@app/shared/models/general-models';
 
 
 @Component({
@@ -12,6 +13,10 @@ import { AuthService } from '@app/auth/auth.service';
 export class LayoutComponent implements OnInit, OnDestroy{
   private onDestroy$ = new Subject<void>();
   public routeActive: string='';
+  userInfo!: UserV2;
+
+
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -28,6 +33,9 @@ export class LayoutComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.authService.getInfoUser().subscribe(role => {
+      console.log(role);
+      
+      this.userInfo = role
       if (this.router.url === '/er') {
         if (role.accessTo === 'BackOffice') {
           this.router.navigate(['backoffice-home'], { relativeTo: this.route });
@@ -42,6 +50,8 @@ export class LayoutComponent implements OnInit, OnDestroy{
         }
       }
     });
+
+
   }
 
   ngOnDestroy(): void {
