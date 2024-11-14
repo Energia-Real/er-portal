@@ -180,11 +180,15 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   getSitePerformanceSummary(filters: GeneralFilters) {
     delete filters.idClient
     this.moduleServices.getSitePerformanceSummary(filters).subscribe({
-      next: (response: any) => {
+      next: (response: entity.DataResponseArraysMapper) => {
         this.sitePerformance.additionalItems.push(response.additionalItems[0])
         this.fullLoad = true;
       },
       error: (error) => {
+        this.sitePerformance.additionalItems.push({
+          title: 'CFE network consumption',
+          description: null,
+        })
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
