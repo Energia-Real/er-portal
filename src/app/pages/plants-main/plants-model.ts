@@ -134,8 +134,8 @@ export interface DataResponseDetailsCard {
   icon?: string
 }
 export interface DataResponseArraysMapper {
-  primaryElements: any[]
-  additionalItems: any[]
+  primaryElements: any[];
+  additionalItems: any[];
 }
 
 export interface DataSiteDetails {
@@ -377,6 +377,24 @@ export interface CatalogEquipment {
   nombre?: string
 }
 
+export interface SitePerformanceResponse {
+  success: true;
+  response: {
+    systemGeneration: string;
+    totalConsumption: string;
+    solarCoverage: string;
+  },
+  errors: {
+    errors: [
+      {
+        tipo: string;
+        field: string;
+        descripcion: string;
+      }
+    ]
+  }
+}
 
-
-
+export interface BatuSummary {
+  summary: number
+}

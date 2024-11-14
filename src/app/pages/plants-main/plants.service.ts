@@ -13,6 +13,8 @@ import { DataResponseArraysMapper, GeneralFilters } from '@app/shared/models/gen
 export class PlantsService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
+  private API_URL_BATU = environment.API_URL_BATU_V1;
+  private API_URL_ENERGY_PERFORMANCE = environment.API_URL_ENERGY_PERFORMANCE_V1;
   private API_URL_PROYECTS = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
   private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
@@ -56,10 +58,29 @@ export class PlantsService implements OnDestroy {
     );
   }
 
+  getSitePerformance(filters:GeneralFilters): Observable<DataResponseArraysMapper | null> {
+    const url = `${this.API_URL_ENERGY_PERFORMANCE}/GetSitePerformance`;
+
+    return this.http.post<any>(url, filters).pipe(
+      map((response) => Mapper.getSitePerformanceMapper(response))
+    );
+  }
+
+  getSitePerformanceSummary(filters:GeneralFilters): Observable<DataResponseArraysMapper> {
+    const url = `${this.API_URL_BATU}/energy/summary`;
+    let params = new HttpParams()
+    .set('rpu', filters.rpu)
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!);
+    return this.http.get<entity.BatuSummary>(url, { params }).pipe(
+      map((response) => Mapper.getSitePerformanceSummaryMapper(response))
+    );
+  }
+
   getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
     const url = `${this.API_URL_PROYECTS}/projects/Savings`;
     let params = new HttpParams()
-    .set('clientId', filters.clientId)
+    .set('clientId', filters.clientId!)
     .set('startMonth', filters.startDate)
     .set('endMonth', filters.endDate!);
 
@@ -67,7 +88,6 @@ export class PlantsService implements OnDestroy {
       map((response) => Mapper.getSavingsDetailsMapper(response.response))
     );
   }
-
 
   getDataSystem(data: entity.PostDataByPlant): Observable<entity.ResponseSystem> {
     const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;

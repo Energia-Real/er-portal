@@ -15,7 +15,7 @@ export class Mapper {
 
 		primaryElements.push({
 			title: 'System size',
-			description: formatsService.energyFormat(response.systemSize)
+			description: formatsService.energyFormat(response.systemSize) + ' kWh'
 		});
 
 		primaryElements.push({
@@ -150,7 +150,6 @@ export class Mapper {
 		return clientData;
 	}
 
-
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
 		return {
 			...response,
@@ -249,6 +248,48 @@ export class Mapper {
 			title: 'Savings',
 			description: `$${response.savings}`,
 			icon: '../../../../../assets/icons/saving.png'
+		});
+
+		return {
+			primaryElements,
+			additionalItems
+		}
+	}
+
+	static getSitePerformanceMapper(response: entity.SitePerformanceResponse): entity.DataResponseArraysMapper | null {
+		if (!response.success) return null
+
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
+
+		primaryElements.push({
+			title: 'System generation',
+			description: `${response.response.systemGeneration} kWh`,
+		});
+
+		primaryElements.push({
+			title: 'Total consumption',
+			description: `${response.response.totalConsumption} kWh`,
+		});
+
+		additionalItems.push({
+			title: 'Solar coverage',
+			description: `${response.response.solarCoverage} kWh`,
+		});
+
+		return {
+			primaryElements,
+			additionalItems
+		}
+	}
+
+	static getSitePerformanceSummaryMapper(response: entity.BatuSummary): entity.DataResponseArraysMapper  {
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
+
+		additionalItems.push({
+			title: 'CFE network consumption',
+			description: `${response.summary} kWh`,
 		});
 
 		return {
