@@ -1,8 +1,8 @@
 <div class="c-global c-site-performance">
     <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-2 md:col-span-1">
-            <div class="c-card-info-main" *ngIf="!showAlert else notData">
-                <div *ngFor="let data of sitePerformance?.firstTwo; let idx = index"
+            <div class="c-card-info-main" *ngIf="fullLoad">
+                <div *ngFor="let data of sitePerformance?.primaryElements; let idx = index"
                     [ngClass]="{'card-container-50': idx < 2, 'card-container-33': idx >= 2}">
                     <div class="card-info">
                         <h1>{{ data.title }}</h1>
@@ -12,7 +12,7 @@
 
                 <div class="separator-cards"></div>
 
-                <div *ngFor="let data of sitePerformance?.remaining; let idx = index" class="card-container-50">
+                <div *ngFor="let data of sitePerformance?.additionalItems; let idx = index" class="card-container-50">
                     <div class="card-info">
                         <h1 [ngStyle]="{ 
                             'color': idx === 0 ? '#57B1B1' : 
