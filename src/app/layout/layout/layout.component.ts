@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject } from 'rxjs';
 import { AuthService } from '@app/auth/auth.service';
 import { UserV2 } from '@app/shared/models/general-models';
+import { NotificationService } from '@app/shared/services/notification.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class LayoutComponent implements OnInit, OnDestroy{
   constructor(
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ) {
 
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
@@ -32,6 +34,8 @@ export class LayoutComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    this.notificationService.loadNotificationStatuses().subscribe();
+    this.notificationService.loadNotificationTypes().subscribe();
     this.authService.getInfoUser().subscribe(role => {
       console.log(role);
       

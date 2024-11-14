@@ -2,6 +2,8 @@ export const NOTIFICATION_CONSTANTS = {
     ADD:'add',
     EDIT:'edit',
     DELETE:'delete',
+
+    //Data for Notification types
     EDIT_CONFIRM_TYPE:'Edit_Confirm',
     ADD_CONFIRM_TYPE:'Add_Confirm',
     DELETE_CONFIRM_TYPE:'Delete_Confirm',
@@ -10,12 +12,17 @@ export const NOTIFICATION_CONSTANTS = {
     WARNING_TYPE:'Warning',
     INFORMATION_TYPE:'Information',
     CANCEL_TYPE:'Cancel',
+
+
+    //Data for notification statuses
     CANCELED_STATUS:'Canceled', 
     FAILED_STATUS:'Failed',
     COMPLETED_STATUS:'Completed',
     PENDING_STATUS:'Pending',
     INPROGRESS_STATUS:'In Progress',
     SCHELUDED_STATUS:'Scheduled',
+
+    //Data for notifications
     ACTION_BUTTON:'Confirm',
     GLOBAL_DELETE_TITLE:'Delete Confirmation',
     GLOBAL_DELETE_CONTENT: 'Are you sure you want to delete this (item)? This action is irreversible and will remove all related information, including plants and records. Please confirm before proceeding.',
@@ -32,5 +39,17 @@ export const NOTIFICATION_CONSTANTS = {
     EDIT_CLIENT_COMPLETE_CONTENT:'Your data has been successfully saved.',
     CANCEL_ADD_CLIENT_TITLE: 'Cancel new client',
     CANCEL_ADD_CLIENT_CONTENT: 'Are you sure you want to cancel adding this company? All entered information will be lost, and no changes will be saved',
+
+    //Data for Center Notification Messages (Only message keys) 
+
+    //Clients
+    ADD_CLIENT_SUCCESS:'Add_Client_Success',
+    EDIT_CLIENT_SUCCESS:'Edit_Client_Success',
+
+    //Generals
+    ADD_GENERAL_ERROR: 'Add_General_Error',
+    EDIT_GENERAL_ERROR: 'Edit_General_Error',
+
+
   };
   

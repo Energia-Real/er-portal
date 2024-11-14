@@ -6,11 +6,10 @@ import { NotificationService } from './shared/services/notification.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
-  constructor(private notificationService: NotificationService){
+  constructor(){
 
   }
   ngOnInit(): void {
-    this.notificationService.loadNotificationStatuses().subscribe();
-    this.notificationService.loadNotificationTypes().subscribe();
+   
   }
 }
