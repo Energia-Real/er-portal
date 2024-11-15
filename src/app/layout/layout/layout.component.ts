@@ -1,4 +1,4 @@
-import { Component,  OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject } from 'rxjs';
 import { AuthService } from '@app/auth/auth.service';
@@ -11,12 +11,12 @@ import { NotificationService } from '@app/shared/services/notification.service';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent implements OnInit, OnDestroy{
+export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  public routeActive: string='';
+  public routeActive: string = '';
   userInfo!: UserV2;
-
-
+  isSidebarHovered = false;
+  keepOpen = false;
 
   constructor(
     private router: Router,
@@ -24,21 +24,14 @@ export class LayoutComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute,
     private notificationService: NotificationService
   ) {
-
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.routeActive = this.router.url;
-    });
-      
-    
+      .subscribe(() => this.routeActive = this.router.url);
   }
 
   ngOnInit(): void {
     this.notificationService.loadNotificationStatuses().subscribe();
     this.notificationService.loadNotificationTypes().subscribe();
     this.authService.getInfoUser().subscribe(role => {
-      console.log(role);
-      
       this.userInfo = role
       if (this.router.url === '/er') {
         if (role.accessTo === 'BackOffice') {
@@ -54,10 +47,17 @@ export class LayoutComponent implements OnInit, OnDestroy{
         }
       }
     });
-
-
   }
 
+  onMouseEnter() {
+    this.isSidebarHovered = true;
+  }
+
+  onMouseLeave() {
+    this.isSidebarHovered = false;
+  }
+
+ 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
