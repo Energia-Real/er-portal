@@ -57,7 +57,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.isSidebarHovered = false;
   }
 
- 
+  signOut() {
+    localStorage.removeItem('userEnergiaReal');
+    this.router.navigate(['']);
+  }
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
