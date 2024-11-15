@@ -58,7 +58,14 @@ span {
 }
 
 .c-main {
-  padding: 60px 60px 60px 60px;
+  padding: 20px 60px 60px 60px;
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
+
+.c-scroll {
+  // overflow: auto;
+  // height: calc(100vh - 300px);
 }
 
 .c-modal-lateral {
