@@ -30,6 +30,15 @@ export class BillingService implements OnDestroy {
     );
   }
 
+  downloadExcelReport(params: { [key: string]: string }): Observable<Blob> {
+    const url = `${this.API_URL}/FacturacionExport/DownloadExcelReport`;
+
+    return this.http.get(url, {
+      params, 
+      responseType: 'blob' 
+    });
+  }
+
   saveBillingTableData(requestData: any[]): Observable<any> {
     const url = `${this.API_URL}/Facturacion/ConfirmFacturas`;
 
