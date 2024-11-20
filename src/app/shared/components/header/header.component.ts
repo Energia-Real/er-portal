@@ -53,6 +53,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
    notificationSubscription!: Subscription  ;
    hasNotifications = false;
 
+   menuOpen = false;
+
 
 
   constructor(
@@ -183,11 +185,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['']);
   }
 
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-  }
-
   updateLocalNotifications(){
     this.notificationSubscription = this.store.select(selectTopUnreadNotifications).subscribe((notifications) => {
       this.notifications = notifications;
@@ -200,5 +197,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   trackByNotificationId(index: number, notification: Notification): string {
     return notification.externalId;
+  }
+
+  removeNotification(notificationToRemove: any): void {
+    this.notifications = this.notifications.filter(notification => notification !== notificationToRemove);
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

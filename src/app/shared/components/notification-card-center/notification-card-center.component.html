@@ -1,4 +1,4 @@
-<div *ngIf="messages" class="card-notification my-6 mx-6">
+<div *ngIf="messages" class="card-notification my-6 mx-6" @fadeOut>
 
     <div [ngClass]="{
         'circle': true,
@@ -27,7 +27,7 @@
     </div>
 
     <div class="ml-6">
-        <mat-icon>close</mat-icon>
+        <mat-icon (click)="deleteNotification();$event.stopPropagation()">close</mat-icon>
     </div>
 </div>
 <mat-divider class="mt-2"></mat-divider>

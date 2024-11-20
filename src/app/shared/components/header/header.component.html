@@ -73,12 +73,24 @@
         
         account_circle</mat-icon>
       </button>
-      <mat-menu #notificationsMenu="matMenu"  xPosition="before" yPosition="below" class="notificationsMenu" (opened)="updateLocalNotifications()" >
+      <mat-menu 
+      #notificationsMenu="matMenu"  
+      xPosition="before" 
+      yPosition="below" 
+      class="notificationsMenu" 
+      [hidden]="!menuOpen"
+      (opened)="menuOpen = true; updateLocalNotifications()" 
+      (closed)="menuOpen = false"
+      >
         <div *ngFor="let notification of notifications; trackBy: trackByNotificationId" >
-          <app-notification-card-center  [notification]="notification"></app-notification-card-center>
+          <app-notification-card-center  
+          [notification]="notification"
+          (notificationDeleted)="removeNotification(notification)"
+          (click)="$event.stopPropagation();"
+          ></app-notification-card-center>
         </div>
         <div class="notifications-footer mb-2 mt-3 " *ngIf="notifications.length==6">
-          <button class="footer-button">
+          <button class="footer-button" (click)="$event.stopPropagation();">
             <img class="eye-icon" src="../../../../assets/img/eye-open-orange.png" alt="Eye Open">
             <span class="ml-1">See More</span>
           </button>   
