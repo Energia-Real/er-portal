@@ -10,11 +10,11 @@ body {
 
 
 body {
-  font-family:  "HelveticaNeue",'NeueMontreal', sans-serif !important;
+  font-family: "HelveticaNeue", 'NeueMontreal', sans-serif !important;
 }
 
 ::placeholder {
-  font-family: "HelveticaNeue",'NeueMontreal',  sans-serif !important;
+  font-family: "HelveticaNeue", 'NeueMontreal', sans-serif !important;
   letter-spacing: 0;
   font-size: 16px;
   font-weight: 400;
@@ -58,7 +58,14 @@ span {
 }
 
 .c-main {
-  padding: 80px 60px 60px 60px;
+  padding: 20px 60px 60px 60px;
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
+
+.c-scroll {
+  // overflow: auto;
+  // height: calc(100vh - 300px);
 }
 
 .c-modal-lateral {
@@ -101,7 +108,8 @@ span {
 }
 
 .text-er-orange {
-  color: #EE5427;
+  color: black !important;
+  // color: #EE5427;
 }
 
 .width-100 {
@@ -472,20 +480,23 @@ select {
     font-size: 15px;
   }
 
-  a:hover {
-    color: #EE5427;
+  li {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 }
+
 .mat-mdc-snack-bar-container {
-  background-color: #F6F6F6 !important;  
-  color: #000000 !important;             
-  border-radius: 10px;                    
+  background-color: #F6F6F6 !important;
+  color: #000000 !important;
+  border-radius: 10px;
   //text-align: center;                    
 }
 
 .mdc-snackbar__surface {
-  background-color: inherit !important;  
-  color: inherit !important;             
+  background-color: inherit !important;
+  color: inherit !important;
 }
 
 .mdc-snackbar__label {
@@ -588,7 +599,7 @@ select {
   .mat-mdc-select-multiple {
     padding: 0;
     border-width: 0 !important;
-    font-family: "Helvetica Neue",'NeueMontreal',  sans-serif !important;
+    font-family: "Helvetica Neue", 'NeueMontreal', sans-serif !important;
     letter-spacing: 0;
     font-size: 16px;
     font-weight: 500;

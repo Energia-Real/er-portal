@@ -32,7 +32,9 @@ export interface UserV2 {
 }
 
 export interface GeneralFilters {
-  clientId?:any
+  rpu?:any
+  idClient?:number
+  clientId?:number
   startDate: string;
   endDate: string | null;
 }

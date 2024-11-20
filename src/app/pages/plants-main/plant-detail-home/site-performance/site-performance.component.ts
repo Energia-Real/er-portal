@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import * as Highcharts from 'highcharts';
 import { FormBuilder } from '@angular/forms';
@@ -7,6 +7,8 @@ import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { PlantsService } from '../../plants.service';
+import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-site-performance',
@@ -16,6 +18,9 @@ import { PlantsService } from '../../plants.service';
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   @Input() plantData!: entity.DataPlant;
+  @Input() notData!: boolean;
+
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dots = Array(3).fill(0);
   chart: any;
@@ -101,46 +106,11 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
-
-  sitePerformance = {
-    firstTwo: [{
-      title: 'System generation',
-      description: '794,738.86 kWh',
-    },
-    {
-      title: 'Total consumption',
-      description: '000,000.00 kWh',
-    },
-    ],
-
-    remaining: [
-      {
-        title: 'Exported generation',
-        description: '000,000.00 kWh',
-        extra: '+2% compared to the previous month.'
-      },
-      {
-        title: 'CFE network consumption.',
-        description: '000,000.00 kWh',
-        extra: '-4% compared to the previous month.'
-      },
-      {
-        title: 'Solar coverage',
-        description: '000,000.00 kWh',
-      },
-      {
-        title: 'Performance',
-        description: '000,000.00 kWh',
-      },
-    ]
-  }
-
   formFilters = this.formBuilder.group({
     start: [{ value: '', disabled: false }],
     end: [{ value: '', disabled: false }],
   });
 
-  showAlert: boolean = false;
   displayChart: boolean = false;
   lineChartLegend: boolean = true;
   showSitePerformance: boolean = false;
@@ -149,22 +119,80 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   dateToday = new Date();
 
+  sitePerformance: entity.DataResponseArraysMapper = {
+    primaryElements: [],
+    additionalItems: []
+  };
+
+  fullLoad: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
-    private formatsService: FormatsService
-  ) { }
+    private formatsService: FormatsService,
+    private store: Store<{ filters: FilterState }>
+  ) {
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+  }
 
   ngOnInit(): void {
     this.getEstimateds();
-    this.showAlert = false;
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
+    this.getDataClient();
   }
 
   ngAfterViewInit(): void {
     this.formFilters.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(values => this.onFormValuesChanged(values));
+  }
+
+  getDataClient() {
+    this.moduleServices.getDataClient().subscribe({
+      next: (response: entity.DataRespSavingDetailsList[]) => {
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.getSitePerformance({ idClient: response[0].clientId, ...generalFilters });
+        });
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
+  }
+
+  getSitePerformance(filters: GeneralFilters) {
+    this.moduleServices.getSitePerformance(filters).subscribe({
+      next: (response: entity.DataResponseArraysMapper | null) => {
+        if (response) {
+          this.sitePerformance.primaryElements = response.primaryElements;
+          this.sitePerformance.additionalItems = response.additionalItems;
+          this.getSitePerformanceSummary({ ...filters, rpu: this.plantData.rpu })
+        }
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.error(error)
+      }
+    })
+  }
+
+  getSitePerformanceSummary(filters: GeneralFilters) {
+    delete filters.idClient
+    this.moduleServices.getSitePerformanceSummary(filters).subscribe({
+      next: (response: entity.DataResponseArraysMapper) => {
+        this.sitePerformance.additionalItems.push(response.additionalItems[0])
+        this.fullLoad = true;
+      },
+      error: (error) => {
+        this.sitePerformance.additionalItems.push({
+          title: 'CFE network consumption',
+          description: null,
+        })
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.error(error)
+      }
+    })
   }
 
   onFormValuesChanged(values: any) {
