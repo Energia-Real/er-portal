@@ -1,29 +1,32 @@
 <div class="c-main px-16 c-management" [class.sombreado]="drawerOpen">
     <div>
-        <div class="flex justify-end mb-2 justify-between mb-4">
-            <form class="relative w-80 c-search">
-                <label class="input-search">
-                    <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                </label>
-                <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
-                    [formControl]="searchBar">
-            </form>
+        <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
+            <div class=" col-span-1 md:col-span-1">
+                <form class="relative w-80 c-search">
+                    <label class="input-search">
+                        <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
+                    </label>
+                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by site name"
+                        [formControl]="searchBar">
+                </form>
+            </div>
 
-            <div class="d-flex justify-between gap-2">
-                <button class="btn-cancel d-flex gap-2 align-items-center" (click)="toggleDrawer()" type="button">
-                    <i class="fa-solid fa-eye"></i>
-                    See types of clients
-                </button>
+            <div class="col-span-1 md:col-span-1 ">
+                <div class="flex justify-end gap-2 mt-3 md:mt-0">
+                    <button class="btn-cancel flex gap-2 items-center" (click)="toggleDrawer()" type="button">
+                        <i class="fa-solid fa-eye"></i>
+                        See types of clients
+                    </button>
 
-                <button class="btn-action-add" (click)="toggleDrawerClient()">
-                    <i class="fa-solid fa-plus"></i>
-                    Add new client
-                </button>
+                    <button class="btn-action-add" (click)="toggleDrawerClient()">
+                        <i class="fa-solid fa-plus"></i>
+                        Add new client
+                    </button>
+                </div>
             </div>
         </div>
 
-        <app-new-client [isOpen]="drawerOpenClient" [modeDrawer]="drawerAction"
-            [client]="drawerInfo"></app-new-client>
+        <app-new-client [isOpen]="drawerOpenClient" [modeDrawer]="drawerAction" [client]="drawerInfo"></app-new-client>
         <app-types-clients [isOpen]="drawerOpen"></app-types-clients>
 
         <div class="c-table">

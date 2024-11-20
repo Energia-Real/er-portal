@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LayoutRoutingModule } from './layout-routing.module';
 import { LayoutComponent } from './layout/layout.component';
 import { SharedComponensModule } from "../shared/components/shared-components.module";
+import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { SharedComponensModule } from "../shared/components/shared-components.mo
   imports: [
     CommonModule,
     LayoutRoutingModule,
-    SharedComponensModule
+    SharedComponensModule,
+    MessageNoDataComponent
   ]
 })
 export class LayoutModule { }

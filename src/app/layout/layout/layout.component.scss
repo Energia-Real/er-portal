@@ -42,9 +42,20 @@
     margin-top: 5px;
     font-weight: 500;
     font-size: 14px;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
+
+    ::ng-deep .no-data-found {
+      color: #FFFFFF !important;
+    }
+
+    span {
+      color: #FFFFFF !important;
+
+    }
   }
+
 }
+
 
 .c-version {
   display: flex;
