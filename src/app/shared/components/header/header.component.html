@@ -89,12 +89,42 @@
           </div>
         </mat-menu>
       </div>
-      <button [matMenuTriggerFor]="menu" mat-icon-button>
-        <mat-icon class="custom-icon-color">notifications_outlined</mat-icon>
+      <button 
+        [matMenuTriggerFor]="notificationsMenu" 
+        mat-icon-button 
+       >
+       <div 
+          [matBadge]="notifications.length + ' +'"
+          [matBadgeHidden]="!hasNotifications" 
+          matBadgeSize="small" 
+          matBadgeColor="primary" 
+          class="badge-container">
+          <img 
+            src="../../../../../assets/svg/notifications.svg" 
+            alt="Icon notification"
+            class="notification-icon" />
+        </div>
       </button>
+
       <button [matMenuTriggerFor]="menu" mat-icon-button>
-        <mat-icon class="custom-icon-color">account_circle</mat-icon>
+        <mat-icon 
+        class="custom-icon-color"
+        >
+        
+        account_circle</mat-icon>
       </button>
+      <mat-menu #notificationsMenu="matMenu"  xPosition="before" yPosition="below" class="notificationsMenu" (opened)="updateLocalNotifications()" >
+        <div *ngFor="let notification of notifications; trackBy: trackByNotificationId" >
+          <app-notification-card-center  [notification]="notification"></app-notification-card-center>
+        </div>
+        <div class="notifications-footer mb-2 mt-3 " *ngIf="notifications.length==6">
+          <button class="footer-button">
+            <img class="eye-icon" src="../../../../assets/img/eye-open-orange.png" alt="Eye Open">
+            <span class="ml-1">See More</span>
+          </button>   
+        </div>
+      </mat-menu>
+
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="signOut()">Sign out</button>
       </mat-menu>

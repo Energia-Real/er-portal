@@ -101,6 +101,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   saveDataPost(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
     delete objData.clientId;
+    console.log(notificationmessages)
     this.moduleServices.postDataClient(objData,notificationmessages).subscribe({
     })
   }
@@ -196,22 +197,28 @@ export class NewClientComponent implements OnInit, OnDestroy {
         switch(result.action){
           case this.ADD:
             let snackMessagesAdd:NotificationMessages = {
-              completedTitle:NOTIFICATION_CONSTANTS.ADD_CLIENT_COMPLETE_TITLE,
-              completedContent:NOTIFICATION_CONSTANTS.ADD_CLIENT_COMPLETE_CONTENT,
-              errorTitle:'',
-              errorContent:'',
-              notificationId:this.notificationId
+              completedTitleSnack:NOTIFICATION_CONSTANTS.ADD_CLIENT_COMPLETE_TITLE,
+              completedContentSnack:NOTIFICATION_CONSTANTS.ADD_CLIENT_COMPLETE_CONTENT,
+              errorTitleSnack:'',
+              errorContentSnack:'',
+              notificationId:this.notificationId,
+              successCenterMessage:NOTIFICATION_CONSTANTS.ADD_CLIENT_SUCCESS,
+              errorCenterMessage:NOTIFICATION_CONSTANTS.ADD_GENERAL_ERROR,
+              userId:this.user.id
             }
             this.saveDataPost(snackMessagesAdd);
             this.closeDrawer(true)
             return;
           case this.EDIT:
             let snackMessagesEdit:NotificationMessages = {
-              completedTitle:NOTIFICATION_CONSTANTS.EDIT_CLIENT_COMPLETE_TITLE,
-              completedContent:NOTIFICATION_CONSTANTS.EDIT_CLIENT_COMPLETE_CONTENT,
-              errorTitle:'',
-              errorContent:'',
-              notificationId:this.notificationId
+              completedTitleSnack:NOTIFICATION_CONSTANTS.EDIT_CLIENT_COMPLETE_TITLE,
+              completedContentSnack:NOTIFICATION_CONSTANTS.EDIT_CLIENT_COMPLETE_CONTENT,
+              errorTitleSnack:'',
+              errorContentSnack:'',
+              notificationId:this.notificationId,
+              successCenterMessage:NOTIFICATION_CONSTANTS.EDIT_CLIENT_SUCCESS,
+              errorCenterMessage:NOTIFICATION_CONSTANTS.EDIT_GENERAL_ERROR,
+              userId:this.user.id
             }
             this.saveDataPatch(snackMessagesEdit)
             this.closeDrawer(true)

@@ -6,6 +6,8 @@ import { LoadingService } from './loading.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '@environment/environment';
+import { Store } from '@ngrx/store';
+import { NotificationService } from '@app/shared/services/notification.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
@@ -14,7 +16,9 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(
     private loadingService: LoadingService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private store: Store,
+    private notificationService: NotificationService
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -22,7 +26,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     if (this.activeRequests === 0) {
       this.loadingService.show();
     }
-    if( !req.url.startsWith(environment.API_URL_NOTIFICATIONS)){
+    if( !req.url.includes(environment.API_URL_NOTIFICATIONS)){
       this.activeRequests++;
     }
 
@@ -37,7 +41,10 @@ export class LoadingInterceptor implements HttpInterceptor {
         return throwError(error);
       }),
       finalize(() => {
-        this.activeRequests--;
+        if( !req.url.includes(environment.API_URL_NOTIFICATIONS)){
+          this.activeRequests--;
+        }
+    
         if (this.activeRequests === 0) {
           this.loadingService.hide();
         }

@@ -1,0 +1,33 @@
+<div *ngIf="messages" class="card-notification my-6 mx-6">
+
+    <div [ngClass]="{
+        'circle': true,
+        'add-circle-success': type.nombreTipo == ADD && stauts.nombreEstatus ==COMPLETED ,
+        'add-circle-failed': type.nombreTipo == ADD && stauts.nombreEstatus ==FAILED ,
+
+      }">
+        <ng-container class="add-circle-success" *ngIf="type.nombreTipo == ADD && stauts.nombreEstatus ==COMPLETED ">
+            <mat-icon>add_circle_outlined</mat-icon>
+        </ng-container>
+         <ng-container class="add-circle-failed" *ngIf="type.nombreTipo == ADD && stauts.nombreEstatus ==FAILED">
+            <img src="../../../../../assets/svg/alert.svg" alt="Icon alert">
+        </ng-container>
+    </div>
+
+    <div class="c-notification ml-4">
+        <div class="title">
+            {{messages.title}}
+        </div>
+        <div class="body">
+            {{messages.body}}
+        </div>
+        <div class="timeAgo">
+            {{notification.date | timeAgo}}
+        </div>
+    </div>
+
+    <div class="ml-6">
+        <mat-icon>close</mat-icon>
+    </div>
+</div>
+<mat-divider class="mt-2"></mat-divider>

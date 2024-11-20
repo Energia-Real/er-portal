@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import{NotificationServiceData,EditNotificationStatus}from '@app/shared/models/general-models';
+import{NotificationServiceData,EditNotificationStatus, GeneralResponse, NotificationsResponse,Notification}from '@app/shared/models/general-models';
 import { environment } from '@environment/environment';
 
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,8 +11,13 @@ export class NotificationService {
 	private API_URL_NOTIFICATIONS = environment.API_URL_NOTIFICATIONS;
   private notificationStatuses: any;
   private notificationTypes: any;
+  private notificationCenterMessages: any;
+  private notifications: Notification[]=[];
+
   private isLoadedStatus = false;
   private isLoadedTypes = false;
+  private isLoadedCenterMessages = false;
+
 
 
   constructor(private http: HttpClient) { }
@@ -63,12 +68,63 @@ export class NotificationService {
     }
   }
 
-  getNotificationStatusByName(nombreEstatus: string): any | undefined {
-    return this.notificationStatuses.find((status: { nombreEstatus: string; }) => status.nombreEstatus === nombreEstatus);
+  loadNotificationCenterMessages(): Observable<any> {
+    if (this.isLoadedCenterMessages) {
+      return new Observable((observer) => {
+        observer.next(this.notificationCenterMessages);
+        observer.complete();
+      });
+    } else {
+      const url = `${this.API_URL_NOTIFICATIONS}/notification/centerTexts`;
+      return this.http.get<any>(url)
+        .pipe(
+          tap(data => {
+            this.notificationCenterMessages = data.response.notificationCenterTextResponse;
+            this.isLoadedCenterMessages = true; 
+          })
+        );
+    }
   }
 
-  getNotificationTypesByName(nombreTipo: string): any | undefined {
-    return this.notificationTypes.find((status: { nombreTipo: string; }) => status.nombreTipo === nombreTipo);
+  updateNotificationsCenter(userId: string): Observable<Notification[]> {
+    const url = `${this.API_URL_NOTIFICATIONS}/notification/${userId}/historial`;
+    return this.http.get<{ response: { notificationsResponse: Notification[] } }>(url)
+      .pipe(
+        tap(data => {
+          this.notifications = data.response.notificationsResponse; 
+        }),
+        map(data => data.response.notificationsResponse) 
+      );
+  }
+  
+
+  getNotificationStatusByName(statusName: string): any | undefined {
+    return this.notificationStatuses.find((status: { nombreEstatus: string; }) => status.nombreEstatus === statusName);
+  }
+
+  getNotificationStatusById(statusNameId: number): any | undefined {
+    return this.notificationStatuses.find((status: { id: number; }) => status.id === statusNameId);
+  }
+
+  getNotificationTypesByName(statusType: string): any | undefined {
+    return this.notificationTypes.find((type: { nombreTipo: string; }) => type.nombreTipo === statusType);
+  }
+
+  getNotificationTypesById(statusTypeId: number): any | undefined {
+    return this.notificationTypes.find((type: { id: number; }) => type.id === statusTypeId);
+  }
+
+
+  getNotificationCenterMessageByCode(code: string): any | undefined {
+    return this.notificationCenterMessages.find((centerMessage: { textKey: string; }) => centerMessage.textKey === code);
+  }
+
+  getNotificationCenterMessageById(id: number): any | undefined {
+    return this.notificationCenterMessages.find((centerMessage: { id: number; }) => centerMessage.id === id);
+  }
+
+  getNotifications(): any | undefined {
+    return this.notifications;
   }
 
 }
