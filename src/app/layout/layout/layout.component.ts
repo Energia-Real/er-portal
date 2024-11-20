@@ -34,7 +34,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.notificationService.loadNotificationCenterMessages().subscribe(resp=>{
     });
     this.authService.getInfoUser().subscribe(role => {
-      
+      this.userInfo = role
       if (this.router.url === '/er') {
         if (role.accessTo === 'BackOffice') {
           this.router.navigate(['backoffice-home'], { relativeTo: this.route });
