@@ -120,6 +120,66 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
+
+  getInvoiceById() {
+    this.moduleServices.getInvoiceById('').subscribe({
+      next: (response: any) => {
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  createInvoice() {
+    const objData: entity.CreateInvoice | any = {}
+    this.moduleServices.createInvoice(objData).subscribe({
+      next: (response: any) => {
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  editInvoice() {
+    const objData: entity.EditInvoice | any = {}
+    this.moduleServices.editInvoice('', objData).subscribe({
+      next: (response: any) => {
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  updateInvoiceStatus() {
+    const objData: entity.UpdateInvoiceStatus | any = {}
+    this.moduleServices.updateInvoiceStatus('', objData).subscribe({
+      next: (response: any) => {
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  updateMultipleInvoiceStatuses() {
+    const objData: entity.UpdateMultipleInvoiceStatuses | any = {}
+    this.moduleServices.updateMultipleInvoiceStatuses(objData).subscribe({
+      next: (response: any) => {
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
   updateModifiedElements() {
     this.modifiedElements.forEach(data => {
       delete data.formattedGeneratedEnergyKwh;
@@ -186,7 +246,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.router.navigateByUrl(link);
   }
 
-  
+
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;

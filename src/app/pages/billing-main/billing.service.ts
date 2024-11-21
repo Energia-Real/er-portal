@@ -36,6 +36,36 @@ export class BillingService implements OnDestroy {
     return this.http.post<any>(url, requestData)
   }
 
+  getInvoiceById(id: string) {
+    const url = `${this.API_URL}/invoices/${id}`;
+
+    return this.http.get<entity.InvoiceResponse>(url);
+  }
+
+  createInvoice(data: entity.CreateInvoice) {
+    const url = `${this.API_URL}/invoices`;
+
+    return this.http.post<any>(url, data);
+  }
+
+  editInvoice(id: string, data: entity.EditInvoice) {
+    const url = `${this.API_URL}/invoices${id}`;
+
+    return this.http.put<any>(url, data);
+  }
+
+  updateInvoiceStatus(id: string, data: entity.UpdateInvoiceStatus) {
+    const url = `${this.API_URL}/invoices${id}/status`;
+
+    return this.http.put<any>(url, data);
+  }
+
+  updateMultipleInvoiceStatuses(data: entity.UpdateMultipleInvoiceStatuses) {
+    const url = `${this.API_URL}/invoices/status`;
+
+    return this.http.put<entity.UpdateMultipleInvoiceStatusesResponse>(url, data);
+  }
+
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();
