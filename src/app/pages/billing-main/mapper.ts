@@ -20,7 +20,7 @@ export class Mapper {
 				formattedAmountWithIva: formatsService.moneyFormat(parseFloat(data.amountWithIva)),
 				generatedEnergyKwh: data.generatedEnergyKwh,
 				originalGeneratedEnergyKwh: data.generatedEnergyKwh,
-				formattedGeneratedEnergyKwh: formatsService.energyFormat(data.generatedEnergyKwh)
+				formattedGeneratedEnergyKwh: formatsService.energyWithDecimals(parseFloat(data.generatedEnergyKwh))
 			});
 		});
 

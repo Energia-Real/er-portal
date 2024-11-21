@@ -1,6 +1,6 @@
 <div class="c-global c-detail-site">
-    <div class="row">
-        <div class="col-md-6 mb-3 mb-lg-0">
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-2 md:col-span-1">
             <div class="c-card-info-site-details" *ngIf="!showAlert else notData">
                 <div *ngFor="let data of siteDetails?.primaryElements; let idx = index"
                     [ngClass]="{'card-container-50': idx < 2, 'card-container-33': idx >= 2}">
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="col-md-6 text-center" *ngIf="siteDetails && urlMap">
+        <div class="col-span-2 md:col-span-1 text-center" *ngIf="siteDetails && urlMap">
             <p *ngIf="plantData.latitude">Map loaded using the following coordinates: <br> Latitude: <span
                     class="color-EE5427">{{ plantData.latitude }}</span>, Longitude: <span class="color-EE5427">{{
                     plantData.longitude }}</span></p>

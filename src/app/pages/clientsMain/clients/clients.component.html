@@ -29,29 +29,47 @@
         <app-new-client [isOpen]="drawerOpenClient" [modeDrawer]="drawerAction" [client]="drawerInfo"></app-new-client>
         <app-types-clients [isOpen]="drawerOpen"></app-types-clients>
 
+        <div class="c-paginator-top mt-5">
+            <strong>items per page</strong>
+            <mat-form-field>
+                <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
+                    <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
+                            }}</strong></mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
         <div class="c-table">
             <table mat-table [dataSource]="dataSource" matSort class="table-assets">
                 <ng-container matColumnDef="image">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Logo</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Logo</div>
+                    </th>
                     <td mat-cell *matCellDef="let element" style="width: 100px;">
                         <img [src]="element.imageBase64" *ngIf="element.imageBase64" alt="Client Image" />
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="clientName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Client name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Client name</div>
+                    </th>
                     <td mat-cell *matCellDef="let element"> {{ element?.nombre }} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="clientId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID client</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">ID client</div>
+                    </th>
                     <td mat-cell *matCellDef="let element">
                         <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="typeClient">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type of client</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Type of client</div>
+                    </th>
                     <td mat-cell *matCellDef="let element">
                         <div *ngIf="element?.tipoDeCliente?.id else notDataTable"> {{ element?.tipoDeCliente?.tipo }}
                         </div>
@@ -59,7 +77,9 @@
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="target w-24">Actions</div>
+                    </th>
                     <td mat-cell *matCellDef="let element">
                         <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                         <mat-menu #menu="matMenu">

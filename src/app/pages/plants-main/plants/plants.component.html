@@ -44,6 +44,16 @@
   </div>
 
   <div class="c-scroll">
+    <div class="c-paginator-top mt-5">
+      <strong>items per page</strong>
+      <mat-form-field>
+          <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
+              <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
+                      }}</strong></mat-option>
+          </mat-select>
+      </mat-form-field>
+  </div>
+
     <div class="c-table">
       <table mat-table [dataSource]="dataSource" matSort class="table-assets">
         <ng-container matColumnDef="clientId">

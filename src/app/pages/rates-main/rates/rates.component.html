@@ -1,17 +1,18 @@
 <div class="c-main px-16">
-    <div class="grid grid-cols-3 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1">
             <div class="btns-excel">
                 <button (click)="downloadExcel()" class="btn-action-add">
                     <span class="material-symbols-outlined">download</span>
                     Download Template
                 </button>
-    
+
                 <button class="btn-upload" (click)="fileInput.click()">
                     <span class="material-symbols-outlined">upload</span>
                     Bulk upload
                 </button>
-                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                    style="display: none;" />
             </div>
         </div>
 
@@ -27,8 +28,21 @@
             </div>
         </div>
 
+        <div class="col-span-1"></div>
     </div>
 
+    <div class="separator-cards mt-4 mb-4"></div>
+
+    <div class="c-paginator-top ">
+        <strong>items per page</strong>
+        <mat-form-field>
+            <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
+                <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
+                        }}</strong></mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    
     <div class="c-table mt-3">
         <table mat-table [dataSource]="dataSource" matSort class="table-assets">
             <ng-container matColumnDef="rpu">

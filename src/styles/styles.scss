@@ -879,6 +879,9 @@ input[type="number"]:focus {
 }
 
 .c-paginator {
+  .mat-mdc-paginator-page-size {
+    display: none;
+  }
   .mat-mdc-paginator-range-label {
     font-weight: bold;
   }

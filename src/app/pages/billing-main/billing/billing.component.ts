@@ -12,6 +12,8 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { PeriodicElement } from '@app/pages/plants-main/plants-model';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-billing',
@@ -27,10 +29,11 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
+    'checkbox',
     'rpu',
     'clientName',
     'plantName',
@@ -40,9 +43,13 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'rate',
     'amount',
     'amountWithIva',
+    'actions',
   ];
   pageSizeSub!: Subscription;
   pageIndexSub!: Subscription;
+  selection = new SelectionModel<PeriodicElement>(true, []);
+
+  allRowsInit: boolean = false;
 
   formatTimer: any;
 
@@ -179,10 +186,43 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.router.navigateByUrl(link);
   }
 
+  
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  toggleRow(row: any) {
+    this.selection.toggle(row);
+  }
+
+
+  checkboxLabel(row?: PeriodicElement): string {
+    if (!row) return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
   getServerData(event: PageEvent): void {
     if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
+  }
+
+  changePageSize(event: any) {
+    this.pageSize = event.value;
+    this.paginator.pageSize = this.pageSize;
+    this.paginator._changePageSize(this.pageSize);
   }
 
   completionMessage() {
