@@ -16,6 +16,7 @@ import { environment } from '../environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { drawerReducer } from './core/store/reducers/drawer.reducer';
 import { filterReducer } from './core/store/reducers/filters.reducer';
+import { notificationsReducer } from './core/store/reducers/notifications.reducer';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -25,7 +26,7 @@ import { filterReducer } from './core/store/reducers/filters.reducer';
     HttpClientModule,
     GoogleMapsModule,
     CoreModule,
-    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer }),
+    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer, notifications:notificationsReducer }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
   ],
   providers: [

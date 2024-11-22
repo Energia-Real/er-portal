@@ -31,9 +31,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.notificationService.loadNotificationStatuses().subscribe();
     this.notificationService.loadNotificationTypes().subscribe();
+    this.notificationService.loadNotificationCenterMessages().subscribe(resp=>{
+    });
     this.authService.getInfoUser().subscribe(data => {
-      console.log(data);
-      
       this.userInfo = data
       if (this.router.url === '/er') {
         if (data.accessTo === 'BackOffice') {

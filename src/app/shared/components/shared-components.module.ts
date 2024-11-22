@@ -9,6 +9,8 @@ import { MapaComponent } from './mapa/mapa.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ConfirmationSnackbarComponent } from './confirmation-snackbar/confirmation-snackbar.component';
+import { NotificationCardCenterComponent } from './notification-card-center/notification-card-center.component';
+import { TimeAgoPipe } from '../pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { ConfirmationSnackbarComponent } from './confirmation-snackbar/confirmat
     MapaComponent,
     TooltipComponent,
     NotificationComponent,
-    ConfirmationSnackbarComponent
+    ConfirmationSnackbarComponent,
+    NotificationCardCenterComponent,
+    TimeAgoPipe
   ],
   imports: [
     CommonModule,
@@ -31,7 +35,8 @@ import { ConfirmationSnackbarComponent } from './confirmation-snackbar/confirmat
     FooterComponent,
     MapaComponent,
     TooltipComponent,
-    NotificationComponent
+    NotificationComponent,
+    TimeAgoPipe
   ]
 })
 export class SharedComponensModule { }

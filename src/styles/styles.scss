@@ -1050,6 +1050,10 @@ input[type="number"]:focus {
   }
 }
 
+.mdc-snackbar__surface{
+  border-radius: 10px !important;
+}
+
 
 
 .mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background,

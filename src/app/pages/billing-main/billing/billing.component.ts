@@ -290,6 +290,30 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.getBilling(this.searchBar?.value!);
   }
 
+
+  exportInformation(){
+    this.moduleServices.downloadExcelReport({
+      startDate:this.generalFilters.startDate,
+      endDate:this.generalFilters.endDate!,
+      plantName: this.searchBar?.value!
+    }).subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'ExcelTemplate.xlsx';
+        link.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: error => {
+        this.notificationService.notificacion('Talk to the administrator.', 'alert');
+        console.log(error);
+      }
+    })
+  }
+
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
