@@ -42,32 +42,40 @@
             </mat-select>
         </mat-form-field>
     </div>
-    
+
     <div class="c-table mt-3">
         <table mat-table [dataSource]="dataSource" matSort class="table-assets">
             <ng-container matColumnDef="rpu">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>RPU</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">RPU</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.rpu else notDataTable"> {{ element.rpu }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="clientName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Client name</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Client name</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="plantName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plant name</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Plant name</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.plantName else notDataTable"> {{ element.plantName }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="month">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Month</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.month else notDataTable"> {{ getMonthName(element.month) }} </div>
                 </td>
@@ -75,14 +83,18 @@
 
 
             <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Year</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="kwh">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Pricing</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Pricing</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.kwh else notDataTable"> {{ element.kwh }} </div>
                 </td>
