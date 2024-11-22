@@ -49,6 +49,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     'energyMonth10',
     'energyMonth11',
     'energyMonth12',
+    'annualTotal',
   ];
 
   pageSizeSub: Subscription;
