@@ -157,6 +157,12 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.router.navigateByUrl(link);
   }
 
+  changePageSize(event: any) {
+    this.pageSize = event.value;
+    this.paginator.pageSize = this.pageSize;
+    this.paginator._changePageSize(this.pageSize);
+  }
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();

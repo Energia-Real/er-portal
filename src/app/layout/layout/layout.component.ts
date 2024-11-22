@@ -33,16 +33,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.notificationService.loadNotificationTypes().subscribe();
     this.notificationService.loadNotificationCenterMessages().subscribe(resp=>{
     });
-    this.authService.getInfoUser().subscribe(role => {
-      this.userInfo = role
+    this.authService.getInfoUser().subscribe(data => {
+      this.userInfo = data
       if (this.router.url === '/er') {
-        if (role.accessTo === 'BackOffice') {
+        if (data.accessTo === 'BackOffice') {
           this.router.navigate(['backoffice-home'], { relativeTo: this.route });
-        } else if (role.accessTo === 'Admin') {
+        } else if (data.accessTo === 'Admin') {
           this.router.navigate(['admin-home'], { relativeTo: this.route });
-        } else if (role.accessTo === 'Clients') {
+        } else if (data.accessTo === 'Clients') {
           this.router.navigate(['client-home'], { relativeTo: this.route });
-        } else if (role.accessTo === 'Billing') {
+        } else if (data.accessTo === 'Billing') {
           this.router.navigate(['rates'], { relativeTo: this.route });
         } else {
           this.router.navigate(['/login']);

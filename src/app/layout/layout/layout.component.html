@@ -25,7 +25,11 @@
           src="../../../../assets/icons/user-profile-icon.svg" alt="Logo">
         <p class="animate-durations"
           [ngClass]="{'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen}"
-          *ngIf="isSidebarHovered || keepOpen">USER</p>
+          *ngIf="isSidebarHovered || keepOpen">
+          
+          <span *ngIf="userInfo?.persona else notDataTable"> {{userInfo?.persona?.nombres || '-'}} {{userInfo?.persona?.apellidos || ''}}</span>
+
+        </p>
       </div>
 
       <div class="linea"></div>
@@ -121,3 +125,9 @@
     <app-footer></app-footer>
   </div>
 </div>
+
+
+
+<ng-template #notDataTable>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>

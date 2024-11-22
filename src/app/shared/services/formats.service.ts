@@ -20,6 +20,16 @@ export class FormatsService {
       });
     } else return '';
   }
+ 
+  energyWithDecimals(content: string | number): string {
+    let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
+    if (!isNaN(numberValue)) {
+      return numberValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    } else return '';
+  }
     
   homeGraphFormat(content:string):number{
     let cleanString = content.replace(/,/g, '');
