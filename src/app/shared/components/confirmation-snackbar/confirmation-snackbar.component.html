@@ -1,4 +1,4 @@
-<div class="custom-snackbar-container m-6">
+<div class="custom-snackbar-container">
     <div [ngClass]="{
         'circle': true,
         'complete-circle': data.type === 'COMPLETE',
@@ -13,7 +13,13 @@
     </div>    
             
     <div class="snack-body">
-        <strong class="mb-6">{{data.title}}</strong>
-        <span class="mb-3">{{data.subtitle}}</span>
+        <strong class="mb-2">{{data.title}}</strong>
+        <span class="mb-2">{{data.subtitle}}</span>
+    </div>
+
+    <div class="ml-2">
+        <button mat-icon-button (click)="closeSnackBar()">
+            <mat-icon>close</mat-icon>
+          </button>
     </div>
 </div>

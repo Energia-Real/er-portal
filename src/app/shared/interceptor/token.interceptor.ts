@@ -1,7 +1,7 @@
 // token.interceptor.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 import { environment } from '@environment/environment';
 import { AuthService } from '@app/auth/auth.service';
 import { NotificationService } from '@app/shared/services/notification.service';
@@ -67,11 +67,15 @@ export class TokenInterceptor implements HttpInterceptor {
             subtitle:notificationData.completedContentSnack
           }
           this.openCustomComponentSnackBar(snackData);
-          this.notificationService.updateNotificationStatus(editStatusData).subscribe()  
-          this.notificationService.updateNotificationsCenter(notificationData.userId).subscribe(notifications => {
-            this.store.dispatch(updateNotifications({ notifications:notifications}))
-
-          });      
+          this.notificationService.updateNotification(editStatusData)
+          .pipe(
+            switchMap(() => 
+              this.notificationService.updateNotificationsCenter(notificationData.userId)
+            )
+          )
+          .subscribe(notifications => {
+            this.store.dispatch(updateNotifications({ notifications }));
+          });
         }
       }),
       catchError((error: HttpErrorResponse) => {
@@ -88,10 +92,14 @@ export class TokenInterceptor implements HttpInterceptor {
             subtitle:this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).body
           }
           this.openCustomComponentSnackBar(snackData);
-          this.notificationService.updateNotificationStatus(editStatusData).subscribe() 
-          this.notificationService.updateNotificationsCenter(notificationData.userId).subscribe(notifications => {
-            this.store.dispatch(updateNotifications({ notifications:notifications}))
-
+          this.notificationService.updateNotification(editStatusData)
+          .pipe(
+            switchMap(() => 
+              this.notificationService.updateNotificationsCenter(notificationData.userId)
+            )
+          )
+          .subscribe(notifications => {
+            this.store.dispatch(updateNotifications({ notifications }));
           });
 
         }

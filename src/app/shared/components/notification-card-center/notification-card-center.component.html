@@ -1,16 +1,23 @@
-<div *ngIf="messages" class="card-notification my-6 mx-6" @fadeOut>
+<div *ngIf="isRendered; else loading"     class="card-notification my-6 mx-6">
 
     <div [ngClass]="{
         'circle': true,
         'add-circle-success': type.nombreTipo == ADD && stauts.nombreEstatus ==COMPLETED ,
-        'add-circle-failed': type.nombreTipo == ADD && stauts.nombreEstatus ==FAILED ,
+        'general-circle-failed': (type.nombreTipo == ADD || type.nombreTipo == EDIT|| type.nombreTipo == DELETE  ) && stauts.nombreEstatus ==FAILED ,
+        'edit-circle-success' : type.nombreTipo == EDIT && stauts.nombreEstatus ==COMPLETED ,
+        'edit-circle-error' : type.nombreTipo == EDIT && stauts.nombreEstatus ==FAILED ,
+        
+
 
       }">
         <ng-container class="add-circle-success" *ngIf="type.nombreTipo == ADD && stauts.nombreEstatus ==COMPLETED ">
             <mat-icon>add_circle_outlined</mat-icon>
         </ng-container>
-         <ng-container class="add-circle-failed" *ngIf="type.nombreTipo == ADD && stauts.nombreEstatus ==FAILED">
+         <ng-container class="general-circle-failed" *ngIf="(type.nombreTipo == ADD || type.nombreTipo == EDIT || type.nombreTipo == DELETE) && stauts.nombreEstatus ==FAILED">
             <img src="../../../../../assets/svg/alert.svg" alt="Icon alert">
+        </ng-container>
+        <ng-container class="edit-circle-success" *ngIf="type.nombreTipo == EDIT && stauts.nombreEstatus ==COMPLETED">
+            <img src="../../../../../assets/svg/save_success.svg" alt="Icon save">
         </ng-container>
     </div>
 
@@ -30,4 +37,11 @@
         <mat-icon (click)="deleteNotification();$event.stopPropagation()">close</mat-icon>
     </div>
 </div>
+
+<ng-template #loading>
+    <div class="loading-container">
+      <p>Cargando notificación...</p>
+    </div>
+  </ng-template>
+
 <mat-divider class="mt-2"></mat-divider>

@@ -52,6 +52,7 @@
       <button 
         [matMenuTriggerFor]="notificationsMenu" 
         mat-icon-button 
+        [disabled]="!notifications || notifications.length === 0"
        >
        <div 
           [matBadge]="notifications.length + ' +'"
@@ -62,11 +63,17 @@
           <img 
             src="../../../../../assets/svg/notifications.svg" 
             alt="Icon notification"
-            class="notification-icon" />
+            class="notification-icon"
+            [ngClass]="{ 'disabled-icon': !notifications || notifications.length === 0 }"
+
+            />
         </div>
       </button>
 
-      <button [matMenuTriggerFor]="menu" mat-icon-button>
+      <button 
+      [matMenuTriggerFor]="menu" 
+      mat-icon-button
+      >
         <mat-icon 
         class="custom-icon-color"
         >
@@ -81,9 +88,11 @@
       [hidden]="!menuOpen"
       (opened)="menuOpen = true; updateLocalNotifications()" 
       (closed)="menuOpen = false"
+      
       >
         <div *ngFor="let notification of notifications; trackBy: trackByNotificationId" >
-          <app-notification-card-center  
+          <app-notification-card-center
+          [@fadeOut]
           [notification]="notification"
           (notificationDeleted)="removeNotification(notification)"
           (click)="$event.stopPropagation();"

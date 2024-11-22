@@ -149,7 +149,10 @@
  ::ng-deep .mat-mdc-menu-panel.notificationsMenu {
    min-width: 528px !important;
    max-height: 480px !important;
+  }
 
+  ::ng-deep .mat-mdc-menu-content{
+    padding: 0px !important;
   }
 
   .notifications-footer{
@@ -184,3 +187,8 @@
     }
    
   }
+
+ 
+.disabled-icon {
+  filter: grayscale(80%) brightness(1.2) opacity(0.5);
+}

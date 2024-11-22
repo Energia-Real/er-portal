@@ -23,7 +23,7 @@ export class LoadingInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
-    if (this.activeRequests === 0) {
+    if (this.activeRequests === 0 && !req.url.includes(environment.API_URL_NOTIFICATIONS)) {
       this.loadingService.show();
     }
     if( !req.url.includes(environment.API_URL_NOTIFICATIONS)){
@@ -45,7 +45,7 @@ export class LoadingInterceptor implements HttpInterceptor {
           this.activeRequests--;
         }
     
-        if (this.activeRequests === 0) {
+        if (this.activeRequests === 0 && !req.url.includes(environment.API_URL_NOTIFICATIONS)) {
           this.loadingService.hide();
         }
       })

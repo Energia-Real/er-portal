@@ -101,7 +101,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
   saveDataPost(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
     delete objData.clientId;
-    console.log(notificationmessages)
     this.moduleServices.postDataClient(objData,notificationmessages).subscribe({
     })
   }
@@ -203,7 +202,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
               errorContentSnack:'',
               notificationId:this.notificationId,
               successCenterMessage:NOTIFICATION_CONSTANTS.ADD_CLIENT_SUCCESS,
-              errorCenterMessage:NOTIFICATION_CONSTANTS.ADD_GENERAL_ERROR,
+              errorCenterMessage:NOTIFICATION_CONSTANTS.ADD_CLIENT_ERROR,
               userId:this.user.id
             }
             this.saveDataPost(snackMessagesAdd);
@@ -217,7 +216,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
               errorContentSnack:'',
               notificationId:this.notificationId,
               successCenterMessage:NOTIFICATION_CONSTANTS.EDIT_CLIENT_SUCCESS,
-              errorCenterMessage:NOTIFICATION_CONSTANTS.EDIT_GENERAL_ERROR,
+              errorCenterMessage:NOTIFICATION_CONSTANTS.EDIT_CLIENT_ERROR,
               userId:this.user.id
             }
             this.saveDataPatch(snackMessagesEdit)
@@ -228,7 +227,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
               externalId: this.notificationId,
               status: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id
             }
-            this.notificationsService.updateNotificationStatus(editStatusData).subscribe(res=>{})
+            this.notificationsService.updateNotification(editStatusData).subscribe(res=>{})
             this.closeDrawer(true)
             return 
         }
@@ -238,7 +237,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
             externalId: this.notificationId,
             status: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.CANCELED_STATUS).id
           }
-          this.notificationsService.updateNotificationStatus(editStatusData).subscribe(res=>{})
+          this.notificationsService.updateNotification(editStatusData).subscribe(res=>{})
         }
       }    
     });

@@ -27,7 +27,7 @@ export class NotificationService {
     return this.http.post<any>(url, data);  
   }
 
-  updateNotificationStatus(data:EditNotificationStatus):Observable<any> {
+  updateNotification(data:EditNotificationStatus):Observable<any> {
     const url = `${this.API_URL_NOTIFICATIONS}/notification`;
     return this.http.put<any>(url, data);  
   }
@@ -62,7 +62,7 @@ export class NotificationService {
         .pipe(
           tap(data => {
             this.notificationTypes = data.response.notificationTypesResponse;
-            this.isLoadedStatus = true; 
+            this.isLoadedTypes = true; 
           })
         );
     }
