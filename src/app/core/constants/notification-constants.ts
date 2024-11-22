@@ -44,7 +44,11 @@ export const NOTIFICATION_CONSTANTS = {
 
     //Clients
     ADD_CLIENT_SUCCESS:'Add_Client_Success',
+    ADD_CLIENT_ERROR:'Add_Client_Error',
     EDIT_CLIENT_SUCCESS:'Edit_Client_Success',
+    EDIT_CLIENT_ERROR:'Edit_Client_Error',
+    DELETE_CLIENT_SUCCESS:'Delete_Client_Success',
+    DELETE_CLIENT_ERROR:'Delete_Client_Error',
 
     //Generals
     ADD_GENERAL_ERROR: 'Add_General_Error',

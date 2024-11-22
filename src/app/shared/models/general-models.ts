@@ -127,7 +127,9 @@ export interface NotificationServiceData {
 
 export interface EditNotificationStatus {
   externalId: string;
-  status: string;
+  status?: string;
+  centerTextId?: number;
+  readed?:boolean;
 }
 
 export interface SnackData{
@@ -137,9 +139,41 @@ export interface SnackData{
 }
 
 export interface NotificationMessages{
-  completedTitle:string,
-  completedContent:string,
-  errorTitle:string,
-  errorContent:string,
-  notificationId:string
+  completedTitleSnack:string,
+  completedContentSnack:string,
+  errorTitleSnack:string,
+  errorContentSnack:string,
+  notificationId:string,
+  successCenterMessage:string,
+  errorCenterMessage: string,
+  userId?:string
+}
+
+export interface Notification{
+  description : string,
+  userId: string,
+  notificationTypeId  : number,
+  notificationStatusId: number,
+  date: Date,
+  externalId: string,
+  notificationCenterTextId: number,
+  readed: boolean
+}
+
+export interface GeneralResponse<T> {
+  success: boolean,
+  response: T,
+  errors: {
+    errors: ErrorRequest[]
+  }
+}
+
+export interface NotificationsResponse {
+  notificationsResponse: Notification[];
+}
+
+export interface ErrorRequest {
+  tipo: string;
+  field: string;
+  descripcion: string;
 }
