@@ -1,14 +1,20 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
-import { distinctUntilChanged, Subject, take, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { FilterState, UserV2 } from '@app/shared/models/general-models';
+import { EditNotificationStatus, FilterState, UserV2 } from '@app/shared/models/general-models';
 import { selectFilters, selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
+import { NotificationService } from '@app/shared/services/notification.service';
+import{Notification}from '@app/shared/models/general-models';
+import { NotificationsState } from '@app/core/store/reducers/notifications.reducer';
+import { updateNotifications } from '@app/core/store/actions/notifications.actions';
+import { selectNotifications, selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
+
 
 @Component({
   selector: 'app-header',
@@ -42,16 +48,29 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   singleMonth = new FormControl(false);
 
   selectedStates: string[] = [];
+  notifications: Notification[] = [];
+
+   notificationSubscription!: Subscription  ;
+   hasNotifications = false;
+
+   menuOpen = false;
+
+
 
   constructor(
     private accountService: AuthService,
     private router: Router,
-    private store: Store<{ filters: FilterState }>
-  ) { }
+    private store: Store<{ filters: FilterState,notifications: NotificationsState }>,
+    private  notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
+
+  ) {    
+  }
 
   ngOnInit(): void {
     this.loadUserInfo();
     this.subscribeToFilters();
+    this.updateLocalNotifications();
   }
 
   ngAfterViewInit(): void {
@@ -65,7 +84,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadUserInfo() {
-    this.accountService.getInfoUser().subscribe((data: UserV2) => this.userInfo = data);
+    this.accountService.getInfoUser().subscribe((data: UserV2) =>{
+      this.userInfo = data;
+      this.updateNotificationCenter()
+    });
+  }
+
+  updateNotificationCenter(){
+    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(resp=>{
+      this.store.dispatch(updateNotifications({ notifications:this.notificationService.getNotifications()}))
+    });
   }
 
   subscribeToFilters() {
@@ -144,10 +172,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         months: formattedMonths
       };
   
-      this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState:any) => {
-
-        console.log(currentFiltersState);
-        
+      this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState:any) => {        
         if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
         if (JSON.stringify(currentFiltersState.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
         if (JSON.stringify(currentFiltersState.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
@@ -159,6 +184,40 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   signOut() {
     localStorage.removeItem('userEnergiaReal');
     this.router.navigate(['']);
+  }
+
+  updateLocalNotifications(){
+    this.notificationSubscription = this.store.select(selectTopUnreadNotifications).subscribe((notifications) => {
+      this.notifications = notifications;
+      this.hasNotifications = notifications.length > 0;
+      this.cdr.detectChanges();
+
+    });
+  }
+
+  trackByNotificationId(index: number, notification: Notification): string {
+    return notification.externalId;
+  }
+
+  removeNotification(notificationToRemove: Notification): void {  
+    const readedNotification: EditNotificationStatus = {
+      externalId: notificationToRemove.externalId,
+      readed: true
+    };
+  
+    this.notifications = this.notifications.filter(notification => notification !== notificationToRemove);
+
+    this.notificationService.updateNotification(readedNotification).pipe(
+      switchMap(() => this.notificationService.updateNotificationsCenter(this.userInfo.id)) 
+    ).subscribe({
+      next: resp => {
+        this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }));
+        this.cdr.detectChanges(); 
+      },
+      error: err => {
+        console.error('Error actualizando las notificaciones:', err);
+      }
+    });
   }
 
   ngOnDestroy(): void {

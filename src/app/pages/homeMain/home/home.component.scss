@@ -3,6 +3,10 @@
     --mdc-outlined-text-field-container-shape: 28px;
   }
 
+  .economic-savings {
+    height: 405px;
+  }
+
   .wi-progress {
     font-size: 15px !important;
     color: #000000;
@@ -11,6 +15,25 @@
   .text-sm {
     margin-top: 5px;
     line-height: 15px
+  }
+
+  .c-plants {
+    border: none;
+
+    .c-section-plant {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+
+      h2 {
+        margin-right: 20px;
+        margin-bottom: 0;
+      }
+
+      span {
+        cursor: default;
+      }
+    }
   }
 
   .c-card-section {
@@ -78,11 +101,15 @@
     }
   }
 
+  .pt-55 {
+    padding-top: 55px;
+  }
+
   .solar-coverage {
     width: 212px;
     height: 232px;
     display: flex;
-    margin-top: 24px;
+    margin-top: 22px;
     align-items: center;
     justify-content: center;
 
@@ -202,7 +229,7 @@
 
   .table-container-scroll {
     overflow-y: auto;
-    height: calc(100vh - 150px);
+    height: 450px;
     margin-bottom: 0 !important;
     margin-top: 0 !important;
     overflow-x: hidden;
@@ -217,6 +244,10 @@
 
     th {
       height: 65px;
+    }
+
+    th:first-child {
+      width: 500px;
     }
 
     .ms-edge thead {

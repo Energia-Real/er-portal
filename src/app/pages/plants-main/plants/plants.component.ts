@@ -117,6 +117,14 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.router.navigateByUrl(link);
   }
 
+  
+  changePageSize(event: any) {
+    this.pageSize = event.value;
+    this.paginator.pageSize = this.pageSize;
+    this.paginator._changePageSize(this.pageSize);
+  }
+
+  
   getServerData(event: PageEvent): void {
     this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     this.getPlants(event.pageIndex + 1, '');

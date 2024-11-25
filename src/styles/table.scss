@@ -83,6 +83,7 @@
             border-radius: 8px;
             border: 1px solid #EDEDED !important;
             font-size: 10px;
+            line-height: 13px;
         }
     }
 }
@@ -178,6 +179,7 @@ tr {
 }
 
 .table-container-scroll {
+    width: 100%;
     overflow-y: auto;
     height: calc(100vh - 500px);
     margin-bottom: 0 !important;
