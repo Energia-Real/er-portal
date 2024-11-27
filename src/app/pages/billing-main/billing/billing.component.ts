@@ -36,6 +36,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'checkbox',
     'rpu',
     'clientName',
+    'status',
     'plantName',
     'year',
     'month',

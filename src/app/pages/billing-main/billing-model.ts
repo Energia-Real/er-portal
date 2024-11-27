@@ -16,6 +16,7 @@ export interface DataBillingTable {
   amount: string;
   amountWithIva: string;
   rpu: string;
+  status: string;
   month: number;
   formattedMonth: string;
   generatedEnergyKwh: string;
