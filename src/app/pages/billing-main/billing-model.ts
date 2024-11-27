@@ -50,11 +50,9 @@ export interface FiltersBilling {
 
 
 export interface CreateInvoice {
-  plantId: string;
-  energyKwh: number;
-  amount: InvoiceAmount;
-  billingPeriod: BillingPeriod;
-  rate: number;
+  clientId: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface BillingPeriod {
