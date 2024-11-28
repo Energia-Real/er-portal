@@ -30,6 +30,8 @@ export const NOTIFICATION_CONSTANTS = {
     GLOBAL_EDIT_TITLE:'Save the changes',
     GLOBAL_EDIT_CONTENT: 'Are you sure you want to save the changes? ',
     GLOBAL_EDIT_WARN:'Once this action is performed, it cannot be undone.',
+  
+    // Clients 
     ADD_CLIENT_TITLE: 'Add new client',
     ADD_CLIENT_CONTENT: 'Please review the data carefully before saving.',
     ADD_CLIENT_WARN: 'Fields like the start date and ID cannot be edited once saved.',
@@ -39,6 +41,11 @@ export const NOTIFICATION_CONSTANTS = {
     EDIT_CLIENT_COMPLETE_CONTENT:'Your data has been successfully saved.',
     CANCEL_ADD_CLIENT_TITLE: 'Cancel new client',
     CANCEL_ADD_CLIENT_CONTENT: 'Are you sure you want to cancel adding this company? All entered information will be lost, and no changes will be saved',
+
+    // Invoices 
+    CONFIRM_INVOICE_TITLE: 'Confirm Invoice Generation',
+    CONFIRM_INVOICE_CONTENT: 'You are about to generate invoices for the selected period.',
+    CONFIRM_INVOICE_WARN : 'This action will finalize the incoices for this period and cannot be undone. Do you want to procced?',
 
     //Data for Center Notification Messages (Only message keys) 
 

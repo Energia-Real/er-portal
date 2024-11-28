@@ -11,10 +11,15 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, UserV2 } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData, NotificationServiceData, UserV2 } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-billing',
@@ -22,6 +27,9 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   styleUrl: './billing.component.scss'
 })
 export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, AfterViewInit {
+  ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
+  CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
+
   private onDestroy$ = new Subject<void>();
 
   generalFilters$!: Observable<FilterState['generalFilters']>;
@@ -71,6 +79,9 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
     private router: Router,
+    public dialog: MatDialog,
+    private notificationDataService: NotificationDataService,
+    private notificationsService: NotificationService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
@@ -142,7 +153,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   createInvoice() {
     const objData: entity.CreateInvoice | any = {
-      clientId : this.userInfo.id,
+      clientId: this.userInfo.id,
       ...this.generalFilters
     }
 
@@ -154,6 +165,11 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
         console.log(error);
       }
     });
+  }
+
+  generateInvoice() {
+    // const invoices = this.selection.selected
+    this.createNotificationModal(this.ADD);
   }
 
   editInvoice() {
@@ -188,6 +204,30 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
+      }
+    });
+  }
+
+  createNotificationModal(notificationType: string) {
+    const dataNotificationModal: notificationData = this.notificationDataService.invoicesNotificationData(notificationType, this.generalFilters)!;
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.confirmed) {
+        switch (result.action) {
+          case this.ADD:
+            console.log('AGREGAR');
+            this.createInvoice()
+
+            return;
+          case this.CANCEL:
+            console.log('CANCELAR');
+
+            return
+        }
       }
     });
   }

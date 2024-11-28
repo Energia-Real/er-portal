@@ -41,11 +41,11 @@
 
     <div class="col-span-1 d-flex align-center justify-between">
         <div class="btns-excel">
-            <button (click)="createInvoice()" class="btn-action-apply-changes" [disabled]="!modifiedElements.length" [ngClass]="{'apply-changes-active': modifiedElements.length}">
+            <button (click)="generateInvoice()" class="btn-action-apply-changes apply-changes-active" >
                 Generate Invoice
             </button>
 
-            <button class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': modifiedElements.length}">
+            <button  class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
                 Confirm invoce
             </button>
         </div>

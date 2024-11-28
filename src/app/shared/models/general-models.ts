@@ -92,6 +92,7 @@ export interface notificationData{
   type:     string,
   typeId?:   number|undefined,
   title:    string,
+  subtitle?:    string,
   content?:  string,
   warn?:     string, 
   buttonAction?: string
