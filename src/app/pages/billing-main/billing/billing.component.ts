@@ -11,7 +11,7 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, UserV2 } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
@@ -60,6 +60,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   searchBar = new FormControl('');
 
   generalFilters!: GeneralFilters
+  userInfo!: UserV2;
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -97,10 +98,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   ngOnInit(): void {
     const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-      console.log('información desencriptada',userInfo);
-    }
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
   }
 
   ngAfterViewInit(): void {
@@ -144,9 +142,10 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   createInvoice() {
     const objData: entity.CreateInvoice | any = {
-      // clientId : 
-
+      clientId : this.userInfo.id,
+      ...this.generalFilters
     }
+
     this.moduleServices.createInvoice(objData).subscribe({
       next: (response: any) => {
       },

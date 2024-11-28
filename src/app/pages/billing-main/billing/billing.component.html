@@ -41,7 +41,7 @@
 
     <div class="col-span-1 d-flex align-center justify-between">
         <div class="btns-excel">
-            <button class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': modifiedElements.length}">
+            <button (click)="createInvoice()" class="btn-action-apply-changes" [disabled]="!modifiedElements.length" [ngClass]="{'apply-changes-active': modifiedElements.length}">
                 Generate Invoice
             </button>
 
