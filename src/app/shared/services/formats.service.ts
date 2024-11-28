@@ -47,7 +47,7 @@ export class FormatsService {
       currency: 'USD',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    }).format(amount);
+    }).format(amount) + ' MXN';
   }
 
   getMonthName(month: number)  : string{

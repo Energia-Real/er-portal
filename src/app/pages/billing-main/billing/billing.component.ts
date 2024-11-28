@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as entity from '../billing-model';
 import { combineLatest, debounceTime, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,13 +14,14 @@ import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-billing',
   templateUrl: './billing.component.html',
   styleUrl: './billing.component.scss'
 })
-export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
+export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   generalFilters$!: Observable<FilterState['generalFilters']>;
@@ -36,6 +37,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'checkbox',
     'rpu',
     'clientName',
+    'status',
     'plantName',
     'year',
     'month',
@@ -68,6 +70,7 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
     private router: Router,
+    private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
@@ -90,6 +93,14 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
         this.getBilling();
       });
+  }
+
+  ngOnInit(): void {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      console.log('información desencriptada',userInfo);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -120,7 +131,6 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
   }
 
-
   getInvoiceById() {
     this.moduleServices.getInvoiceById('').subscribe({
       next: (response: any) => {
@@ -133,7 +143,10 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   }
 
   createInvoice() {
-    const objData: entity.CreateInvoice | any = {}
+    const objData: entity.CreateInvoice | any = {
+      // clientId : 
+
+    }
     this.moduleServices.createInvoice(objData).subscribe({
       next: (response: any) => {
       },
@@ -246,7 +259,6 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.router.navigateByUrl(link);
   }
 
-
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -266,7 +278,6 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
   toggleRow(row: any) {
     this.selection.toggle(row);
   }
-
 
   checkboxLabel(row?: PeriodicElement): string {
     if (!row) return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
@@ -290,11 +301,10 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.getBilling(this.searchBar?.value!);
   }
 
-
-  exportInformation(){
+  exportInformation() {
     this.moduleServices.downloadExcelReport({
-      startDate:this.generalFilters.startDate,
-      endDate:this.generalFilters.endDate!,
+      startDate: this.generalFilters.startDate,
+      endDate: this.generalFilters.endDate!,
       plantName: this.searchBar?.value!
     }).subscribe({
       next: (response: Blob) => {
@@ -312,7 +322,6 @@ export class BillingComponent implements OnDestroy, AfterViewChecked, AfterViewI
       }
     })
   }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

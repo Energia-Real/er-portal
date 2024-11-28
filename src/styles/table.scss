@@ -88,6 +88,21 @@
     }
 }
 
+.column-extend {
+    width: 170px;
+}
+
+.column-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #33A02C;
+}
+
+.column-status-pending {
+    color: #eb0a0ecc;
+}
+
 .column-maps {
     width: 170px;
 
@@ -102,6 +117,7 @@
         border-bottom-width: 1px;
         background-color: #F9F9F9;
         padding: 30px 15px;
+        text-align: center;
 
         >div {
             font-weight: 500 !important;
