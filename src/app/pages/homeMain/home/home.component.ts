@@ -18,8 +18,9 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, UserV2 } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 Chart.register(...registerables);
 @Component({
@@ -161,6 +162,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   savingsDetails!: entity.SavingDetailsResponse;
 
+  userInfo!: UserV2;
+
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
     rangeDateEnd: [{ value: '', disabled: false }]
@@ -172,6 +175,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService,
     private formatsService: FormatsService,
+    private encryptionService: EncryptionService,
     private store: Store<{ filters: FilterState }>
   ) {
     this.filters$ = this.store.select(state => state.filters.filters);
@@ -204,10 +208,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getFilters() {
     this.filters$.subscribe(filters => {
-      if (filters?.months?.length) {
-        this.getDataClients(filters);
-        this.getTooltipInfo(filters);
-      }
+      if (filters?.months?.length) this.getTooltipInfo(filters);
     });
   }
 
@@ -221,7 +222,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataClients(filters: entity.FiltersClients) {
+  getDataClients(filters: entity.GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
@@ -242,6 +243,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: (response: entity.DataRespSavingDetailsList[]) => {
         this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
           this.dataClientsList = response;
+          this.getDataClients({clientId : response[0].id, ...generalFilters});
           this.getDataSavingDetails({clientId : response[0].clientId, ...generalFilters});
           this.getDataSolarCoverga({clientId : response[0].clientId, ...generalFilters});
         });
