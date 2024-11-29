@@ -5,25 +5,25 @@ export class Mapper {
 		console.log('MAPPER', response.response.data);
 		
 		let dataList: entity.DataBillingTable[] = [];
-		response?.response?.data?.forEach((data: entity.DataBillingTable): void => {
+
+		response?.response?.data?.forEach((data: entity.BillingData): void => {
 			dataList.push({
 				...data,
 				externalId: data?.externalId || '',
-				clientName: data?.clientName || '',
-				plantName: data?.plantName || '',
-				rpu: data?.rpu || '',
+				clientName: data?.client.clientName || '',
+				plantName: data?.plant.plantName || '',
+				rpu: data?.plant.rpu || '',
 				status: data.status,
 				rate: data.rate,
-				amount: data.amount,
-				amountWithIva: data.amountWithIva,
-				month: data.month,
-				formattedMonth: formatsService.getMonthName(data.month),
-				formattedRate: formatsService.moneyFormat(parseFloat(data.rate)),
-				formattedAmount: formatsService.moneyFormat(parseFloat(data.amount)),
-				formattedAmountWithIva: formatsService.moneyFormat(parseFloat(data.amountWithIva)),
+				amount: data.amount.total,
+				amountWithIva: data.amount.iva.value,
+				month: data.billingMonth,
+				formattedRate: formatsService.moneyFormat(data.rate),
+				formattedAmount: formatsService.moneyFormat(data.amount.total),
+				formattedAmountWithIva: formatsService.moneyFormat(data.amount.iva.value),
 				generatedEnergyKwh: data.generatedEnergyKwh,
 				originalGeneratedEnergyKwh: data.generatedEnergyKwh,
-				formattedGeneratedEnergyKwh: formatsService.energyWithDecimals(parseFloat(data.generatedEnergyKwh))
+				formattedGeneratedEnergyKwh: formatsService.energyWithDecimals(data.generatedEnergyKwh)
 			});
 		});
 

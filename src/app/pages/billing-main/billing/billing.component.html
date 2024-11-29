@@ -45,7 +45,7 @@
                 Generate Invoice
             </button>
 
-            <button  class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
+            <button (click)="confirmInvoiceAction()" [disabled]="!selection.selected.length" class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
                 Confirm invoce
             </button>
         </div>
@@ -128,7 +128,7 @@
                     <div class="target w-24">Year</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
+                    <div *ngIf="element?.billingYear else notDataTable"> {{ element.billingYear }} </div>
                 </td>
             </ng-container>
 
@@ -137,7 +137,7 @@
                     <div class="target w-24">Generation Month</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.formattedMonth else notDataTable"> {{ element.formattedMonth }} </div>
+                    <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
                 </td>
             </ng-container>
 

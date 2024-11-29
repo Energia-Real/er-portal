@@ -175,8 +175,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.moduleServices.generateInvoice(objData).subscribe({
       next: (response: any) => {
         console.log(response);
-        // https://er-performance-agg-dev.azurewebsites.net/api/v1/invoices/generate
-        // https://er-performance-agg-dev.azurewebsites.net/api/v1/invoices/generate
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -186,8 +184,12 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   generateInvoiceAction() {
-    // const invoices = this.selection.selected
     this.createNotificationModal(this.ADD);
+  }
+  
+  confirmInvoiceAction() {
+    const invoices = this.selection.selected
+    console.log(invoices);
   }
 
   editInvoice() {

@@ -19,7 +19,8 @@ export class BillingService implements OnDestroy {
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
   getBillingData(filters: entity.FiltersBilling): Observable<entity.DataBillingTableMapper> {
-    const url = `${this.API_URL}/Facturacion/GetFacturas`;
+    const url = `${this.API_URL_PERFORMANCE_ADD}/invoices`;
+
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
       .set('pageNumber', filters.page)
