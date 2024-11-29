@@ -67,6 +67,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   searchBar = new FormControl('');
 
+  clientId: string = '';
+
   generalFilters!: GeneralFilters
   userInfo!: UserV2;
 
@@ -110,12 +112,25 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   ngOnInit(): void {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+    this.getDataClientsList()
   }
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$), distinctUntilChanged()).subscribe(content => {
       this.getBilling(content!);
     });
+  }
+
+  getDataClientsList() {
+    this.moduleServices.getDataClientsList().subscribe({
+      next: (response: any) => {
+        this.clientId = response[0].id
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
   }
 
   getBilling(searchTerm: string = '') {
@@ -151,14 +166,17 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-  createInvoice() {
+  generateInvoice() {
     const objData: entity.CreateInvoice | any = {
-      clientId: this.userInfo.id,
+      clientId: this.clientId,
       ...this.generalFilters
     }
 
-    this.moduleServices.createInvoice(objData).subscribe({
+    this.moduleServices.generateInvoice(objData).subscribe({
       next: (response: any) => {
+        console.log(response);
+        // https://er-performance-agg-dev.azurewebsites.net/api/v1/invoices/generate
+        // https://er-performance-agg-dev.azurewebsites.net/api/v1/invoices/generate
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -167,7 +185,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-  generateInvoice() {
+  generateInvoiceAction() {
     // const invoices = this.selection.selected
     this.createNotificationModal(this.ADD);
   }
@@ -220,7 +238,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
         switch (result.action) {
           case this.ADD:
             console.log('AGREGAR');
-            this.createInvoice()
+            this.generateInvoice()
 
             return;
           case this.CANCEL:

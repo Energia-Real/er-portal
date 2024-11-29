@@ -41,7 +41,7 @@
 
     <div class="col-span-1 d-flex align-center justify-between">
         <div class="btns-excel">
-            <button (click)="generateInvoice()" class="btn-action-apply-changes apply-changes-active" >
+            <button (click)="generateInvoiceAction()" class="btn-action-apply-changes apply-changes-active" >
                 Generate Invoice
             </button>
 
@@ -193,6 +193,7 @@
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item>Apply Changes</button>
                         <button mat-menu-item>Generate Invoice</button>
+                        <button mat-menu-item>Confirm Invoice</button>
                     </mat-menu>
                 </td>
             </ng-container>

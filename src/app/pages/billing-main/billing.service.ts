@@ -5,6 +5,7 @@ import { Observable, Subject, map } from 'rxjs';
 import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
+import { DataRespSavingDetailsList } from '../plants-main/plants-model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_BILL_V1;
+  private API_URL_PERFORMANCE_ADD = environment.API_URL_PERFORMANCE_ADD;
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
@@ -28,6 +30,14 @@ export class BillingService implements OnDestroy {
     return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
       map((response) => Mapper.getBillingDataMapper(response, this.formatsService))
     );
+  }
+
+  getDataClientsList(): Observable<DataRespSavingDetailsList[]> {
+    const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
+    const params = new HttpParams()
+    .set('imageSize', 50)
+
+    return this.http.get<DataRespSavingDetailsList[]>(url, { params })
   }
 
   downloadExcelReport(params: { [key: string]: string }): Observable<Blob> {
@@ -51,8 +61,8 @@ export class BillingService implements OnDestroy {
     return this.http.get<entity.InvoiceResponse>(url);
   }
 
-  createInvoice(data: entity.CreateInvoice) {
-    const url = `${this.API_URL}/invoices`;
+  generateInvoice(data: entity.CreateInvoice) {
+    const url = `${this.API_URL_PERFORMANCE_ADD}/invoices/generate`;
 
     return this.http.post<any>(url, data);
   }
