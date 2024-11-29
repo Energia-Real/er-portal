@@ -24,11 +24,29 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+export interface DataTablePlantsResponse {
+  success: boolean;
+  response: {
+    consolidatedData: PlantData[];
+  };
+  errors: any | null;
+}
+
+export interface PlantData {
+  plantId: string;
+  siteName: string;
+  energyProduction: any;
+  energyConsumption: any;
+  solarCoverage: number ; 
+  co2Saving: any;
+  siteStatus: string;
+}
+
 export interface DataRespSavingDetails {
   siteId: string;
   siteName: string;
   siteSaving: number;
-  cfeZone: number;
+  cfeZone: number | string;
   solarCoverage: number | string;
   co2Saving: number | string;
   energyProduction: string;

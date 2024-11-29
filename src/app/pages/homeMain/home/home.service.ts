@@ -19,7 +19,7 @@ export class HomeService {
   getDataClients(filters: entity.GeneralFilters): Observable<entity.DataRespSavingDetailsMapper> {
     const url = `${environment.API_URL_PERFORMANCE}/energy-performance/sites`;
 
-    return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
+    return this.http.post<entity.DataTablePlantsResponse>(url, filters).pipe(
       map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
     );
   }
