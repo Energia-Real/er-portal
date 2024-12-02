@@ -14,4 +14,5 @@ export const environment = {
   APP: 'backoffice',
   GOOGLE_API_KEY: 'AIzaSyAO4bqxxS4-CkLR_vY1RKJNwDanh5vyvq8',
   TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau',
+  CRYPTO_KEY: '4Vx!9H7j@LkP*2qZ$m#F&tWdRp^C!8s'
 };

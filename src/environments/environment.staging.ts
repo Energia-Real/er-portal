@@ -11,5 +11,6 @@ export const environment = {
   API_URL_BILL_V1: "https://er-projects-bill-staging.azurewebsites.net/api",
   APP: 'backoffice',
   GOOGLE_API_KEY: 'AIzaSyAO4bqxxS4-CkLR_vY1RKJNwDanh5vyvq8',
-  TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau'
+  TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau',
+  CRYPTO_KEY: '4Vx!9H7j@LkP*2qZ$m#F&tWdRp^C!8s'
 };

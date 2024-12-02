@@ -13,5 +13,6 @@ export const environment = {
   API_URL_NOTIFICATIONS: "https://er-notifications-dev.azurewebsites.net/api/v1",
   APP: 'backoffice',
   GOOGLE_API_KEY: 'AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k',
-  TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau'
+  TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau',
+  CRYPTO_KEY: '4Vx!9H7j@LkP*2qZ$m#F&tWdRp^C!8s'
 };

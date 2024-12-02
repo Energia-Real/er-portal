@@ -171,7 +171,6 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
     this.paginator._changePageSize(this.pageSize);
   }
 
-
   completionMessage(load: boolean) {
     this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
     this.getRates(this.searchBar?.value!);
