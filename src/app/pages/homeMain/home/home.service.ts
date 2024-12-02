@@ -5,7 +5,7 @@ import * as entity from './home-model';
 import { Mapper } from './mapper';
 import { environment } from '@environment/environment';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { GeneralFilters } from '@app/shared/models/general-models';
+import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,6 @@ export class HomeService {
 
   getDataClients(filters: entity.FiltersClients): Observable<entity.DataRespSavingDetailsMapper> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails`;
-
     return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
       map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
     );
@@ -53,5 +52,10 @@ export class HomeService {
     .set('end_date', filters.endDate!)
 
     return this.http.get<string>(url, { params })
+  }
+
+  getSavings(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.EconomicSavings>> {
+    const url = `${environment.API_URL_PERFORMANCE}/saving/details`;
+    return this.http.post<GeneralResponse<entity.EconomicSavings>>(url, filters)
   }
 }

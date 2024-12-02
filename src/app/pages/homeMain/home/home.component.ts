@@ -36,6 +36,65 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
+  economicSavingsData: entity.EconomicSavings={
+    cfeSubtotal:3300,
+    energiaRealSubtotal:1100,
+    economicSaving:600,
+    expensesWithoutEnergiaReal:5000
+  }
+
+  displayChartES: boolean = false;
+  chartES: any;
+
+
+ labels = [
+  { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
+  { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
+  { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
+  { text: 'Expenses without Energía Real (MXN)', color: 'rgba(239, 68, 68, 1)' },
+
+];
+
+  lineChartDataES!: ChartConfiguration<'bar' | 'line'>['data'];
+
+  lineChartOptionsES: ChartOptions<'bar' | 'line'> = {
+    responsive: true,
+    layout: {
+      padding: {
+        left: 0,
+        right: 200,
+      },
+    },
+
+  
+     plugins: {
+      legend: {
+        display:false
+      }
+    },
+ 
+    scales: {
+      x: {
+        type: 'category',
+        stacked: true,
+        grid: {
+          display: false,
+          
+        },
+      },
+      y: {
+        
+        stacked: true,
+        grid: {
+          display: true,
+        },
+      },
+      
+    },
+    backgroundColor: 'rgba(242, 46, 46, 1)',
+  };
+
+
   filters$!: Observable<FilterState['filters']>;
   generalFilters$!: Observable<FilterState['generalFilters']>;
   months: { value: string, viewValue: string }[] = [
@@ -54,7 +113,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   dataSource = new MatTableDataSource<any>([]);
-  labels = [];
   data = [5, 4, 3]
   displayedColumns: string[] = [
     'siteName',
@@ -182,8 +240,55 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getFilters();
     this.getDataClientsList();
     this.initiLineChartData();
+    this.initiLineChartDataES();
+
   }
 
+  
+  initiLineChartDataES() {
+    this.lineChartDataES = {
+      labels: [''], 
+      datasets: [
+        {
+          type: 'bar',
+          data: [this.economicSavingsData.cfeSubtotal],
+          label: 'CFE Subtotal (MXN)',
+          backgroundColor: 'rgba(121, 36, 48, 1)',
+          maxBarThickness: 112,
+        },
+        {
+          type: 'bar',
+          data: [this.economicSavingsData.energiaRealSubtotal],
+          label: 'Energía Real Subtotal (MXN)',
+          backgroundColor: 'rgba(238, 84, 39, 1)',
+          maxBarThickness: 112,
+          
+
+        },
+        {
+          type: 'bar',
+          data: [this.economicSavingsData.economicSaving],
+          label: 'Economic Savings (MXN)',
+          backgroundColor: 'rgba(87, 177, 177, 1)',
+          order:2,
+          maxBarThickness: 112,
+
+        },
+        {
+          type: 'line',
+          data: [this.economicSavingsData.expensesWithoutEnergiaReal],
+          label: 'Expenses without Energía Real (MXN)',
+          backgroundColor: 'rgba(239, 68, 68, 1)',
+          borderColor: 'rgba(239, 68, 68, 1)',
+          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+          pointBorderColor: 'rgba(239, 68, 68, 1)',
+          pointRadius: 8,
+          order:1
+        }
+      ]
+    };
+  }
+  
   initiLineChartData() {
     this.lineChartData = {
       labels: this.labels,
@@ -244,6 +349,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.dataClientsList = response;
           this.getDataSavingDetails({clientId : response[0].clientId, ...generalFilters});
           this.getDataSolarCoverga({clientId : response[0].clientId, ...generalFilters});
+         // this.getEconomicSavings({clientId : response[0].clientId, ...generalFilters});
+
         });
       },
       error: (error) => {
@@ -333,6 +440,67 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goDetails(id: string) {
     this.router.navigateByUrl(`er/plants/details/${id}`)
+  }
+
+  getEconomicSavings(filters: GeneralFilters){
+    this.moduleServices.getSavings(filters).subscribe({
+      next: (response) =>{
+        this.lineChartDataES = {
+          labels: [''], 
+          datasets: [
+            {
+              type: 'bar',
+              data: [response.response.cfeSubtotal],
+              label: 'CFE Subtotal (MXN)',
+              backgroundColor: 'rgba(121, 36, 48, 1)',
+              maxBarThickness: 112,
+            },
+            {
+              type: 'bar',
+              data: [response.response.energiaRealSubtotal],
+              label: 'Energía Real Subtotal (MXN)',
+              backgroundColor: 'rgba(238, 84, 39, 1)',
+              maxBarThickness: 112,
+              
+    
+            },
+            {
+              type: 'bar',
+              data: [response.response.economicSaving],
+              label: 'Economic Savings (MXN)',
+              backgroundColor: 'rgba(87, 177, 177, 1)',
+              order:2,
+              maxBarThickness: 112,
+    
+            },
+            {
+              type: 'line',
+              data: [response.response.expensesWithoutEnergiaReal],
+              label: 'Expenses without Energía Real (MXN)',
+              backgroundColor: 'rgba(239, 68, 68, 1)',
+              borderColor: 'rgba(239, 68, 68, 1)',
+              pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+              pointBorderColor: 'rgba(239, 68, 68, 1)',
+              pointRadius: 8,
+              order:1
+            }
+          ]
+        };
+        this.displayChartES = true;
+        this.initChartES();
+      }
+    })
+  }
+
+  initChartES(): void {
+    const ctx = document.getElementById('economicSavingsChart') as HTMLCanvasElement;
+    if (ctx) {
+      this.chartES = new Chart(ctx, {
+        type: 'bar',
+        data: this.lineChartDataES,
+        options: this.lineChartOptionsES
+      });
+    }
   }
 
   ngOnDestroy(): void {

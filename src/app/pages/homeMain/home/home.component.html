@@ -43,10 +43,24 @@
     </div>
 
     <div class="col-span-2 md:col-span-1">
-        <div class="c-card-section economic-savings">
-            <h2 class="text-er-orange text-base font-normal">Economic savings</h2>
-            <div class="d-flex justify-center align-center text-center">
-                <p class="wi-progress">Work in progress<span>...</span></p>
+        <div class="c-card-section economic-savings flex flex-col">
+            <h2 class="text-er-orange text-base font-normal h-10">Economic savings</h2>
+            <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
+                <div class="graphic-performance relative h-full w-full flex items-center">
+                    <canvas id="economicSavingsChart" baseChart [type]="'bar'" [data]="lineChartDataES"
+                        [options]="lineChartOptionsES">
+                    </canvas>
+                    <div class="absolute top-1/2 right-0 transform -translate-y-1/2 w-[200px] h-[200px] p-4">
+                        <div *ngFor="let label of labels" class="flex items-center">
+                            <span class="dot rounded-full " [ngStyle]="{ 'background-color': label.color }">
+                            </span>
+                            <div class="pl-2">
+                                {{ label.text }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

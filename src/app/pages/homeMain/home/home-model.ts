@@ -78,3 +78,10 @@ export interface FormatCards {
   title: string;
   value: any;
 }[]
+
+export interface EconomicSavings{
+  cfeSubtotal: number;
+  energiaRealSubtotal:number;
+  economicSaving:number;
+  expensesWithoutEnergiaReal:number;
+}

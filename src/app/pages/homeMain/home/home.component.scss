@@ -278,3 +278,37 @@
     justify-content: center;
   }
 }
+
+.graphic-performance {
+  width: 100%;
+  height: auto;
+  min-height: auto;
+  display: flex;
+  flex-direction: row; 
+
+  align-items: center;
+  justify-content: center;
+}
+
+.graphic-performance canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 340px !important;
+
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+}
+
+
+.c-graphic-performance{
+  height: auto !important;
+}
+
+.dot{
+  min-width:12px !important ;
+  min-height:12px !important ;
+
+}
+
