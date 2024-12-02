@@ -8,7 +8,7 @@ export interface BillingResponse {
   page: number;
   data: BillingData[];
   totalItems: number;
-  errors: any | null;
+  errors?: any | null;
 }
 
 export interface BillingData {
@@ -49,8 +49,11 @@ export interface DataBillingTable {
   externalId: string;
   plantName: string;
   clientName: string;
+  billingMonth: string;
+  plantId: string;
   rate: number;
   amount: number;
+  iva: number;
   amountWithIva: number;
   rpu: string;
   status: string;

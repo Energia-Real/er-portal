@@ -14,21 +14,22 @@ export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL = environment.API_URL_BILL_V1;
+  private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
   private API_URL_PERFORMANCE_ADD = environment.API_URL_PERFORMANCE_ADD;
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
   getBillingData(filters: entity.FiltersBilling): Observable<entity.DataBillingTableMapper> {
-    const url = `${this.API_URL_PERFORMANCE_ADD}/invoices`;
+    const url = `${this.API_URL_PERFORMANCE}/invoices`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
-      .set('pageNumber', filters.page)
+      .set('page', filters.page)
       .set('plantName', filters.plantName)
       .set('startDate', filters.startDate)
       .set('endDate', filters.endDate!)
 
-    return this.http.get<entity.DataTableBillingResponse>(url, { params }).pipe(
+    return this.http.get<entity.DataBillingTableMapper>(url, { params }).pipe(
       map((response) => Mapper.getBillingDataMapper(response, this.formatsService))
     );
   }
