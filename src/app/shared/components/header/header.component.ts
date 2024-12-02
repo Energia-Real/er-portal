@@ -13,7 +13,8 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import{Notification}from '@app/shared/models/general-models';
 import { NotificationsState } from '@app/core/store/reducers/notifications.reducer';
 import { updateNotifications } from '@app/core/store/actions/notifications.actions';
-import { selectNotifications, selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
+import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 
 @Component({
@@ -55,17 +56,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
    menuOpen = false;
 
-
-
   constructor(
-    private accountService: AuthService,
     private router: Router,
     private store: Store<{ filters: FilterState,notifications: NotificationsState }>,
     private  notificationService: NotificationService,
-    private cdr: ChangeDetectorRef
-
-  ) {    
-  }
+    private cdr: ChangeDetectorRef,
+    private encryptionService: EncryptionService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserInfo();
@@ -84,10 +81,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadUserInfo() {
-    this.accountService.getInfoUser().subscribe((data: UserV2) =>{
-      this.userInfo = data;
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      this.userInfo = this.encryptionService.decryptData(encryptedData);
       this.updateNotificationCenter()
-    });
+    }
   }
 
   updateNotificationCenter(){

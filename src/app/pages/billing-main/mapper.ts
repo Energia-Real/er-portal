@@ -12,6 +12,7 @@ export class Mapper {
 				clientName: data?.clientName || '',
 				plantName: data?.plantName || '',
 				rpu: data?.rpu || '',
+				status: data.status,
 				rate: data.rate,
 				amount: data.amount,
 				amountWithIva: data.amountWithIva,
