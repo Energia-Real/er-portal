@@ -46,13 +46,13 @@ export interface IVA {
 }
 
 export interface DataBillingTable {
-  externalId: string;
+  invoiceId: string;
   plantName: string;
   clientName: string;
   billingMonth: string;
   plantId: string;
   rate: number;
-  amount: number;
+  amounth: number;
   iva: number;
   amountWithIva: number;
   rpu: string;

@@ -51,6 +51,7 @@ export class BillingService implements OnDestroy {
     });
   }
 
+// ***
   saveBillingTableData(requestData: any[]): Observable<any> {
     const url = `${this.API_URL}/Facturacion/ConfirmFacturas`;
 
@@ -64,7 +65,7 @@ export class BillingService implements OnDestroy {
   }
 
   generateInvoice(data: entity.CreateInvoice) {
-    const url = `${this.API_URL_PERFORMANCE_ADD}/invoices/generate`;
+    const url = `${this.API_URL_PERFORMANCE}/invoices/generate`;
 
     return this.http.post<any>(url, data);
   }

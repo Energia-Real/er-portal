@@ -124,7 +124,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   getDataClientsList() {
     this.moduleServices.getDataClientsList().subscribe({
       next: (response: any) => {
-        this.clientId = response[0].id
+        this.clientId = response.find((data: any) => data.nombre === 'Merco')?.id || null;
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -143,8 +143,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
     this.moduleServices.getBillingData(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
-        console.log(response);
-        
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
