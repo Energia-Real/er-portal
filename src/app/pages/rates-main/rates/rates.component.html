@@ -33,12 +33,13 @@
 
     <div class="separator-cards mt-4 mb-4"></div>
 
-    <div class="c-paginator-top ">
-        <strong>items per page</strong>
+    <div class="c-paginator-top">
+        <strong>Items per page</strong>
         <mat-form-field>
-            <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
-                <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
-                        }}</strong></mat-option>
+            <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+                <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                    <strong>{{ size }}</strong>
+                </mat-option>
             </mat-select>
         </mat-form-field>
     </div>
@@ -109,7 +110,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
         </table>
-
+        
         <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
             [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
             aria-label="Select page of periodic elements">

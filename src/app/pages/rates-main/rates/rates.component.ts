@@ -164,11 +164,17 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
   }
-
+  
   changePageSize(event: any) {
-    this.pageSize = event.value;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator._changePageSize(this.pageSize);
+    const newSize = event.value;
+    this.pageSize = newSize;
+  
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+  
+    this.getRates();
   }
 
   completionMessage(load: boolean) {

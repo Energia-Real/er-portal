@@ -339,9 +339,15 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   changePageSize(event: any) {
-    this.pageSize = event.value;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator._changePageSize(this.pageSize);
+    const newSize = event.value;
+    this.pageSize = newSize;
+  
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+  
+    this.getBilling();
   }
 
   completionMessage() {

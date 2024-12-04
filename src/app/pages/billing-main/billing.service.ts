@@ -15,7 +15,6 @@ export class BillingService implements OnDestroy {
 
   private API_URL = environment.API_URL_BILL_V1;
   private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
-  private API_URL_PERFORMANCE_ADD = environment.API_URL_PERFORMANCE_ADD;
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
