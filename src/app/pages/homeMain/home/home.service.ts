@@ -16,9 +16,10 @@ export class HomeService {
     public formatsService: FormatsService
   ) { }
 
-  getDataClients(filters: entity.FiltersClients): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails`;
-    return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
+  getDataClients(filters: entity.GeneralFilters): Observable<entity.DataRespSavingDetailsMapper> {
+    const url = `${environment.API_URL_PERFORMANCE}/energy-performance/sites`;
+
+    return this.http.post<entity.DataTablePlantsResponse>(url, filters).pipe(
       map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
     );
   }

@@ -77,6 +77,16 @@
                     matTooltip="This map is for informational purposes only and shows general data by region.">info</span>
             </div>
             <app-mapa></app-mapa>
+            <div class="legend-container">
+                <div class="color-bar"></div>
+                <div class="labels">
+                  <div>0</div>
+                  <div>1500</div>
+                  <div>3000</div>
+                  <div>4500</div>
+                  <div>6000+</div>
+                </div>
+              </div>
         </div>
     </div>
 
@@ -110,7 +120,7 @@
                             </th>
 
                             <td mat-cell *matCellDef="let element" class="column-ipervinculo ps-0"
-                                (click)="goDetails(element.siteId)">
+                                (click)="goDetails(element.plantId)">
                                 <div class="column-check-content">
                                     <mat-checkbox class="check-color" (click)="$event.stopPropagation()"
                                         (change)="$event ? toggleRow(element) : null"
@@ -123,7 +133,7 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="energyConsumption">
+                        <ng-container matColumnDef="energyProduction">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="header-table">Energy Production</p>
                             </th>
@@ -134,13 +144,12 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="energyProduction">
+                        <ng-container matColumnDef="energyConsumption">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="header-table">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
-                                    }} kWh
+                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} kWh
                                 </div>
                             </td>
                         </ng-container>
