@@ -371,8 +371,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     })
   }
 
-  modalErrors(error: any) {
-    const dataNotificationModal: notificationData = this.notificationDataService.errors(['askldlasd', 'laskjdkl'])!;
+  modalErrors(errors: any) {
+    const dataNotificationModal: notificationData = this.notificationDataService.errors(errors)!;
     this.dialog.open(NotificationComponent, {
       width: '540px',
       data: dataNotificationModal

@@ -34,7 +34,7 @@
   </div>
 
   <div class="c-errors" *ngIf="data.type === ERRORS">
-    <p *ngFor="let error of data?.errors; let i = index">Error {{i}}: {{error}}</p>
+    <p *ngFor="let error of data?.errors; let i = index">Error {{i+1}}: {{error}}</p>
   </div>
 
   <p class="support" *ngIf="data.type === ERRORS">If the issue persists, contact support for further assistance.</p>
@@ -42,7 +42,7 @@
   <mat-divider></mat-divider>
   <div class="flex justify-around">
     <button class="btn-action-back" (click)="sendEventToParent(data.type,false)">Back</button>
-    <button class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
+    <button *ngIf="data.type != ERRORS" class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
   </div>
 
-</div>
+</div> 
