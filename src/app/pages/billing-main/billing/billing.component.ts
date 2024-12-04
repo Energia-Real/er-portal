@@ -259,7 +259,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       delete data.formattedAmount;
       delete data.formattedAmountWithIva;
       delete data.formattedRate;
-      delete data.formattedMonth;
+      delete data.formatterStatus;
+      delete data.amountWithIva;
     });
 
     this.moduleServices.saveBillingTableData(this.modifiedElements).subscribe({

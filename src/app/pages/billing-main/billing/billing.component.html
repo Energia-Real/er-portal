@@ -41,11 +41,12 @@
 
     <div class="col-span-1 d-flex align-center justify-between">
         <div class="btns-excel">
-            <button (click)="generateInvoiceAction()" class="btn-action-apply-changes apply-changes-active" >
+            <button (click)="generateInvoiceAction()" class="btn-action-apply-changes apply-changes-active">
                 Generate Invoice
             </button>
 
-            <button (click)="confirmInvoiceAction()" [disabled]="!selection.selected.length" class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
+            <button (click)="confirmInvoiceAction()" [disabled]="!selection.selected.length"
+                class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
                 Confirm invoce
             </button>
         </div>
@@ -101,15 +102,19 @@
                     <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
                 </td>
             </ng-container>
-     
+
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     <div class="target w-24">Status</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="column-status" [ngClass]="{'column-status-pending': element.status == 'Pending'}" *ngIf="element?.status else notDataTable">
+                    <div class="column-status" [ngClass]="{
+                        'column-status-pending': element.status == 3,
+                        'column-status-confirmed': element.status == 2
+
+                    }" *ngIf="element?.formatterStatus else notDataTable">
                         <i class="fa-solid fa-circle"></i>
-                        {{ element.status }} 
+                        {{ element.formatterStatus }}
                     </div>
                 </td>
             </ng-container>
@@ -119,7 +124,8 @@
                     <div class="target w-24">Plant name</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="color-F97316" *ngIf="element?.plantName else notDataTable"> {{ element.plantName }} </div>
+                    <div class="color-F97316" *ngIf="element?.plantName else notDataTable"> {{ element.plantName }}
+                    </div>
                 </td>
             </ng-container>
 
@@ -137,7 +143,7 @@
                     <div class="target w-24">Generation Month</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
+                    <div *ngIf="element?.billingMonth else notDataTable"> {{ element.billingMonth }} </div>
                 </td>
             </ng-container>
 
@@ -162,7 +168,8 @@
                     <div class="target w-24">Rate</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="column-extend" *ngIf="element?.rate else notDataTable"> {{ element.formattedRate }} </div>
+                    <div class="column-extend" *ngIf="element?.rate else notDataTable"> {{ element.formattedRate }}
+                    </div>
                 </td>
             </ng-container>
 
@@ -171,7 +178,8 @@
                     <div class="target w-24">Amount</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="column-extend" *ngIf="element?.formattedAmount else notDataTable"> {{ element.formattedAmount }} </div>
+                    <div class="column-extend" *ngIf="element?.formattedAmount else notDataTable"> {{
+                        element.formattedAmount }} </div>
                 </td>
             </ng-container>
 
@@ -180,7 +188,8 @@
                     <div class="target w-24">IVA</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="column-extend" *ngIf="element?.amountWithIva else notDataTable"> {{ element.formattedAmountWithIva }} </div>
+                    <div class="column-extend" *ngIf="element?.formattedAmountWithIva else notDataTable"> {{
+                        element.formattedAmountWithIva }} </div>
                 </td>
             </ng-container>
 

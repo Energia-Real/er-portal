@@ -96,9 +96,18 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #33A02C;
+    // color: #33A02C;
 }
 
+.column-status-created {
+    color: #eb0a0ecc;
+}
+.column-status-edited {
+    color: #eb0a0ecc;
+}
+.column-status-confirmed {
+    color: #33A02C;
+}
 .column-status-pending {
     color: #eb0a0ecc;
 }
