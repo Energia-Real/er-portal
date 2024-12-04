@@ -27,14 +27,14 @@ export interface UserV2 {
     nombres: string,
     apellidos: string
   },
-  clientes: null,
+  clientes: any,
   accessTo: string
 }
 
 export interface GeneralFilters {
   rpu?:any
   idClient?:number
-  clientId?:number
+  clientId?:number | string
   startDate: string;
   endDate: string | null;
 }

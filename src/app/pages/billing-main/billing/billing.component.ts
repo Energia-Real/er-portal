@@ -67,8 +67,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   searchBar = new FormControl('');
 
-  clientId: string = '';
-
   generalFilters!: GeneralFilters
   userInfo!: UserV2;
 
@@ -110,9 +108,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   ngOnInit(): void {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
-    this.getDataClientsList()
+    this.getUserClient()
   }
 
   ngAfterViewInit(): void {
@@ -121,16 +117,10 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-  getDataClientsList() {
-    this.moduleServices.getDataClientsList().subscribe({
-      next: (response: any) => {
-        this.clientId = response.find((data: any) => data.nombre === 'Merco')?.id || null;
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
-      }
-    })
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+    console.log(this.userInfo.clientes[0]!);
   }
 
   getBilling(searchTerm: string = '') {
@@ -168,7 +158,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   generateInvoice() {
     const objData: entity.CreateInvoice | any = {
-      clientId: this.clientId,
+      clientId: this.userInfo.clientes[0],
       ...this.generalFilters
     }
 
@@ -357,7 +347,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   completionMessage() {
-    this.notificationService.notificacion(`"Energy generation has been updated."`, 'save')
+    this.notificationService.notificacion(`Energy generation has been updated.`, 'save')
     this.getBilling(this.searchBar?.value!);
   }
 
