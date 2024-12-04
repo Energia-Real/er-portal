@@ -101,7 +101,7 @@ export class MapaComponent implements AfterViewInit {
         placement: 'top',
         arrow: true,
         theme: 'custom',
-        trigger: 'click',
+        trigger: 'mouseenter',
         onShow(instance) {
           const tooltip = instance.popper;
           tooltip.classList.remove('hide'); 
@@ -122,7 +122,7 @@ export class MapaComponent implements AfterViewInit {
   }
 
   onPolygonClick(stateId: string): void {
-    const index = this.selectedStates.indexOf(stateId);
+   /*  const index = this.selectedStates.indexOf(stateId);
     if (index === -1) {
       this.selectedStates.push(stateId);
       let filters = {
@@ -140,7 +140,7 @@ export class MapaComponent implements AfterViewInit {
       };
       console.log(filters);
       this.store.dispatch(setFilters({ filters }));
-    }
+    } */
   }
 
   createComponent(component: any): ComponentRef<any> {

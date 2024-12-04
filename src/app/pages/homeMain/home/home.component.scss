@@ -319,25 +319,39 @@
 }
 
 .color-bar {
-  width: 20px;
-  height: 200px; /* Ajusta el tamaño según sea necesario */
-  background: linear-gradient(to bottom, 
-    #9AE3E1 0%, 
+  width: 21px;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  background: linear-gradient(to top, 
+    #E0E0E0 0%, 
     #64E2E2 25%, 
     #00E5FF 50%, 
     #08C4DA 75%, 
     #008796 100%);
   border: 1px solid #ccc;
+  border-radius: 18px;
 }
 
 .labels {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 200px; /* Debe coincidir con la altura de la barra */
+  height: 100%; 
 }
 
 .labels div {
   font-size: 12px;
   text-align: left;
 }
+
+.c-division{
+  width: 100%;
+  height: 20px;
+}
+
+.division {
+  width: 100%; 
+  border-top: 2px solid #231F20; 
+}
+

@@ -76,17 +76,24 @@
                 <span class="color-57B1B1 material-symbols-outlined"
                     matTooltip="This map is for informational purposes only and shows general data by region.">info</span>
             </div>
-            <app-mapa></app-mapa>
-            <div class="legend-container">
-                <div class="color-bar"></div>
-                <div class="labels">
-                  <div>0</div>
-                  <div>1500</div>
-                  <div>3000</div>
-                  <div>4500</div>
-                  <div>6000+</div>
+            <div class="flex gap-4 items-stretch">
+                <app-mapa class="flex-1"></app-mapa>
+                <div class="legend-container">
+                    <div class="color-bar flex flex-col justify-between h-full">
+                        <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index" class="c-division flex items-center justify-center h-full">
+                          <div class="division "></div>
+                        </div>
+                      </div>
+                    <div class="labels">
+                      <div>+6000 kW</div>
+                      <div>4500 kW</div>
+                      <div>3000 kW</div>
+                      <div>1500 kW</div>
+                      <div>0 kW</div>
+                    </div>
                 </div>
-              </div>
+            </div>
+            
         </div>
     </div>
 
