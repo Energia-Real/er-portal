@@ -69,7 +69,6 @@ export class NotificationDataService {
       case this.ADD:
         dataNotification = {
           type: NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE,
-          typeId: this.notificationService.getNotificationTypesByName(this.ADD).id, //¿?
           title: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_TITLE,
           subtitle: `${this.formatsService.dateFormatWithoutDay(data.startDate)} - ${this.formatsService.dateFormatWithoutDay(data.endDate!)}`,
           content: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_CONTENT,
@@ -80,7 +79,6 @@ export class NotificationDataService {
       case this.CANCEL:
         dataNotification = {
           type: NOTIFICATION_CONSTANTS.CANCEL_TYPE,
-          typeId: this.notificationService.getNotificationTypesByName(this.CANCEL).id,
           title: NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_TITLE,
           content: NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_CONTENT,
           buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
@@ -91,11 +89,11 @@ export class NotificationDataService {
     }
   }
 
-  errors(errors:any) {
+  errors(errors: any) {
     const dataNotification = {
       type: NOTIFICATION_CONSTANTS.ERRORS,
-      title: errors.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_TITLE : NOTIFICATION_CONSTANTS.ERROR_INVOICE_TITLE,
-      content: errors.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_CONTENT : NOTIFICATION_CONSTANTS.ERROR_INVOICE_CONTENT,
+      title: errors?.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_TITLE : NOTIFICATION_CONSTANTS.ERROR_INVOICE_TITLE,
+      content: errors?.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_CONTENT : NOTIFICATION_CONSTANTS.ERROR_INVOICE_CONTENT,
       errors: errors,
     }
     return dataNotification;
