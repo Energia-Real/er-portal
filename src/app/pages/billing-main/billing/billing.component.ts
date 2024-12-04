@@ -20,6 +20,7 @@ import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constan
 import { NotificationService } from '@app/shared/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-billing',
@@ -166,9 +167,9 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       next: (response: any) => {
         console.log(response);
       },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
+      error: (error: HttpErrorResponse) => {
+        const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+        this.modalErrors(errorMessages);
       }
     });
   }
@@ -176,7 +177,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   generateInvoiceAction() {
     this.createNotificationModal(this.ADD);
   }
-  
+
   confirmInvoiceAction() {
     const invoices = this.selection.selected
     console.log(invoices);
@@ -229,13 +230,10 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       if (result && result.confirmed) {
         switch (result.action) {
           case this.ADD:
-            console.log('AGREGAR');
             this.generateInvoice()
-
             return;
           case this.CANCEL:
             console.log('CANCELAR');
-
             return
         }
       }
@@ -370,6 +368,14 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
         this.notificationService.notificacion('Talk to the administrator.', 'alert');
         console.log(error);
       }
+    })
+  }
+
+  modalErrors(error: any) {
+    const dataNotificationModal: notificationData = this.notificationDataService.errors(['askldlasd', 'laskjdkl'])!;
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
     })
   }
 

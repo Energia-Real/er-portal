@@ -90,4 +90,16 @@ export class NotificationDataService {
         return
     }
   }
+
+
+  errors(errors:any) {
+    const dataNotification = {
+      type: NOTIFICATION_CONSTANTS.ERRORS,
+      title: errors.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_TITLE : NOTIFICATION_CONSTANTS.ERROR_INVOICE_TITLE,
+      content: errors.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_CONTENT : NOTIFICATION_CONSTANTS.ERROR_INVOICE_CONTENT,
+      errors: errors,
+      buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+    }
+    return dataNotification;
+  }
 }

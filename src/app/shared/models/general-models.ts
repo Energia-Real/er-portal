@@ -95,6 +95,7 @@ export interface notificationData{
   subtitle?:    string,
   content?:  string,
   warn?:     string, 
+  errors?:     string, 
   buttonAction?: string
 }
 
