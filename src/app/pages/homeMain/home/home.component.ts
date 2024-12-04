@@ -208,10 +208,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getFilters() {
     this.filters$.subscribe(filters => {
-      if (filters?.months?.length) {
-        this.getDataClients(filters);
-        this.getTooltipInfo(filters);
-      }
+      if (filters?.months?.length) this.getTooltipInfo(filters);
     });
   }
 
@@ -225,7 +222,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataClients(filters: entity.FiltersClients) {
+  getDataClients(filters: entity.GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data

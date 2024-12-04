@@ -17,6 +17,8 @@ export class FormatsService {
   }
 
   energyFormat(content: string | number): string {
+    if (!content) return ''  
+
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
       return numberValue.toLocaleString('en-US', {
