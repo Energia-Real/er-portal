@@ -43,10 +43,24 @@
     </div>
 
     <div class="col-span-2 md:col-span-1">
-        <div class="c-card-section economic-savings">
-            <h2 class="text-er-orange text-base font-normal">Economic savings</h2>
-            <div class="d-flex justify-center align-center text-center">
-                <p class="wi-progress">Work in progress<span>...</span></p>
+        <div class="c-card-section economic-savings flex flex-col">
+            <h2 class="text-er-orange text-base font-normal h-10">Economic savings</h2>
+            <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
+                <div class="graphic-performance relative h-full w-full flex items-center">
+                    <canvas id="economicSavingsChart" baseChart [type]="'bar'" [data]="lineChartDataES"
+                        [options]="lineChartOptionsES">
+                    </canvas>
+                    <div class="absolute top-1/2 right-0 transform -translate-y-1/2 w-[200px] h-[200px] p-4">
+                        <div *ngFor="let label of labels" class="flex items-center">
+                            <span class="dot rounded-full " [ngStyle]="{ 'background-color': label.color }">
+                            </span>
+                            <div class="pl-2">
+                                {{ label.text }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -62,7 +76,24 @@
                 <span class="color-57B1B1 material-symbols-outlined"
                     matTooltip="This map is for informational purposes only and shows general data by region.">info</span>
             </div>
-            <app-mapa></app-mapa>
+            <div class="flex gap-4 items-stretch">
+                <app-mapa class="flex-1"></app-mapa>
+                <div class="legend-container">
+                    <div class="color-bar flex flex-col justify-between h-full">
+                        <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index" class="c-division flex items-center justify-center h-full">
+                          <div class="division "></div>
+                        </div>
+                      </div>
+                    <div class="labels">
+                      <div>+6000 kW</div>
+                      <div>4500 kW</div>
+                      <div>3000 kW</div>
+                      <div>1500 kW</div>
+                      <div>0 kW</div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 
@@ -109,18 +140,18 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="energyConsumption">
+                        <ng-container matColumnDef="energyProduction">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="header-table">Energy Production</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }}
+                                <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }}
                                     kWh
                                 </div>
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="energyProduction">
+                        <ng-container matColumnDef="energyConsumption">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="header-table">Energy Consumption</p>
                             </th>

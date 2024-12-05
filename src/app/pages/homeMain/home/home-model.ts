@@ -65,7 +65,7 @@ export interface DataRespSavingDetailsMapper {
 export interface statesResumeTooltip {
   estado : string;
   plantas: number;
-  totalEnergyProduction: number;
+  totalInstalledCapacity: number;
 }
 
 export interface DataRespSavingDetailsList {
@@ -96,3 +96,10 @@ export interface FormatCards {
   title: string;
   value: any;
 }[]
+
+export interface EconomicSavings{
+  cfeSubtotal: number;
+  energiaRealSubtotal:number;
+  economicSaving:number;
+  expensesWithoutEnergiaReal:number;
+}
