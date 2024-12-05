@@ -204,7 +204,7 @@
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item>Apply Changes</button>
                         <button mat-menu-item>Generate Invoice</button>
-                        <button mat-menu-item>Confirm Invoice</button>
+                        <button mat-menu-item (click)="confirmInvoiceAction(element)" >Confirm Invoice</button>
                     </mat-menu>
                 </td>
             </ng-container>

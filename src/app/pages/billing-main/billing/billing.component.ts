@@ -11,13 +11,12 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, notificationData, NotificationServiceData, UserV2 } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData, UserV2 } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
-import { NotificationService } from '@app/shared/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -71,6 +70,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   generalFilters!: GeneralFilters
   userInfo!: UserV2;
 
+  oneConfirmInvoice!: entity.DataBillingTable;
+
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
     else console.error('Paginator no está definido');
@@ -82,7 +83,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     private router: Router,
     public dialog: MatDialog,
     private notificationDataService: NotificationDataService,
-    private notificationsService: NotificationService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
@@ -166,6 +166,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.moduleServices.generateInvoice(objData).subscribe({
       next: (response: any) => {
         console.log(response);
+        this.notificationService.notificacion(`Energy generation has been updated.`, 'save')
+        this.getBilling(this.searchBar?.value!);
       },
       error: (error: HttpErrorResponse) => {
         const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
@@ -175,12 +177,12 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   generateInvoiceAction() {
-    this.createNotificationModal(this.ADD);
+    this.createNotificationModal(true);
   }
 
-  confirmInvoiceAction() {
-    const invoices = this.selection.selected
-    console.log(invoices);
+  confirmInvoiceAction(oneInvoice?: entity.DataBillingTable) {
+    if (oneInvoice) this.oneConfirmInvoice = oneInvoice;
+    this.createNotificationModal(false);
   }
 
   editInvoice() {
@@ -208,34 +210,27 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   updateMultipleInvoiceStatuses() {
-    const objData: entity.UpdateMultipleInvoiceStatuses | any = {}
+    const objData: entity.DataBillingTable | any[] = this.selection?.selected.length ? this.selection?.selected : [this.oneConfirmInvoice]
+
+    objData.forEach((data: any) => {
+      delete data.amountWithIva;
+      delete data.formattedGeneratedEnergyKwh;
+      delete data.originalGeneratedEnergyKwh;
+      delete data.formattedAmount;
+      delete data.formattedAmountWithIva;
+      delete data.formattedRate;
+      delete data.formatterStatus;
+    });
+
     this.moduleServices.updateMultipleInvoiceStatuses(objData).subscribe({
-      next: (response: any) => {
+      next: (_) => {
+        this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
+          .afterClosed()
+          .subscribe((_ => this.getBilling(this.searchBar?.value!)));
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
-      }
-    });
-  }
-
-  createNotificationModal(notificationType: string) {
-    const dataNotificationModal: notificationData = this.notificationDataService.invoicesNotificationData(notificationType, this.generalFilters)!;
-
-    const dialogRef = this.dialog.open(NotificationComponent, {
-      width: '540px',
-      data: dataNotificationModal
-    })
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.confirmed) {
-        switch (result.action) {
-          case this.ADD:
-            this.generateInvoice()
-            return;
-          case this.CANCEL:
-            console.log('CANCELAR');
-            return
-        }
       }
     });
   }
@@ -252,11 +247,30 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
 
     this.moduleServices.saveBillingTableData(this.modifiedElements).subscribe({
-      next: (response: any) => {
-        this.completionMessage()
+      next: () => {
+        this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
+          .afterClosed()
+          .subscribe((_ => this.getBilling(this.searchBar?.value!)));
       },
       error: error => {
         console.log(error);
+      }
+    });
+  }
+
+  createNotificationModal(generate: boolean) {
+    let dataNotificationModal: notificationData
+    if (generate) dataNotificationModal = this.notificationDataService.invoicesNotificationData(generate, this.generalFilters)!;
+    else dataNotificationModal = this.notificationDataService.invoicesNotificationData(generate)!;
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.confirmed) {
+        if (generate) this.generateInvoice()
+        else this.updateMultipleInvoiceStatuses()
       }
     });
   }
@@ -341,18 +355,13 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   changePageSize(event: any) {
     const newSize = event.value;
     this.pageSize = newSize;
-  
+
     if (this.paginator) {
       this.paginator.pageSize = newSize;
       this.paginator._changePageSize(newSize);
     }
-  
-    this.getBilling();
-  }
 
-  completionMessage() {
-    this.notificationService.notificacion(`Energy generation has been updated.`, 'save')
-    this.getBilling(this.searchBar?.value!);
+    this.getBilling();
   }
 
   exportInformation() {

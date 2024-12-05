@@ -62,30 +62,29 @@ export class NotificationDataService {
 
   }
 
-  invoicesNotificationData(notificationType: string, data: GeneralFilters): notificationData | undefined {
+  invoicesNotificationData(notificationType: boolean, data?: GeneralFilters): notificationData | undefined {
     var dataNotification: notificationData;
 
-    switch (notificationType) {
-      case this.ADD:
-        dataNotification = {
-          type: NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE,
-          title: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_TITLE,
-          subtitle: `${this.formatsService.dateFormatWithoutDay(data.startDate)} - ${this.formatsService.dateFormatWithoutDay(data.endDate!)}`,
-          content: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_CONTENT,
-          warn: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_WARN,
-          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
-        }
-        return dataNotification;
-      case this.CANCEL:
-        dataNotification = {
-          type: NOTIFICATION_CONSTANTS.CANCEL_TYPE,
-          title: NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_TITLE,
-          content: NOTIFICATION_CONSTANTS.CANCEL_ADD_CLIENT_CONTENT,
-          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
-        }
-        return dataNotification;
-      default:
-        return
+    if (notificationType) {
+      dataNotification = {
+        type: NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE,
+        title: NOTIFICATION_CONSTANTS.GENERATE_INVOICE_TITLE,
+        subtitle: `${this.formatsService.dateFormatWithoutDay(data?.startDate)} - ${this.formatsService.dateFormatWithoutDay(data?.endDate!)}`,
+        content: NOTIFICATION_CONSTANTS.GENERATE_INVOICE_CONTENT,
+        warn: NOTIFICATION_CONSTANTS.GENERATE_INVOICE_WARN,
+        buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+      }
+      return dataNotification;
+      
+    } else {
+      dataNotification = {
+        type: NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE,
+        title: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_TITLE,
+        content: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_CONTENT,
+        warn: NOTIFICATION_CONSTANTS.CONFIRM_INVOICE_WARN,
+        buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+      }
+      return dataNotification;
     }
   }
 

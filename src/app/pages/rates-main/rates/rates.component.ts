@@ -11,7 +11,11 @@ import { RatesService } from '../rates.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-rates',
@@ -53,10 +57,13 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
   }
 
   constructor(
+    private router: Router,
+    public dialog: MatDialog,
     private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
-    private router: Router,
-    private moduleServices: RatesService) {
+    private notificationDataService: NotificationDataService,
+    private moduleServices: RatesService
+  ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
 
     combineLatest([
@@ -136,10 +143,9 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
         next: (response) => {
           this.completionMessage(true);
         },
-        error: error => {
-          const msg = error?.error?.detail.replace(/- /g, '<br>- ')
-          this.notificationService.notificacion(msg, 'alert');
-          console.log(error?.error);
+        error: (error: HttpErrorResponse) => {
+          const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+          this.modalErrors(errorMessages);
         }
       });
     }
@@ -164,22 +170,30 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
   }
-  
+
   changePageSize(event: any) {
     const newSize = event.value;
     this.pageSize = newSize;
-  
+
     if (this.paginator) {
       this.paginator.pageSize = newSize;
       this.paginator._changePageSize(newSize);
     }
-  
+
     this.getRates();
   }
 
   completionMessage(load: boolean) {
     this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
     this.getRates(this.searchBar?.value!);
+  }
+
+  modalErrors(errors: any) {
+    const dataNotificationModal: notificationData = this.notificationDataService.errors(errors)!;
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    })
   }
 
   ngOnDestroy(): void {

@@ -45,10 +45,13 @@ export const NOTIFICATION_CONSTANTS = {
   CANCEL_ADD_CLIENT_CONTENT: 'Are you sure you want to cancel adding this company? All entered information will be lost, and no changes will be saved',
 
   // Invoices 
-  CONFIRM_INVOICE_TITLE: 'Confirm Invoice Generation',
-  CONFIRM_INVOICE_CONTENT: 'You are about to generate invoices for the selected period.',
-  CONFIRM_INVOICE_WARN: 'This action will finalize the incoices for this period and cannot be undone. Do you want to procced?',
+  GENERATE_INVOICE_TITLE: 'Confirm Invoice Generation',
+  GENERATE_INVOICE_CONTENT: 'You are about to generate invoices for the selected period.',
+  GENERATE_INVOICE_WARN: 'This action will finalize the incoices for this period and cannot be undone. Do you want to procced?',
 
+  CONFIRM_INVOICE_TITLE: 'Confirm Changes',
+  CONFIRM_INVOICE_CONTENT: 'Are you sure you want to apply these changes? Please remember that this action directly affects the presented data and is irreversible once executed.',
+  CONFIRM_INVOICE_WARN: 'Attention! This action cannot be undone',
   //Data for Center Notification Messages (Only message keys) 
 
   //Clients

@@ -52,7 +52,7 @@ export interface DataBillingTable {
   billingMonth: string;
   plantId: string;
   rate: number;
-  amounth: number;
+  amount: number;
   iva: number;
   amountWithIva: number;
   rpu: string;
@@ -65,6 +65,25 @@ export interface DataBillingTable {
   formattedAmount: string;
   formattedAmountWithIva: string;
   formattedRate: string;
+}
+
+export interface PostConfirmInvoices {
+  invoiceId: string;
+  plantId: string;
+  subtotal: number;
+  iva: number;
+  total: number;
+  billingMonth: string;
+  billingYear: number;
+  status: number;
+  rate: number;
+  amount: number;
+  generatedEnergyKwh: number;
+  rpu: string;
+  clientName: string;
+  plantName: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface DataBillingTableMapper {

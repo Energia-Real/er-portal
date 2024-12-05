@@ -13,13 +13,13 @@ import { DataRespSavingDetailsList } from '../plants-main/plants-model';
 export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_BILL_V1;
-  private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
+  private billingApiUrl = environment.API_URL_BILL_V1;
+  private performanceApiUrl = environment.API_URL_PERFORMANCE;
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
   getBillingData(filters: entity.FiltersBilling): Observable<entity.DataBillingTableMapper> {
-    const url = `${this.API_URL_PERFORMANCE}/invoices`;
+    const url = `${this.performanceApiUrl}/invoices`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
@@ -33,16 +33,8 @@ export class BillingService implements OnDestroy {
     );
   }
 
-  getDataClientsList(): Observable<DataRespSavingDetailsList[]> {
-    const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
-    const params = new HttpParams()
-    .set('imageSize', 50)
-
-    return this.http.get<DataRespSavingDetailsList[]>(url, { params })
-  }
-
   downloadExcelReport(params: { [key: string]: string }): Observable<Blob> {
-    const url = `${this.API_URL}/FacturacionExport/DownloadExcelReport`;
+    const url = `${this.billingApiUrl}/FacturacionExport/DownloadExcelReport`;
 
     return this.http.get(url, {
       params, 
@@ -51,39 +43,39 @@ export class BillingService implements OnDestroy {
   }
 
   saveBillingTableData(requestData: any[]): Observable<any> {
-    const url = `${this.API_URL}/Facturacion/ConfirmFacturas`;
+    const url = `${this.billingApiUrl}/Facturacion/ConfirmFacturas`;
 
     return this.http.post<any>(url, requestData);
   }
 
   getInvoiceById(id: string) {
-    const url = `${this.API_URL}/invoices/${id}`;
+    const url = `${this.billingApiUrl}/invoices/${id}`;
 
     return this.http.get<entity.InvoiceResponse>(url);
   }
 
   generateInvoice(data: entity.CreateInvoice): Observable<any> {
-    const url = `${this.API_URL_PERFORMANCE}/invoices/generate`;
+    const url = `${this.performanceApiUrl}/invoices/generate`;
 
     return this.http.post<any>(url, data);
   }
 
   editInvoice(id: string, data: entity.EditInvoice) {
-    const url = `${this.API_URL}/invoices${id}`;
+    const url = `${this.billingApiUrl}/invoices${id}`;
 
     return this.http.put<any>(url, data);
   }
 
   updateInvoiceStatus(id: string, data: entity.UpdateInvoiceStatus) {
-    const url = `${this.API_URL}/invoices${id}/status`;
+    const url = `${this.billingApiUrl}/invoices${id}/status`;
 
     return this.http.put<any>(url, data);
   }
 
-  updateMultipleInvoiceStatuses(data: entity.UpdateMultipleInvoiceStatuses) {
-    const url = `${this.API_URL}/invoices/status`;
+  updateMultipleInvoiceStatuses(data: entity.PostConfirmInvoices[]) {
+    const url = `${this.performanceApiUrl}/invoices/confirm`;
 
-    return this.http.put<entity.UpdateMultipleInvoiceStatusesResponse>(url, data);
+    return this.http.post<entity.UpdateMultipleInvoiceStatusesResponse>(url, data);
   }
 
   ngOnDestroy() {
