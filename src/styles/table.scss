@@ -59,7 +59,6 @@
     }
 }
 
-
 .table-assets {
     border-collapse: separate;
     border-spacing: 0 1em !important;
@@ -69,7 +68,6 @@
     th {
         border: none;
         color: #792430;
-        // border-color: none !important;
         line-height: 18px;
         vertical-align: top;
         padding-top: 15px;
@@ -96,20 +94,23 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    // color: #33A02C;
+    color: #E0E0E0;
 }
 
 .column-status-created {
-    color: #eb0a0ecc;
+    color: #E0E0E0;
 }
+
 .column-status-edited {
-    color: #eb0a0ecc;
+    color: #FDBF6F;
 }
+
 .column-status-confirmed {
     color: #33A02C;
 }
+
 .column-status-pending {
-    color: #eb0a0ecc;
+    color: #E31A1C;
 }
 
 .column-maps {
@@ -151,7 +152,6 @@
             background-color: #FFF;
         }
     }
-
 }
 
 .button-create-asset {
@@ -160,7 +160,6 @@
     border-radius: 24px;
     padding: 10px 24px;
 }
-
 
 tbody,
 td,
@@ -242,12 +241,12 @@ tr {
     }
 }
 
-
 // INPUTS 
 .c-table-energy-input {
     position: relative;
-    margin-bottom: 0!important;
+    margin-bottom: 0 !important;
     padding-top: 22.4px;
+
     .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input,
     .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
         width: 80% !important;

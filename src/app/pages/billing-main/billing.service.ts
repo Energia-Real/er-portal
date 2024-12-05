@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
-import { Observable, Subject, catchError, map, throwError } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
@@ -50,11 +50,10 @@ export class BillingService implements OnDestroy {
     });
   }
 
-// ***
   saveBillingTableData(requestData: any[]): Observable<any> {
     const url = `${this.API_URL}/Facturacion/ConfirmFacturas`;
 
-    return this.http.post<any>(url, requestData)
+    return this.http.post<any>(url, requestData);
   }
 
   getInvoiceById(id: string) {
@@ -63,34 +62,10 @@ export class BillingService implements OnDestroy {
     return this.http.get<entity.InvoiceResponse>(url);
   }
 
-  // generateInvoice(data: entity.CreateInvoice) {
-  //   const url = `${this.API_URL_PERFORMANCE}/invoices/generate`;
-
-  //   return this.http.post<any>(url, data);
-  // }
-
   generateInvoice(data: entity.CreateInvoice): Observable<any> {
     const url = `${this.API_URL_PERFORMANCE}/invoices/generate`;
 
-    return this.http.post<any>(url, data)
-    
-    // .pipe(
-    //   catchError((error: HttpErrorResponse) => {
-    //     // Aquí logueas el error completo
-    //     console.log('Error al generar la factura:', error);
-
-    //     // Puedes extraer el mensaje de error
-    //     let errorMessage = 'Error desconocido';
-    //     if (error?.error?.errors?.errors) {
-    //       errorMessage = error.error.errors.errors.map((e: any) => e.descripcion).join(', ');
-    //     } else if (error?.message) {
-    //       errorMessage = error.message;
-    //     }
-
-    //     // Regresar el error para que el componente pueda manejarlo si es necesario
-    //     return throwError(errorMessage);
-    //   })
-    // );
+    return this.http.post<any>(url, data);
   }
 
   editInvoice(id: string, data: entity.EditInvoice) {

@@ -110,12 +110,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
         </table>
-        
-        <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-        </mat-paginator>
     </div>
+    
+    <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>
 
 <ng-template #notData>
