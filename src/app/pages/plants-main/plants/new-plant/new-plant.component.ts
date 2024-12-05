@@ -12,7 +12,7 @@ import { DataRespSavingDetailsList } from '@app/pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
 import { environment } from '@environment/environment';
 import { PlantsService } from '../../plants.service';
-import { UserV2 } from '@app/shared/models/general-models';
+import { UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
@@ -61,7 +61,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   mapLink: string = ''
 
-  userInfo!: UserV2;
+  userInfo!: UserInfo;
 
   constructor(
     private catalogsService: CatalogsService,
@@ -81,8 +81,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   }
 
   getId() {
-    this.activatedRoute.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: any) => {
-      params.get('id') && this.getDataById(params.get('id')!);
+    this.activatedRoute?.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: any) => {
+      if (params.id) this.getDataById(params.id);
     });
   }
 
@@ -100,6 +100,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     })
   }
 
+  
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+  }
+  
   getCatalogs() {
     this.catalogsService.getCatPlantStatus().subscribe({
       next: (response: entityCatalogs.DataCatalogs[]) => this.catPlantStatus = response,
@@ -142,8 +148,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const objData: any = { clientId: 50 }
-    // const objData: any = { clientId: this.userInfo.clientes[0] }
+    const objData: any = { clientId: this.userInfo.clientes[0] }
     this.loading = !this.loading;
 
     if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
@@ -193,11 +198,6 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     })
   }
 
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
-    console.log(this.userInfo.clientes[0]!);
-  }
 
   getAddressMap(response: entity.DataPlant | any) {
     const location = {

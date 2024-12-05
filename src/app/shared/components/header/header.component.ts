@@ -5,7 +5,7 @@ import { distinctUntilChanged, Subject, Subscription, switchMap, take, takeUntil
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { EditNotificationStatus, FilterState, UserV2 } from '@app/shared/models/general-models';
+import { EditNotificationStatus, FilterState, UserInfo } from '@app/shared/models/general-models';
 import { selectFilters, selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
@@ -25,7 +25,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  userInfo!: UserV2;
+  userInfo!: UserInfo;
   @Input() routeActive = '';
   @Output() monthSelected = new EventEmitter<{ month: string; year: number }>();
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;

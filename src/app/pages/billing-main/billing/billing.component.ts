@@ -11,7 +11,7 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, notificationData, UserV2 } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
@@ -68,7 +68,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   searchBar = new FormControl('');
 
   generalFilters!: GeneralFilters
-  userInfo!: UserV2;
+  userInfo!: UserInfo;
 
   oneConfirmInvoice!: entity.DataBillingTable;
 
@@ -121,7 +121,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   getUserClient() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
-    console.log(this.userInfo.clientes[0]!);
   }
 
   getBilling(searchTerm: string = '') {
@@ -146,16 +145,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-  getInvoiceById() {
-    this.moduleServices.getInvoiceById('').subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
 
   generateInvoice() {
     const objData: entity.CreateInvoice | any = {
@@ -165,7 +154,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
     this.moduleServices.generateInvoice(objData).subscribe({
       next: (response: any) => {
-        console.log(response);
         this.notificationService.notificacion(`Energy generation has been updated.`, 'save')
         this.getBilling(this.searchBar?.value!);
       },
@@ -185,34 +173,12 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.createNotificationModal(false);
   }
 
-  editInvoice() {
-    const objData: entity.EditInvoice | any = {}
-    this.moduleServices.editInvoice('', objData).subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
-
-  updateInvoiceStatus() {
-    const objData: entity.UpdateInvoiceStatus | any = {}
-    this.moduleServices.updateInvoiceStatus('', objData).subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
 
   updateMultipleInvoiceStatuses() {
     const objData: entity.DataBillingTable | any[] = this.selection?.selected.length ? this.selection?.selected : [this.oneConfirmInvoice]
+    const filteredInvoices = objData.filter(invoice => invoice.status === 2);
 
-    objData.forEach((data: any) => {
+    filteredInvoices.forEach((data: any) => {
       delete data.amountWithIva;
       delete data.formattedGeneratedEnergyKwh;
       delete data.originalGeneratedEnergyKwh;
@@ -222,7 +188,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       delete data.formatterStatus;
     });
 
-    this.moduleServices.updateMultipleInvoiceStatuses(objData).subscribe({
+    this.moduleServices.updateMultipleInvoiceStatuses(filteredInvoices).subscribe({
       next: (_) => {
         this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
           .afterClosed()
@@ -235,8 +201,10 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-  updateModifiedElements() {
-    this.modifiedElements.forEach(data => {
+  updateModifiedElements(oneInvoice?: entity.DataBillingTable) {
+    let invoices: entity.DataBillingTable | any[] = oneInvoice ? [oneInvoice] : this.modifiedElements
+    
+    invoices.forEach(data => {
       delete data.formattedGeneratedEnergyKwh;
       delete data.originalGeneratedEnergyKwh;
       delete data.formattedAmount;
@@ -246,7 +214,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       delete data.amountWithIva;
     });
 
-    this.moduleServices.saveBillingTableData(this.modifiedElements).subscribe({
+    this.moduleServices.saveBillingTableData(invoices).subscribe({
       next: () => {
         this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
           .afterClosed()
@@ -286,7 +254,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   trackChanges(element: any) {
-    const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
+    const index = this.modifiedElements.findIndex(el => el.invoiceId === element.invoiceId);
 
     const cleanedOriginalEnergy = this.cleanFormattedValue(element.originalGeneratedEnergyKwh);
     const cleanedCurrentEnergy = this.cleanFormattedValue(element.generatedEnergyKwh);

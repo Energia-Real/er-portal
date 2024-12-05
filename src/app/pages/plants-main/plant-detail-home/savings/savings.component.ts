@@ -53,8 +53,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
       const userInfo = this.encryptionService.decryptData(encryptedData);
 
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getSavings({clientId : 50, ...generalFilters});
-        // this.getSavings({clientId : userInfo.clientes[0], ...generalFilters});
+        this.getSavings({clientId : userInfo.clientes[0], ...generalFilters});
       });
     }
   }

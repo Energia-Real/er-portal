@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject } from 'rxjs';
 import { AuthService } from '@app/auth/auth.service';
-import { UserV2 } from '@app/shared/models/general-models';
+import { UserInfo } from '@app/shared/models/general-models';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
@@ -14,7 +14,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   public routeActive: string = '';
-  userInfo!: UserV2;
+  userInfo!: UserInfo;
   isSidebarHovered = false;
   keepOpen = false;
 

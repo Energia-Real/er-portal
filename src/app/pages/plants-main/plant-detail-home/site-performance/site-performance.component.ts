@@ -154,8 +154,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getSitePerformance({ idClient: 50, ...generalFilters });
-        // this.getSitePerformance({ idClient: userInfo.clientes[0], ...generalFilters });
+        this.getSitePerformance({ idClient: userInfo.clientes[0], ...generalFilters });
       });
     }
   }

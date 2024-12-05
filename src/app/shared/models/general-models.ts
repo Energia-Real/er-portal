@@ -1,5 +1,3 @@
-import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
-
 export type IForm<T> = {
   [K in keyof T]?: any;
 }
@@ -19,7 +17,7 @@ export interface User {
   token?: string;
 }
 
-export interface UserV2 {
+export interface UserInfo {
   id: string,
   email: string,
   persona: {
@@ -27,7 +25,7 @@ export interface UserV2 {
     nombres: string,
     apellidos: string
   },
-  clientes: any,
+  clientes: string[],
   accessTo: string
 }
 
