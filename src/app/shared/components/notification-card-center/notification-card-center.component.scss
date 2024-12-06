@@ -1,0 +1,48 @@
+.add-circle-success {
+    background-color:#DFE7ED;
+    color: #216DD0 !important;
+    svg {
+        stroke-width: 2px; 
+      }
+}
+
+.general-circle-failed {
+    background-color:#FD9B9C;
+}
+.edit-circle-success {
+  background-color:#E1FFE1;
+}
+
+.circle {
+    min-width: 46px !important;
+    max-width: 47px !important;
+    height: 46px !important;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .c-notification{
+    max-width:358px ;
+    .title{
+        font-weight: 700;
+        font-size: 16px;
+
+    }
+    .body{
+        font-weight: 500;
+        color:#7F7F7F;
+        font-size: 16px;
+
+    }
+    .timeAgo{
+        font-size: 12px;
+        font-weight: 500;
+        color: #F97316;
+    }
+  }
+
+  .card-notification{
+    display: flex;
+  }

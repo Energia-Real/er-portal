@@ -10,14 +10,14 @@ body {
 
 
 body {
-  font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
+  font-family: "HelveticaNeue", 'NeueMontreal', sans-serif !important;
 }
 
 ::placeholder {
-  font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
+  font-family: "HelveticaNeue", 'NeueMontreal', sans-serif !important;
   letter-spacing: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 
@@ -58,7 +58,14 @@ span {
 }
 
 .c-main {
-  padding: 80px 60px 60px 60px;
+  padding: 20px 60px 60px 60px;
+  height: calc(100vh - 70px);
+  overflow: auto;
+}
+
+.c-scroll {
+  // overflow: auto;
+  // height: calc(100vh - 300px);
 }
 
 .c-modal-lateral {
@@ -100,8 +107,12 @@ span {
   }
 }
 
+.text-er-home {
+  color: black !important;
+}
+
 .text-er-orange {
-  color: #EE5427;
+  color: #EE5427 !important;
 }
 
 .width-100 {
@@ -166,6 +177,8 @@ select {
     }
   }
 }
+
+
 
 .wi-progress {
   font-size: 10px !important;
@@ -470,10 +483,32 @@ select {
     font-size: 15px;
   }
 
-  a:hover {
-    color: #EE5427;
+  li {
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 }
+
+.mat-mdc-snack-bar-container {
+  background-color: #F6F6F6 !important;
+  color: #000000 !important;
+  border-radius: 10px;
+  //text-align: center;                    
+}
+
+.mdc-snackbar__surface {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+.mdc-snackbar__label {
+  font-size: 16px;
+  line-height: 1.5;
+  color: inherit !important;
+}
+
+
 
 .c-input-group {
   display: flex;
@@ -497,6 +532,25 @@ select {
 
     &::placeholder {
       font-size: 11px;
+      font-weight: 500;
+      color: #6E6E6E;
+      line-height: normal;
+    }
+  }
+}
+
+.c-select {
+  input {
+    border: 1px solid #949191 !important;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    font-size: 14px;
+
+    &::placeholder {
+      font-size: 11px;
+      font-weight: 500;
       color: #6E6E6E;
       line-height: normal;
     }
@@ -566,7 +620,7 @@ select {
   .mat-mdc-select-multiple {
     padding: 0;
     border-width: 0 !important;
-    font-family: 'NeueMontreal', "Helvetica Neue", sans-serif !important;
+    font-family: "Helvetica Neue", 'NeueMontreal', sans-serif !important;
     letter-spacing: 0;
     font-size: 16px;
     font-weight: 500;
@@ -825,6 +879,9 @@ input[type="number"]:focus {
 }
 
 .c-paginator {
+  .mat-mdc-paginator-page-size {
+    display: none;
+  }
   .mat-mdc-paginator-range-label {
     font-weight: bold;
   }
@@ -991,6 +1048,10 @@ input[type="number"]:focus {
   .mdc-circular-progress__indeterminate-circle-graphic {
     stroke: white !important;
   }
+}
+
+.mdc-snackbar__surface{
+  border-radius: 10px !important;
 }
 
 

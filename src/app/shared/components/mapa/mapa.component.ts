@@ -19,7 +19,7 @@ export class MapaComponent implements AfterViewInit {
 
   private tippyInstance!: Instance | null;
   tooltipsInfo: entity.statesResumeTooltip[] = [];
-
+  statesColors:any ={};
   selectedStates: string[] = [];
   filters$!: Observable<FilterState['filters']>;
   filters!: FilterState['filters'];
@@ -46,8 +46,25 @@ export class MapaComponent implements AfterViewInit {
   getTooltipInfo(filters?: any) {
     this.homeService.getDataStates(filters).subscribe({
       next: (response: entity.statesResumeTooltip[]) => {
+
+        response.forEach((state) => {
+          var color:string; 
+
+          color="#FFFFFF";
+          if(state.totalInstalledCapacity>0 && state.totalInstalledCapacity <= 1500) color="#9AE3E1"
+          else if(state.totalInstalledCapacity>1500 && state.totalInstalledCapacity <= 3000) color="#64E2E2"
+          else if(state.totalInstalledCapacity>3000 && state.totalInstalledCapacity <= 4500) color="#00E5FF"
+          else if(state.totalInstalledCapacity>4500 && state.totalInstalledCapacity <= 6000) color="#08C4DA"
+          else if(state.totalInstalledCapacity>6000) color="#008796"
+          console.log(state)
+          console.log(color)
+          this.statesColors[state.estado] = {
+            color: color,
+          };
+        });
+        console.log(this.statesColors)
+
         this.tooltipsInfo = response;
-        // Crear los tooltips una vez que los datos han sido cargados
         this.createTooltips();
       },
       error: (error) => {
@@ -69,12 +86,12 @@ export class MapaComponent implements AfterViewInit {
       if (dataEstado) {
         tooltipContent.instance.infoAdicional = [
           { subtitle: 'Active plants', content: `${dataEstado.plantas} plants` },
-          { subtitle: 'Total kWh', content: `${dataEstado.totalEnergyProduction.toLocaleString()} kWh` }
+          { subtitle: 'Total Installed Capacity kWh', content: `${dataEstado.totalInstalledCapacity.toLocaleString()} kWh` }
         ];
       } else {
         tooltipContent.instance.infoAdicional = [
           { subtitle: 'Active plants', content: '0 plants' },
-          { subtitle: 'Total kWh', content: '0 kWh' }
+          { subtitle: 'Total Installed Capacity kWh', content: '0 kWh' }
         ];
       }
 
@@ -105,7 +122,7 @@ export class MapaComponent implements AfterViewInit {
   }
 
   onPolygonClick(stateId: string): void {
-    const index = this.selectedStates.indexOf(stateId);
+   /*  const index = this.selectedStates.indexOf(stateId);
     if (index === -1) {
       this.selectedStates.push(stateId);
       let filters = {
@@ -123,7 +140,7 @@ export class MapaComponent implements AfterViewInit {
       };
       console.log(filters);
       this.store.dispatch(setFilters({ filters }));
-    }
+    } */
   }
 
   createComponent(component: any): ComponentRef<any> {

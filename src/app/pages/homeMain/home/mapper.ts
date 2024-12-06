@@ -2,28 +2,25 @@ import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './home-model';
 
 export class Mapper {
-	static getDataClientsMapper(response: entity.DataRespSavingDetails[], formatsService: FormatsService): entity.DataRespSavingDetailsMapper {
+	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): any {
 		let totalEnergyConsumption: number = 0;
 		let totalEnergyProduction: number = 0;
 
-		let dataList: entity.DataRespSavingDetails[] = [];
+		let dataList: entity.PlantData[] = [];
 
-		response.forEach((data: entity.DataRespSavingDetails): void => {
-			const energyConsumption = parseFloat(data?.energyConsumption);
+		response.response.consolidatedData.forEach((data: entity.PlantData): void => {
+			const energyConsumption = data?.energyConsumption;
 			totalEnergyConsumption += energyConsumption;
-			const energyProduction = parseFloat(data?.energyProduction);
+			const energyProduction = data?.energyProduction
 			totalEnergyProduction += energyProduction;
 
 			dataList.push({
-				siteId: data?.siteId || '',
+				plantId: data?.plantId || '',
 				siteName: data?.siteName || '',
-				siteSaving: data?.siteSaving,
-				cfeZone: data?.cfeZone,
-				solarCoverage: data?.solarCoverage || '',
-				// co2Saving: data?.co2Saving || '',
+				solarCoverage: data?.solarCoverage || 0,
 				co2Saving: formatsService.energyFormat(data?.co2Saving),
-				energyConsumption: formatsService.energyFormat(parseFloat(data?.energyConsumption)),
-				energyProduction: formatsService.energyFormat(parseFloat(data?.energyProduction)),
+				energyConsumption: formatsService.energyFormat(data?.energyConsumption),
+				energyProduction: formatsService.energyFormat(data?.energyProduction),
 				siteStatus: data?.siteStatus
 			});
 		});

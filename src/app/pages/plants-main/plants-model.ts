@@ -11,7 +11,6 @@ export interface DataRespSavingDetailsList {
   nombre: string;
 }
 
-
 export interface Example {
   name: string;
   position: number;
@@ -22,6 +21,32 @@ export interface Example {
 export interface PostDataByPlant {
   brand: string;
   plantCode: string;
+}
+
+export interface getSavingsDetailsMapper {
+  cfeSubtotal: string;
+  erCfeSubtotal: string;
+  erSubtotal: string;
+  expenditureWithoutEr: string;
+  savings: string;
+}
+export interface getSavingsDetails {
+
+    cfeSubtotal: string;
+    erSubtotal: string;
+    erCfeSubtotal:string;
+    expenditureWithoutER: string;
+    savings: string;
+    monthlyData: monthlyData[]
+}
+
+export interface monthlyData {
+  year: string;
+  month: string;
+  cfeSubtotal: string;
+  erSubtotal: string;
+  expenditureWithoutER: string;
+  savings: string
 }
 
 export interface DataResponseDetailsClient {
@@ -109,18 +134,31 @@ export interface DataManagementTable {
   }[];
 }
 
-export interface DataManagementTableMapper {
-
-}
-
 export interface DataResponseDetailsCard {
   title: string;
   description: string | Date | null;
   tooltip?: string
+  icon?: string
 }
-export interface DataResponseDetailsMapper {
-  firstTwo : any
-  remaining : any
+export interface DataResponseArraysMapper {
+  primaryElements: any[];
+  additionalItems: any[];
+}
+
+export interface DataSiteDetails {
+  lastConnectionTimestamp: string;
+  systemSize: number;
+  panels: number;
+  contractDuration: {
+    years: number;
+    months: number;
+    days: number;
+  },
+  rpu: string;
+  ageOfTheSite: number;
+  installDate: string;
+  cod: string
+  commissionDate: string
 }
 
 export interface ResponseSystem {
@@ -129,7 +167,6 @@ export interface ResponseSystem {
   errorCode: 0,
   data: DataResponseSystem
 }
-
 
 export interface DataResponseSystem {
   real_health_state: string
@@ -175,7 +212,6 @@ export interface DataPlant {
     moduloModel: any;
   }[];
 }
-
 
 export interface DataPostPatchPlant {
   id?: string;
@@ -348,6 +384,24 @@ export interface CatalogEquipment {
   nombre?: string
 }
 
+export interface SitePerformanceResponse {
+  success: true;
+  response: {
+    systemGeneration: string;
+    totalConsumption: string;
+    solarCoverage: string;
+  },
+  errors: {
+    errors: [
+      {
+        tipo: string;
+        field: string;
+        descripcion: string;
+      }
+    ]
+  }
+}
 
-
-
+export interface BatuSummary {
+  summary: number
+}

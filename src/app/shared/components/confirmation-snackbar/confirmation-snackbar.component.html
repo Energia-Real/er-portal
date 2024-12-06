@@ -1,0 +1,25 @@
+<div class="custom-snackbar-container">
+    <div [ngClass]="{
+        'circle': true,
+        'complete-circle': data.type === 'COMPLETE',
+        'error-circle': data.type === 'FAILED'
+      }">
+        <ng-container class="complete-circle" *ngIf="data.type === 'COMPLETE'">
+            <mat-icon>task_alt_outlined</mat-icon>
+        </ng-container>
+        <ng-container class="error-circle" *ngIf="data.type === 'FAILED'">
+            <img src="../../../../../assets/svg/alert.svg" alt="Icon alert">
+        </ng-container>
+    </div>    
+            
+    <div class="snack-body">
+        <strong class="mb-2">{{data.title}}</strong>
+        <span class="mb-2">{{data.subtitle}}</span>
+    </div>
+
+    <div class="ml-2">
+        <button mat-icon-button (click)="closeSnackBar()">
+            <mat-icon>close</mat-icon>
+          </button>
+    </div>
+</div>

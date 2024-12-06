@@ -3,6 +3,10 @@
     --mdc-outlined-text-field-container-shape: 28px;
   }
 
+  .economic-savings {
+    height: 405px;
+  }
+
   .wi-progress {
     font-size: 15px !important;
     color: #000000;
@@ -11,6 +15,25 @@
   .text-sm {
     margin-top: 5px;
     line-height: 15px
+  }
+
+  .c-plants {
+    border: none;
+
+    .c-section-plant {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+
+      h2 {
+        margin-right: 20px;
+        margin-bottom: 0;
+      }
+
+      span {
+        cursor: default;
+      }
+    }
   }
 
   .c-card-section {
@@ -78,11 +101,15 @@
     }
   }
 
+  .pt-55 {
+    padding-top: 55px;
+  }
+
   .solar-coverage {
     width: 212px;
     height: 232px;
     display: flex;
-    margin-top: 24px;
+    margin-top: 22px;
     align-items: center;
     justify-content: center;
 
@@ -202,7 +229,7 @@
 
   .table-container-scroll {
     overflow-y: auto;
-    height: calc(100vh - 150px);
+    height: 450px;
     margin-bottom: 0 !important;
     margin-top: 0 !important;
     overflow-x: hidden;
@@ -217,6 +244,10 @@
 
     th {
       height: 65px;
+    }
+
+    th:first-child {
+      width: 500px;
     }
 
     .ms-edge thead {
@@ -247,3 +278,80 @@
     justify-content: center;
   }
 }
+
+.graphic-performance {
+  width: 100%;
+  height: auto;
+  min-height: auto;
+  display: flex;
+  flex-direction: row; 
+
+  align-items: center;
+  justify-content: center;
+}
+
+.graphic-performance canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 340px !important;
+
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+}
+
+
+.c-graphic-performance{
+  height: auto !important;
+}
+
+.dot{
+  min-width:12px !important ;
+  min-height:12px !important ;
+
+}
+
+.legend-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-bar {
+  width: 21px;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  background: linear-gradient(to top, 
+    #E0E0E0 0%, 
+    #64E2E2 25%, 
+    #00E5FF 50%, 
+    #08C4DA 75%, 
+    #008796 100%);
+  border: 1px solid #ccc;
+  border-radius: 18px;
+}
+
+.labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; 
+}
+
+.labels div {
+  font-size: 12px;
+  text-align: left;
+}
+
+.c-division{
+  width: 100%;
+  height: 20px;
+}
+
+.division {
+  width: 100%; 
+  border-top: 2px solid #231F20; 
+}
+
