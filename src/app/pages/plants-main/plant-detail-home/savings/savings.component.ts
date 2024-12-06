@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataResponseArraysMapper, FilterState } from '@app/shared/models/general-models';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { GeneralFilters } from '@app/pages/homeMain/home/home-model';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-savings',
@@ -35,34 +36,32 @@ export class SavingsComponent implements OnInit, OnDestroy {
   constructor(
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
-    private store: Store<{ filters: FilterState }>
+    private store: Store<{ filters: FilterState }>,
+    private encryptionService: EncryptionService,
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
   }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    else this.getDataClient();
+    else this.getUserClient()
+  }
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getSavings({clientId : userInfo.clientes[0], ...generalFilters});
+      });
+    }
   }
 
   getSavings(filters:GeneralFilters) {
     this.moduleServices.getSavingsDetails(filters).subscribe({
       next: (response: entity.DataResponseArraysMapper) => {
         this.savingDetails = response;
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
-      }
-    })
-  }
-
-  getDataClient() {
-    this.moduleServices.getDataClient().subscribe({
-      next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-          this.getSavings({clientId : response[0].clientId, ...generalFilters});
-        });
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')

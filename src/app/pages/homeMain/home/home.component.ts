@@ -18,7 +18,7 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { FilterState, GeneralFilters, UserV2 } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
@@ -206,7 +206,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
 
   selectedEndMonth: number = new Date().getMonth() + 1;
- 
+
   solarCoverage: string = '';
 
   dayOrMount = new FormControl('month');
@@ -215,11 +215,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   showLoader: boolean = true;
 
   selectedMonths: any[] = [];
-  dataClientsList: entity.DataRespSavingDetailsList[] = [];
+  dataTooltipsInfo: entity.statesResumeTooltip[] = [];
 
   savingsDetails!: entity.SavingDetailsResponse;
 
-  userInfo!: UserV2;
+  userInfo!: UserInfo;
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -241,7 +241,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getFilters();
-    this.getDataClientsList();
+    this.getUserClient();
     this.initiLineChartData();
     this.initiLineChartDataES();
 
@@ -341,23 +341,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataClientsList() {
-    this.moduleServices.getDataClientsList().subscribe({
-      next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-          this.dataClientsList = response;
-          this.getDataClients({clientId : response[0].id, ...generalFilters});
-          this.getDataSavingDetails({clientId : response[0].clientId, ...generalFilters});
-          this.getDataSolarCoverga({clientId : response[0].clientId, ...generalFilters});
-         // this.getEconomicSavings({clientId : response[0].clientId, ...generalFilters});
-
-        });
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
-      }
-    })
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });
+      });
+    }
   }
 
   getDataSolarCoverga(filters: entity.GeneralFilters) {

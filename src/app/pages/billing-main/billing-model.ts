@@ -1,30 +1,89 @@
 export interface DataTableBillingResponse {
-  response: {
-    pageSize: number;
-    page: number;
-    data: DataBillingTable[];
-    totalItems: number;
-  };
-  errors?: ErrorRequest[];
+  response: BillingResponse;
+  errors: any[];
+}
+
+export interface BillingResponse {
+  pageSize: number;
+  page: number;
+  data: BillingData[];
+  totalItems: number;
+  errors?: any | null;
+}
+
+export interface BillingData {
+  externalId: string;
+  plant: PlantInfo;
+  client: ClientInfo;
+  generatedEnergyKwh: number;
+  amount: BillingAmount;
+  billingMonth: string;
+  billingYear: string;
+  rate: number;
+  status: string;
+}
+
+export interface PlantInfo {
+  plantId: string;
+  plantName: string;
+  rpu: string;
+}
+
+export interface ClientInfo {
+  clientId: string;
+  clientName: string;
+}
+
+export interface BillingAmount {
+  subtotal: number;
+  iva: IVA;
+  total: number;
+}
+
+export interface IVA {
+  percentage: number;
+  value: number;
 }
 
 export interface DataBillingTable {
-  externalId: string;
+  invoiceId: string;
   plantName: string;
   clientName: string;
-  rate: string;
-  amount: string;
-  amountWithIva: string;
+  billingMonth: string;
+  plantId: string;
+  rate: number;
+  amount: number;
+  iva: number;
+  amountWithIva: number;
   rpu: string;
-  status: string;
-  month: number;
-  formattedMonth: string;
-  generatedEnergyKwh: string;
+  status: number;
+  month: string;
+  formatterStatus: string;
+  generatedEnergyKwh: number;
+  originalGeneratedEnergyKwh: number;
   formattedGeneratedEnergyKwh: string;
-  originalGeneratedEnergyKwh: string;
   formattedAmount: string;
   formattedAmountWithIva: string;
   formattedRate: string;
+}
+
+export interface PostConfirmInvoices {
+  invoiceId: string;
+  plantId: string;
+  subtotal: number;
+  iva: number;
+  total: number;
+  billingMonth: string;
+  billingYear: number;
+  status: number;
+  rate: number;
+  amount: number;
+  generatedEnergyKwh: number;
+  rpu: string;
+  clientName: string;
+  plantName: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface DataBillingTableMapper {
@@ -127,9 +186,4 @@ interface InvoiceAmount {
   subtotal: number;
   iva: IVA;
   total: number;
-}
-
-interface IVA {
-  percentage: number;
-  value: number;
 }

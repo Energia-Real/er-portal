@@ -9,6 +9,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
 import { PlantsService } from '../../plants.service';
 import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-site-performance',
@@ -130,6 +131,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
+    private encryptionService: EncryptionService,
     private formatsService: FormatsService,
     private store: Store<{ filters: FilterState }>
   ) {
@@ -140,25 +142,21 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     this.getEstimateds();
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
-    this.getDataClient();
+    this.getUserClient();
   }
 
   ngAfterViewInit(): void {
     this.formFilters.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(values => this.onFormValuesChanged(values));
   }
 
-  getDataClient() {
-    this.moduleServices.getDataClient().subscribe({
-      next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-          this.getSitePerformance({ idClient: response[0].clientId, ...generalFilters });
-        });
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
-      }
-    })
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getSitePerformance({ idClient: userInfo.clientes[0], ...generalFilters });
+      });
+    }
   }
 
   getSitePerformance(filters: GeneralFilters) {

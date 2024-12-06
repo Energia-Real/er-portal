@@ -11,10 +11,15 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-billing',
@@ -22,6 +27,9 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   styleUrl: './billing.component.scss'
 })
 export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, AfterViewInit {
+  ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
+  CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
+
   private onDestroy$ = new Subject<void>();
 
   generalFilters$!: Observable<FilterState['generalFilters']>;
@@ -60,6 +68,9 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   searchBar = new FormControl('');
 
   generalFilters!: GeneralFilters
+  userInfo!: UserInfo;
+
+  oneConfirmInvoice!: entity.DataBillingTable;
 
   ngAfterViewChecked() {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
@@ -70,6 +81,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
     private router: Router,
+    public dialog: MatDialog,
+    private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
@@ -96,17 +109,18 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   ngOnInit(): void {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-      console.log('información desencriptada',userInfo);
-    }
+    this.getUserClient()
   }
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$), distinctUntilChanged()).subscribe(content => {
       this.getBilling(content!);
     });
+  }
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
   }
 
   getBilling(searchTerm: string = '') {
@@ -131,84 +145,100 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-  getInvoiceById() {
-    this.moduleServices.getInvoiceById('').subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
 
-  createInvoice() {
+  generateInvoice() {
     const objData: entity.CreateInvoice | any = {
-      // clientId : 
-
+      clientId: this.userInfo.clientes[0],
+      ...this.generalFilters
     }
-    this.moduleServices.createInvoice(objData).subscribe({
+
+    this.moduleServices.generateInvoice(objData).subscribe({
       next: (response: any) => {
+        this.notificationService.notificacion(`Energy generation has been updated.`, 'save')
+        this.getBilling(this.searchBar?.value!);
       },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
+      error: (error: HttpErrorResponse) => {
+        const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+        this.modalErrors(errorMessages);
       }
     });
   }
 
-  editInvoice() {
-    const objData: entity.EditInvoice | any = {}
-    this.moduleServices.editInvoice('', objData).subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
+  generateInvoiceAction() {
+    this.createNotificationModal(true);
   }
 
-  updateInvoiceStatus() {
-    const objData: entity.UpdateInvoiceStatus | any = {}
-    this.moduleServices.updateInvoiceStatus('', objData).subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
+  confirmInvoiceAction(oneInvoice?: entity.DataBillingTable) {
+    if (oneInvoice) this.oneConfirmInvoice = oneInvoice;
+    this.createNotificationModal(false);
   }
+
 
   updateMultipleInvoiceStatuses() {
-    const objData: entity.UpdateMultipleInvoiceStatuses | any = {}
-    this.moduleServices.updateMultipleInvoiceStatuses(objData).subscribe({
-      next: (response: any) => {
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
+    const objData: entity.DataBillingTable | any[] = this.selection?.selected.length ? this.selection?.selected : [this.oneConfirmInvoice]
+    const filteredInvoices = objData.filter(invoice => invoice.status === 2);
 
-  updateModifiedElements() {
-    this.modifiedElements.forEach(data => {
+    filteredInvoices.forEach((data: any) => {
+      delete data.amountWithIva;
       delete data.formattedGeneratedEnergyKwh;
       delete data.originalGeneratedEnergyKwh;
       delete data.formattedAmount;
       delete data.formattedAmountWithIva;
       delete data.formattedRate;
-      delete data.formattedMonth;
+      delete data.formatterStatus;
     });
 
-    this.moduleServices.saveBillingTableData(this.modifiedElements).subscribe({
-      next: (response: any) => {
-        this.completionMessage()
+    this.moduleServices.updateMultipleInvoiceStatuses(filteredInvoices).subscribe({
+      next: (_) => {
+        this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
+          .afterClosed()
+          .subscribe((_ => this.getBilling(this.searchBar?.value!)));
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  updateModifiedElements(oneInvoice?: entity.DataBillingTable) {
+    let invoices: entity.DataBillingTable | any[] = oneInvoice ? [oneInvoice] : this.modifiedElements
+    
+    invoices.forEach(data => {
+      delete data.formattedGeneratedEnergyKwh;
+      delete data.originalGeneratedEnergyKwh;
+      delete data.formattedAmount;
+      delete data.formattedAmountWithIva;
+      delete data.formattedRate;
+      delete data.formatterStatus;
+      delete data.amountWithIva;
+    });
+
+    this.moduleServices.saveBillingTableData(invoices).subscribe({
+      next: () => {
+        this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
+          .afterClosed()
+          .subscribe((_ => this.getBilling(this.searchBar?.value!)));
       },
       error: error => {
         console.log(error);
+      }
+    });
+  }
+
+  createNotificationModal(generate: boolean) {
+    let dataNotificationModal: notificationData
+    if (generate) dataNotificationModal = this.notificationDataService.invoicesNotificationData(generate, this.generalFilters)!;
+    else dataNotificationModal = this.notificationDataService.invoicesNotificationData(generate)!;
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.confirmed) {
+        if (generate) this.generateInvoice()
+        else this.updateMultipleInvoiceStatuses()
       }
     });
   }
@@ -224,7 +254,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   trackChanges(element: any) {
-    const index = this.modifiedElements.findIndex(el => el.externalId === element.externalId);
+    const index = this.modifiedElements.findIndex(el => el.invoiceId === element.invoiceId);
 
     const cleanedOriginalEnergy = this.cleanFormattedValue(element.originalGeneratedEnergyKwh);
     const cleanedCurrentEnergy = this.cleanFormattedValue(element.generatedEnergyKwh);
@@ -291,14 +321,15 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   changePageSize(event: any) {
-    this.pageSize = event.value;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator._changePageSize(this.pageSize);
-  }
+    const newSize = event.value;
+    this.pageSize = newSize;
 
-  completionMessage() {
-    this.notificationService.notificacion(`"Energy generation has been updated."`, 'save')
-    this.getBilling(this.searchBar?.value!);
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+
+    this.getBilling();
   }
 
   exportInformation() {
@@ -320,6 +351,14 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
         this.notificationService.notificacion('Talk to the administrator.', 'alert');
         console.log(error);
       }
+    })
+  }
+
+  modalErrors(errors: any) {
+    const dataNotificationModal: notificationData = this.notificationDataService.errors(errors)!;
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
     })
   }
 

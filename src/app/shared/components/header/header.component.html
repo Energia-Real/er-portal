@@ -5,7 +5,7 @@
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
           <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + currentYear : 'Start' }}</h1>
-          <span class="material-symbols-outlined">calendar_month</span>
+          <i class="fa-solid fa-calendar-days"></i>
         </button>
 
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
@@ -27,7 +27,7 @@
         <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
           <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End') }}
           </h1>
-          <span class="material-symbols-outlined">calendar_month</span>
+          <i class="fa-solid fa-calendar-days"></i>
         </button>
 
         <mat-menu #monthMenu2="matMenu" class="custom-menu">
