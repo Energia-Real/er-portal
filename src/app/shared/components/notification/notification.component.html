@@ -1,38 +1,48 @@
 <div class="m-6">
-    <div class="flex" *ngIf="data.type">
-      <div class="notification-icon flex justify-center grid content-center">
-        <div [ngClass]="{
+  <div class="flex" *ngIf="data.type">
+    <div class="notification-icon flex justify-center grid content-center">
+      <div [ngClass]="{
             'circle': true,
             'add-circle': data.type === ADD,
             'cancel-circle': data.type === CANCEL,
             'edit-circle': data.type === EDIT,
             'delete-circle': data.type === DELETE
           }">
-            <ng-container class="add-circle" *ngIf="data.type === ADD">
-                <mat-icon>add_circle_outlined</mat-icon>
-            </ng-container>
-            <ng-container class="cancel-circle" *ngIf="data.type === CANCEL">
-                <mat-icon>cancel_outlined</mat-icon>
-            </ng-container>
-              <ng-container *ngIf="data.type === EDIT">
-                <mat-icon>save_outlined</mat-icon>
-              </ng-container>   
-                <ng-container *ngIf="data.type === DELETE">
-                    <mat-icon>delete_outlined</mat-icon>
-              </ng-container>
-        </div>
-      </div>
-      <div class="notification-body">
-        <strong class="mb-6">{{data.title}}</strong>
-        <span class="mb-3">{{data.content}}</span>
-        <span class="warn" *ngIf="data.warn">{{data.warn}}</span>
+        <ng-container class="add-circle" *ngIf="data.type === ADD">
+          <mat-icon>add_circle_outlined</mat-icon>
+        </ng-container>
+        <ng-container class="cancel-circle" *ngIf="data.type === CANCEL">
+          <mat-icon>cancel_outlined</mat-icon>
+        </ng-container>
+        <ng-container *ngIf="data.type === EDIT">
+          <mat-icon>save_outlined</mat-icon>
+        </ng-container>
+        <ng-container *ngIf="data.type === ERRORS">
+          <mat-icon>delete_outlined</mat-icon>
+        </ng-container>
+        <ng-container *ngIf="data.type === ERRORS">
+          <img src="../../../../assets/icons/errors.svg" alt="Logo">
+        </ng-container>
       </div>
     </div>
-    <mat-divider ></mat-divider>
-    <div class="flex justify-around">
-        <button class="btn-action-back" (click)="sendEventToParent(data.type,false)">Back</button>
-        <button class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
+    <div class="notification-body">
+      <strong class="mb-6">{{data.title}}</strong>
+      <span class="mb-3">{{data.content}}</span>
+      <strong class="mb-3 invoice-period">{{data.subtitle}}</strong>
+      <span class="warn" *ngIf="data.warn">{{data.warn}}</span>
     </div>
-
   </div>
-  
+
+  <div class="c-errors" *ngIf="data.type === ERRORS">
+    <p *ngFor="let error of data?.errors; let i = index">Error {{i+1}}: {{error}}</p>
+  </div>
+
+  <p class="support" *ngIf="data.type === ERRORS">If the issue persists, contact support for further assistance.</p>
+
+  <mat-divider></mat-divider>
+  <div class="flex justify-around">
+    <button class="btn-action-back" (click)="sendEventToParent(data.type,false)">Back</button>
+    <button *ngIf="data.type != ERRORS" class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
+  </div>
+
+</div> 

@@ -79,33 +79,34 @@ export class TokenInterceptor implements HttpInterceptor {
           });
         }
       }),
+
       catchError((error: HttpErrorResponse) => {
-        if (notificationData.notificationId) {
-          console.log(this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage))
-          const editStatusData:EditNotificationStatus={
+        if (notificationData && notificationData.notificationId) {
+          console.log(this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage));
+          const editStatusData: EditNotificationStatus = {
             externalId: notificationData.notificationId,
-            centerTextId:this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).id,
+            centerTextId: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).id,
             status: this.notificationService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.FAILED_STATUS).id
-          }
-          let snackData:SnackData={
-            type:"FAILED",
-            title:this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).title,
-            subtitle:this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).body
-          }
+          };
+      
+          let snackData: SnackData = {
+            type: "FAILED",
+            title: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).title,
+            subtitle: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).body
+          };
+          
           this.openCustomComponentSnackBar(snackData);
           this.notificationService.updateNotification(editStatusData)
-          .pipe(
-            switchMap(() => 
-              this.notificationService.updateNotificationsCenter(notificationData.userId)
+            .pipe(
+              switchMap(() => this.notificationService.updateNotificationsCenter(notificationData.userId))
             )
-          )
-          .subscribe(notifications => {
-            this.store.dispatch(updateNotifications({ notifications }));
-          });
-
-        }
+            .subscribe(notifications => {
+              this.store.dispatch(updateNotifications({ notifications }));
+            });
+        } 
         return throwError(error);
       })
+      
     );
       
 

@@ -1,5 +1,3 @@
-import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
-
 export type IForm<T> = {
   [K in keyof T]?: any;
 }
@@ -19,7 +17,7 @@ export interface User {
   token?: string;
 }
 
-export interface UserV2 {
+export interface UserInfo {
   id: string,
   email: string,
   persona: {
@@ -27,14 +25,14 @@ export interface UserV2 {
     nombres: string,
     apellidos: string
   },
-  clientes: null,
+  clientes: string[],
   accessTo: string
 }
 
 export interface GeneralFilters {
   rpu?:any
   idClient?:number
-  clientId?:number
+  clientId?:number | string
   startDate: string;
   endDate: string | null;
 }
@@ -92,8 +90,10 @@ export interface notificationData{
   type:     string,
   typeId?:   number|undefined,
   title:    string,
+  subtitle?:    string,
   content?:  string,
   warn?:     string, 
+  errors?:     string, 
   buttonAction?: string
 }
 

@@ -11,6 +11,11 @@ export class FormatsService {
      else return ''
   }
 
+  dateFormatWithoutDay(content?: string) {
+    if (content) return moment(content).format('MMM YYYY')
+     else return ''
+  }
+
   energyFormat(content: string | number): string {
     if (!content) return ''  
 

@@ -13,6 +13,7 @@ import { GeneralFilters } from '@app/pages/homeMain/home/home-model';
 import { Mapper } from '../../mapper';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { FormatsService } from '@app/shared/services/formats.service';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-savings',
@@ -122,13 +123,25 @@ export class SavingsComponent implements OnInit, OnDestroy {
     private notificationService: OpenModalsService,
     private store: Store<{ filters: FilterState }>,
     private formatsService: FormatsService,
+    private encryptionService: EncryptionService,
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
   }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    else this.getDataClient();
+    else this.getUserClient()
+  }
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getSavings({clientId : userInfo.clientes[0], ...generalFilters});
+      });
+    }
   }
 
   getSavings(filters:GeneralFilters) {
