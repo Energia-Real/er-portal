@@ -5,7 +5,7 @@ import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
-import { DataResponseArraysMapper, GeneralFilters } from '@app/shared/models/general-models';
+import { DataResponseArraysMapper, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,8 @@ export class PlantsService implements OnDestroy {
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
   private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
   private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
+  private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
+
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
@@ -77,7 +79,7 @@ export class PlantsService implements OnDestroy {
     );
   }
 
-  getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
+  /* getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
     const url = `${this.API_URL_PROYECTS}/projects/Savings`;
     let params = new HttpParams()
     .set('clientId', filters.clientId!)
@@ -87,7 +89,16 @@ export class PlantsService implements OnDestroy {
     return this.http.get<entity.getSavingsDetails>(url, { params }).pipe(
       map((response) => Mapper.getSavingsDetailsMapper(response.response))
     );
+  } */
+
+  getSavingDetails(filters: GeneralFilters, plantId:string): Observable<GeneralResponse<entity.getSavingsDetails>>{
+    const url = `${this.API_URL_PERFORMANCE}/plants/${plantId}/saving`;
+    let params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!);
+    return this.http.get<GeneralResponse<entity.getSavingsDetails>>(url, { params });
   }
+
 
   getDataSystem(data: entity.PostDataByPlant): Observable<entity.ResponseSystem> {
     const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;

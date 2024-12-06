@@ -47,6 +47,22 @@ export class FormatsService {
     return parseFloat(content.toFixed(2));
   }
 
+  savingsGraphFormat(number: string): number {
+    try {
+      const sanitizedNumber = number.replace(/,/g, '');
+      const numValue = Number(sanitizedNumber);
+  
+      if (!isNaN(numValue)) {
+        return numValue;
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  
   moneyFormat(amount: number) {
     if (!amount) return ''
     return new Intl.NumberFormat('en-US', {

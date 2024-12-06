@@ -216,7 +216,7 @@ export class Mapper {
 		}
 	}
 
-	static getSavingsDetailsMapper(response: entity.getSavingsDetailsMapper): entity.DataResponseArraysMapper {
+	static getSavingsDetailsMapper(response: entity.getSavingsDetails): entity.DataResponseArraysMapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
@@ -240,7 +240,7 @@ export class Mapper {
 
 		primaryElements.push({
 			title: 'Expenditure without ER',
-			description: `$${response.expenditureWithoutEr}`,
+			description: `$${response.expenditureWithoutER}`,
 			icon: '../../../../../assets/icons/expenditure.png'
 		});
 

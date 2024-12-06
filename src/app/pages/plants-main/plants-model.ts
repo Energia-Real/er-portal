@@ -31,15 +31,22 @@ export interface getSavingsDetailsMapper {
   savings: string;
 }
 export interface getSavingsDetails {
-  success: true,
-  response: {
+
     cfeSubtotal: string;
     erSubtotal: string;
-    erCfeSubtotal: string;
-    expenditureWithoutEr: string;
+    erCfeSubtotal:string;
+    expenditureWithoutER: string;
     savings: string;
-  },
-  errors: any
+    monthlyData: monthlyData[]
+}
+
+export interface monthlyData {
+  year: string;
+  month: string;
+  cfeSubtotal: string;
+  erSubtotal: string;
+  expenditureWithoutER: string;
+  savings: string
 }
 
 export interface DataResponseDetailsClient {

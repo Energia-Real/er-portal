@@ -38,10 +38,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
   economicSavingsData: entity.EconomicSavings={
-    cfeSubtotal:3300,
-    energiaRealSubtotal:1100,
-    economicSaving:600,
-    expensesWithoutEnergiaReal:5000
+    cfeSubtotal:0,
+    energiaRealSubtotal:0,
+    economicSaving:0,
+    expensesWithoutEnergiaReal:0
   }
 
   displayChartES: boolean = false;
@@ -349,6 +349,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
         this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
         this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getEconomicSavings({  clientId: userInfo?.clientes[0], ...generalFilters });
       });
     }
   }
