@@ -31,9 +31,10 @@
         <div class="col-span-2 md:col-span-1">
             <div class="highcharts">
                 <div class="charts">
-                    <div class="graphic-performance pt-0">
-                        <span class="wi-progress" style="font-size: 18px!important; text-align: center;">Work in
-                            progress...</span>
+                    <div class="graphic-savings" *ngIf="displayChart">
+                        <canvas id="myChart"  baseChart [type]="'bar'" [data]="lineChartData"
+                            [options]="lineChartOptions">
+                        </canvas>
                     </div>
                 </div>
             </div>
