@@ -33,13 +33,41 @@
             </div>
         </div>
 
-        <div class="c-card-section solar-coverage">
-            <div>
-                <img src="../../../../assets/icons/solar-coverage.png" alt="">
-                <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
-                <p>{{ solarCoverage }}%</p>
+        <div class="c-solar-co2">
+            <div class="c-card-section solar-coverage">
+                <div>
+                    <img src="../../../../assets/icons/solar-coverage.png" alt="">
+                    <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
+                    <p>{{ solarCoverage }}%</p>
+                </div>
+            </div>
+
+            <div class="c-card-section co2">
+                <div>
+                    <div class="title-left">
+                        <h1>CO2 Saving</h1>
+                        <div>
+                            <h2>11.8</h2>
+                            <h3> tCO2</h3>
+                        </div>
+                    </div>
+
+                    <div class="title-right">
+                        <div class="left">
+                            <img src="../../../../assets/icons/equivalent.svg" alt="">
+                            <h2 class="text-base font-normal">Equivalent to 230 trees</h2>
+                        </div>
+
+                        <div>
+                            <img src="../../../../assets/icons/eletric.svg" alt="">
+                            <h2 class="text-base font-normal">Equivalent to xxx <br> electric car full charges.</h2>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
     <div class="col-span-2 md:col-span-1">
@@ -80,20 +108,21 @@
                 <app-mapa class="flex-1"></app-mapa>
                 <div class="legend-container">
                     <div class="color-bar flex flex-col justify-between h-full">
-                        <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index" class="c-division flex items-center justify-center h-full">
-                          <div class="division "></div>
+                        <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index"
+                            class="c-division flex items-center justify-center h-full">
+                            <div class="division "></div>
                         </div>
-                      </div>
+                    </div>
                     <div class="labels">
-                      <div>+6000 kW</div>
-                      <div>4500 kW</div>
-                      <div>3000 kW</div>
-                      <div>1500 kW</div>
-                      <div>0 kW</div>
+                        <div>+6000 kW</div>
+                        <div>4500 kW</div>
+                        <div>3000 kW</div>
+                        <div>1500 kW</div>
+                        <div>0 kW</div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -156,7 +185,8 @@
                                 <p class="header-table">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} kWh
+                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
+                                    }} kWh
                                 </div>
                             </td>
                         </ng-container>
