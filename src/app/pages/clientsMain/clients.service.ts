@@ -1,10 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { environment } from '@environment/environment';
 import { Observable, Subject, map } from 'rxjs';
 import * as entity from './clients-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
+import { NotificationMessages } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -47,9 +48,12 @@ export class ClientsService implements OnDestroy {
     return this.http.put<any>(url, data);
   }
 
-  postDataClient(data: entity.DataPostClient) {
+  postDataClient(data: entity.DataPostClient,notificationMessages: NotificationMessages) {
     const url = `${this.API_URL}/clients`;
     const formData = new FormData();
+    const headers = new HttpHeaders({
+      'NotificationMessages': JSON.stringify(notificationMessages),
+    });
 
     formData.append('name', data.name);
     formData.append('tipoDeClienteId', data.tipoDeClienteId);
@@ -57,12 +61,15 @@ export class ClientsService implements OnDestroy {
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
-    return this.http.post<any>(url, formData);
+    return this.http.post<any>(url, formData, {headers});
   }
 
-  patchDataClient(id:number, data: entity.DataPatchClient) {
+  patchDataClient(id:number, data: entity.DataPatchClient,notificationMessages: NotificationMessages) {
     const url = `${this.API_URL}/clients/${id}`;
     const formData = new FormData();
+    const headers = new HttpHeaders({
+      'NotificationMessages': JSON.stringify(notificationMessages),
+    });
 
     formData.append('name', data.name);
     formData.append('tipoDeClienteId', data.tipoDeClienteId);
@@ -72,7 +79,7 @@ export class ClientsService implements OnDestroy {
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
-    return this.http.put<any>(url, formData);
+    return this.http.put<any>(url, formData,{headers});
   }
 
   ngOnDestroy() {

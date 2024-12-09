@@ -8,6 +8,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapaComponent } from './mapa/mapa.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ConfirmationSnackbarComponent } from './confirmation-snackbar/confirmation-snackbar.component';
+import { NotificationCardCenterComponent } from './notification-card-center/notification-card-center.component';
+import { TimeAgoPipe } from '../pipes/time-ago.pipe';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { NotificationComponent } from './notification/notification.component';
     FooterComponent,
     MapaComponent,
     TooltipComponent,
-    NotificationComponent
+    NotificationComponent,
+    ConfirmationSnackbarComponent,
+    NotificationCardCenterComponent,
+    TimeAgoPipe
   ],
   imports: [
     CommonModule,
@@ -29,7 +35,8 @@ import { NotificationComponent } from './notification/notification.component';
     FooterComponent,
     MapaComponent,
     TooltipComponent,
-    NotificationComponent
+    NotificationComponent,
+    TimeAgoPipe
   ]
 })
 export class SharedComponensModule { }
