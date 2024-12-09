@@ -176,7 +176,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   updateMultipleInvoiceStatuses() {
     const objData: entity.DataBillingTable | any[] = this.selection?.selected.length ? this.selection?.selected : [this.oneConfirmInvoice]
-    const filteredInvoices = objData.filter(invoice => invoice.status === 2);
+    const filteredInvoices = objData.filter(invoice => invoice.status != 2);
 
     filteredInvoices.forEach((data: any) => {
       delete data.amountWithIva;
