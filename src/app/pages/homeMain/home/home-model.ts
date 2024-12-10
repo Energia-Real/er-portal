@@ -1,3 +1,4 @@
+import { ErrorRequest } from "@app/shared/models/general-models";
 
 export interface GeneralFilters {
   clientId?:any
@@ -10,7 +11,17 @@ export interface FiltersClients {
   requestType: string;
 }
 
+
+
 export interface SavingDetailsResponse {
+  success: boolean,
+  response: SDResponse,
+  errors: {
+    errors: ErrorRequest[]
+  }
+}
+
+export interface SDResponse {
   totalenergyConsumption: string;
   totalEnergyProduction: string;
   cfeCostWithOutSolar: string;

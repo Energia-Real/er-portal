@@ -24,10 +24,12 @@ export class HomeService {
     );
   }
 
-  getDataSavingDetails(filters: GeneralFilters): Observable<entity.SavingDetailsResponse> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
+  getDataSavingDetails(filters: GeneralFilters): Observable<entity.SDResponse> {
+    const url = `${environment.API_URL_PERFORMANCE}`;
 
-    return this.http.post<any>(url, filters);
+    return this.http.post<entity.SavingDetailsResponse>(url, filters).pipe(
+      map((response) => Mapper.getDataSavingDetailsMapper(response))
+    );
   }
 
   getDataStates(filters?: string): Observable<entity.statesResumeTooltip[]> {

@@ -60,4 +60,14 @@ export class Mapper {
 
 		return dataList
 	}
+	
+	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse): entity.SDResponse {
+		
+		return  {
+			totalenergyConsumption: response.response.totalenergyConsumption,
+			totalEnergyProduction: response.response.totalEnergyProduction,
+			cfeCostWithOutSolar: response.response.cfeCostWithOutSolar,
+			totalSavings: response.response.totalSavings
+		}
+	}
 }

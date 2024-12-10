@@ -217,7 +217,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   selectedMonths: any[] = [];
   dataTooltipsInfo: entity.statesResumeTooltip[] = [];
 
-  savingsDetails!: entity.SavingDetailsResponse;
+  savingsDetails!: entity.SDResponse;
 
   userInfo!: UserInfo;
 
@@ -317,7 +317,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getDataSavingDetails(filters: GeneralFilters) {
     this.moduleServices.getDataSavingDetails(filters).subscribe({
-      next: (response: entity.SavingDetailsResponse) => this.savingsDetails = response,
+      next: (response: entity.SDResponse) => this.savingsDetails = response,
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.log(error);
