@@ -139,10 +139,12 @@ export interface DataResponseDetailsCard {
   description: string | Date | null;
   tooltip?: string
   icon?: string
+  extra?:string;
 }
 export interface DataResponseArraysMapper {
   primaryElements: any[];
   additionalItems: any[];
+  monthlyData?: MonthlyDataPerformance[];
 }
 
 export interface DataSiteDetails {
@@ -385,22 +387,24 @@ export interface CatalogEquipment {
 }
 
 export interface SitePerformanceResponse {
-  success: true;
-  response: {
-    systemGeneration: string;
-    totalConsumption: string;
-    solarCoverage: string;
-  },
-  errors: {
-    errors: [
-      {
-        tipo: string;
-        field: string;
-        descripcion: string;
-      }
-    ]
-  }
+    systemGeneration: number;
+    totalConsumption: number;
+    solarCoverage: number;
+    performance: number; 
+    cfeNetworkConsumption: number; 
+    exportedGeneration?: number;
+    monthlyDataResponse:MonthlyDataPerformance[]
+
+} 
+
+export interface MonthlyDataPerformance{
+  month: number; 
+  consumption: number; 
+  generation: number;
+  exportedGeneration: number; 
+  cfeConsumption: number; 
 }
+  
 
 export interface BatuSummary {
   summary: number

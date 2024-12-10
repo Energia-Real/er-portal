@@ -23,11 +23,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   generalFilters$!: Observable<FilterState['generalFilters']>;
 
-  dots = Array(3).fill(0);
   chart: any;
-  chartOptions!: Highcharts.Options;
-  Highcharts: typeof Highcharts = Highcharts;
-  graphicsType: 'pie' | 'bars' = 'bars';
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
 
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
@@ -59,35 +55,13 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           usePointStyle: true,
         },
         position: "bottom",
-        onHover: (event, legendItem, legend) => {
-          const index = legendItem.datasetIndex;
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
-          });
-
-          chart.update();
-        },
-        onLeave: (event, legendItem, legend) => {
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
-            } else {
-              dataset.backgroundColor = 'rgba(238, 84, 39, 1)';
-            }
-          });
-
-          chart.update();
-        }
+        
       }
     },
 
     scales: {
       x: {
-        stacked: false,
+        stacked: true,
         grid: {
           display: false,
         },
@@ -98,7 +72,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             return `${Number(value).toLocaleString('en-US')} MWh`;
           },
         },
-        stacked: false,
+        stacked: true,
         grid: {
           display: false,
         },
@@ -139,14 +113,12 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   ngOnInit(): void {
-    this.getEstimateds();
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
     this.getUserClient();
   }
 
   ngAfterViewInit(): void {
-    this.formFilters.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(values => this.onFormValuesChanged(values));
   }
 
   getUserClient() {
@@ -160,12 +132,60 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   getSitePerformance(filters: GeneralFilters) {
-    this.moduleServices.getSitePerformance(filters).subscribe({
+    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters).subscribe({
       next: (response: entity.DataResponseArraysMapper | null) => {
         if (response) {
           this.sitePerformance.primaryElements = response.primaryElements;
           this.sitePerformance.additionalItems = response.additionalItems;
-          this.getSitePerformanceSummary({ ...filters, rpu: this.plantData.rpu })
+          this.fullLoad = true;
+          const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption?? 0);
+          const consumption = response.monthlyData?.map(item => item.consumption?? 0);
+          const generation = response.monthlyData?.map(item => item.generation?? 0);
+          const exportedSolarGeneration = response.monthlyData?.map(item => item.exportedGeneration?? 0);
+
+
+
+          this.lineChartData = {
+            labels: response.monthlyData?.map((item) => {
+              return item.month;
+            }),
+            datasets: [
+              {
+                type: 'bar',
+                data: cfeConsumption?? [],
+                label: 'CFE network consumption (kWh)',
+                backgroundColor: 'rgba(121, 36, 48, 1)',
+                order: 1
+              },
+              {
+                type: 'bar',
+                data: exportedSolarGeneration?? [],
+                label: 'Exported solar generation (kWh)',
+                backgroundColor: 'rgba(255, 71, 19, 1)',
+                order: 1
+              },
+              {
+                type: 'bar',
+                data: generation?? [],
+                label: 'Generation (kWh)',
+                backgroundColor: 'rgba(87, 177, 177, 1)',
+                order: 1
+              },
+              {
+                type: 'line',
+                data: consumption?? [],
+                borderColor: 'rgba(239, 68, 68, 1)',
+                backgroundColor: 'rgba(239, 68, 68, 1)',
+                pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                pointBorderColor: 'rgba(239, 68, 68, 1)',
+                label: 'Consumption (kWh)',
+                order: 0,
+              }
+            ]
+          };
+
+          this.displayChart = true;
+         this.initChart();
         }
       },
       error: (error) => {
@@ -175,78 +195,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     })
   }
 
-  getSitePerformanceSummary(filters: GeneralFilters) {
-    delete filters.idClient
-    this.moduleServices.getSitePerformanceSummary(filters).subscribe({
-      next: (response: entity.DataResponseArraysMapper) => {
-        this.sitePerformance.additionalItems.push(response.additionalItems[0])
-        this.fullLoad = true;
-      },
-      error: (error) => {
-        this.sitePerformance.additionalItems.push({
-          title: 'CFE network consumption',
-          description: null,
-        })
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.error(error)
-      }
-    })
-  }
 
-  onFormValuesChanged(values: any) {
-    if (values.end != '' && values.start != '') this.getEstimateds();
-  }
 
-  getEstimateds() {
-    this.moduleServices.getEstimatedEnergy(this.plantData?.inverterBrand[0], this.plantData?.plantCode).subscribe({
-      next: (response) => {
-        const inverterPowerData = response.map(item => this.formatsService.graphFormat(item.inverterPower));
-        const estimatedInverterPowerData = response.map(item => this.formatsService.graphFormat(item.estimatedEnergyMWh));
 
-        const seriesData = response.map((item) => {
-          let date = new Date(item.collectTime);
-          let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
-          monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-          return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
-        });
-        const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
-        this.lineChartData = {
-          labels: response.map((item) => {
-            let date = new Date(item.collectTime);
-            let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
-            monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            return monthName;
-          }),
-          datasets: [
-            {
-              type: 'bar',
-              data: inverterPowerData,
-              label: 'Energy Production',
-              backgroundColor: 'rgba(121, 36, 48, 1)',
-              order: 1
-            },
-            {
-              type: 'line',
-              data: estimatedInverterPowerData,
-              borderColor: 'rgba(238, 84, 39, 1)',
-              backgroundColor: 'rgba(238, 84, 39, 1)',
-              pointBackgroundColor: 'rgba(238, 84, 39, 1)',
-              pointBorderColor: 'rgba(238, 84, 39, 1)',
-              label: 'Estimated Energy Production',
-              order: 0,
-            }
-          ]
-        };
-
-        this.displayChart = true;
-        this.initChart();
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-        console.error(error)
-      }
-    })
-  }
 
   getStatus() {
     this.moduleServices.getDataRespStatus().subscribe({
