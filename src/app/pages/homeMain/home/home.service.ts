@@ -30,9 +30,13 @@ export class HomeService {
     return this.http.post<any>(url, filters);
   }
 
-  getDataStates(filters?: string): Observable<entity.statesResumeTooltip[]> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/statesResume`;
-    return this.http.post<entity.statesResumeTooltip[]>(url, filters)
+  getDataStates(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.MapStatesResponse>> {
+    const url = `${environment.API_URL_PERFORMANCE}/client/${filters.clientId}/state`;
+    const params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!)
+
+    return this.http.get<GeneralResponse<entity.MapStatesResponse>>(url, { params })
   }
 
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
