@@ -79,6 +79,17 @@ export class PlantsService implements OnDestroy {
     );
   }
 
+  getSitePerformanceDetails(plantId:string,filters:GeneralFilters): Observable<DataResponseArraysMapper | null> {
+    const url = `${this.API_URL_PERFORMANCE}/plants/${plantId}/performance`;
+    let params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!);
+    return this.http.get<any>(url, { params }).pipe(
+      map((response) => Mapper.getSitePerformanceMapper(response))
+    );
+  }
+
+
   /* getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
     const url = `${this.API_URL_PROYECTS}/projects/Savings`;
     let params = new HttpParams()

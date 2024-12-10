@@ -1,7 +1,7 @@
 import * as moment from 'moment-timezone';
 import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { DataResponseArraysMapper } from '@app/shared/models/general-models';
+import { DataResponseArraysMapper, GeneralResponse } from '@app/shared/models/general-models';
 
 export class Mapper {
 	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService): DataResponseArraysMapper {
@@ -256,11 +256,14 @@ export class Mapper {
 		}
 	}
 
-	static getSitePerformanceMapper(response: entity.SitePerformanceResponse): entity.DataResponseArraysMapper | null {
+	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>): entity.DataResponseArraysMapper | null {
 		if (!response.success) return null
 
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
+		const monthlyData: entity.MonthlyDataPerformance[] = response.response.monthlyDataResponse;
+
+		
 
 		primaryElements.push({
 			title: 'System generation',
@@ -273,13 +276,31 @@ export class Mapper {
 		});
 
 		additionalItems.push({
+			title: 'Exported generation',
+			description: `${response.response.exportedGeneration?? "000,000.00"} kWh`,
+			extra: "+2% compared to the previous month"
+		});
+
+		additionalItems.push({
+			title: 'CFE network consumption',
+			description: `${response.response.cfeNetworkConsumption?? "000,000.00"} kWh`,
+			extra:'-4% compared to the previous month'
+		});
+
+		additionalItems.push({
 			title: 'Solar coverage',
 			description: `${response.response.solarCoverage} kWh`,
 		});
 
+		additionalItems.push({
+			title: 'Performance',
+			description: `${response.response.performance} kWh`,
+		});
+
 		return {
 			primaryElements,
-			additionalItems
+			additionalItems,
+			monthlyData
 		}
 	}
 
