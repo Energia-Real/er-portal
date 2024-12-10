@@ -5,6 +5,7 @@ import * as entity from './home-model';
 import { Mapper } from './mapper';
 import { environment } from '@environment/environment';
 import { FormatsService } from '@app/shared/services/formats.service';
+import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +16,27 @@ export class HomeService {
     public formatsService: FormatsService
   ) { }
 
-  getDataClients(filters: entity.FiltersClients): Observable<entity.DataRespSavingDetailsMapper> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/savingdetails`;
+  getDataClients(filters: entity.GeneralFilters): Observable<entity.DataRespSavingDetailsMapper> {
+    const url = `${environment.API_URL_PERFORMANCE}/energy-performance/sites`;
 
-    return this.http.post<entity.DataRespSavingDetails[]>(url, filters).pipe(
+    return this.http.post<entity.DataTablePlantsResponse>(url, filters).pipe(
       map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
     );
   }
 
-  getDataSavingDetails(filters: entity.FiltersSavingDetails): Observable<entity.SavingDetailsResponse> {
+  getDataSavingDetails(filters: GeneralFilters): Observable<entity.SavingDetailsResponse> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
 
     return this.http.post<any>(url, filters);
   }
 
-  getDataStates(filters?: string): Observable<entity.statesResumeTooltip[]> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/statesResume`;
-    return this.http.post<entity.statesResumeTooltip[]>(url, filters)
+  getDataStates(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.MapStatesResponse>> {
+    const url = `${environment.API_URL_PERFORMANCE}/client/${filters.clientId}/state`;
+    const params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!)
+
+    return this.http.get<GeneralResponse<entity.MapStatesResponse>>(url, { params })
   }
 
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
@@ -44,7 +49,7 @@ export class HomeService {
     );
   }
 
-  getDataSolarCoverage(filters: entity.FiltersSavingDetails) : Observable<string> {
+  getDataSolarCoverage(filters: entity.GeneralFilters) : Observable<string> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/solar-coverage`;
     const params = new HttpParams()
     .set('client', filters.clientId)
@@ -52,5 +57,10 @@ export class HomeService {
     .set('end_date', filters.endDate!)
 
     return this.http.get<string>(url, { params })
+  }
+
+  getSavings(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.EconomicSavings>> {
+    const url = `${environment.API_URL_PERFORMANCE}/saving/details`;
+    return this.http.post<GeneralResponse<entity.EconomicSavings>>(url, filters)
   }
 }

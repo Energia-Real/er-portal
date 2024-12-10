@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PricingComponent } from './pricing/pricing.component';
-import { PricingRoutingModule } from './pricing-routing.module';
+import { RatesComponent } from './rates/rates.component';
+import { RatesRoutingModule } from './rates-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
@@ -12,11 +12,11 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
 
 @NgModule({
   declarations: [
-    PricingComponent
+    RatesComponent
   ],
   imports: [
     CommonModule,
-    PricingRoutingModule,
+    RatesRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     SharedComponensModule,
@@ -27,4 +27,4 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class PricingMainModule { }
+export class RatesMainModule { }

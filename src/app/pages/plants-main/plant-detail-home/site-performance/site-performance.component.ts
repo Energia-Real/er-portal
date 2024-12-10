@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import * as Highcharts from 'highcharts';
 import { FormBuilder } from '@angular/forms';
@@ -7,6 +7,9 @@ import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { PlantsService } from '../../plants.service';
+import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { Store } from '@ngrx/store';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-site-performance',
@@ -16,12 +19,11 @@ import { PlantsService } from '../../plants.service';
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   @Input() plantData!: entity.DataPlant;
+  @Input() notData!: boolean;
 
-  dots = Array(3).fill(0);
+  generalFilters$!: Observable<FilterState['generalFilters']>;
+
   chart: any;
-  chartOptions!: Highcharts.Options;
-  Highcharts: typeof Highcharts = Highcharts;
-  graphicsType: 'pie' | 'bars' = 'bars';
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
 
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
@@ -53,35 +55,13 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           usePointStyle: true,
         },
         position: "bottom",
-        onHover: (event, legendItem, legend) => {
-          const index = legendItem.datasetIndex;
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
-          });
-
-          chart.update();
-        },
-        onLeave: (event, legendItem, legend) => {
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
-            } else {
-              dataset.backgroundColor = 'rgba(238, 84, 39, 1)';
-            }
-          });
-
-          chart.update();
-        }
+        
       }
     },
 
     scales: {
       x: {
-        stacked: false,
+        stacked: true,
         grid: {
           display: false,
         },
@@ -92,7 +72,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             return `${Number(value).toLocaleString('en-US')} MWh`;
           },
         },
-        stacked: false,
+        stacked: true,
         grid: {
           display: false,
         },
@@ -106,7 +86,6 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     end: [{ value: '', disabled: false }],
   });
 
-  showAlert: boolean = false;
   displayChart: boolean = false;
   lineChartLegend: boolean = true;
   showSitePerformance: boolean = false;
@@ -115,78 +94,110 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   dateToday = new Date();
 
+  sitePerformance: entity.DataResponseArraysMapper = {
+    primaryElements: [],
+    additionalItems: []
+  };
+
+  fullLoad: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
-    private formatsService: FormatsService
-  ) { }
+    private encryptionService: EncryptionService,
+    private formatsService: FormatsService,
+    private store: Store<{ filters: FilterState }>
+  ) {
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+  }
 
   ngOnInit(): void {
-    this.getEstimateds();
-    this.showAlert = false;
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
+    this.getUserClient();
   }
 
   ngAfterViewInit(): void {
-    this.formFilters.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe(values => this.onFormValuesChanged(values));
   }
 
-  onFormValuesChanged(values: any) {
-    if (values.end != '' && values.start != '') this.getEstimateds();
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getSitePerformance({ idClient: userInfo.clientes[0], ...generalFilters });
+      });
+    }
   }
 
-  getEstimateds() {
-    this.moduleServices.getEstimatedEnergy(this.plantData?.inverterBrand[0], this.plantData?.plantCode).subscribe({
-      next: (response) => {
-        const inverterPowerData = response.map(item => this.formatsService.graphFormat(item.inverterPower));
-        const estimatedInverterPowerData = response.map(item => this.formatsService.graphFormat(item.estimatedEnergyMWh));
+  getSitePerformance(filters: GeneralFilters) {
+    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters).subscribe({
+      next: (response: entity.DataResponseArraysMapper | null) => {
+        if (response) {
+          this.sitePerformance.primaryElements = response.primaryElements;
+          this.sitePerformance.additionalItems = response.additionalItems;
+          this.fullLoad = true;
+          const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption?? 0);
+          const consumption = response.monthlyData?.map(item => item.consumption?? 0);
+          const generation = response.monthlyData?.map(item => item.generation?? 0);
+          const exportedSolarGeneration = response.monthlyData?.map(item => item.exportedGeneration?? 0);
 
-        const seriesData = response.map((item) => {
-          let date = new Date(item.collectTime);
-          let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
-          monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-          return { name: monthName, y: this.formatsService.graphFormat(item.inverterPower) };
-        });
-        const colors = ['#792430', '#EE5427', '#57B1B1', '#D97A4D', '#B27676', '#F28C49', '#85B2B2', '#B1D4D4', '#FFD966', '#5A4D79', '#99C2A2', '#FFC4A3', '#8C6E4D'];
-        this.lineChartData = {
-          labels: response.map((item) => {
-            let date = new Date(item.collectTime);
-            let monthName = new Intl.DateTimeFormat('es-ES', { month: 'long' }).format(date);
-            monthName = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-            return monthName;
-          }),
-          datasets: [
-            {
-              type: 'bar',
-              data: inverterPowerData,
-              label: 'Energy Production',
-              backgroundColor: 'rgba(121, 36, 48, 1)',
-              order: 1
-            },
-            {
-              type: 'line',
-              data: estimatedInverterPowerData,
-              borderColor: 'rgba(238, 84, 39, 1)',
-              backgroundColor: 'rgba(238, 84, 39, 1)',
-              pointBackgroundColor: 'rgba(238, 84, 39, 1)',
-              pointBorderColor: 'rgba(238, 84, 39, 1)',
-              label: 'Estimated Energy Production',
-              order: 0,
-            }
-          ]
-        };
 
-        this.displayChart = true;
-        this.initChart();
+
+          this.lineChartData = {
+            labels: response.monthlyData?.map((item) => {
+              return item.month;
+            }),
+            datasets: [
+              {
+                type: 'bar',
+                data: cfeConsumption?? [],
+                label: 'CFE network consumption (kWh)',
+                backgroundColor: 'rgba(121, 36, 48, 1)',
+                order: 1
+              },
+              {
+                type: 'bar',
+                data: exportedSolarGeneration?? [],
+                label: 'Exported solar generation (kWh)',
+                backgroundColor: 'rgba(255, 71, 19, 1)',
+                order: 1
+              },
+              {
+                type: 'bar',
+                data: generation?? [],
+                label: 'Generation (kWh)',
+                backgroundColor: 'rgba(87, 177, 177, 1)',
+                order: 1
+              },
+              {
+                type: 'line',
+                data: consumption?? [],
+                borderColor: 'rgba(239, 68, 68, 1)',
+                backgroundColor: 'rgba(239, 68, 68, 1)',
+                pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                pointBorderColor: 'rgba(239, 68, 68, 1)',
+                label: 'Consumption (kWh)',
+                order: 0,
+              }
+            ]
+          };
+
+          this.displayChart = true;
+         this.initChart();
+        }
       },
       error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
     })
   }
+
+
+
+
 
   getStatus() {
     this.moduleServices.getDataRespStatus().subscribe({

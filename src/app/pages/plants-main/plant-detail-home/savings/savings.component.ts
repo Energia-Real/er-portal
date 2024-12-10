@@ -1,13 +1,19 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as entity from '../../plants-model';
-import { Subject, Subscription } from 'rxjs';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 import Highcharts from 'highcharts';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { ActivatedRoute } from '@angular/router';
+import { DataResponseArraysMapper, FilterState, GeneralResponse } from '@app/shared/models/general-models';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
-import { DrawerGeneral } from '@app/shared/models/general-models';
-import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { GeneralFilters } from '@app/pages/homeMain/home/home-model';
+import { Mapper } from '../../mapper';
+import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
+import { FormatsService } from '@app/shared/services/formats.service';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-savings',
@@ -16,103 +22,210 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 })
 export class SavingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  drawerOpenSub: Subscription;
-
   @Input() plantData: entity.DataPlant | any;
   @Input() notData!: boolean;
-  @Output() notifyParent: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
-  pdfSrc: SafeResourceUrl = '';
   showAlert: boolean = false;
-  Highcharts: typeof Highcharts = Highcharts;
-  images: string[] = [];
-  renderedImage: string | null = null;
-  materialIcon: string = 'edit';
-  drawerAction: "Create" | "Edit" = "Create";
-  drawerInfo: entity.Equipment | null | undefined = null;
-  instalations!: entity.Instalations;
-  needReload: boolean = false;
-  drawerOpen: boolean = false;
+  lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
+  chart: any;
+  
+  lineChartOptions: ChartOptions<'bar' | 'line'> = {
+    responsive: true,
+    animation: {
+      onComplete: () => {
+      },
+      delay: (context) => {
+        let delay = 0;
+        if (context.type === 'data' && context.mode === 'default') {
+          delay = context.dataIndex * 300 + context.datasetIndex * 100;
+        }
+        return delay;
+      },
+    },
+    plugins: {
+      tooltip: {
+        usePointStyle: true,
+        callbacks: {
+          label: function (context) {
+            const value = Math.abs(context.raw as number).toLocaleString('en-US');
+            return `${context.dataset.label}: ${value}`;
+          }
+        }
+      },
+
+      legend: {
+        labels: {
+          usePointStyle: true,
+        },
+        position: "bottom",
+        /* onHover: (event, legendItem, legend) => {
+          const index = legendItem.datasetIndex;
+          const chart = legend.chart;
+
+          chart.data.datasets.forEach((dataset, i) => {
+            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
+          });
+
+          chart.update();
+        },
+        onLeave: (event, legendItem, legend) => {
+          const chart = legend.chart;
+
+          chart.data.datasets.forEach((dataset, i) => {
+            if (i === 0) {
+              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
+            } else {
+              dataset.backgroundColor = 'rgba(238, 84, 39, 1)';
+            }
+          });
+
+          chart.update();
+        } */
+      }
+    },
+
+    scales: {
+      x: {
+        stacked: true,
+        grid: {
+          display: false,
+        },
+      },
+      y: {
+        ticks: {
+          callback: function (value, index, values) {
+            return `$ ${Number(value).toLocaleString('en-US')} (MXN)`;
+          },
+        },
+        stacked: true,
+        grid: {
+          display: false,
+        },
+      }
+    },
+    backgroundColor: 'rgba(242, 46, 46, 1)',
+  };
+
+  displayChart: boolean = false;
+
+
+  savingDetails: DataResponseArraysMapper = {
+    primaryElements: [],
+    additionalItems: []
+  };
 
   constructor(
-    private sanitizer: DomSanitizer,
-    private mopduleService: PlantsService,
-    private store: Store
+    private moduleServices: PlantsService,
+    private notificationService: OpenModalsService,
+    private store: Store<{ filters: FilterState }>,
+    private formatsService: FormatsService,
+    private encryptionService: EncryptionService,
   ) {
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
-      this.drawerOpen = resp.drawerOpen;
-      this.drawerAction = resp.drawerAction;
-      this.drawerInfo = resp.drawerInfo;
-      this.needReload = resp.needReload;
-      if (this.needReload) this.reloadData();
-    });
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
   }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    this.getSavings(this.plantData?.id)
+    else this.getUserClient()
   }
 
-  getSavings(plantCode: string) {
-    this.mopduleService.getSavings(plantCode).subscribe(data => {
-      this.instalations = data;
-      this.pdfSrc = this.sanitizeUrl(data.equipmentPath + "#zoom=85");
-      this.getInverterMonitoring(data);
-    })
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getSavings({clientId : userInfo.clientes[0], ...generalFilters});
+      });
+    }
   }
 
-  getInverterMonitoring(data: entity.Instalations) {
-    let instalations = data.equipment;
-    this.mopduleService.getInverterMonitoring(this.plantData?.plantCode).subscribe((data: entity.InverterMonitoring) => {
-      this.notifyParent.emit(data.inverterSystemStatus);
-
-      if (data?.invertersStatus?.length) {
-        let InvertersStatus = data?.invertersStatus;
-
-        instalations.forEach((item: any) => {
-          const matchingItem = InvertersStatus.find((obj: any) => obj.sn === item.serialNumber);
-          if (matchingItem) item.status = matchingItem.status;
-          else item.status = null;
-        });
+  getSavings(filters:GeneralFilters) {
+    this.moduleServices.getSavingDetails(filters,this.plantData.id).subscribe({
+      next: (response: GeneralResponse<entity.getSavingsDetails>) => {
+        this.savingDetails = Mapper.getSavingsDetailsMapper(response.response);
+        const cfeSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal));
+        const erSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal));
+        const savingsData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings));
+        const expensesWithoutEnergiaRealData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.expenditureWithoutER));
+       
+        this.lineChartData = {
+          labels: response.response.monthlyData.map((item) => {
+            return item.month;
+          }),
+          datasets: [
+            {
+              type: 'bar',
+              data: cfeSubtotalData,
+              label: 'CFE Subtotal (MXN)',
+              backgroundColor: 'rgba(121, 36, 48, 1)',
+              order: 1
+            },
+            {
+              type: 'bar',
+              data: erSubtotalData,
+              label: 'Energía Real Subtotal (MXN)',
+              backgroundColor: 'rgba(255, 71, 19, 1)',
+              order: 1
+            },
+            {
+              type: 'bar',
+              data: savingsData,
+              label: 'Economic Savings (MXN)',
+              backgroundColor: 'rgba(87, 177, 177, 1)',
+              order: 1
+            },
+            {
+              type: 'line',
+              data: expensesWithoutEnergiaRealData,
+              borderColor: 'rgba(239, 68, 68, 1)',
+              backgroundColor: 'rgba(239, 68, 68, 1)',
+              pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+              pointBorderColor: 'rgba(239, 68, 68, 1)',
+              label: 'Expenses without Energía Real (MXN)',
+              order: 0,
+            }
+          ]
+        };
+        this.displayChart = true;
+        this.initChart();
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
       }
-
-      this.instalations.equipment = instalations
     })
   }
 
-  getGoogleDriveEmbedLink(link: string): string {
-    const fileIdMatch = link.match(/[-\w]{25,}/);
-    if (fileIdMatch && fileIdMatch[0]) return `https://drive.google.com/file/d/${fileIdMatch[0]}/preview`;
-    return '';
+  initChart(): void {
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    if (ctx) {
+      this.chart = new Chart(ctx, {
+        type: 'bar',
+        data: this.lineChartData,
+        options: this.lineChartOptions
+      });
+    }
   }
 
-  sanitizeUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
-
-  reloadData() {
-    this.getSavings(this.plantData?.plantCode);
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: false }));
-  }
-
-  onPageRendered(event: CustomEvent): void {
-    const canvas: HTMLCanvasElement = event.target as HTMLCanvasElement;
-    this.renderedImage = canvas.toDataURL('image/png');
-  }
-
-  toggleDrawer() {
-    this.updDraweState(!this.drawerOpen);
-  }
-
-  updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
+  getDataClient() {
+    this.moduleServices.getDataClient().subscribe({
+      next: (response: entity.DataRespSavingDetailsList[]) => {
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.getSavings({clientId : response[0].clientId, ...generalFilters});
+        });
+      },
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.unsubscribe();
   }
-
 }

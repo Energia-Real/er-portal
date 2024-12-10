@@ -1,5 +1,5 @@
 
-export interface FiltersSavingDetails {
+export interface GeneralFilters {
   clientId?:any
   startDate: string;
   endDate: string | null;
@@ -24,11 +24,29 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+export interface DataTablePlantsResponse {
+  success: boolean;
+  response: {
+    consolidatedData: PlantData[];
+  };
+  errors: any | null;
+}
+
+export interface PlantData {
+  plantId: string;
+  siteName: string;
+  energyProduction: any;
+  energyConsumption: any;
+  solarCoverage: number ; 
+  co2Saving: any;
+  siteStatus: string;
+}
+
 export interface DataRespSavingDetails {
   siteId: string;
   siteName: string;
   siteSaving: number;
-  cfeZone: number;
+  cfeZone: number | string;
   solarCoverage: number | string;
   co2Saving: number | string;
   energyProduction: string;
@@ -45,9 +63,14 @@ export interface DataRespSavingDetailsMapper {
 }
 
 export interface statesResumeTooltip {
-  estado : string;
-  plantas: number;
-  totalEnergyProduction: number;
+  state : string;
+  plants: string;
+  totalInstalledCapacity: number;
+  tco2Savings: string;
+}
+
+export interface MapStatesResponse{
+  kwhByStateResponse: statesResumeTooltip[]
 }
 
 export interface DataRespSavingDetailsList {
@@ -78,3 +101,10 @@ export interface FormatCards {
   title: string;
   value: any;
 }[]
+
+export interface EconomicSavings{
+  cfeSubtotal: number;
+  energiaRealSubtotal:number;
+  economicSaving:number;
+  expensesWithoutEnergiaReal:number;
+}

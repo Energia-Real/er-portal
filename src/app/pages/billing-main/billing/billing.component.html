@@ -1,10 +1,25 @@
-<div class="c-main px-16">
-    <div class="grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
+<div class="c-main px-16 c-billing">
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1">
-            <!-- <button class="btn-action-add">
-                <span class="material-symbols-outlined">download</span>
-                Download .xlsx
-            </button> -->
+            <div class="btns-excel">
+                <button class="btn-action-add">
+                    <span class="material-symbols-outlined">download</span>
+                    Download .xlsx
+                </button>
+
+                <button class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': modifiedElements.length}"
+                    (click)="updateModifiedElements()">
+                    <span class="material-symbols-outlined">save</span>
+                    Apply changes
+                </button>
+
+
+                <!-- <button class="btn-upload" (click)="fileInput.click()">
+                    <span class="material-symbols-outlined">upload</span>
+                    Bulk upload
+                </button>
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" /> -->
+            </div>
         </div>
 
         <div class="col-span-1 d-flex justify-center">
@@ -19,58 +34,178 @@
             </div>
         </div>
 
-        <div class="col-span-1">
-            <div class="d-flex justify-end gap-2 flex-wrap">
-                <div class="c-input">
-                    <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Select month" [formControl]="selectedMonth">
-                            <mat-option *ngFor="let month of months; let i = index" [value]="month.value">
-                                {{ month.viewValue }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+        <div class="col-span-1"></div>
+    </div>
 
-                <div class="c-input mb-0">
-                    <mat-form-field class="select-years" appearance="outline">
-                        <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
-                            <mat-option *ngFor="let year of years" [value]="year.value">
-                                {{ year.value }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
+    <div class="separator-cards mt-4 mb-4"></div>
+
+    <div class="col-span-1 d-flex align-center justify-between">
+        <div class="btns-excel">
+            <button (click)="generateInvoiceAction()" class="btn-action-apply-changes apply-changes-active">
+                Generate Invoice
+            </button>
+
+            <button (click)="confirmInvoiceAction()" [disabled]="!selection.selected.length"
+                class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
+                Confirm invoce
+            </button>
+        </div>
+
+        <div class="c-paginator-top">
+            <strong>Items per page</strong>
+            <mat-form-field>
+                <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+                    <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                        <strong>{{ size }}</strong>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     </div>
 
-    <div class="c-table mt-3">
+    <div class="c-table m+t-3">
         <table mat-table [dataSource]="dataSource" matSort class="table-assets">
+            <ng-container matColumnDef="checkbox">
+                <th mat-header-cell *matHeaderCellDef class="ps-0">
+                    <div class="flex justify-center">
+                        <mat-checkbox class="check-color" (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected() || allRowsInit"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </div>
+                </th>
+                <td mat-cell *matCellDef="let element" class="ps-0">
+                    <div class="flex justify-center">
+                        <mat-checkbox *ngIf="element.status != 2" class="check-color" (click)="$event.stopPropagation()"
+                            (change)="$event ? toggleRow(element) : null"
+                            [checked]="selection.isSelected(element) || allRowsInit"
+                            [aria-label]="checkboxLabel(element)">
+                        </mat-checkbox>
+                    </div>
+                </td>
+            </ng-container>
+
+
             <ng-container matColumnDef="rpu">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>RPU</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">RPU</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.rpu else notDataTable"> {{ element.rpu }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="clientName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Client name</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Client name</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="plantName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plant name</th>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Status</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.plantName else notDataTable"> {{ element.plantName }} </div>
+                    <div class="column-status" [ngClass]="{
+                        'column-status-pending': element.status == 3,
+                        'column-status-confirmed': element.status == 2,
+                        'column-status-edited': element.status == 1,
+
+                    }" *ngIf="element?.formatterStatus else notDataTable">
+                        <i class="fa-solid fa-circle"></i>
+                        {{ element.formatterStatus }}
+                    </div>
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="generatedEnergyKwh">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Generated energy Kwh</th>
+            <ng-container matColumnDef="plantName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Plant name</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.generatedEnergyKwh else notDataTable"> {{ element.generatedEnergyKwh }} </div>
+                    <div class="color-F97316" *ngIf="element?.plantName else notDataTable"> {{ element.plantName }}
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="year">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Year</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element?.billingYear else notDataTable"> {{ element.billingYear }} </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="month">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Generation Month</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div *ngIf="element?.billingMonth else notDataTable"> {{ element.billingMonth }} </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="energyGeneration">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Energy generation</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="c-input c-table-energy-input column-extend">
+                        <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
+                            <input type="text" placeholder="000,000.00" matInput
+                                [(ngModel)]="element.formattedGeneratedEnergyKwh"
+                                (blur)="handleInput($event, element, true)">
+                        </mat-form-field>
+                        <span>kWh</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Rate</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="column-extend" *ngIf="element?.rate else notDataTable"> {{ element.formattedRate }}
+                    </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Amount</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="column-extend" *ngIf="element?.formattedAmount else notDataTable"> {{
+                        element.formattedAmount }} </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amountWithIva">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">IVA</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="column-extend" *ngIf="element?.formattedAmountWithIva else notDataTable"> {{
+                        element.formattedAmountWithIva }} </div>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>
+                    <div class="target w-24">Actions</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="updateModifiedElements(element)">Apply Changes</button>
+                        <button mat-menu-item>Generate Invoice</button>
+                        <button mat-menu-item (click)="confirmInvoiceAction(element)" *ngIf="element.status != 2" >Confirm Invoice</button>
+                    </mat-menu>
                 </td>
             </ng-container>
 
@@ -84,11 +219,11 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
         </table>
 
-        <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-        </mat-paginator>
     </div>
+    <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>
 
 <ng-template #notData>
