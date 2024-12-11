@@ -27,10 +27,14 @@ export class HomeService {
   }
 
   getDataSavingDetails(filters: GeneralFilters): Observable<entity.SDResponse> {
-    const url = `${environment.API_URL_PERFORMANCE}`;
+    const url = `${this.performanceApiUrl}/performance/details`;
 
-    return this.http.post<entity.SavingDetailsResponse>(url, filters).pipe(
-      map((response) => Mapper.getDataSavingDetailsMapper(response))
+    const params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!)
+
+    return this.http.get<entity.SavingDetailsResponse>(url, { params }).pipe(
+      map((response) => Mapper.getDataSavingDetailsMapper(response, this.formatsService))
     );
   }
 
@@ -42,7 +46,7 @@ export class HomeService {
       .set('endDate', filters.endDate!)
 
     return this.http.get<entity.Co2Saving>(url, { params }).pipe(
-      map((response) => Mapper.getCo2SavingMapper(response))
+      map((response) => Mapper.getCo2SavingMapper(response, this.formatsService))
     );
   }
 

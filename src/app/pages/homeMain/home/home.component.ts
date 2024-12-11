@@ -245,9 +245,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getUserClient();
     this.initiLineChartData();
     this.initiLineChartDataES();
-
   }
-
 
   initiLineChartDataES() {
     this.lineChartDataES = {
@@ -327,7 +325,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getDataSavingDetails(filters: GeneralFilters) {
     this.moduleServices.getDataSavingDetails(filters).subscribe({
-      next: (response: entity.SDResponse) => this.savingsDetails = response,
+      next: (response: entity.SDResponse) => {
+        this.savingsDetails = response
+        console.log(response);
+        
+      },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.log(error);

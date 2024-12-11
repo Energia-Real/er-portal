@@ -4,8 +4,8 @@
             <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalenergyConsumption else notDataTable"> {{
-                        savingsDetails.totalenergyConsumption }} <br> <span>kWh</span> </h2>
+                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
+                        savingsDetails.totalEnergyConsumption }} <br> <span>kWh</span> </h2>
                     <p>Total Energy <br> Consumption</p>
                     <div class="linea"></div>
                 </div>
@@ -17,8 +17,8 @@
                 </div>
                 <div>
                     <div>
-                        <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithOutSolar else notDataTable">
-                            ${{ savingsDetails.cfeCostWithOutSolar }} <br>
+                        <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithoutSolar else notDataTable">
+                            ${{ savingsDetails.cfeCostWithoutSolar }} <br>
                         </h2>
                         <p>CFE Cost without Solar</p>
                         <div class="linea"></div>

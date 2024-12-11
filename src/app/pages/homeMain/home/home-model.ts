@@ -22,10 +22,10 @@ export interface SavingDetailsResponse {
 }
 
 export interface SDResponse {
-  totalenergyConsumption: string;
-  totalEnergyProduction: string;
-  cfeCostWithOutSolar: string;
-  totalSavings: string;
+  cfeCostWithoutSolar: number | string
+  totalEnergyConsumption : number | string
+  totalEnergyProduction : number | string
+  totalSavings : number | string
 }
 
 export interface PeriodicElement {
