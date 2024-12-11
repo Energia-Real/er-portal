@@ -4,7 +4,7 @@
   }
 
   .economic-savings {
-    height: 418px;
+    height: 428px;
   }
 
   .wi-progress {
@@ -34,6 +34,10 @@
         cursor: default;
       }
     }
+  }
+
+  .c-saving-details {
+    height: 173px;
   }
 
   .c-card-section {
@@ -74,7 +78,6 @@
 
         h2 {
           font-size: 16px !important;
-          // font-size: 17.5px !important;
           font-weight: 500;
           margin-bottom: 10px !important;
 
@@ -110,8 +113,7 @@
   .c-solar-co2 {
     display: flex;
     gap: 24px;
-    height: 275px;
-    // height: 245px;
+    height: 255px;
 
     .co2 {
       width: 100%;
@@ -122,7 +124,6 @@
 
         .barr {
           > div {
-
             background-color: #57B1B1;
           }
         }
@@ -154,7 +155,6 @@
         justify-content: space-between;
 
         .title-left {
-
           margin-right: 10px;
 
           h1 {
@@ -244,7 +244,6 @@
     }
   }
 
-
   .logo-merco {
     width: 20px;
     height: 20px;
@@ -292,7 +291,6 @@
     height: 46px;
 
     .col-md-8 {
-
       display: flex;
       justify-content: end;
       gap: 15px;
@@ -399,9 +397,7 @@
   width: 100% !important;
   height: auto !important;
   max-height: 340px !important;
-
   display: flex;
-
   justify-content: center;
   align-items: center;
 }
