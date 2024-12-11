@@ -47,7 +47,7 @@
                     <div class="title-left">
                         <h1>CO2 Saving</h1>
                         <div>
-                            <h2>11.8</h2>
+                            <h2>{{co2Saving?.co2_saving_tCO2}}</h2>
                             <h3> tCO2</h3>
                         </div>
                     </div>
@@ -55,19 +55,27 @@
                     <div class="title-right">
                         <div class="left">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to 230 trees</h2>
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
                         </div>
 
                         <div>
                             <img src="../../../../assets/icons/eletric.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to xxx <br> electric car full charges.</h2>
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br> electric car full charges.</h2>
                         </div>
-
                     </div>
+                </div>
+
+                <div class="bar-progresss">
+                    <h1>kWh /m / anual</h1>
+
+                    <div class="w-full barr h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+                        <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500" [ngStyle]="{ width: co2Progress }"></div>
+                    </div>
+
+                    <h2>Peers: 117 kWh /m</h2>
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="col-span-2 md:col-span-1">

@@ -60,4 +60,13 @@ export class Mapper {
 
 		return dataList
 	}
+
+	static getCo2SavingMapper(response: entity.Co2Saving): entity.Co2SavingResponse {
+
+		return  {
+			co2_saving_tCO2 : response?.response?.co2_saving_tCO2,
+			tree_equivalent : response?.response?.tree_equivalent,
+			ev_charges_equivalent : response?.response?.ev_charges_equivalent,
+		}
+	}
 }

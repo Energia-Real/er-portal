@@ -37,24 +37,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
-  economicSavingsData: entity.EconomicSavings={
-    cfeSubtotal:0,
-    energiaRealSubtotal:0,
-    economicSaving:0,
-    expensesWithoutEnergiaReal:0
+  economicSavingsData: entity.EconomicSavings = {
+    cfeSubtotal: 0,
+    energiaRealSubtotal: 0,
+    economicSaving: 0,
+    expensesWithoutEnergiaReal: 0
   }
 
   displayChartES: boolean = false;
   chartES: any;
 
 
- labels = [
-  { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
-  { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
-  { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
-  { text: 'Expenses without Energía Real (MXN)', color: 'rgba(239, 68, 68, 1)' },
+  labels = [
+    { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
+    { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
+    { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
+    { text: 'Expenses without Energía Real (MXN)', color: 'rgba(239, 68, 68, 1)' },
 
-];
+  ];
 
   lineChartDataES!: ChartConfiguration<'bar' | 'line'>['data'];
 
@@ -67,34 +67,33 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     },
 
-  
-     plugins: {
+
+    plugins: {
       legend: {
-        display:false
+        display: false
       }
     },
- 
+
     scales: {
       x: {
         type: 'category',
         stacked: true,
         grid: {
           display: false,
-          
+
         },
       },
       y: {
-        
+
         stacked: true,
         grid: {
           display: true,
         },
       },
-      
+
     },
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
-
 
   filters$!: Observable<FilterState['filters']>;
   generalFilters$!: Observable<FilterState['generalFilters']>;
@@ -218,8 +217,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   dataTooltipsInfo: entity.statesResumeTooltip[] = [];
 
   savingsDetails!: entity.SavingDetailsResponse;
+  co2Saving!: entity.Co2SavingResponse;
 
   userInfo!: UserInfo;
+
+  co2Progress: string = '25%'
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -240,17 +242,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getFilters();
     this.getUserClient();
     this.initiLineChartData();
     this.initiLineChartDataES();
 
   }
 
-  
+
   initiLineChartDataES() {
     this.lineChartDataES = {
-      labels: [''], 
+      labels: [''],
       datasets: [
         {
           type: 'bar',
@@ -265,7 +266,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           label: 'Energía Real Subtotal (MXN)',
           backgroundColor: 'rgba(238, 84, 39, 1)',
           maxBarThickness: 112,
-          
+
 
         },
         {
@@ -273,7 +274,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           data: [this.economicSavingsData.economicSaving],
           label: 'Economic Savings (MXN)',
           backgroundColor: 'rgba(87, 177, 177, 1)',
-          order:2,
+          order: 2,
           maxBarThickness: 112,
 
         },
@@ -286,12 +287,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           pointBackgroundColor: 'rgba(239, 68, 68, 1)',
           pointBorderColor: 'rgba(239, 68, 68, 1)',
           pointRadius: 8,
-          order:1
+          order: 1
         }
       ]
     };
   }
-  
+
   initiLineChartData() {
     this.lineChartData = {
       labels: this.labels,
@@ -310,14 +311,33 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
   }
 
-  getFilters() {
-    this.filters$.subscribe(filters => {
-    });
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getEconomicSavings({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getCo2Saving({ clientId: userInfo?.clientes[0], ...generalFilters });
+      });
+    }
   }
 
   getDataSavingDetails(filters: GeneralFilters) {
     this.moduleServices.getDataSavingDetails(filters).subscribe({
       next: (response: entity.SavingDetailsResponse) => this.savingsDetails = response,
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
+  }
+
+  getCo2Saving(filters: GeneralFilters) {
+    this.moduleServices.getCo2Saving(filters).subscribe({
+      next: (response: entity.Co2SavingResponse) => this.co2Saving = response,
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.log(error);
@@ -340,20 +360,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     })
   }
-
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getEconomicSavings({  clientId: userInfo?.clientes[0], ...generalFilters });
-      });
-    }
-  }
-
+ 
   getDataSolarCoverga(filters: entity.GeneralFilters) {
     this.moduleServices.getDataSolarCoverage(filters).subscribe({
       next: (response: string) => this.solarCoverage = response,
@@ -362,8 +369,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     })
   }
-
-  
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -426,11 +431,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(`er/plants/details/${id}`)
   }
 
-  getEconomicSavings(filters: GeneralFilters){
+  getEconomicSavings(filters: GeneralFilters) {
     this.moduleServices.getSavings(filters).subscribe({
-      next: (response) =>{
+      next: (response) => {
         this.lineChartDataES = {
-          labels: [''], 
+          labels: [''],
           datasets: [
             {
               type: 'bar',
@@ -445,17 +450,17 @@ export class HomeComponent implements OnInit, OnDestroy {
               label: 'Energía Real Subtotal (MXN)',
               backgroundColor: 'rgba(238, 84, 39, 1)',
               maxBarThickness: 112,
-              
-    
+
+
             },
             {
               type: 'bar',
               data: [response.response.economicSaving],
               label: 'Economic Savings (MXN)',
               backgroundColor: 'rgba(87, 177, 177, 1)',
-              order:2,
+              order: 2,
               maxBarThickness: 112,
-    
+
             },
             {
               type: 'line',
@@ -466,7 +471,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               pointBackgroundColor: 'rgba(239, 68, 68, 1)',
               pointBorderColor: 'rgba(239, 68, 68, 1)',
               pointRadius: 8,
-              order:1
+              order: 1
             }
           ]
         };

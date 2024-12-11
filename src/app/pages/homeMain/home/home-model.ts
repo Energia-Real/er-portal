@@ -1,12 +1,12 @@
 
 export interface GeneralFilters {
-  clientId?:any
+  clientId?: any
   startDate: string;
   endDate: string | null;
 }
 
 export interface FiltersClients {
-  months:string[]
+  months: string[]
   requestType: string;
 }
 
@@ -24,6 +24,19 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+export interface Co2Saving {
+  success: boolean;
+  response: Co2SavingResponse
+  errors: any | null;
+}
+
+export interface Co2SavingResponse {
+  co2_saving_tCO2: string;
+  tree_equivalent: string;
+  ev_charges_equivalent: string;
+}
+
+
 export interface DataTablePlantsResponse {
   success: boolean;
   response: {
@@ -37,7 +50,7 @@ export interface PlantData {
   siteName: string;
   energyProduction: any;
   energyConsumption: any;
-  solarCoverage: number ; 
+  solarCoverage: number;
   co2Saving: any;
   siteStatus: string;
 }
@@ -63,7 +76,7 @@ export interface DataRespSavingDetailsMapper {
 }
 
 export interface statesResumeTooltip {
-  estado : string;
+  estado: string;
   plantas: number;
   totalInstalledCapacity: number;
 }
@@ -97,9 +110,9 @@ export interface FormatCards {
   value: any;
 }[]
 
-export interface EconomicSavings{
+export interface EconomicSavings {
   cfeSubtotal: number;
-  energiaRealSubtotal:number;
-  economicSaving:number;
-  expensesWithoutEnergiaReal:number;
+  energiaRealSubtotal: number;
+  economicSaving: number;
+  expensesWithoutEnergiaReal: number;
 }
