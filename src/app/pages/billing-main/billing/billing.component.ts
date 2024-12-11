@@ -145,7 +145,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     });
   }
 
-
   generateInvoice() {
     const objData: entity.CreateInvoice | any = {
       clientId: this.userInfo.clientes[0],
@@ -173,10 +172,9 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.createNotificationModal(false);
   }
 
-
   updateMultipleInvoiceStatuses() {
     const objData: entity.DataBillingTable | any[] = this.selection?.selected.length ? this.selection?.selected : [this.oneConfirmInvoice]
-    const filteredInvoices = objData.filter(invoice => invoice.status === 2);
+    const filteredInvoices = objData.filter(invoice => invoice.status != 2);
 
     filteredInvoices.forEach((data: any) => {
       delete data.amountWithIva;
