@@ -27,7 +27,7 @@
           [ngClass]="{'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen}"
           *ngIf="isSidebarHovered || keepOpen">
           
-          <span *ngIf="userInfo?.persona else notDataTable"> {{userInfo?.persona?.nombres || '-'}} {{userInfo?.persona?.apellidos || ''}}</span>
+          <span > {{userInfo?.persona?.nombres || 'USER'}} {{userInfo?.persona?.apellidos || ''}}</span>
 
         </p>
       </div>
