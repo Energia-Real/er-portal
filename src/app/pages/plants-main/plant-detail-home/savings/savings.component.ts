@@ -28,8 +28,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
   generalFilters$!: Observable<FilterState['generalFilters']>;
 
   showAlert: boolean = false;
-  Highcharts: typeof Highcharts = Highcharts;
-  dots = Array(3).fill(0);
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
   chart: any;
   

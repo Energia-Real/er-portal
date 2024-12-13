@@ -2,13 +2,14 @@ import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, On
 import anime from 'animejs/lib/anime.es.js';
 import { setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { FilterState } from '@app/shared/models/general-models';
+import { FilterState, GeneralResponse, UserInfo } from '@app/shared/models/general-models';
 import { Observable } from 'rxjs';
 import tippy, { Instance } from 'tippy.js';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 import * as entity from '../../../pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-mapa',
@@ -23,6 +24,9 @@ export class MapaComponent implements AfterViewInit {
   selectedStates: string[] = [];
   filters$!: Observable<FilterState['filters']>;
   filters!: FilterState['filters'];
+  generalFilters$!: Observable<FilterState['generalFilters']>;
+  userInfo!: UserInfo;
+
 
   constructor(
     private store: Store<{ filters: FilterState }>,
@@ -31,12 +35,17 @@ export class MapaComponent implements AfterViewInit {
     private injector: Injector,
     private homeService: HomeService,
     private notificationService: OpenModalsService,
+    private encryptionService: EncryptionService,
+
   ) {
     this.filters$ = this.store.select(state => state.filters.filters);
     this.filters$.subscribe(filters => {
       this.filters = filters;
-      this.getTooltipInfo(filters);
     });
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$.subscribe(generalFilters=>{
+      this.getTooltipInfo(generalFilters);
+    })
   }
 
   ngAfterViewInit() {
@@ -44,33 +53,34 @@ export class MapaComponent implements AfterViewInit {
   }
 
   getTooltipInfo(filters?: any) {
-    this.homeService.getDataStates(filters).subscribe({
-      next: (response: entity.statesResumeTooltip[]) => {
-
-        response.forEach((state) => {
-          var color:string; 
-
-          color="#FFFFFF";
-          if(state.totalInstalledCapacity>0 && state.totalInstalledCapacity <= 1500) color="#9AE3E1"
-          else if(state.totalInstalledCapacity>1500 && state.totalInstalledCapacity <= 3000) color="#64E2E2"
-          else if(state.totalInstalledCapacity>3000 && state.totalInstalledCapacity <= 4500) color="#00E5FF"
-          else if(state.totalInstalledCapacity>4500 && state.totalInstalledCapacity <= 6000) color="#08C4DA"
-          else if(state.totalInstalledCapacity>6000) color="#008796"
-          console.log(state)
-          console.log(color)
-          this.statesColors[state.estado] = {
-            color: color,
-          };
-        });
-        console.log(this.statesColors)
-
-        this.tooltipsInfo = response;
-        this.createTooltips();
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-      }
-    });
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.homeService.getDataStates({ clientId: userInfo?.clientes[0], ...filters }).subscribe({
+        next: (response: GeneralResponse<entity.MapStatesResponse>) => {
+  
+          response.response.kwhByStateResponse.forEach((state) => {
+            var color:string; 
+  
+            color="#FFFFFF";
+            if(state.totalInstalledCapacity>0 && state.totalInstalledCapacity <= 1500) color="#9AE3E1"
+            else if(state.totalInstalledCapacity>1500 && state.totalInstalledCapacity <= 3000) color="#64E2E2"
+            else if(state.totalInstalledCapacity>3000 && state.totalInstalledCapacity <= 4500) color="#00E5FF"
+            else if(state.totalInstalledCapacity>4500 && state.totalInstalledCapacity <= 6000) color="#08C4DA"
+            else if(state.totalInstalledCapacity>6000) color="#008796"
+            this.statesColors[state.state] = {
+              color: color,
+            };
+          });
+  
+          this.tooltipsInfo = response.response.kwhByStateResponse;
+          this.createTooltips();
+        },
+        error: (error) => {
+          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        }
+      });
+    }
   }
 
   createTooltips() {
@@ -78,20 +88,22 @@ export class MapaComponent implements AfterViewInit {
 
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
-      const dataEstado = this.tooltipsInfo.find(item => item.estado.toLowerCase() === nombreEstado?.toLowerCase());
+      const dataEstado = this.tooltipsInfo.find(item => item.state.toLowerCase() === nombreEstado?.toLowerCase());
 
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';
       
       if (dataEstado) {
         tooltipContent.instance.infoAdicional = [
-          { subtitle: 'Active plants', content: `${dataEstado.plantas} plants` },
-          { subtitle: 'Total Installed Capacity kWh', content: `${dataEstado.totalInstalledCapacity.toLocaleString()} kWh` }
+          { subtitle: 'Active plants', content: `${dataEstado.plants} plants` },
+          { subtitle: 'Total Installed Capacity kWh', content: `${dataEstado.totalInstalledCapacity.toLocaleString()} kWh` },
+          { subtitle: 'Total CO2 Saving', content: `${dataEstado.tco2Savings.toLocaleString()} tCO2` }
         ];
       } else {
         tooltipContent.instance.infoAdicional = [
           { subtitle: 'Active plants', content: '0 plants' },
-          { subtitle: 'Total Installed Capacity kWh', content: '0 kWh' }
+          { subtitle: 'Total Installed Capacity kWh', content: '0 kWh' },
+          { subtitle: 'Total CO2 Saving', content: `0 tCO2` }
         ];
       }
 

@@ -87,9 +87,14 @@ export interface DataRespSavingDetailsMapper {
 }
 
 export interface statesResumeTooltip {
-  estado: string;
-  plantas: number;
+  state : string;
+  plants: string;
   totalInstalledCapacity: number;
+  tco2Savings: string;
+}
+
+export interface MapStatesResponse{
+  kwhByStateResponse: statesResumeTooltip[]
 }
 
 export interface DataRespSavingDetailsList {

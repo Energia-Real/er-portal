@@ -467,7 +467,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             {
               type: 'line',
               data: [response.response.expensesWithoutEnergiaReal],
-              label: 'Expenses without Energía Real (MXN)',
+              label: 'Expenses Without Energía Real (MXN)',
               backgroundColor: 'rgba(239, 68, 68, 1)',
               borderColor: 'rgba(239, 68, 68, 1)',
               pointBackgroundColor: 'rgba(239, 68, 68, 1)',
