@@ -1,24 +1,20 @@
 <div class="c-main px-16">
-    <div class="grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
-
-
+    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1">
             <div class="btns-excel">
-                <button class="btn-action-add">
+                <button (click)="downloadExcel()" class="btn-action-add">
                     <span class="material-symbols-outlined">download</span>
-                    Download .xlsx
+                    Download Template
                 </button>
-    
+
                 <button class="btn-upload" (click)="fileInput.click()">
                     <span class="material-symbols-outlined">upload</span>
                     Bulk upload
                 </button>
-                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
-    
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                    style="display: none;" />
             </div>
-           
         </div>
-
 
         <div class="col-span-1 d-flex justify-center">
             <div class="search-add">
@@ -32,56 +28,55 @@
             </div>
         </div>
 
-        <div class="col-span-1">
-            <div class="d-flex justify-end gap-2 flex-wrap">
-                <div class="c-input">
-                    <mat-form-field class="select-mount" appearance="outline">
-                        <mat-select placeholder="Select month" [formControl]="selectedMonth">
-                            <mat-option *ngFor="let month of months; let i = index" [value]="month.value">
-                                {{ month.viewValue }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+        <div class="col-span-1"></div>
+    </div>
 
-                <div class="c-input mb-0">
-                    <mat-form-field class="select-years" appearance="outline">
-                        <mat-select [disabled]="true" placeholder="Select year" [(value)]="selectedYear">
-                            <mat-option *ngFor="let year of years" [value]="year.value">
-                                {{ year.value }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
+    <div class="separator-cards mt-4 mb-4"></div>
+
+    <div class="c-paginator-top">
+        <strong>Items per page</strong>
+        <mat-form-field>
+            <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+                <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                    <strong>{{ size }}</strong>
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
     <div class="c-table mt-3">
         <table mat-table [dataSource]="dataSource" matSort class="table-assets">
             <ng-container matColumnDef="rpu">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>RPU</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">RPU</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.rpu else notDataTable"> {{ element.rpu }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="clientName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Client name</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Client name</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="plantName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Plant name</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Plant name</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.plantName else notDataTable"> {{ element.plantName }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="month">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Month</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Month</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.month else notDataTable"> {{ getMonthName(element.month) }} </div>
                 </td>
@@ -89,14 +84,18 @@
 
 
             <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Year</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Year</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="kwh">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Pricing</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Pricing</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div *ngIf="element?.kwh else notDataTable"> {{ element.kwh }} </div>
                 </td>
@@ -111,12 +110,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
         </table>
-
-        <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-        </mat-paginator>
     </div>
+    
+    <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>
 
 <ng-template #notData>

@@ -5,6 +5,7 @@ import { Observable, Subject, interval, map, takeUntil } from 'rxjs';
 import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
+import { DataResponseArraysMapper, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +13,19 @@ import { Mapper } from './mapper';
 export class PlantsService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_CLIENTS_V1;
+  private API_URL_BATU = environment.API_URL_BATU_V1;
+  private API_URL_ENERGY_PERFORMANCE = environment.API_URL_ENERGY_PERFORMANCE_V1;
+  private API_URL_PROYECTS = environment.API_URL_CLIENTS_V1;
   private API_URL_PROXY = environment.API_URL_PROXY_V1;
   private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
   private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
+  private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
 
-  constructor(private http: HttpClient, public formatsService: FormatsService) { }
+
+  constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
   getDataById(id: string | null): Observable<entity.DataPlant> {
-    const url = `${this.API_URL}/projects/${id}`;
+    const url = `${this.API_URL_PROYECTS}/projects/${id}`;
 
     return this.http.get<entity.DataPlant>(url).pipe(
       map((response) => Mapper.getDataIdMapper(response))
@@ -28,14 +33,14 @@ export class PlantsService implements OnDestroy {
   }
 
   getDataRespOverview(assetId: String): Observable<entity.DataResponseDetailsCard[]> {
-    const url = `${this.API_URL}/projects/${assetId}`;
+    const url = `${this.API_URL_PROYECTS}/projects/${assetId}`;
     return this.http.get<entity.DataResponseDetailsClient>(url).pipe(
       map((response) => Mapper.getDataRespOverviewMapper(response, this.formatsService))
     );
   }
 
   getDataRespStatus(): Observable<entity.ProjectStatus[]> {
-    const url = `${this.API_URL}/projects/projectstate`;
+    const url = `${this.API_URL_PROYECTS}/projects/projectstate`;
 
     return this.http.get<entity.ProjectStatus[]>(url).pipe(
       map((response) => Mapper.getDataRespStatusMapper(response, this.formatsService))
@@ -43,17 +48,68 @@ export class PlantsService implements OnDestroy {
   }
 
   getDataRespUnauthorized(): Observable<any> {
-    const url = `${this.API_URL}/pruebas/unauthorized`;
+    const url = `${this.API_URL_PROYECTS}/pruebas/unauthorized`;
     return this.http.get<any>(url);
   }
 
-  getDataRespSite(data: entity.PostDataByPlant): Observable<entity.DataResponseDetailsMapper> {
-    const url = `${this.API_URL_PROXY}/integrators/proxy/getSiteDetailsByPlant`;
+  getSiteDetails(id: string): Observable<DataResponseArraysMapper> {
+    const url = `${this.API_URL_PROYECTS}/projects/GetSiteDetailByPlant/${id}`;
 
-    return this.http.post<entity.DataResponseDetails>(url, data).pipe(
-      map((response) => Mapper.getDataRespSiteMapper(response?.data, this.formatsService))
+    return this.http.get<entity.DataSiteDetails>(url).pipe(
+      map((response) => Mapper.getSiteDetailsMapper(response, this.formatsService))
     );
   }
+
+  getSitePerformance(filters:GeneralFilters): Observable<DataResponseArraysMapper | null> {
+    const url = `${this.API_URL_ENERGY_PERFORMANCE}/GetSitePerformance`;
+
+    return this.http.post<any>(url, filters).pipe(
+      map((response) => Mapper.getSitePerformanceMapper(response))
+    );
+  }
+
+  getSitePerformanceSummary(filters:GeneralFilters): Observable<DataResponseArraysMapper> {
+    const url = `${this.API_URL_BATU}/energy/summary`;
+    let params = new HttpParams()
+    .set('rpu', filters.rpu)
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!);
+    return this.http.get<entity.BatuSummary>(url, { params }).pipe(
+      map((response) => Mapper.getSitePerformanceSummaryMapper(response))
+    );
+  }
+
+  getSitePerformanceDetails(plantId:string,filters:GeneralFilters): Observable<DataResponseArraysMapper | null> {
+    const url = `${this.API_URL_PERFORMANCE}/plants/${plantId}/performance`;
+    let params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!);
+    return this.http.get<any>(url, { params }).pipe(
+      map((response) => Mapper.getSitePerformanceMapper(response))
+    );
+  }
+
+
+  /* getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
+    const url = `${this.API_URL_PROYECTS}/projects/Savings`;
+    let params = new HttpParams()
+    .set('clientId', filters.clientId!)
+    .set('startMonth', filters.startDate)
+    .set('endMonth', filters.endDate!);
+
+    return this.http.get<entity.getSavingsDetails>(url, { params }).pipe(
+      map((response) => Mapper.getSavingsDetailsMapper(response.response))
+    );
+  } */
+
+  getSavingDetails(filters: GeneralFilters, plantId:string): Observable<GeneralResponse<entity.getSavingsDetails>>{
+    const url = `${this.API_URL_PERFORMANCE}/plants/${plantId}/saving`;
+    let params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!);
+    return this.http.get<GeneralResponse<entity.getSavingsDetails>>(url, { params });
+  }
+
 
   getDataSystem(data: entity.PostDataByPlant): Observable<entity.ResponseSystem> {
     const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;
@@ -67,19 +123,26 @@ export class PlantsService implements OnDestroy {
       .set('pagesize', pageSize)
       .set('page', page);
 
-    return this.http.get<entity.DataManagementTableResponse>(`${this.API_URL}/projects`, { params }).pipe(
+    return this.http.get<entity.DataManagementTableResponse>(`${this.API_URL_PROYECTS}/projects`, { params }).pipe(
       map((response) => Mapper.getPlantsMapper(response, this.formatsService))
     );
   }
 
   getSummaryProjects(): Observable<entity.DataSummaryProjectsMapper> {
-    const url = `${this.API_URL}/projects/summary`;
+    const url = `${this.API_URL_PROYECTS}/projects/summary`;
 
     return this.http.get<entity.DataSummaryProjectsMapper>(url).pipe(
       map((response) => Mapper.getSummaryProjects(response, this.formatsService))
     );
   }
 
+  getDataClient(): Observable<entity.DataRespSavingDetailsList[]> {
+    const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
+    const params = new HttpParams()
+    .set('imageSize', 50)
+
+    return this.http.get<entity.DataRespSavingDetailsList[]>(url, { params })
+  }
 
 
   getWeatherData(lat: number, long: number) {
@@ -108,25 +171,25 @@ export class PlantsService implements OnDestroy {
   }
 
   postDataPlant(data: entity.DataPlant) {
-    const url = `${this.API_URL}/projects`;
+    const url = `${this.API_URL_PROYECTS}/projects`;
 
     return this.http.post<any>(url, data);
   }
 
   patchDataPlant(id: string, data: entity.DataPlant): Observable<any> {
-    const url = `${this.API_URL}/projects/${id}/`;
+    const url = `${this.API_URL_PROYECTS}/projects/${id}/`;
 
     return this.http.patch<any>(url, data);
   }
 
   patchDataPlantOverview(id: string, data: Partial<entity.DataResponseDetailsClient>): Observable<any> {
-    const url = `${this.API_URL}/projects/${id}/`;
+    const url = `${this.API_URL_PROYECTS}/projects/${id}/`;
 
     return this.http.patch<any>(url, data);
   }
 
   putUpdateAsset(data: any, id: string | null) {
-    return this.http.put<any>(`${this.API_URL}/projects/${id}`, data);
+    return this.http.put<any>(`${this.API_URL_PROYECTS}/projects/${id}`, data);
   }
 
   obtenerHoraLocal(): Observable<number> {
@@ -146,7 +209,7 @@ export class PlantsService implements OnDestroy {
   }
 
   getEstimatedEnergy(brand: string, plantCode: string) {
-    const url = `${this.API_URL}/projects/estimatedEnergy`;
+    const url = `${this.API_URL_PROYECTS}/projects/estimatedEnergy`;
     const jsonObject = {
       "brand": brand,
       "plantCode": plantCode,
@@ -200,9 +263,6 @@ export class PlantsService implements OnDestroy {
     const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleModels/${id}`;
     return this.http.get<entity.CatalogEquipment[]>(url);
   }
-
-
-
 
   ngOnDestroy() {
     this.onDestroy$.next();

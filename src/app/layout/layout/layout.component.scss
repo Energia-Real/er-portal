@@ -1,0 +1,159 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 116px;
+  background-color: #EE5427;
+  transition: 500ms all ease;
+  overflow-x: hidden;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+
+.extended {
+  width: 230px !important;
+}
+
+.icon-extended-menu {
+  cursor: pointer;
+}
+
+.sidebar:hover {
+  width: 230px;
+}
+
+.sidebar-content {
+  padding: 20px;
+  color: #fff;
+  height: 100%;
+  position: relative;
+}
+
+.sidebar-user {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    margin-top: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #FFFFFF !important;
+
+    ::ng-deep .no-data-found {
+      color: #FFFFFF !important;
+    }
+
+    span {
+      color: #FFFFFF !important;
+
+    }
+  }
+
+}
+
+
+.c-version {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+
+}
+
+.linea {
+  width: 100%;
+  height: 2px;
+  margin-top: 15px;
+  background-color: white;
+}
+
+.layout {
+  .content {
+    margin-left: 120px;
+    transition: margin-left 0.3s;
+  }
+}
+
+.layout .sidebar:hover+.content {
+  margin-left: 230px;
+}
+
+.logo-white {
+  margin: auto;
+  width: 40px;
+}
+
+.logo-orange {
+  margin: auto;
+}
+
+.logo-sidebar {
+  display: flex;
+  align-items: center;
+
+  p {
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    color: #FFFFFF;
+  }
+}
+
+.titles-header {
+  transition: 500ms all ease;
+
+  li {
+    width: 300px;
+    padding-left: 25px;
+    transition: 500ms all ease;
+    margin-top: 15px;
+
+    a {
+      opacity: 0;
+      transition: 500ms all ease;
+    }
+  }
+}
+
+.show-names {
+  opacity: 100% !important;
+}
+
+.animate-durations {
+  animation-duration: 500ms;
+}
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  right: 20px;
+
+  .options {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    padding-left: 25px;
+    transition: 500ms all ease;
+
+    p {
+      margin: 0;
+      margin-left: 20px;
+      cursor: pointer;
+      opacity: 0;
+    }
+  }
+}
+
+.menu-selected {
+  background: #E31A1C;
+  border-radius: 18px;
+  width: auto !important;
+  height: 37px !important;
+  display: flex;
+  align-items: center;
+}

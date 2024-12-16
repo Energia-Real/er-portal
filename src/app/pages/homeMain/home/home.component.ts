@@ -18,8 +18,9 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { FilterState } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 Chart.register(...registerables);
 @Component({
@@ -35,6 +36,64 @@ export class HomeComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
+  economicSavingsData: entity.EconomicSavings = {
+    cfeSubtotal: 0,
+    energiaRealSubtotal: 0,
+    economicSaving: 0,
+    expensesWithoutEnergiaReal: 0
+  }
+
+  displayChartES: boolean = false;
+  chartES: any;
+
+
+  labels = [
+    { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
+    { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
+    { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
+    { text: 'Expenses without Energía Real (MXN)', color: 'rgba(239, 68, 68, 1)' },
+
+  ];
+
+  lineChartDataES!: ChartConfiguration<'bar' | 'line'>['data'];
+
+  lineChartOptionsES: ChartOptions<'bar' | 'line'> = {
+    responsive: true,
+    layout: {
+      padding: {
+        left: 0,
+        right: 200,
+      },
+    },
+
+
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+
+    scales: {
+      x: {
+        type: 'category',
+        stacked: true,
+        grid: {
+          display: false,
+
+        },
+      },
+      y: {
+
+        stacked: true,
+        grid: {
+          display: true,
+        },
+      },
+
+    },
+    backgroundColor: 'rgba(242, 46, 46, 1)',
+  };
 
   filters$!: Observable<FilterState['filters']>;
   generalFilters$!: Observable<FilterState['generalFilters']>;
@@ -54,7 +113,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   dataSource = new MatTableDataSource<any>([]);
-  labels = [];
   data = [5, 4, 3]
   displayedColumns: string[] = [
     'siteName',
@@ -147,7 +205,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   currentYear = new Date().getFullYear();
 
   selectedEndMonth: number = new Date().getMonth() + 1;
- 
+
   solarCoverage: string = '';
 
   dayOrMount = new FormControl('month');
@@ -156,10 +214,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   showLoader: boolean = true;
 
   selectedMonths: any[] = [];
-  dataClientsList: entity.DataRespSavingDetailsList[] = [];
   dataTooltipsInfo: entity.statesResumeTooltip[] = [];
 
-  savingsDetails!: entity.SavingDetailsResponse;
+  co2Saving!: entity.Co2SavingResponse;
+  savingsDetails!: entity.SDResponse;
+
+  userInfo!: UserInfo;
+
+  co2Progress: string = '25%'
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -167,11 +229,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private homeService: HomeService,
+    private moduleServices: HomeService,
     private router: Router,
     private formBuilder: FormBuilder,
     private notificationService: OpenModalsService,
     private formatsService: FormatsService,
+    private encryptionService: EncryptionService,
     private store: Store<{ filters: FilterState }>
   ) {
     this.filters$ = this.store.select(state => state.filters.filters);
@@ -179,9 +242,53 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getFilters();
-    this.getDataClientsList();
+    this.getUserClient();
     this.initiLineChartData();
+    this.initiLineChartDataES();
+  }
+
+  initiLineChartDataES() {
+    this.lineChartDataES = {
+      labels: [''],
+      datasets: [
+        {
+          type: 'bar',
+          data: [this.economicSavingsData.cfeSubtotal],
+          label: 'CFE Subtotal (MXN)',
+          backgroundColor: 'rgba(121, 36, 48, 1)',
+          maxBarThickness: 112,
+        },
+        {
+          type: 'bar',
+          data: [this.economicSavingsData.energiaRealSubtotal],
+          label: 'Energía Real Subtotal (MXN)',
+          backgroundColor: 'rgba(238, 84, 39, 1)',
+          maxBarThickness: 112,
+
+
+        },
+        {
+          type: 'bar',
+          data: [this.economicSavingsData.economicSaving],
+          label: 'Economic Savings (MXN)',
+          backgroundColor: 'rgba(87, 177, 177, 1)',
+          order: 2,
+          maxBarThickness: 112,
+
+        },
+        {
+          type: 'line',
+          data: [this.economicSavingsData.expensesWithoutEnergiaReal],
+          label: 'Expenses without Energía Real (MXN)',
+          backgroundColor: 'rgba(239, 68, 68, 1)',
+          borderColor: 'rgba(239, 68, 68, 1)',
+          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+          pointBorderColor: 'rgba(239, 68, 68, 1)',
+          pointRadius: 8,
+          order: 1
+        }
+      ]
+    };
   }
 
   initiLineChartData() {
@@ -202,18 +309,27 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
   }
 
-  getFilters() {
-    this.filters$.subscribe(filters => {
-      if (filters?.months?.length) {
-        this.getDataClients(filters);
-        this.getTooltipInfo(filters);
-      }
-    });
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getEconomicSavings({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getCo2Saving({ clientId: userInfo?.clientes[0], ...generalFilters });
+      });
+    }
   }
 
-  getDataSavingDetails(filters: entity.FiltersSavingDetails) {
-    this.homeService.getDataSavingDetails({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
-      next: (response: entity.SavingDetailsResponse) => this.savingsDetails = response,
+  getDataSavingDetails(filters: GeneralFilters) {
+    this.moduleServices.getDataSavingDetails(filters).subscribe({
+      next: (response: entity.SDResponse) => {
+        this.savingsDetails = response
+        console.log(response);
+        
+      },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.log(error);
@@ -221,8 +337,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataClients(filters: entity.FiltersClients) {
-    this.homeService.getDataClients(filters).subscribe({
+  getCo2Saving(filters: GeneralFilters) {
+    this.moduleServices.getCo2Saving(filters).subscribe({
+      next: (response: entity.Co2SavingResponse) => this.co2Saving = response,
+      error: (error) => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        console.log(error);
+      }
+    })
+  }
+
+  getDataClients(filters: entity.GeneralFilters) {
+    this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.dataSource.data = response.data
         this.dataSource.sort = this.sort;
@@ -236,40 +362,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     })
   }
-
-  getDataClientsList() {
-    this.homeService.getDataClientsList().subscribe({
-      next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.generalFilters$.subscribe((generalFilters: entity.FiltersSavingDetails) => {
-          this.dataClientsList = response;
-          this.getDataSavingDetails(generalFilters);
-          this.getDataSolarCoverga(generalFilters);
-        });
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
-      }
-    })
-  }
-
-  getDataSolarCoverga(filters: entity.FiltersSavingDetails) {
-    this.homeService.getDataSolarCoverage({ ...filters, clientId: this.dataClientsList[0].clientId }).subscribe({
+ 
+  getDataSolarCoverga(filters: entity.GeneralFilters) {
+    this.moduleServices.getDataSolarCoverage(filters).subscribe({
       next: (response: string) => this.solarCoverage = response,
       error: (error) => {
         console.error(error)
-      }
-    })
-  }
-
-  getTooltipInfo(filters?: any) {
-    this.homeService.getDataStates(filters).subscribe({
-      next: (response: entity.statesResumeTooltip[]) => {
-        this.dataTooltipsInfo = response;
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
       }
     })
   }
@@ -333,6 +431,67 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   goDetails(id: string) {
     this.router.navigateByUrl(`er/plants/details/${id}`)
+  }
+
+  getEconomicSavings(filters: GeneralFilters) {
+    this.moduleServices.getSavings(filters).subscribe({
+      next: (response) => {
+        this.lineChartDataES = {
+          labels: [''],
+          datasets: [
+            {
+              type: 'bar',
+              data: [response.response.cfeSubtotal],
+              label: 'CFE Subtotal (MXN)',
+              backgroundColor: 'rgba(121, 36, 48, 1)',
+              maxBarThickness: 112,
+            },
+            {
+              type: 'bar',
+              data: [response.response.energiaRealSubtotal],
+              label: 'Energía Real Subtotal (MXN)',
+              backgroundColor: 'rgba(238, 84, 39, 1)',
+              maxBarThickness: 112,
+
+
+            },
+            {
+              type: 'bar',
+              data: [response.response.economicSaving],
+              label: 'Economic Savings (MXN)',
+              backgroundColor: 'rgba(87, 177, 177, 1)',
+              order: 2,
+              maxBarThickness: 112,
+
+            },
+            {
+              type: 'line',
+              data: [response.response.expensesWithoutEnergiaReal],
+              label: 'Expenses Without Energía Real (MXN)',
+              backgroundColor: 'rgba(239, 68, 68, 1)',
+              borderColor: 'rgba(239, 68, 68, 1)',
+              pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+              pointBorderColor: 'rgba(239, 68, 68, 1)',
+              pointRadius: 8,
+              order: 1
+            }
+          ]
+        };
+        this.displayChartES = true;
+        this.initChartES();
+      }
+    })
+  }
+
+  initChartES(): void {
+    const ctx = document.getElementById('economicSavingsChart') as HTMLCanvasElement;
+    if (ctx) {
+      this.chartES = new Chart(ctx, {
+        type: 'bar',
+        data: this.lineChartDataES,
+        options: this.lineChartOptionsES
+      });
+    }
   }
 
   ngOnDestroy(): void {

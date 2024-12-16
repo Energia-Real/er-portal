@@ -1,27 +1,27 @@
 <div class="c-global c-detail-site">
-    <div class="row">
-        <div class="col-md-6 mb-3 mb-lg-0">
-            <div class="c-card-info-saving" *ngIf="!showAlert else notData">
-                <div *ngFor="let data of siteDetails?.firstTwo; let idx = index"
+    <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-2 md:col-span-1">
+            <div class="c-card-info-site-details" *ngIf="!showAlert else notData">
+                <div *ngFor="let data of siteDetails?.primaryElements; let idx = index"
                     [ngClass]="{'card-container-50': idx < 2, 'card-container-33': idx >= 2}">
                     <div class="card-info">
                         <h1>{{ data.title }}</h1>
-                        <h2>{{ data.description }}</h2>
+                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
                     </div>
                 </div>
 
                 <div class="separator-cards"></div>
 
-                <div *ngFor="let data of siteDetails?.remaining" class="card-container-33">
-                    <div class="card-info">
+                <div *ngFor="let data of siteDetails?.additionalItems" class="card-container-33">
+                    <div class="card-info" >
                         <h1>{{ data.title }}</h1>
-                        <h2>{{ data.description }}</h2>
+                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6 text-center" *ngIf="siteDetails && urlMap">
+        <div class="col-span-2 md:col-span-1 text-center" *ngIf="siteDetails && urlMap">
             <p *ngIf="plantData.latitude">Map loaded using the following coordinates: <br> Latitude: <span
                     class="color-EE5427">{{ plantData.latitude }}</span>, Longitude: <span class="color-EE5427">{{
                     plantData.longitude }}</span></p>
@@ -31,8 +31,8 @@
                 <div class="loader"></div>
             </div>
 
-            <iframe class="iframe" *ngIf="!loaderMap" height="400" frameborder="0"
-                referrerpolicy="no-referrer-when-downgrade" [src]="urlMap" allowfullscreen>
+            <iframe class="iframe" *ngIf="!loaderMap" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
+                [src]="urlMap" allowfullscreen>
             </iframe>
         </div>
     </div>
@@ -42,4 +42,8 @@
     <div class="no-data-alert">
         The information could not be loaded.
     </div>
+</ng-template>
+
+<ng-template #notDataTable>
+    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
 </ng-template>

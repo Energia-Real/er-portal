@@ -1,20 +1,31 @@
+import { ErrorRequest } from "@app/shared/models/general-models";
 
-export interface FiltersSavingDetails {
-  clientId?:any
+export interface GeneralFilters {
+  clientId?: any
   startDate: string;
   endDate: string | null;
 }
 
 export interface FiltersClients {
-  months:string[]
+  months: string[]
   requestType: string;
 }
 
+
+
 export interface SavingDetailsResponse {
-  totalenergyConsumption: string;
-  totalEnergyProduction: string;
-  cfeCostWithOutSolar: string;
-  totalSavings: string;
+  success: boolean,
+  response: SDResponse,
+  errors: {
+    errors: ErrorRequest[]
+  }
+}
+
+export interface SDResponse {
+  cfeCostWithoutSolar: number | string
+  totalEnergyConsumption : number | string
+  totalEnergyProduction : number | string
+  totalSavings : number | string
 }
 
 export interface PeriodicElement {
@@ -24,11 +35,42 @@ export interface PeriodicElement {
   symbol: string;
 }
 
+export interface Co2Saving {
+  success: boolean;
+  response: Co2SavingResponse
+  errors: any | null;
+}
+
+export interface Co2SavingResponse {
+  co2_saving_tCO2: string;
+  tree_equivalent: string;
+  ev_charges_equivalent: string;
+}
+
+
+export interface DataTablePlantsResponse {
+  success: boolean;
+  response: {
+    consolidatedData: PlantData[];
+  };
+  errors: any | null;
+}
+
+export interface PlantData {
+  plantId: string;
+  siteName: string;
+  energyProduction: any;
+  energyConsumption: any;
+  solarCoverage: number;
+  co2Saving: any;
+  siteStatus: string;
+}
+
 export interface DataRespSavingDetails {
   siteId: string;
   siteName: string;
   siteSaving: number;
-  cfeZone: number;
+  cfeZone: number | string;
   solarCoverage: number | string;
   co2Saving: number | string;
   energyProduction: string;
@@ -45,9 +87,14 @@ export interface DataRespSavingDetailsMapper {
 }
 
 export interface statesResumeTooltip {
-  estado : string;
-  plantas: number;
-  totalEnergyProduction: number;
+  state : string;
+  plants: string;
+  totalInstalledCapacity: number;
+  tco2Savings: string;
+}
+
+export interface MapStatesResponse{
+  kwhByStateResponse: statesResumeTooltip[]
 }
 
 export interface DataRespSavingDetailsList {
@@ -78,3 +125,10 @@ export interface FormatCards {
   title: string;
   value: any;
 }[]
+
+export interface EconomicSavings {
+  cfeSubtotal: number;
+  energiaRealSubtotal: number;
+  economicSaving: number;
+  expensesWithoutEnergiaReal: number;
+}

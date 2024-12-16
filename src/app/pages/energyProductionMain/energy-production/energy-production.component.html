@@ -1,16 +1,17 @@
 <div class="c-main px-16">
-    <div class="d-flex justify-between gap-2">
-        <div class="btns-excel gap-2">
-            <div class="relative w-52  ms-auto c-search">
+    <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-2 md:col-span-1 flex align-center gap-2">
+            <div class="relative w-52 c-select">
                 <mat-form-field class="select-years select-type" appearance="outline">
-                    <mat-select [disabled]="false"  [(value)]="selectedEnergyType" (selectionChange)="onEnergyTypeChange($event)">
+                    <mat-select [disabled]="false" [(value)]="selectedEnergyType"
+                        (selectionChange)="onEnergyTypeChange($event)">
                         <mat-option *ngFor="let type of energyTypes" [value]="type.value">
                             {{ type.description }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            
+
             <div class="c-input mb-0">
                 <mat-form-field class="select-years" appearance="outline">
                     <mat-select [disabled]="false" placeholder="Select year" [(value)]="selectedYear">
@@ -22,53 +23,62 @@
             </div>
         </div>
 
-        <div class="btns-excel gap-2">
-
-            <form class="relative w-80 ms-auto c-search">
+        <div class="col-span-2 md:col-span-1  sm:grid-cols-2 flex align-center justify-center gap-2">
+            <form class="relative w-80  c-search">
                 <label class="input-search">
                     <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
                 </label>
                 <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Plant name"
                     [formControl]="searchBar">
             </form>
+        </div>
 
-            <button class="primary-button" (click)="downloadExcel()">
-                <img src="../../../../../assets/svg/download_white.svg" alt="Icon Search">
-                Download .xlsx
-            </button>
+        <div class="col-span-2 md:col-span-1 sm:grid-cols-2 flex align-center lg:justify-end sm:justify-start gap-2">
+            <div class="btns-excel gap-2">
 
-            <button class="neutro-button " (click)="fileInput.click()">
-                <img src="../../../../../assets/svg/upload_orange.svg" alt="Icon Search">
-                Bulk upload
-            </button>
+                <button class="primary-button" (click)="downloadExcel()">
+                    <img src="../../../../../assets/svg/download_white.svg" alt="Icon Search">
+                    Download .xlsx
+                </button>
 
-            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" />
+                <button class="neutro-button " (click)="fileInput.click()">
+                    <img src="../../../../../assets/svg/upload_orange.svg" alt="Icon Search">
+                    Bulk upload
+                </button>
 
-            
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                    style="display: none;" />
+            </div>
         </div>
     </div>
 
     <app-energy-prod-update [isOpen]="drawerOpenPlant" [modeDrawer]="drawerAction"
         [plant]="drawerInfo"></app-energy-prod-update>
 
+    <div class="c-paginator-top mt-5">
+        <strong>items per page</strong>
+        <mat-form-field>
+            <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
+                <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
+                        }}</strong></mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
     <div class="c-table mt-3">
-        <div class="c-paginator-top">
-            <strong>items per page</strong>
-            <mat-form-field>
-              <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
-                <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size }}</strong></mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
         <table mat-table [dataSource]="dataSource" matSort class="table-assets guion-click">
             <ng-container matColumnDef="siteName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>  <div class="target w-24">Plant name</div> </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-24">Plant name</div>
+                </th>
                 <td mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo"> {{ element?.siteName }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="energyMonth1">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> <div class="target w-20">January</div> </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">January</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 1, 'January',element?.energyMonth1)">
                         <div *ngIf="element?.energyMonth1 else notDataTable"> {{ element.energyMonth1 }} </div>
@@ -77,7 +87,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth2">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> <div class="target w-20">February</div> </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">February</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 2, 'February',element?.energyMonth2)">
                         <div *ngIf="element?.energyMonth2 else notDataTable"> {{ element.energyMonth2 }} </div>
@@ -86,7 +98,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth3">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>  <div class="target w-20">March</div> </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">March</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 3, 'March', element?.energyMonth3)">
                         <div *ngIf="element?.energyMonth3 else notDataTable"> {{ element.energyMonth3 }} </div>
@@ -95,7 +109,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth4">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">April</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">April</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 4, 'April',element?.energyMonth4)">
                         <div *ngIf="element?.energyMonth4 else notDataTable"> {{ element.energyMonth4 }} </div>
@@ -104,7 +120,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth5">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">May</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">May</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 5, 'May', element?.energyMonth5)">
                         <div *ngIf="element?.energyMonth5 else notDataTable"> {{ element.energyMonth5 }} </div>
@@ -113,7 +131,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth6">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">June</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">June</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 6, 'June', element?.energyMonth6)">
                         <div *ngIf="element?.energyMonth6 else notDataTable"> {{ element.energyMonth6 }} </div>
@@ -122,7 +142,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth7">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">July</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">July</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 7, 'July', element?.energyMonth7)">
                         <div *ngIf="element?.energyMonth7 else notDataTable"> {{ element.energyMonth7 }} </div>
@@ -131,7 +153,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth8">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">August</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">August</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 8, 'August', element?.energyMonth8)">
                         <div *ngIf="element?.energyMonth8 else notDataTable"> {{ element.energyMonth8 }} </div>
@@ -140,7 +164,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth9">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">September</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">September</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 9, 'September', element?.energyMonth9)">
                         <div *ngIf="element?.energyMonth9 else notDataTable"> {{ element.energyMonth9 }} </div>
@@ -149,7 +175,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth10">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">October</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">October</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 10, 'October', element?.energyMonth10)">
                         <div *ngIf="element?.energyMonth10 else notDataTable"> {{ element.energyMonth10 }}
@@ -159,7 +187,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth11">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">November</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">November</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 11, 'November', element?.energyMonth11)">
                         <div *ngIf="element?.energyMonth11 else notDataTable"> {{ element.energyMonth11 }}
@@ -169,7 +199,9 @@
             </ng-container>
 
             <ng-container matColumnDef="energyMonth12">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="target w-20">December</div></th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <div class="target w-20">December</div>
+                </th>
                 <td mat-cell *matCellDef="let element">
                     <div (click)="editClient(element, 2, 'December', element?.energyMonth12)">
                         <div *ngIf="element?.energyMonth12 else notDataTable"> {{ element.energyMonth12 }}
@@ -188,12 +220,8 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
         </table>
 
-        <mat-paginator #paginator class="c-paginator" 
-        [length]="totalItems" 
-        [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" 
-            (page)="getServerData($event)" 
-            showFirstLastButtons
+        <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
             aria-label="Select page of periodic elements">
         </mat-paginator>
     </div>
