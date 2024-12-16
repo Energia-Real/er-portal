@@ -11,6 +11,8 @@ import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-mode
   providedIn: 'root'
 })
 export class HomeService {
+  private performanceApiUrl = environment.API_URL_PERFORMANCE;
+
   constructor(
     private http: HttpClient,
     public formatsService: FormatsService
@@ -24,10 +26,28 @@ export class HomeService {
     );
   }
 
-  getDataSavingDetails(filters: GeneralFilters): Observable<entity.SavingDetailsResponse> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/SavingDetailsPerformance`;
+  getDataSavingDetails(filters: GeneralFilters): Observable<entity.SDResponse> {
+    const url = `${this.performanceApiUrl}/performance/details`;
 
-    return this.http.post<any>(url, filters);
+    const params = new HttpParams()
+    .set('startDate', filters.startDate)
+    .set('endDate', filters.endDate!)
+
+    return this.http.get<entity.SavingDetailsResponse>(url, { params }).pipe(
+      map((response) => Mapper.getDataSavingDetailsMapper(response, this.formatsService))
+    );
+  }
+
+  getCo2Saving(filters: entity.GeneralFilters): Observable<entity.Co2SavingResponse> {
+    const url = `${this.performanceApiUrl}/savings/Co2`;
+    const params = new HttpParams()
+      .set('ClientId', filters.clientId)
+      .set('startDate', filters.startDate)
+      .set('endDate', filters.endDate!)
+
+    return this.http.get<entity.Co2Saving>(url, { params }).pipe(
+      map((response) => Mapper.getCo2SavingMapper(response, this.formatsService))
+    );
   }
 
   getDataStates(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.MapStatesResponse>> {
@@ -42,19 +62,19 @@ export class HomeService {
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
     const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
     const params = new HttpParams()
-    .set('imageSize', 50)
+      .set('imageSize', 50)
 
     return this.http.get<entity.DataRespSavingDetailsList[]>(url, { params }).pipe(
       map((response) => Mapper.getDataClientsListMapper(response))
     );
   }
 
-  getDataSolarCoverage(filters: entity.GeneralFilters) : Observable<string> {
+  getDataSolarCoverage(filters: entity.GeneralFilters): Observable<string> {
     const url = `${environment.API_URL_CLIENTS_V1}/projects/solar-coverage`;
     const params = new HttpParams()
-    .set('client', filters.clientId)
-    .set('start_date', filters.startDate)
-    .set('end_date', filters.endDate!)
+      .set('client', filters.clientId)
+      .set('start_date', filters.startDate)
+      .set('end_date', filters.endDate!)
 
     return this.http.get<string>(url, { params })
   }

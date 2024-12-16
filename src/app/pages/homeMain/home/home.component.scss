@@ -4,7 +4,7 @@
   }
 
   .economic-savings {
-    height: 405px;
+    height: 404px;
   }
 
   .wi-progress {
@@ -36,8 +36,13 @@
     }
   }
 
+  .c-saving-details {
+    height: 173px;
+  }
+
   .c-card-section {
     padding: 15px 15px;
+    margin-top: 22px;
 
     >h2 {
       font-size: 16px;
@@ -72,7 +77,7 @@
         position: relative;
 
         h2 {
-          font-size: 17.5px !important;
+          font-size: 16px !important;
           font-weight: 500;
           margin-bottom: 10px !important;
 
@@ -105,14 +110,114 @@
     padding-top: 55px;
   }
 
-  .solar-coverage {
-    width: 212px;
-    height: 232px;
+  .c-solar-co2 {
     display: flex;
-    margin-top: 22px;
+    gap: 24px;
+    height: 230px;
+
+    .co2 {
+      width: 100%;
+
+      .bar-progresss {
+        width: 100%;
+        height:60px;
+
+        .barr {
+          > div {
+            background-color: #57B1B1;
+          }
+        }
+
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+
+        h1, h2 {
+          color: #57B1B1;
+          font-weight: 700;
+        }
+
+        h1 {
+          font-size: 16px;
+          margin-bottom: 0px;
+        }
+
+        h2 {
+          font-size: 12px;
+          margin: auto;
+          margin-top: 10px;
+        }
+      }
+
+      >div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title-left {
+          margin-right: 10px;
+
+          h1 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #57B1B1;
+          }
+
+          >div {
+            display: flex;
+            gap: 7px;
+
+            h2 {
+              color: #000000;
+              font-size: 32px;
+              font-weight: 500;
+              margin-bottom: 0;
+            }
+
+            h3 {
+              font-weight: 500;
+              font-size: 12px;
+              margin-bottom: 0;
+            }
+          }
+        }
+
+        .title-right {
+          display: flex;
+          align-items: flex-start;
+
+          >div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .left {
+            margin-right: 10px;
+          }
+
+          h2 {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #57B1B1;
+            line-height: 15px;
+            margin-bottom: 0;
+          }
+        }
+
+      }
+    }
+  }
+
+  .solar-coverage {
+    width: 40%;
+    text-align: center;
+    display: flex;
     align-items: center;
     justify-content: center;
-
 
     >div {
       display: flex;
@@ -138,7 +243,6 @@
       }
     }
   }
-
 
   .logo-merco {
     width: 20px;
@@ -187,7 +291,6 @@
     height: 46px;
 
     .col-md-8 {
-
       display: flex;
       justify-content: end;
       gap: 15px;
@@ -284,7 +387,7 @@
   height: auto;
   min-height: auto;
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
 
   align-items: center;
   justify-content: center;
@@ -294,21 +397,19 @@
   width: 100% !important;
   height: auto !important;
   max-height: 340px !important;
-
   display: flex;
-  
   justify-content: center;
   align-items: center;
 }
 
 
-.c-graphic-performance{
+.c-graphic-performance {
   height: auto !important;
 }
 
-.dot{
-  min-width:12px !important ;
-  min-height:12px !important ;
+.dot {
+  min-width: 12px !important;
+  min-height: 12px !important;
 
 }
 
@@ -320,15 +421,16 @@
 
 .color-bar {
   width: 21px;
-  height: 100%; 
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  background: linear-gradient(to top, 
-    #E0E0E0 0%, 
-    #64E2E2 25%, 
-    #00E5FF 50%, 
-    #08C4DA 75%, 
-    #008796 100%);
+  justify-content: space-between;
+  background: linear-gradient(to top,
+      #E0E0E0 0%,
+      #64E2E2 25%,
+      #00E5FF 50%,
+      #08C4DA 75%,
+      #008796 100%);
   border: 1px solid #ccc;
   border-radius: 18px;
 }
@@ -337,7 +439,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%; 
+  height: 100%;
 }
 
 .labels div {
@@ -345,13 +447,12 @@
   text-align: left;
 }
 
-.c-division{
+.c-division {
   width: 100%;
   height: 20px;
 }
 
 .division {
-  width: 100%; 
-  border-top: 2px solid #231F20; 
+  width: 100%;
+  border-top: 2px solid #231F20;
 }
-

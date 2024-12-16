@@ -85,9 +85,9 @@ export class FormatsService {
   formatContractDuration(duration: { years: number; months: number; days: number }): string {
     const { years, months, days } = duration;
   
-    const yearText = years ? `${years} año(s)` : '';
-    const monthText = months ? `${months} mes(es)` : '';
-    const dayText = days ? `${days} día(s)` : '';
+    const yearText = years ? `${years} year(s)` : '';
+    const monthText = months ? `${months} month(s)` : '';
+    const dayText = days ? `${days} day(s)` : '';
   
     return [yearText, monthText, dayText].filter(Boolean).join(' ');
   }

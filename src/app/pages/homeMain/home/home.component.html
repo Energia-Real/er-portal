@@ -1,11 +1,11 @@
 <main class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5 c-home c-main">
     <div class="col-span-2 md:col-span-1">
-        <div class="c-card-section">
+        <div class="c-card-section c-saving-details">
             <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
                 <div>
-                    <h2 *ngIf="savingsDetails?.totalenergyConsumption else notDataTable"> {{
-                        savingsDetails.totalenergyConsumption }} <br> <span>kWh</span> </h2>
+                    <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
+                        savingsDetails.totalEnergyConsumption }} <br> <span>kWh</span> </h2>
                     <p>Total Energy <br> Consumption</p>
                     <div class="linea"></div>
                 </div>
@@ -17,8 +17,8 @@
                 </div>
                 <div>
                     <div>
-                        <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithOutSolar else notDataTable">
-                            ${{ savingsDetails.cfeCostWithOutSolar }} <br>
+                        <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithoutSolar else notDataTable">
+                            ${{ savingsDetails.cfeCostWithoutSolar }} <br>
                         </h2>
                         <p>CFE Cost without Solar</p>
                         <div class="linea"></div>
@@ -33,11 +33,47 @@
             </div>
         </div>
 
-        <div class="c-card-section solar-coverage">
-            <div>
-                <img src="../../../../assets/icons/solar-coverage.png" alt="">
-                <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
-                <p>{{ solarCoverage }}%</p>
+        <div class="c-solar-co2">
+            <div class="c-card-section solar-coverage">
+                <div>
+                    <img src="../../../../assets/icons/solar-coverage.png" alt="">
+                    <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
+                    <p>{{ solarCoverage }}%</p>
+                </div>
+            </div>
+
+            <div class="c-card-section co2">
+                <div>
+                    <div class="title-left">
+                        <h1>CO2 Saving</h1>
+                        <div>
+                            <h2>{{co2Saving?.co2_saving_tCO2}}</h2>
+                            <h3> tCO2</h3>
+                        </div>
+                    </div>
+
+                    <div class="title-right">
+                        <div class="left">
+                            <img src="../../../../assets/icons/equivalent.svg" alt="">
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
+                        </div>
+
+                        <div>
+                            <img src="../../../../assets/icons/eletric.svg" alt="">
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br> electric car full charges.</h2>
+                        </div>
+                    </div>
+                </div>
+<!-- 
+                <div class="bar-progresss">
+                    <h1>kWh /m / anual</h1>
+
+                    <div class="w-full barr h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+                        <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500" [ngStyle]="{ width: co2Progress }"></div>
+                    </div>
+
+                    <h2>Peers: 117 kWh /m</h2>
+                </div> -->
             </div>
         </div>
     </div>
@@ -80,20 +116,21 @@
                 <app-mapa class="flex-1"></app-mapa>
                 <div class="legend-container">
                     <div class="color-bar flex flex-col justify-between h-full">
-                        <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index" class="c-division flex items-center justify-center h-full">
-                          <div class="division "></div>
+                        <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index"
+                            class="c-division flex items-center justify-center h-full">
+                            <div class="division "></div>
                         </div>
-                      </div>
+                    </div>
                     <div class="labels">
-                      <div>+6000 kW</div>
-                      <div>4500 kW</div>
-                      <div>3000 kW</div>
-                      <div>1500 kW</div>
-                      <div>0 kW</div>
+                        <div>+6000 kW</div>
+                        <div>4500 kW</div>
+                        <div>3000 kW</div>
+                        <div>1500 kW</div>
+                        <div>0 kW</div>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -156,7 +193,8 @@
                                 <p class="header-table">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption }} kWh
+                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
+                                    }} kWh
                                 </div>
                             </td>
                         </ng-container>

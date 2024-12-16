@@ -1,20 +1,31 @@
+import { ErrorRequest } from "@app/shared/models/general-models";
 
 export interface GeneralFilters {
-  clientId?:any
+  clientId?: any
   startDate: string;
   endDate: string | null;
 }
 
 export interface FiltersClients {
-  months:string[]
+  months: string[]
   requestType: string;
 }
 
+
+
 export interface SavingDetailsResponse {
-  totalenergyConsumption: string;
-  totalEnergyProduction: string;
-  cfeCostWithOutSolar: string;
-  totalSavings: string;
+  success: boolean,
+  response: SDResponse,
+  errors: {
+    errors: ErrorRequest[]
+  }
+}
+
+export interface SDResponse {
+  cfeCostWithoutSolar: number | string
+  totalEnergyConsumption : number | string
+  totalEnergyProduction : number | string
+  totalSavings : number | string
 }
 
 export interface PeriodicElement {
@@ -23,6 +34,19 @@ export interface PeriodicElement {
   weight: number;
   symbol: string;
 }
+
+export interface Co2Saving {
+  success: boolean;
+  response: Co2SavingResponse
+  errors: any | null;
+}
+
+export interface Co2SavingResponse {
+  co2_saving_tCO2: string;
+  tree_equivalent: string;
+  ev_charges_equivalent: string;
+}
+
 
 export interface DataTablePlantsResponse {
   success: boolean;
@@ -37,7 +61,7 @@ export interface PlantData {
   siteName: string;
   energyProduction: any;
   energyConsumption: any;
-  solarCoverage: number ; 
+  solarCoverage: number;
   co2Saving: any;
   siteStatus: string;
 }
@@ -102,9 +126,9 @@ export interface FormatCards {
   value: any;
 }[]
 
-export interface EconomicSavings{
+export interface EconomicSavings {
   cfeSubtotal: number;
-  energiaRealSubtotal:number;
-  economicSaving:number;
-  expensesWithoutEnergiaReal:number;
+  energiaRealSubtotal: number;
+  economicSaving: number;
+  expensesWithoutEnergiaReal: number;
 }
