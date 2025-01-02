@@ -44,6 +44,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   currentYear = new Date().getFullYear().toString().slice(-2);
   currentYearComplete = new Date().getFullYear();
+  previousYearComplete = this.currentYearComplete - 1;
+
+  selectedYear= this.currentYearComplete;
   selectedMonths: { name: string; value: string }[] = [];
 
   singleMonth = new FormControl(false);
@@ -103,7 +106,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
           const formattedMonths = this.formatSelectedMonths();
           
           if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
-            this.selectedMonths = this.months.filter(month => filtersState?.months.includes(`${this.currentYearComplete}-${month.value}-01`));
+            this.selectedMonths = this.months.filter(month => filtersState?.months.includes(`${this.selectedYear}-${month.value}-01`));
             this.updateStartAndEndMonth();
           }
         } else this.setDefaultMonths();
@@ -137,6 +140,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  updateYearSelected(year: number){
+    this.selectedYear=year;
+    this.searchWithFilters();
+  }
+
   updateSelectedMonths() {
     if (this.selectedStartMonth && this.selectedEndMonth) {
       const startIndex = this.months.findIndex(m => m.value === this.selectedStartMonth.value);
@@ -150,19 +158,19 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   formatSelectedMonths(): string[] {
-    return this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}-01`);
+    return this.selectedMonths.map(month => `${this.selectedYear}-${month.value}-01`);
   }
 
   searchWithFilters() {
     if (this.selectedMonths.length > 0) {
       const formattedMonths = this.formatSelectedMonths();
       const generalFilters = {
-        startDate: `${this.currentYearComplete}-${this.selectedStartMonth.value}-01`,
-        endDate: this.singleMonth.value ? null : `${this.currentYearComplete}-${this.selectedEndMonth.value}-01`
+        startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
+        endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
       };
   
       const filters = { requestType: 'Month', months: formattedMonths };
-      const filtersBatu = { months: this.selectedMonths.map(month => `${this.currentYearComplete}-${month.value}`) };
+      const filtersBatu = { months: this.selectedMonths.map(month => `${this.selectedYear}-${month.value}`) };
       const filtersSolarCoverage = {
         brand: "huawei",
         clientName: "Merco",
