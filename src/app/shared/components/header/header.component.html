@@ -10,7 +10,15 @@
 
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
           <div class="years">
-            <p>{{ currentYearComplete }}</p>
+            <p [ngClass]="{ 'selected-year': previousYearComplete === selectedYear, 'default-year': previousYearComplete !== selectedYear }"
+            (click)="updateYearSelected(previousYearComplete); $event.stopPropagation()"
+            >
+              {{ previousYearComplete }}</p>
+
+            <p [ngClass]="{ 'selected-year': currentYearComplete === selectedYear, 'default-year': currentYearComplete !== selectedYear }"
+            (click)="updateYearSelected(currentYearComplete); $event.stopPropagation()"
+            >
+              {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [ngClass]="{
@@ -32,7 +40,15 @@
 
         <mat-menu #monthMenu2="matMenu" class="custom-menu">
           <div class="years">
-            <p>{{ currentYearComplete }}</p>
+            <p [ngClass]="{ 'selected-year': previousYearComplete === selectedYear, 'default-year': previousYearComplete !== selectedYear }"
+            (click)="updateYearSelected(previousYearComplete); $event.stopPropagation()"
+            >
+              {{ previousYearComplete }}</p>
+
+            <p [ngClass]="{ 'selected-year': currentYearComplete === selectedYear, 'default-year': currentYearComplete !== selectedYear }"
+            (click)="updateYearSelected(currentYearComplete); $event.stopPropagation()"
+            >
+            {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [disabled]="singleMonth.value" [ngClass]="{
