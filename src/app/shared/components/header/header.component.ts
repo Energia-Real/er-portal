@@ -45,8 +45,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   currentYear = new Date().getFullYear().toString().slice(-2);
   currentYearComplete = new Date().getFullYear();
   previousYearComplete = this.currentYearComplete - 1;
-
   selectedYear= this.currentYearComplete;
+  selectedYearAbreviate = this.selectedYear.toString().slice(-2);
   selectedMonths: { name: string; value: string }[] = [];
 
   singleMonth = new FormControl(false);
@@ -143,6 +143,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   updateYearSelected(year: number){
     this.selectedYear=year;
     this.searchWithFilters();
+    this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
+
   }
 
   updateSelectedMonths() {

@@ -4,7 +4,7 @@
       <div class="c-month-button">
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
-          <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + currentYear : 'Start' }}</h1>
+          <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + selectedYearAbreviate : 'Start' }}</h1>
           <i class="fa-solid fa-calendar-days"></i>
         </button>
 
@@ -33,7 +33,7 @@
         <p>To</p>
 
         <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
-          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End') }}
+          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + selectedYearAbreviate : 'End') }}
           </h1>
           <i class="fa-solid fa-calendar-days"></i>
         </button>
