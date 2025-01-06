@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="search-add">
+      <div class="search-add mt-3 md:mt-0 lg:mt-0">
         <form class="relative w-80 ms-auto c-search">
           <label class="input-search">
             <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
@@ -35,7 +35,7 @@
             [formControl]="searchBar">
         </form>
 
-        <button class="btn-action-add" routerLink="/er/plants/create">
+        <button class="btn-action-add mt-3 md:mt-0" routerLink="/er/plants/create">
           <i class="fa-solid fa-plus"></i>
           Add new plant
         </button>
@@ -43,7 +43,17 @@
     </div>
   </div>
 
-  <div>
+  <div class="c-scroll">
+    <div class="c-paginator-top mt-5">
+      <strong>items per page</strong>
+      <mat-form-field>
+          <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
+              <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
+                      }}</strong></mat-option>
+          </mat-select>
+      </mat-form-field>
+  </div>
+
     <div class="c-table">
       <table mat-table [dataSource]="dataSource" matSort class="table-assets">
         <ng-container matColumnDef="clientId">

@@ -30,6 +30,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatBadgeModule} from '@angular/material/badge';
+
 
 const material = [
 	MatSidenavModule,
@@ -63,7 +65,8 @@ const material = [
 	MatProgressBarModule,
 	HighchartsChartModule,
 	MatDialogModule,
-	MatButtonToggleModule
+	MatButtonToggleModule,
+	MatBadgeModule
 ];
 @NgModule({
 	exports: [...material],

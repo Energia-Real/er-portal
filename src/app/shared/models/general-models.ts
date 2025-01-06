@@ -1,5 +1,3 @@
-import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
-
 export type IForm<T> = {
   [K in keyof T]?: any;
 }
@@ -19,7 +17,7 @@ export interface User {
   token?: string;
 }
 
-export interface UserV2 {
+export interface UserInfo {
   id: string,
   email: string,
   persona: {
@@ -27,8 +25,21 @@ export interface UserV2 {
     nombres: string,
     apellidos: string
   },
-  clientes: null,
+  clientes: string[],
   accessTo: string
+}
+
+export interface GeneralFilters {
+  rpu?:any
+  idClient?:number
+  clientId?:number | string
+  startDate: string;
+  endDate: string | null;
+}
+
+export interface DataResponseArraysMapper {
+  primaryElements: any[]
+  additionalItems: any[]
 }
 
 export interface ConfirmationConfig
@@ -77,9 +88,12 @@ export interface FilterState {
 
 export interface notificationData{
   type:     string,
+  typeId?:   number|undefined,
   title:    string,
+  subtitle?:    string,
   content?:  string,
   warn?:     string, 
+  errors?:     string, 
   buttonAction?: string
 }
 
@@ -103,3 +117,63 @@ export const initialFilterState: FilterState = {
     requestType: 0
   }
 };
+
+export interface NotificationServiceData {
+  userId: string;
+  descripcion: string|undefined;
+  notificationTypeId: number|undefined;
+  notificationStatusId: number;
+}
+
+export interface EditNotificationStatus {
+  externalId: string;
+  status?: string;
+  centerTextId?: number;
+  readed?:boolean;
+}
+
+export interface SnackData{
+  type:"COMPLETE"|"FAILED",
+  title:string,
+  subtitle:string
+}
+
+export interface NotificationMessages{
+  completedTitleSnack:string,
+  completedContentSnack:string,
+  errorTitleSnack:string,
+  errorContentSnack:string,
+  notificationId:string,
+  successCenterMessage:string,
+  errorCenterMessage: string,
+  userId?:string
+}
+
+export interface Notification{
+  description : string,
+  userId: string,
+  notificationTypeId  : number,
+  notificationStatusId: number,
+  date: Date,
+  externalId: string,
+  notificationCenterTextId: number,
+  readed: boolean
+}
+
+export interface GeneralResponse<T> {
+  success: boolean,
+  response: T,
+  errors: {
+    errors: ErrorRequest[]
+  }
+}
+
+export interface NotificationsResponse {
+  notificationsResponse: Notification[];
+}
+
+export interface ErrorRequest {
+  tipo: string;
+  field: string;
+  descripcion: string;
+}

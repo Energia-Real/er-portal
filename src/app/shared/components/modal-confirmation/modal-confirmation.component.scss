@@ -1,5 +1,10 @@
 .c-modal-confirmation {
-    width: 250px!important;
-    height: 200px!important;
+    width: 250px !important;
+    height: 200px !important;
     border-radius: 20px;
+}
+
+.c-text {
+    max-height: 300px;
+    overflow-y: auto;
 }

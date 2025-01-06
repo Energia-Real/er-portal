@@ -1,56 +1,24 @@
 <nav class="c-header z-10">
-  <div class="mx-10 flex justify-between items-center">
-    <a href="/home" class="text-white text-sm font-semibold c-version">
-      <div class="version">
-        Version: {{ version }}
-      </div>
-      <img src="../../../../assets/svg/logo.svg" alt="Logo" style="width: 120px;">
-    </a>
-
-    <ul class="flex titles-header">
-      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice'"><a routerLink="backoffice-home"
-          class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('backoffice-home') }">Home</a></li>
-
-      <li class="mx-5" *ngIf="userInfo?.accessTo == 'Admin'"><a routerLink="admin-home"
-          class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('admin-home') }">Home</a></li>
-
-      <li class="mx-5" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"><a
-          routerLink="plants" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('plants') }">Plants</a></li>
-
-      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
-          routerLink="clients" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('clients') }">Clients</a></li>
-
-      <!-- <li class="mx-5"><a routerLink="/payments" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('payments') }">Payments</a></li> -->
-
-      <li *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'" class="mx-5"><a
-          routerLink="energy" class="hover:text-gray-300 cursor-pointer"
-          [ngClass]="{ 'text-er-orange': routeActive.includes('energy') }"> Energy  </a></li>
-
-      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="pricing"
-          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('pricing') }">
-          Pricing</a></li>
-
-      <li *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'" class="mx-5"><a routerLink="billing"
-          class="hover:text-gray-300 cursor-pointer" [ngClass]="{ 'text-er-orange': routeActive.includes('billing') }">
-          Billing</a></li>
-    </ul>
-
+  <div class="mx-10 flex justify-end items-center">
     <div class="flex align-items-center">
       <div class="c-month-button">
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
-          <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + currentYear : 'Start' }}</h1>
-          <span class="material-symbols-outlined">calendar_month</span>
+          <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + selectedYearAbreviate : 'Start' }}</h1>
+          <i class="fa-solid fa-calendar-days"></i>
         </button>
 
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
           <div class="years">
-            <p>{{ currentYearComplete }}</p>
+            <p [ngClass]="{ 'selected-year': previousYearComplete === selectedYear, 'default-year': previousYearComplete !== selectedYear }"
+            (click)="updateYearSelected(previousYearComplete); $event.stopPropagation()"
+            >
+              {{ previousYearComplete }}</p>
+
+            <p [ngClass]="{ 'selected-year': currentYearComplete === selectedYear, 'default-year': currentYearComplete !== selectedYear }"
+            (click)="updateYearSelected(currentYearComplete); $event.stopPropagation()"
+            >
+              {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [ngClass]="{
@@ -65,14 +33,22 @@
         <p>To</p>
 
         <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
-          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + currentYear : 'End') }}
+          <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' + selectedYearAbreviate : 'End') }}
           </h1>
-          <span class="material-symbols-outlined">calendar_month</span>
+          <i class="fa-solid fa-calendar-days"></i>
         </button>
 
         <mat-menu #monthMenu2="matMenu" class="custom-menu">
           <div class="years">
-            <p>{{ currentYearComplete }}</p>
+            <p [ngClass]="{ 'selected-year': previousYearComplete === selectedYear, 'default-year': previousYearComplete !== selectedYear }"
+            (click)="updateYearSelected(previousYearComplete); $event.stopPropagation()"
+            >
+              {{ previousYearComplete }}</p>
+
+            <p [ngClass]="{ 'selected-year': currentYearComplete === selectedYear, 'default-year': currentYearComplete !== selectedYear }"
+            (click)="updateYearSelected(currentYearComplete); $event.stopPropagation()"
+            >
+            {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [disabled]="singleMonth.value" [ngClass]="{
@@ -89,10 +65,63 @@
           </div>
         </mat-menu>
       </div>
+      <button 
+        [matMenuTriggerFor]="notificationsMenu" 
+        mat-icon-button 
+        [disabled]="!notifications || notifications.length === 0"
+       >
+       <div 
+          [matBadge]="notifications.length + ' +'"
+          [matBadgeHidden]="!hasNotifications" 
+          matBadgeSize="small" 
+          matBadgeColor="primary" 
+          class="badge-container">
+          <img 
+            src="../../../../../assets/svg/notifications.svg" 
+            alt="Icon notification"
+            class="notification-icon"
+            [ngClass]="{ 'disabled-icon': !notifications || notifications.length === 0 }"
 
-      <button [matMenuTriggerFor]="menu" mat-icon-button>
-        <mat-icon class="custom-icon-color">account_circle</mat-icon>
+            />
+        </div>
       </button>
+
+      <!-- <button 
+      [matMenuTriggerFor]="menu" 
+      mat-icon-button
+      >
+        <mat-icon 
+        class="custom-icon-color"
+        >
+        
+        account_circle</mat-icon>
+      </button> -->
+      <mat-menu 
+      #notificationsMenu="matMenu"  
+      xPosition="before" 
+      yPosition="below" 
+      class="notificationsMenu" 
+      [hidden]="!menuOpen"
+      (opened)="menuOpen = true; updateLocalNotifications()" 
+      (closed)="menuOpen = false"
+      
+      >
+        <div *ngFor="let notification of notifications; trackBy: trackByNotificationId" >
+          <app-notification-card-center
+          [@fadeOut]
+          [notification]="notification"
+          (notificationDeleted)="removeNotification(notification)"
+          (click)="$event.stopPropagation();"
+          ></app-notification-card-center>
+        </div>
+        <div class="notifications-footer mb-2 mt-3 " *ngIf="notifications.length==6">
+          <button class="footer-button" (click)="$event.stopPropagation();">
+            <img class="eye-icon" src="../../../../assets/img/eye-open-orange.png" alt="Eye Open">
+            <span class="ml-1">See More</span>
+          </button>   
+        </div>
+      </mat-menu>
+
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="signOut()">Sign out</button>
       </mat-menu>

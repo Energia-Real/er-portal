@@ -7,7 +7,7 @@
     </div>
     <div class="mx-auto text-center w-full">
         <h2 class="m-0">Clients</h2>
-        <form [formGroup]="formData" (ngSubmit)="actionButton()" class="p-3">
+        <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
             <div class="mb-0">
                 <div class="grid grid-cols-1  gap-x-6 gap-y-2">
                     <div class="col-span-1 md:col-span-1">
@@ -65,7 +65,7 @@
 
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
                             <div class="button-container d-flex justify-content-between pt-0 gap-2">
-                                <button class="btn-cancel" (click)="createNotification(CANCEL)" type="button">Cancel</button>
+                                <button class="btn-cancel" (click)="createNotificationModal(CANCEL)" type="button">Cancel</button>
                                 <div>
                                     <button class="btn-action-add" type="submit">
                                         <i

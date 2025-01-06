@@ -12,6 +12,8 @@ import { DataRespSavingDetailsList } from '@app/pages/homeMain/home/home-model';
 import { HomeService } from '@app/pages/homeMain/home/home.service';
 import { environment } from '@environment/environment';
 import { PlantsService } from '../../plants.service';
+import { UserInfo } from '@app/shared/models/general-models';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-new-plant',
@@ -53,12 +55,13 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
   catPlantStatus: entityCatalogs.DataCatalogs[] = [];
   editedClient!: entity.DataPlant;
-  dataClientsList: DataRespSavingDetailsList[] = []
 
   showLoader: boolean = false;
   loading: boolean = false;
 
   mapLink: string = ''
+
+  userInfo!: UserInfo;
 
   constructor(
     private catalogsService: CatalogsService,
@@ -66,6 +69,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private homeService: HomeService,
     private activatedRoute: ActivatedRoute,
+    private encryptionService: EncryptionService,
     private moduleServices: PlantsService,
     private router: Router
   ) { }
@@ -73,12 +77,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCatalogs();
     this.mapTo();
-    this.getDataClientsList();
+    this.getUserClient();
   }
 
   getId() {
-    this.activatedRoute.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: any) => {
-      params.get('id') && this.getDataById(params.get('id')!);
+    this.activatedRoute?.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: any) => {
+      if (params.id) this.getDataById(params.id);
     });
   }
 
@@ -96,6 +100,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     })
   }
 
+  
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+  }
+  
   getCatalogs() {
     this.catalogsService.getCatPlantStatus().subscribe({
       next: (response: entityCatalogs.DataCatalogs[]) => this.catPlantStatus = response,
@@ -138,7 +148,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const objData: any = { clientId: this.dataClientsList[0].clientId }
+    const objData: any = { clientId: this.userInfo.clientes[0] }
     this.loading = !this.loading;
 
     if (this.formData.get('siteName')?.value) objData.siteName = this.formData.get('siteName')?.value;
@@ -188,17 +198,6 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataClientsList() {
-    this.homeService.getDataClientsList().subscribe({
-      next: (response: entity.DataRespSavingDetailsList[]) => {
-        this.dataClientsList = response;
-      },
-      error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
-      }
-    })
-  }
 
   getAddressMap(response: entity.DataPlant | any) {
     const location = {

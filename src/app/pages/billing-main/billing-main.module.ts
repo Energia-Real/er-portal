@@ -9,11 +9,13 @@ import { MaterialModule } from '@app/shared/material/material.module';
 import { InfoCardComponent } from '@app/shared/components/info-card/info-card.component';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 import { BillingRoutingModule } from './billing-routing.module';
+import { NumberFormatInputPipe } from '@app/shared/pipes/numberFormatInput.pipe';
 
 
 @NgModule({
   declarations: [
-    BillingComponent
+    BillingComponent,
+    NumberFormatInputPipe
   ],
   imports: [
     CommonModule,

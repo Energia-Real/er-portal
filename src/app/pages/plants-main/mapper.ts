@@ -1,41 +1,62 @@
 import * as moment from 'moment-timezone';
 import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
+import { DataResponseArraysMapper, GeneralResponse } from '@app/shared/models/general-models';
 
 export class Mapper {
-	static getDataRespSiteMapper(response: entity.DataDetails[], formatsService: FormatsService): entity.DataResponseDetailsMapper {
+	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService): DataResponseArraysMapper {
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
 
-		let dataList: entity.DataResponseDetailsCard[] = [];
-
-		response?.forEach((data: entity.DataDetails): void => {
-			let formattedValue: string = data.value;
-		
-			if (data.value.includes('.') || data.value === '0') {
-				formattedValue = formatsService.energyFormat(parseFloat(data.value));
-			} else {
-				formattedValue = formatsService.dateFormat(data.value);
-			}
-		
-			if (data?.title?.toLocaleLowerCase()?.includes('coverage')) {
-				formattedValue += '%';
-			} else if (
-				data?.title?.toLocaleLowerCase()?.includes('energy production') ||
-				data?.title?.toLocaleLowerCase()?.includes('energy consumption')
-			) {
-				formattedValue += ' kWh';
-			}
-		
-			dataList.push({
-				title: data.title,
-				description: formattedValue ?? null,
-			});
+		primaryElements.push({
+			title: 'Last connection timeStamp',
+			description: formatsService.dateFormat(response.lastConnectionTimestamp)
 		});
-		
+
+		primaryElements.push({
+			title: 'System size',
+			description: formatsService.energyFormat(response.systemSize) + ' kWh'
+		});
+
+		primaryElements.push({
+			title: 'Panels',
+			description: formatsService.energyFormat(response.panels)
+		});
+
+		primaryElements.push({
+			title: 'PPA Duration',
+			description: formatsService.formatContractDuration(response.contractDuration)
+		});
+
+		additionalItems.push({
+			title: 'RPU',
+			description: response.rpu
+		});
+
+		additionalItems.push({
+			title: 'Age of the site',
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
+		});
+
+		additionalItems.push({
+			title: 'Install date',
+			description: formatsService.dateFormat(response.installDate)
+		});
+
+		additionalItems.push({
+			title: 'COD',
+			description: formatsService.dateFormat(response.cod)
+		});
+
+		additionalItems.push({
+			title: 'Commission date',
+			description: formatsService.dateFormat(response.commissionDate)
+		});
+
 		return {
-			firstTwo: dataList.slice(0, 5),
-			remaining: dataList.slice(5),
+			primaryElements,
+			additionalItems
 		}
-		
 	}
 
 	static getPlantsMapper(response: entity.DataManagementTableResponse, formatsService: FormatsService): entity.DataManagementTableResponse {
@@ -129,7 +150,6 @@ export class Mapper {
 		return clientData;
 	}
 
-
 	static getDataIdMapper(response: entity.DataPlant): entity.DataPlant {
 		return {
 			...response,
@@ -193,6 +213,109 @@ export class Mapper {
 		return {
 			...response,
 			equipment: instalaciones
+		}
+	}
+
+	static getSavingsDetailsMapper(response: entity.getSavingsDetails): entity.DataResponseArraysMapper {
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
+
+		primaryElements.push({
+			title: 'CFE Subtotal',
+			description: `$${response.cfeSubtotal}`,
+			icon: '../../../../../assets/icons/cfe-subtotal.png'
+		});
+
+		primaryElements.push({
+			title: 'ER Subtotal',
+			description: `$${response.erSubtotal}`,
+			icon: '../../../../../assets/icons/er-subtotal.png'
+		});
+
+		primaryElements.push({
+			title: 'ER + CFE Subtotal',
+			description: `$${response.erCfeSubtotal}`,
+			icon: '../../../../../assets/icons/ercfe-subtotal.png'
+		});
+
+		primaryElements.push({
+			title: 'Expenditure without ER',
+			description: `$${response.expenditureWithoutER}`,
+			icon: '../../../../../assets/icons/expenditure.png'
+		});
+
+		additionalItems.push({
+			title: 'Savings',
+			description: `$${response.savings}`,
+			icon: '../../../../../assets/icons/saving.png'
+		});
+
+		return {
+			primaryElements,
+			additionalItems
+		}
+	}
+
+	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>): entity.DataResponseArraysMapper | null {
+		if (!response.success) return null
+
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
+		const monthlyData: entity.MonthlyDataPerformance[] = response.response.monthlyDataResponse;
+
+		
+
+		primaryElements.push({
+			title: 'System generation',
+			description: `${response.response.systemGeneration} kWh`,
+		});
+
+		primaryElements.push({
+			title: 'Total consumption',
+			description: `${response.response.totalConsumption} kWh`,
+		});
+
+		additionalItems.push({
+			title: 'Exported generation',
+			description: `${response.response.exportedGeneration?? "000,000.00"} kWh`,
+			extra: "+2% compared to the previous month"
+		});
+
+		additionalItems.push({
+			title: 'CFE network consumption',
+			description: `${response.response.cfeNetworkConsumption?? "000,000.00"} kWh`,
+			extra:'-4% compared to the previous month'
+		});
+
+		additionalItems.push({
+			title: 'Solar coverage',
+			description: `${response.response.solarCoverage} kWh`,
+		});
+
+		additionalItems.push({
+			title: 'Performance',
+			description: `${response.response.performance} kWh`,
+		});
+
+		return {
+			primaryElements,
+			additionalItems,
+			monthlyData
+		}
+	}
+
+	static getSitePerformanceSummaryMapper(response: entity.BatuSummary): entity.DataResponseArraysMapper  {
+		const primaryElements: entity.DataResponseDetailsCard[] = []
+		const additionalItems: entity.DataResponseDetailsCard[] = []
+
+		additionalItems.push({
+			title: 'CFE network consumption',
+			description: `${response.summary} kWh`,
+		});
+
+		return {
+			primaryElements,
+			additionalItems
 		}
 	}
 }

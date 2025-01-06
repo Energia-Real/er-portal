@@ -1,0 +1,13 @@
+.c-billing {
+    .table-assets {
+        th:nth-child(1) {
+            padding-top: 7px !important;
+            padding-left: 0 !important;
+        }
+    }
+}
+
+.btns-excel-report {
+    display: flex;
+    justify-content: end;
+}
