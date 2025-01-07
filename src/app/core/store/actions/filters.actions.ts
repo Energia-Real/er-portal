@@ -20,3 +20,5 @@ export const setFiltersSolarCoverage = createAction(
   '[Filter] Set Filters Solar Coverage',
   props<{ filtersSolarCoverage: FilterState['filtersSolarCoverage'] }>()
 );
+
+export const resetFilters = createAction('[Filters] Reset Filters');
