@@ -15,7 +15,6 @@ import { updateNotifications } from '@app/core/store/actions/notifications.actio
 import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -96,24 +95,20 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.queryParams.subscribe((params) => {
       const startDate = params['startday'];
       const endDate = params['endday'];
-  
+
       if (startDate && endDate) {
         const startMonth = startDate.substring(5, 7);
         const endMonth = endDate.substring(5, 7);
         const startYear = parseInt(startDate.substring(0, 4), 10);
-  
+
         // Actualizar los meses y años seleccionados
         this.selectedYear = startYear;
         this.selectedYearAbreviate = startYear.toString().slice(-2);
         this.selectedStartMonth = this.months.find((month) => month.value === startMonth)!;
         this.selectedEndMonth = this.months.find((month) => month.value === endMonth);
-  
-        // Actualizar los filtros
-        this.updateSelectedMonths();
-      } else {
-        // Si no hay parámetros en la URL, establecer los filtros predeterminados
-        this.setDefaultMonths();
       }
+      // Actualizar los filtros
+      this.updateSelectedMonths();
     });
   }
 
@@ -247,7 +242,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.notifications = notifications;
       this.hasNotifications = notifications.length > 0;
       this.cdr.detectChanges();
-
     });
   }
 

@@ -14,7 +14,7 @@
     gap: 12px;
     display: flex;
     align-items: center;
-  
+
     p {
       margin: 0;
       font-size: 14px;
@@ -98,6 +98,7 @@
   }
   
   ::ng-deep .custom-menu {
+    overflow: hidden!important;
     margin-top: 5px;
     box-shadow: none !important;
     // border: 1px solid #9E9E9E;
@@ -113,6 +114,7 @@
       gap: 14px; 
       p {
         margin-bottom: 0;
+        cursor: pointer;
       }
       .default-year{
         color: #737373;
