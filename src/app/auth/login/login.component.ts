@@ -33,13 +33,55 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void { }
 
+  // onSubmit() {
+  //   this.loading = true;
+  //   this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
+  //     .pipe(first())
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/er' : '/er'}`;
+  //         this.router.navigateByUrl(returnUrl);
+  //       },
+  //       error: (err) => {
+  //         this.loading = false;
+  //         Swal.fire('Error', err.error.errors[0].descripcion, 'error');
+  //       }
+  //     });
+  // }
+
+  // http://localhost:9000/er/admin-home?startday=2025-06-01&endday=2025-10-01
+
   onSubmit() {
     this.loading = true;
+    
+    // Obtener parametros de la url
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+    if (returnUrl) {
+      // Decodificar la url
+      const decodedUrl = decodeURIComponent(returnUrl);
+      console.log('Decoded Return URL:', decodedUrl);
+      
+      // Crear un objeto URL para poder extraer los parámetros
+      const url = new URL(decodedUrl, window.location.origin);
+      const params = new URLSearchParams(url.search);
+      
+      const startday = params.get('startday');
+      const endday = params.get('endday');
+      console.log('Startday:', startday);
+      console.log('Endday:', endday);
+  
+      // Guardar en localStorage
+      if (startday || endday) {
+        localStorage.setItem('lastUrlParams', JSON.stringify({ startday, endday }));
+      }
+    }
+  
+    // Continuar con el proceso de login
     this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
       .pipe(first())
       .subscribe({
         next: (response: any) => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/er' : '/er'}`;
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/er';
           this.router.navigateByUrl(returnUrl);
         },
         error: (err) => {
@@ -48,6 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       });
   }
+  
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;

@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.subscribeToFilters();
       // Consultar notificaciónes
       this.updateLocalNotifications();
-    }, 1000);
+    }, 500);
   }
 
   ngAfterViewInit(): void {
@@ -95,6 +95,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.queryParams.subscribe((params) => {
       const startDate = params['startday'];
       const endDate = params['endday'];
+      console.log(startDate);
+      console.log(endDate);
+      
 
       if (startDate && endDate) {
         const startMonth = startDate.substring(5, 7);

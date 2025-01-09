@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, Subject } from 'rxjs';
 import { AuthService } from '@app/auth/auth.service';
@@ -11,7 +11,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
   public routeActive: string = '';
   userInfo!: UserInfo;
@@ -25,8 +25,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private notificationService: NotificationService
   ) {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.routeActive = this.router.url);
+    this.route.queryParams.subscribe(queryParams => this.routeActive = this.router.url);
   }
 
   ngOnInit(): void {
@@ -59,6 +58,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  ngAfterViewInit(): void {
+    
   }
 
   onMouseEnter() {
