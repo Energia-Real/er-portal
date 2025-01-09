@@ -75,6 +75,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   signOut() {
     localStorage.removeItem('userEnergiaReal');
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('lastUrlParams');
     this.router.navigate(['']);
   }
 

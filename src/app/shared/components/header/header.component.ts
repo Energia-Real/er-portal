@@ -67,16 +67,16 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // Cargar información del usuario 
+    // Cargar información del usuario
     this.loadUserInfo();
-    // Consultar filtros de la url 
+  
+    // Recuperar los filtros desde localStorage o establecer valores por defecto
     setTimeout(() => {
-      this.checkUrlAndUpdateFilters();
-      // Consultar filtros del store ngrx 
-      this.subscribeToFilters();
-      // Consultar notificaciónes
-      this.updateLocalNotifications();
-    }, 500);
+      this.getFiltersLocalStorage()
+    }, 700);
+  
+    // Consultar notificaciones
+    this.updateLocalNotifications();
   }
 
   ngAfterViewInit(): void {
@@ -90,29 +90,33 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  checkUrlAndUpdateFilters() {
-    // Leer los parámetros de la URL
-    this.route.queryParams.subscribe((params) => {
-      const startDate = params['startday'];
-      const endDate = params['endday'];
-      console.log(startDate);
-      console.log(endDate);
-      
-
-      if (startDate && endDate) {
-        const startMonth = startDate.substring(5, 7);
-        const endMonth = endDate.substring(5, 7);
-        const startYear = parseInt(startDate.substring(0, 4), 10);
-
-        // Actualizar los meses y años seleccionados
-        this.selectedYear = startYear;
-        this.selectedYearAbreviate = startYear.toString().slice(-2);
-        this.selectedStartMonth = this.months.find((month) => month.value === startMonth)!;
-        this.selectedEndMonth = this.months.find((month) => month.value === endMonth);
-      }
-      // Actualizar los filtros
-      this.updateSelectedMonths();
-    });
+  /**
+ *  La función busca filtros almacenados en el localStorage. 
+ *  Si los encuentra, los utiliza para actualizar los meses y el año seleccionados. 
+ *  Si no los encuentra, establece valores predeterminados y los guarda en el localStorage. 
+ *  Esto asegura que siempre haya filtros disponibles (ya sea cargados o predeterminados).
+ */
+  getFiltersLocalStorage() {
+    const lastUrlParams = JSON.parse(localStorage.getItem('lastUrlParams') || '{}');
+    if (lastUrlParams.startday && lastUrlParams.endday) {
+      const startMonth = lastUrlParams.startday.substring(5, 7);
+      const endMonth = lastUrlParams.endday.substring(5, 7);
+      const startYear = parseInt(lastUrlParams.startday.substring(0, 4), 10);
+  
+      this.selectedYear = startYear;
+      this.selectedYearAbreviate = startYear.toString().slice(-2);
+      this.selectedStartMonth = this.months.find((month) => month.value === startMonth)!;
+      this.selectedEndMonth = this.months.find((month) => month.value === endMonth)!;
+    } else {
+      this.setDefaultMonths();
+  
+      const defaultParams = {
+        startday: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
+        endday: `${this.selectedYear}-${this.selectedEndMonth.value}-01`
+      };
+      localStorage.setItem('lastUrlParams', JSON.stringify(defaultParams));
+    }
+    this.searchWithFilters();
   }
 
   loadUserInfo() {
@@ -148,10 +152,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // Filtros predeterminados 
   setDefaultMonths() {
+    this.selectedYear = new Date().getFullYear();
+    this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
+  
     this.selectedStartMonth = this.months[0];
     this.selectedEndMonth = this.months[6];
+  
     this.updateSelectedMonths();
   }
 
@@ -233,11 +240,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         queryParamsHandling: 'merge' // Asegura que otros parámetros de la URL se mantengan
       });
     }
-  }
-
-  signOut() {
-    localStorage.removeItem('userEnergiaReal');
-    this.router.navigate(['']);
   }
 
   updateLocalNotifications() {
