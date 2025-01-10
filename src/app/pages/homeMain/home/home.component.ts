@@ -237,7 +237,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private encryptionService: EncryptionService,
     private store: Store<{ filters: FilterState }>
   ) {
-    this.filters$ = this.store.select(state => state.filters.filters);
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
   }
 

@@ -1,16 +1,16 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
-import { distinctUntilChanged, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
+import { setGeneralFilters, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { EditNotificationStatus, FilterState, UserInfo } from '@app/shared/models/general-models';
+import { EditNotificationStatus, FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { selectFilters, selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
 import { NotificationService } from '@app/shared/services/notification.service';
-import{Notification}from '@app/shared/models/general-models';
+import { Notification } from '@app/shared/models/general-models';
 import { NotificationsState } from '@app/core/store/reducers/notifications.reducer';
 import { updateNotifications } from '@app/core/store/actions/notifications.actions';
 import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
@@ -39,13 +39,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     { name: 'Oct', value: '10' }, { name: 'Nov', value: '11' }, { name: 'Dec', value: '12' }
   ];
 
-  selectedStartMonth = this.months[5];
+  selectedStartMonth: any = this.months[5];
   selectedEndMonth: any = this.months[6];
+
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
   currentYear = new Date().getFullYear().toString().slice(-2);
   currentYearComplete = new Date().getFullYear();
   previousYearComplete = this.currentYearComplete - 1;
-  selectedYear= this.currentYearComplete;
+  selectedYear = this.currentYearComplete;
   selectedYearAbreviate = this.selectedYear.toString().slice(-2);
   selectedMonths: { name: string; value: string }[] = [];
 
@@ -54,23 +56,46 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedStates: string[] = [];
   notifications: Notification[] = [];
 
-   notificationSubscription!: Subscription  ;
-   hasNotifications = false;
+  notificationSubscription!: Subscription;
+  hasNotifications = false;
 
-   menuOpen = false;
+  menuOpen = false;
 
   constructor(
     private router: Router,
-    private store: Store<{ filters: FilterState,notifications: NotificationsState }>,
-    private  notificationService: NotificationService,
+    private store: Store<{ filters: FilterState, 
+    notifications: NotificationsState }>,
+    private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
     private encryptionService: EncryptionService
-  ) {}
+  ) {
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+  }
 
   ngOnInit(): void {
     this.loadUserInfo();
-    this.subscribeToFilters();
+    this.getFilters();
     this.updateLocalNotifications();
+  }
+
+  getFilters() {
+    this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+      console.log(generalFilters);
+
+      if (generalFilters.startDate && generalFilters.endDate) {
+        console.log('si hay filtros');
+        // Convertir las fechas en los objetos { name, value }
+        const startMonthValue = generalFilters.startDate.split('-')[1];
+        const endMonthValue = generalFilters.endDate.split('-')[1];
+
+        this.selectedStartMonth = this.months.find(month => month.value === startMonthValue);
+        this.selectedEndMonth = this.months.find(month => month.value === endMonthValue);
+
+        // this.searchWithFilters()
+      } else {
+        this.setDefaultMonths()
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -91,115 +116,59 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  updateNotificationCenter(){
-    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(resp=>{
-      this.store.dispatch(updateNotifications({ notifications:this.notificationService.getNotifications()}))
+  updateNotificationCenter() {
+    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(resp => {
+      this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }))
     });
   }
 
-  subscribeToFilters() {
-    this.store.select(selectFilters).pipe(
-        distinctUntilChanged((prev, curr) => JSON.stringify(prev?.months) == JSON.stringify(curr?.months)),
-        takeUntil(this.onDestroy$)
-      ).subscribe((filtersState) => {
-        if (filtersState && filtersState?.months?.length) {
-          const formattedMonths = this.formatSelectedMonths();
-          
-          if (JSON.stringify(filtersState.months) !== JSON.stringify(formattedMonths)) {
-            this.selectedMonths = this.months.filter(month => filtersState?.months.includes(`${this.selectedYear}-${month.value}-01`));
-            this.updateStartAndEndMonth();
-          }
-        } else this.setDefaultMonths();
-      });
-  }
-  
   setDefaultMonths() {
     this.selectedStartMonth = this.months[5];
     this.selectedEndMonth = this.months[6];
-    this.updateSelectedMonths();
+    this.searchWithFilters();
   }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
-    this.updateSelectedMonths();
+    this.searchWithFilters();
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     if (!this.singleMonth.value) {
       this.selectedEndMonth = month;
-      this.updateSelectedMonths();
+      this.searchWithFilters();
       menuTrigger.closeMenu();
     }
   }
 
-  updateStartAndEndMonth() {
-    if (this.selectedMonths.length) {
-      this.selectedStartMonth = this.selectedMonths[0];
-      this.selectedEndMonth = this.selectedMonths[this.selectedMonths.length - 1];
-    }
-  }
-
-  updateYearSelected(year: number){
-    this.selectedYear=year;
+  updateYearSelected(year: number) {
+    this.selectedYear = year;
     this.searchWithFilters();
     this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
-
-  }
-
-  updateSelectedMonths() {
-    if (this.selectedStartMonth && this.selectedEndMonth) {
-      const startIndex = this.months.findIndex(m => m.value === this.selectedStartMonth.value);
-      const endIndex = this.months.findIndex(m => m.value === this.selectedEndMonth.value);
-      this.selectedMonths = this.months.slice(
-        Math.min(startIndex, endIndex),
-        Math.max(startIndex, endIndex) + 1
-      );
-    }
-    this.searchWithFilters();
-  }
-
-  formatSelectedMonths(): string[] {
-    return this.selectedMonths.map(month => `${this.selectedYear}-${month.value}-01`);
   }
 
   searchWithFilters() {
-    if (this.selectedMonths.length > 0) {
-      const formattedMonths = this.formatSelectedMonths();
-      const generalFilters = {
-        startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
-        endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
-      };
-  
-      const filters = { requestType: 'Month', months: formattedMonths };
-      const filtersBatu = { months: this.selectedMonths.map(month => `${this.selectedYear}-${month.value}`) };
-      const filtersSolarCoverage = {
-        brand: "huawei",
-        clientName: "Merco",
-        requestType: 2,
-        months: formattedMonths
-      };
-  
-      this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState:any) => {        
-        if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) this.store.dispatch(setGeneralFilters({ generalFilters }));
-        if (JSON.stringify(currentFiltersState.filters) != JSON.stringify(filters)) this.store.dispatch(setFilters({ filters }));  
-        if (JSON.stringify(currentFiltersState.filtersBatu) != JSON.stringify(filtersBatu)) this.store.dispatch(setFiltersBatu({ filtersBatu }));
-        if (JSON.stringify(currentFiltersState.filtersSolarCoverage) != JSON.stringify(filtersSolarCoverage)) this.store.dispatch(setFiltersSolarCoverage({ filtersSolarCoverage }));
-      });
-    }
-  }
-  
-  signOut() {
-    localStorage.removeItem('userEnergiaReal');
-    this.router.navigate(['']);
+    console.log('this.selectedStartMonth.value', this.selectedStartMonth.value);
+    console.log('this.selectedEndMonth.value', this.selectedEndMonth.value);
+
+    const generalFilters = {
+      startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
+      endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
+    };
+
+    this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
+      if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
+        this.store.dispatch(setGeneralFilters({ generalFilters }));
+      }
+    });
   }
 
-  updateLocalNotifications(){
+  updateLocalNotifications() {
     this.notificationSubscription = this.store.select(selectTopUnreadNotifications).subscribe((notifications) => {
       this.notifications = notifications;
       this.hasNotifications = notifications.length > 0;
       this.cdr.detectChanges();
-
     });
   }
 
@@ -207,25 +176,31 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     return notification.externalId;
   }
 
-  removeNotification(notificationToRemove: Notification): void {  
+  removeNotification(notificationToRemove: Notification): void {
     const readedNotification: EditNotificationStatus = {
       externalId: notificationToRemove.externalId,
       readed: true
     };
-  
+
     this.notifications = this.notifications.filter(notification => notification !== notificationToRemove);
 
     this.notificationService.updateNotification(readedNotification).pipe(
-      switchMap(() => this.notificationService.updateNotificationsCenter(this.userInfo.id)) 
+      switchMap(() => this.notificationService.updateNotificationsCenter(this.userInfo.id))
     ).subscribe({
       next: resp => {
         this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }));
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       },
       error: err => {
         console.error('Error actualizando las notificaciones:', err);
       }
     });
+  }
+
+  signOut() {
+    localStorage.removeItem('userEnergiaReal');
+    localStorage.removeItem('generalFilters');
+    this.router.navigate(['']);
   }
 
   ngOnDestroy(): void {
