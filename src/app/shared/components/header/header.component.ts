@@ -82,19 +82,18 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
       console.log(generalFilters);
 
-      if (generalFilters.startDate && generalFilters.endDate) {
+      // if (generalFilters.startDate && generalFilters.endDate) {
         console.log('si hay filtros');
-        // Convertir las fechas en los objetos { name, value }
         const startMonthValue = generalFilters.startDate.split('-')[1];
-        const endMonthValue = generalFilters.endDate.split('-')[1];
+        const endMonthValue = generalFilters.endDate!.split('-')[1];
 
         this.selectedStartMonth = this.months.find(month => month.value === startMonthValue);
         this.selectedEndMonth = this.months.find(month => month.value === endMonthValue);
 
         // this.searchWithFilters()
-      } else {
-        this.setDefaultMonths()
-      }
+      // } else {
+      //   this.setDefaultMonths()
+      // }
     });
   }
 
@@ -122,11 +121,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  setDefaultMonths() {
-    this.selectedStartMonth = this.months[5];
-    this.selectedEndMonth = this.months[6];
-    this.searchWithFilters();
-  }
+  // setDefaultMonths() {
+  //   this.selectedStartMonth = this.months[5];
+  //   this.selectedEndMonth = this.months[6];
+  //   this.searchWithFilters();
+  // }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
@@ -149,9 +148,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchWithFilters() {
-    console.log('this.selectedStartMonth.value', this.selectedStartMonth.value);
-    console.log('this.selectedEndMonth.value', this.selectedEndMonth.value);
-
     const generalFilters = {
       startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
       endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`

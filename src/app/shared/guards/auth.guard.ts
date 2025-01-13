@@ -12,31 +12,28 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const user = authService.userValue;
   let generalFilters$!: Observable<FilterState['generalFilters']>;
-
-
   generalFilters$ = store.select(state => state.filters.generalFilters);
+
+
   generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-    console.log(generalFilters);
-    
-
     if (!generalFilters.startDate && !generalFilters.endDate) {
-      // Parseamos los parámetros de la URL desde state.url
-
       const url = new URL(window.location.origin + state.url);
       const startday = url.searchParams.get('startday');
       const endday = url.searchParams.get('endday');
 
       if (startday && endday) {
-        const generalFilters: GeneralFilters = {
+        generalFilters = {
           startDate: startday,
           endDate: endday
         };
 
-        // Actualizar los filtros en el estado(NgRx)
-        store.dispatch(setGeneralFilters({ generalFilters }));
+      } else {
+        generalFilters = {
+          startDate: '2025-01-01',
+          endDate: '2025-05-01'
+        };
       }
-    } else {
-      console.log('YA SE AN GUARDADO LOS');
+      store.dispatch(setGeneralFilters({ generalFilters }));
     }
   });
 

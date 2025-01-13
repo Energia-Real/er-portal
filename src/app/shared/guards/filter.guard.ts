@@ -23,27 +23,65 @@ export class FilterGuard implements CanActivate {
     return this.store.select(selectFilterState).pipe(
       map((generalFilters: any) => {
         console.log('generalFilters', generalFilters.generalFilters);
+        let currentParams:any
+        const currentUrl = state.url.split('?')[0];
+        currentParams = new URLSearchParams(window.location.search); 
+        console.log(currentParams);
+        
+        if (!currentParams) {
+          currentParams = new URLSearchParams(generalFilters.generalFilters); 
 
-        const currentUrl = state.url;
-        const currentParams = new URLSearchParams(window.location.search); 
-
-        const startday = generalFilters.generalFilters.startDate;
-        const endday = generalFilters.generalFilters.endDate;
-
-        if (startday && endday && (!currentParams.has('startday') || !currentParams.has('endday'))) {
-          currentParams.set('startday', startday);
-          currentParams.set('endday', endday);
-
-          const newUrl = `${currentUrl.split('?')[0]}?${currentParams.toString()}`; 
-
-          if (state.url !== newUrl) {
-            this.router.navigateByUrl(newUrl);
-            return false; 
-          }
         }
 
+        console.log(currentParams);
+        
+  
+        const startday = generalFilters.generalFilters.startDate;
+        const endday = generalFilters.generalFilters.endDate;
+  
+          const newParams = new URLSearchParams(currentParams);
+  
+  
+          // Si startday ha cambiado o no está en la URL, lo actualizamos
+          if (startday !== currentParams.get('startday')) {
+            newParams.set('startday', startday);
+          }
+  
+          // Si endday ha cambiado o no está en la URL, lo actualizamos
+          if (endday !== currentParams.get('endday')) {
+            newParams.set('endday', endday);
+          }
+  
+          // Si la URL fue modificada, la actualizamos
+          // if (updated) {
+            const newUrl = `${currentUrl}?${newParams.toString()}`;
+  
+            // Redirigimos solo si la URL ha cambiado
+            if (state.url !== newUrl) {
+              console.log('Redirigiendo a nueva URL:', newUrl);
+  
+              // Usamos setTimeout para asegurar que la navegación de Angular se complete
+              // setTimeout(() => {
+                this.router.navigateByUrl(newUrl); // Realizamos la navegación
+              // }, 500);
+  
+              return false; 
+            }
+
+  
+        // Si no hubo cambios, permitimos la navegación
         return true;
       })
     );
   }
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
 }

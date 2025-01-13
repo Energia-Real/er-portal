@@ -25,95 +25,63 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private notificationService: NotificationService
   ) {
-    // this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-    //   .subscribe(() => this.routeActive = this.router.url);
-    this.route.queryParams.subscribe(queryParams => this.routeActive = this.router.url);
-
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
   }
 
-  // ngOnInit(): void {
-  //   this.notificationService.loadNotificationStatuses().subscribe();
-  //   this.notificationService.loadNotificationTypes().subscribe();
-  //   this.notificationService.loadNotificationCenterMessages().subscribe(resp => {
-  //   });
-  //   this.authService.getInfoUser().subscribe(data => {
-  //     this.userInfo = data;
-  //     const encryptedData = this.encryptionService.encryptData(data);
-  //     localStorage.setItem('userInfo', encryptedData);
-
-  //     if (this.router.url === '/er') {
-  //       switch (data.accessTo) {
-  //         case 'BackOffice':
-  //           this.router.navigate(['backoffice-home'], { relativeTo: this.route });
-  //           break;
-  //         case 'Admin':
-  //           this.router.navigate(['admin-home'], { relativeTo: this.route });
-  //           break;
-  //         case 'Clients':
-  //           this.router.navigate(['client-home'], { relativeTo: this.route });
-  //           break;
-  //         case 'Billing':
-  //           this.router.navigate(['rates'], { relativeTo: this.route });
-  //           break;
-  //         default:
-  //           this.router.navigate(['/login']);
-  //           break;
-  //       }
-  //     }
-  //   });
-  // }
-
-
-ngOnInit(): void {
-  this.notificationService.loadNotificationStatuses().subscribe();
-  this.notificationService.loadNotificationTypes().subscribe();
-  this.notificationService.loadNotificationCenterMessages().subscribe();
-
-  this.authService.getInfoUser().subscribe(data => {
-    this.userInfo = data;
-    const encryptedData = this.encryptionService.encryptData(data);
-    localStorage.setItem('userInfo', encryptedData);
-
-    // Si la URL es '/er', redirigir dependiendo del acceso
-    if (this.router.url === '/er') {
-      switch (data.accessTo) {
-        case 'BackOffice':
-          this.router.navigate(['backoffice-home'], { relativeTo: this.route });
-          break;
-        case 'Admin':
-          this.router.navigate(['admin-home'], { relativeTo: this.route });
-          break;
-        case 'Clients':
-          this.router.navigate(['client-home'], { relativeTo: this.route });
-          break;
-        case 'Billing':
-          this.router.navigate(['rates'], { relativeTo: this.route });
-          break;
-        default:
-          this.router.navigate(['/login']);
-          break;
-      }
+  ngOnInit(): void {
+    if (this.routeActive.includes('admin-home')) {
+      console.log('es home no habilitar click');
     }
 
-    // Suscribirse a los parámetros de consulta para añadir filtros a la URL
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      const queryParams = this.route.snapshot.queryParams;
-      const startday = queryParams['startday'];
-      const endday = queryParams['endday'];
+    this.notificationService.loadNotificationStatuses().subscribe();
+    this.notificationService.loadNotificationTypes().subscribe();
+    this.notificationService.loadNotificationCenterMessages().subscribe();
 
-      if (startday && endday) {
-        // Actualizar la URL con los filtros
-        this.router.navigate([], {
-          queryParams: { startday, endday },
-          queryParamsHandling: 'merge', // Mantener los demás parámetros
-        });
+    this.authService.getInfoUser().subscribe(data => {
+      this.userInfo = data;
+      const encryptedData = this.encryptionService.encryptData(data);
+      localStorage.setItem('userInfo', encryptedData);
+
+      // Si la URL es '/er', redirigir dependiendo del acceso
+      if (this.router.url === '/er') {
+        switch (data.accessTo) {
+          case 'BackOffice':
+            this.router.navigate(['backoffice-home'], { relativeTo: this.route });
+            break;
+          case 'Admin':
+            this.router.navigate(['admin-home'], { relativeTo: this.route });
+            break;
+          case 'Clients':
+            this.router.navigate(['client-home'], { relativeTo: this.route });
+            break;
+          case 'Billing':
+            this.router.navigate(['rates'], { relativeTo: this.route });
+            break;
+          default:
+            this.router.navigate(['/login']);
+            break;
+        }
       }
-    });
-  });
-}
 
+      // Suscribirse a los parámetros de consulta para añadir filtros a la URL
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        const queryParams = this.route.snapshot.queryParams;
+        const startday = queryParams['startday'];
+        const endday = queryParams['endday'];
+
+        if (startday && endday) {
+          // Actualizar la URL con los filtros
+          this.router.navigate([], {
+            queryParams: { startday, endday },
+            queryParamsHandling: 'merge', // Mantener los demás parámetros
+          });
+        }
+      });
+    });
+  }
 
   onMouseEnter() {
     this.isSidebarHovered = true;
