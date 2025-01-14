@@ -67,8 +67,8 @@
       </div> -->
 
         <div class="c-input mb-0">
-          <mat-form-field class="select-mount" appearance="outline">
-            <mat-select placeholder="Start date - End date" [(value)]="selectedYearSelect" multiple
+          <mat-form-field class="select-year" appearance="outline">
+            <mat-select placeholder="Year" [(value)]="selectedYearSelect"
               (valueChange)="yearSelected()">
               <mat-option *ngFor="let year of years; let i = index" [value]="year">
                 {{ year.value }}
@@ -79,7 +79,7 @@
 
 
 
-      <button 
+      <button style="padding-top: 0;"
         [matMenuTriggerFor]="notificationsMenu" 
         mat-icon-button 
         [disabled]="!notifications || notifications.length === 0"

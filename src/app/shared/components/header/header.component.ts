@@ -1,12 +1,11 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '@app/auth/auth.service';
-import { distinctUntilChanged, Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { setGeneralFilters, setFilters } from '@app/core/store/actions/filters.actions';
+import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { EditNotificationStatus, FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
-import { selectFilters, selectFilterState } from '@app/core/store/selectors/filters.selector';
+import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
 import { NotificationService } from '@app/shared/services/notification.service';
@@ -39,8 +38,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedYearSelect: any
 
-
-
   months = [
     { name: 'Jan', value: '01' }, { name: 'Feb', value: '02' }, { name: 'Mar', value: '03' },
     { name: 'Apr', value: '04' }, { name: 'May', value: '05' }, { name: 'Jun', value: '06' },
@@ -72,8 +69,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private store: Store<{ filters: FilterState, 
-    notifications: NotificationsState }>,
+    private store: Store<{ filters: FilterState, notifications: NotificationsState }>,
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
     private encryptionService: EncryptionService
@@ -160,8 +156,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.selectedYearSelect);
     
   }
-
-
 
   searchWithFilters() {
     const generalFilters = {
