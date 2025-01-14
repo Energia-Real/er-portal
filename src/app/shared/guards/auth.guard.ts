@@ -23,11 +23,13 @@ export const authGuard: CanActivateFn = (route, state) => {
         const url = new URL(window.location.origin + state.url);
         const startday = url.searchParams.get('startday');
         const endday = url.searchParams.get('endday');
+        const year = url.searchParams.get('year');
 
         // Configurar los filtros si están en la URL o usar valores predeterminados
         const newFilters: GeneralFilters = {
           startDate: startday ?? '2025-01-01',
-          endDate: endday ?? '2025-05-01'
+          endDate: endday ?? '2025-05-01',
+          year: year ?? '2024',
         };
 
         // Despachar los nuevos filtros al store

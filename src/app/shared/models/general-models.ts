@@ -35,6 +35,7 @@ export interface GeneralFilters {
   clientId?:number | string
   startDate: string;
   endDate: string | null;
+  year?: string | null;
 }
 
 export interface DataResponseArraysMapper {

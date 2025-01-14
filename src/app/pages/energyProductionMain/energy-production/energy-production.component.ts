@@ -8,10 +8,10 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { DrawerGeneral, notificationData } from '@app/shared/models/general-models';
+import { DrawerGeneral, FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
-import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { EnergyProductionService } from '../energy-production.service';
 import * as entity from '../energy-production-model';
 import { MatPaginatorIntl } from '@angular/material/paginator';
@@ -31,6 +31,8 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 })
 export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -91,12 +93,15 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
 
   constructor(
-    private store: Store,
+    private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
     public dialog: MatDialog,
-    private notificationDataService: NotificationDataService, 
+    private notificationDataService: NotificationDataService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
+
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
       if (this.paginator) this.paginator.pageSize = size;
@@ -133,7 +138,10 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   }
 
   setYear() {
-    this.selectedYear = this.years[0].value;
+    this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+      this.selectedYear = generalFilters.year
+      this.getData(1, this.searchValue);
+    });
   }
 
   getDataResponse(page: number, name: string) {

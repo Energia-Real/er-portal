@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
@@ -14,7 +14,6 @@ import { NotificationsState } from '@app/core/store/reducers/notifications.reduc
 import { updateNotifications } from '@app/core/store/actions/notifications.actions';
 import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
 import { EncryptionService } from '@app/shared/services/encryption.service';
-
 
 @Component({
   selector: 'app-header',
@@ -75,30 +74,25 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private encryptionService: EncryptionService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
   }
 
   ngOnInit(): void {
     this.loadUserInfo();
     this.getFilters();
     this.updateLocalNotifications();
+    console.log('routeActive', this.routeActive);
   }
 
   getFilters() {
     this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-      console.log(generalFilters);
+      const startMonthValue = generalFilters.startDate.split('-')[1];
+      const endMonthValue = generalFilters.endDate!.split('-')[1];
 
-      // if (generalFilters.startDate && generalFilters.endDate) {
-        console.log('si hay filtros');
-        const startMonthValue = generalFilters.startDate.split('-')[1];
-        const endMonthValue = generalFilters.endDate!.split('-')[1];
-
-        this.selectedStartMonth = this.months.find(month => month.value === startMonthValue);
-        this.selectedEndMonth = this.months.find(month => month.value === endMonthValue);
-
-        // this.searchWithFilters()
-      // } else {
-      //   this.setDefaultMonths()
-      // }
+      this.selectedStartMonth = this.months.find(month => month.value === startMonthValue);
+      this.selectedEndMonth = this.months.find(month => month.value === endMonthValue);
+      this.selectedYearSelect = this.years.find(year => year.value === generalFilters.year);
     });
   }
 
@@ -126,12 +120,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // setDefaultMonths() {
-  //   this.selectedStartMonth = this.months[5];
-  //   this.selectedEndMonth = this.months[6];
-  //   this.searchWithFilters();
-  // }
-
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
     this.searchWithFilters();
@@ -152,15 +140,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
   }
 
-  yearSelected() {
-    console.log(this.selectedYearSelect);
-    
-  }
-
   searchWithFilters() {
     const generalFilters = {
       startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
-      endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
+      endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`,
+      year: this.selectedYearSelect.value
     };
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
