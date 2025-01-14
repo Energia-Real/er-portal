@@ -32,6 +32,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   version = packageJson.version;
 
+  years: { value: string }[] = [
+    { value: '2024' },
+    { value: '2025' },
+  ];
+
+  selectedYearSelect: any
+
+
+
   months = [
     { name: 'Jan', value: '01' }, { name: 'Feb', value: '02' }, { name: 'Mar', value: '03' },
     { name: 'Apr', value: '04' }, { name: 'May', value: '05' }, { name: 'Jun', value: '06' },
@@ -146,6 +155,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.searchWithFilters();
     this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
   }
+
+  yearSelected() {
+    console.log(this.selectedYearSelect);
+    
+  }
+
+
 
   searchWithFilters() {
     const generalFilters = {

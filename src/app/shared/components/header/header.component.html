@@ -1,7 +1,7 @@
 <nav class="c-header z-10">
   <div class="mx-10 flex justify-end items-center">
     <div class="flex align-items-center">
-      <div class="c-month-button">
+      <!-- <div class="c-month-button">
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
           <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + selectedYearAbreviate : 'Start' }}</h1>
@@ -64,7 +64,21 @@
             <p>Consider a single month only</p>
           </div>
         </mat-menu>
-      </div>
+      </div> -->
+
+        <div class="c-input mb-0">
+          <mat-form-field class="select-mount" appearance="outline">
+            <mat-select placeholder="Start date - End date" [(value)]="selectedYearSelect" multiple
+              (valueChange)="yearSelected()">
+              <mat-option *ngFor="let year of years; let i = index" [value]="year">
+                {{ year.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+
+
       <button 
         [matMenuTriggerFor]="notificationsMenu" 
         mat-icon-button 
