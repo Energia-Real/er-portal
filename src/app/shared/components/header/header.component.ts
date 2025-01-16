@@ -82,7 +82,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadUserInfo();
     this.getFilters();
     this.updateLocalNotifications();
-    console.log('routeActive', this.routeActive);
   }
 
   getFilters() {
@@ -121,13 +120,19 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
+   
+    if (month.value == '12') {
+      this.selectedEndMonth = null;
+      this.singleMonth.setValue(true);
+    } else this.singleMonth.setValue(false);
+ 
     this.selectedStartMonth = month;
     this.searchWithFilters();
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
-    if (!this.singleMonth.value) {
+    if (month.value > this.selectedStartMonth.value && !this.singleMonth.value) {
       this.selectedEndMonth = month;
       this.searchWithFilters();
       menuTrigger.closeMenu();
