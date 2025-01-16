@@ -8,12 +8,11 @@ export const NOTIFICATION_CONSTANTS = {
   EDIT_CONFIRM_TYPE: 'Edit_Confirm',
   ADD_CONFIRM_TYPE: 'Add_Confirm',
   DELETE_CONFIRM_TYPE: 'Delete_Confirm',
-  ERROR_NOTIFICATION_TYPE: 'Error Notification',
   REMINDER_TYPE: 'Reminder',
   WARNING_TYPE: 'Warning',
   INFORMATION_TYPE: 'Information',
   CANCEL_TYPE: 'Cancel',
-  ERROR_TYPE: 'Error',
+  ERROR_TYPE: 'Error_Notification',
 
 
   //Data for notification statuses

@@ -6,10 +6,14 @@
             'add-circle': data.type === ADD,
             'cancel-circle': data.type === CANCEL,
             'edit-circle': data.type === EDIT,
-            'delete-circle': data.type === DELETE
+            'delete-circle': data.type === DELETE,
+            'error-circle': data.type === ERROR
           }">
         <ng-container class="add-circle" *ngIf="data.type === ADD">
           <mat-icon>add_circle_outlined</mat-icon>
+        </ng-container>
+        <ng-container class="error-circle" *ngIf="data.type === ERROR">
+          <img src="../../../../assets/icons/errors.svg" alt="Logo">
         </ng-container>
         <ng-container class="cancel-circle" *ngIf="data.type === CANCEL">
           <mat-icon>cancel_outlined</mat-icon>
@@ -42,7 +46,7 @@
   <mat-divider></mat-divider>
   <div class="flex justify-around">
     <button class="btn-action-back" (click)="sendEventToParent(data.type,false)">Back</button>
-    <button *ngIf="data.type != ERRORS" class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
+    <button *ngIf="data.type != ERRORS && data.type != ERROR" class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
   </div>
 
 </div> 

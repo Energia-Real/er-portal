@@ -1,21 +1,23 @@
 <main class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5 c-home c-main">
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section c-saving-details">
-            <h2 class="text-er-orange text-base font-normal">Savings Details</h2>
+            <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSDWidget">Savings Details</h2>
+            <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSDWidget">Fetching client details...</h2>
+
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
-                <div>
+                <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
                         savingsDetails.totalEnergyConsumption }} <br> <span>kWh</span> </h2>
                     <p>Total Energy <br> Consumption</p>
                     <div class="linea"></div>
                 </div>
-                <div>
+                <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
                         savingsDetails.totalEnergyProduction }} <br> <span>kWh</span></h2>
                     <p>Total Energy <br> Production</p>
                     <div class="linea"></div>
                 </div>
-                <div>
+                <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <div>
                         <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithoutSolar else notDataTable">
                             ${{ savingsDetails.cfeCostWithoutSolar }} <br>
@@ -24,7 +26,7 @@
                         <div class="linea"></div>
                     </div>
                 </div>
-                <div class="total-saving">
+                <div class="total-saving" *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
                         ${{ savingsDetails.totalSavings }} <br>
                     </h2>
@@ -37,55 +39,65 @@
             <div class="c-card-section solar-coverage">
                 <div>
                     <img src="../../../../assets/icons/solar-coverage.png" alt="">
-                    <h2 class="text-er-orange text-base font-normal">Solar Coverage</h2>
-                    <p>{{ solarCoverage }}%</p>
+                    <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSCWidget">Solar Coverage</h2>
+                    <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSCWidget">Calculating solar coverage...</h2>
+                    <div *ngIf="!isLoadingSCWidget else loadingSkeleton" class="dataSC">
+                        <p *ngIf="solarCoverage else notDataTable" >                   
+                            {{ solarCoverage }}%</p>
+                    </div>
                 </div>
             </div>
 
             <div class="c-card-section co2">
                 <div>
                     <div class="title-left">
-                        <h1>CO2 Saving</h1>
-                        <div>
-                            <h2>{{co2Saving?.co2_saving_tCO2}}</h2>
-                            <h3> tCO2</h3>
+                        <h1 *ngIf="!isLoadingCO2Widget" >CO2 Saving</h1>
+                        <h1 *ngIf="isLoadingCO2Widget" >Calculating saved CO2 emissions...</h1>
+
+                        <div *ngIf="!isLoadingCO2Widget else loadingSkeleton">
+                            <h2 *ngIf="co2Saving else notDataTable">{{co2Saving?.co2_saving_tCO2}}</h2>
+                            <h3 *ngIf="co2Saving"> tCO2</h3>
                         </div>
                     </div>
 
-                    <div class="title-right">
-                        <div class="left">
+                    <div class="title-right" *ngIf="!isLoadingCO2Widget else loadingSkeleton" >
+                        <div class="left" *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
                             <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
                         </div>
 
-                        <div>
+                        <div *ngIf="co2Saving else notDataTable" >
                             <img src="../../../../assets/icons/eletric.svg" alt="">
                             <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br> electric car full charges.</h2>
                         </div>
                     </div>
                 </div>
-<!-- 
-                <div class="bar-progresss">
-                    <h1>kWh /m / anual</h1>
 
-                    <div class="w-full barr h-6 bg-gray-200 rounded-full dark:bg-gray-700">
-                        <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500" [ngStyle]="{ width: co2Progress }"></div>
-                    </div>
-
-                    <h2>Peers: 117 kWh /m</h2>
-                </div> -->
             </div>
         </div>
     </div>
 
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section economic-savings flex flex-col">
-            <h2 class="text-er-orange text-base font-normal h-10">Economic savings</h2>
+            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="isLoadingESWidget">Calculating economic savings...</h2>
+            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="!isLoadingESWidget">Economic savings</h2>
             <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
                 <div class="graphic-performance relative h-full w-full flex items-center">
                     <canvas id="economicSavingsChart" baseChart [type]="'bar'" [data]="lineChartDataES"
                         [options]="lineChartOptionsES">
                     </canvas>
+                     <!-- Spinner -->
+                    <div
+                        *ngIf="isLoadingESWidget"
+                        class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
+                        <mat-progress-spinner
+                        [color]="'primary'"
+                        [mode]="'indeterminate'"
+                        [diameter]="40"
+                        class="custom-spinner"
+                        >
+                        </mat-progress-spinner>
+                    </div>
                     <div class="absolute top-1/2 right-0 transform -translate-y-1/2 w-[200px] h-[200px] p-4">
                         <div *ngFor="let label of labels" class="flex items-center">
                             <span class="dot rounded-full " [ngStyle]="{ 'background-color': label.color }">
@@ -137,6 +149,8 @@
     <div class="col-span-2 md:col-span-1 pt-55">
         <div class="c-graph">
             <div class="graph">
+                <h2 class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">Getting energy consumption...</h2>
+
                 <canvas baseChart [type]="'bar'" [data]="lineChartData" height="195" [options]="lineChartOptions">
                 </canvas>
             </div>
@@ -266,5 +280,37 @@
 <app-footer></app-footer>
 
 <ng-template #notDataTable>
-    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+    <mat-icon color="warn">cancel_outlined</mat-icon>
 </ng-template>
+
+<ng-template #loadingSkeleton>
+    <div class="flex flex-col dataSC ">
+      
+      <ngx-skeleton-loader 
+        count="1" 
+        appearance="line" 
+        [theme]="{ 
+          'border-radius': '32.5px'
+        }"></ngx-skeleton-loader>
+        
+      <ngx-skeleton-loader 
+        count="1" 
+        appearance="line" 
+        [theme]="{ 
+          'border-radius': '32.5px',
+          'width': '70%'
+        }"></ngx-skeleton-loader>
+    </div>
+  </ng-template>
+
+  <ng-template #loadingSkeletonCircle>
+    <div class="flex flex-col dataSC ">
+        
+      <ngx-skeleton-loader 
+        count="1" 
+        appearance="circle" 
+        ></ngx-skeleton-loader>
+    </div>
+  </ng-template>
+  
+

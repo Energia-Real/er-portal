@@ -16,7 +16,7 @@ export class NotificationDataService {
   CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
   EDIT = NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
   DELETE = NOTIFICATION_CONSTANTS.DELETE;
-
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
   constructor(
     private notificationService: NotificationService,
     private formatsService: FormatsService
@@ -94,6 +94,15 @@ export class NotificationDataService {
       title: errors?.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_TITLE : NOTIFICATION_CONSTANTS.ERROR_INVOICE_TITLE,
       content: errors?.length > 1 ? NOTIFICATION_CONSTANTS.ERRORS_INVOICE_CONTENT : NOTIFICATION_CONSTANTS.ERROR_INVOICE_CONTENT,
       errors: errors,
+    }
+    return dataNotification;
+  }
+
+  uniqueError(): notificationData{// funcion que regresa paramertros(en este caso solo nos sirve el id) para crear una notificacion de error en sistema
+    const dataNotification = {
+      type: NOTIFICATION_CONSTANTS.ERROR_TYPE,
+      typeId: this.notificationService.getNotificationTypesByName(this.ERROR).id,  
+      //LOS DEMAS PARAMETROS COMO TITLE, DESCRIPTIOPN Y WARN NO SE DEFINEN AQUI YA QUE DEPENDE DE LA RESPUESTA DEL ENDPOINT(CADA ENDPOINT DA MENSAJES DIFERENTES DE ERROR)
     }
     return dataNotification;
   }
