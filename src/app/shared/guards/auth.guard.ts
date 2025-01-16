@@ -39,7 +39,8 @@ export const authGuard: CanActivateFn = (route, state) => {
       // Validar si el usuario está autenticado
       if (user) return true;
 
-      router.navigate([''], { queryParams: { returnUrl: state.url } });
+      router.navigate(['']);
+      
       return false;
     })
   );
