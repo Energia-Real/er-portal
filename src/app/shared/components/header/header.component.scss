@@ -113,7 +113,7 @@ button.mat-menu-item.selected {
 ::ng-deep .custom-menu {
   margin-top: 5px;
   box-shadow: none !important;
-  // border: 1px solid #9E9E9E;
+  overflow: hidden!important;
   border: 2px solid #E5E7EB;
 
   .years {
@@ -166,7 +166,7 @@ button.mat-menu-item.selected {
   align-items: center;
 
   p {
-    margin-bottom: 1px;
+    margin-bottom: 0px;
   }
 }
 

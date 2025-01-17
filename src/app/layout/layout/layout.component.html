@@ -2,11 +2,14 @@
   <div class="sidebar " [ngClass]="{'extended': keepOpen}" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <div class="sidebar-content">
       <div class="logo">
-        <div href="/home" class="text-white text-sm font-semibold c-version"
-          [ngClass]="{'justify-content-center': !isSidebarHovered && !keepOpen}">
+        <div href="/home" class="text-white text-sm font-semibold c-version" [ngClass]="{
+          'justify-center': !isSidebarHovered && !keepOpen,
+          'justify-between': isSidebarHovered && !keepOpen
+          }"
+          >
           <div class="logo-sidebar">
             <img class="animate-durations" class="logo-white" src="../../../../assets/icons/logo001.svg" alt="Logo">
-            <p class="ps-1 mb-0 animate-durations"
+            <p class="ps-1 animate-durations"
               [ngClass]="{'animate__animated animate__fadeIn': isSidebarHovered && !keepOpen}"
               *ngIf="isSidebarHovered || keepOpen">energía real</p>
           </div>

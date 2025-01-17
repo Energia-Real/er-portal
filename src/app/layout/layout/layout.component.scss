@@ -53,13 +53,11 @@
 
     }
   }
-
 }
 
 
 .c-version {
   display: flex;
-  justify-content: space-between;
   text-align: center;
   width: 100%;
 
@@ -100,6 +98,8 @@
     font-size: 12px !important;
     font-weight: 400 !important;
     color: #FFFFFF;
+    margin-left: 10px;
+    margin-bottom: 0;
   }
 }
 
