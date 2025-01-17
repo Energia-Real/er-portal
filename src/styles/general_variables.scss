@@ -609,11 +609,11 @@ select:focus {
         min-height: 80px;
     }
 
-    .card-container-50 {
+    .c-card-50 {
         flex: 1 1 48%;
     }
 
-    .card-container-33 {
+    .c-card-33 {
         flex: 1 1 30%;
     }
 
@@ -621,11 +621,11 @@ select:focus {
         min-height: 80px;
     }
 
-    .card-container-50 {
+    .c-card-50 {
         flex: 1 1 48%;
     }
 
-    .card-container-33 {
+    .c-card-33 {
         flex: 1 1 30%;
     }
 
@@ -692,19 +692,23 @@ select:focus {
             justify-content: space-between
         }
 
-        .card-container-50 {
+        .c-card-50 {
             flex: 1 1 48%;
         }
-    
-        .card-container-20 {
+
+        .c-card-20 {
             flex: 1 1 20%;
         }
     
-        .card-container-25 {
+        .c-card-20-porcentage {
+            width:23.5%;
+        }
+    
+        .c-card-25 {
             flex: 0 0 25%;
         }
         
-        .card-container-33 {
+        .c-card-33 {
             flex: 0 0 30%;
         }
     
