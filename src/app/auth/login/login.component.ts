@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit, OnDestroy {
           const queryParams = startday && endday ? { startday, endday } : null;
           this.router.navigate([returnUrl], { queryParams });
 
-          // this.router.navigateByUrl(returnUrl);
         },
         error: (err) => {
           this.loading = false;

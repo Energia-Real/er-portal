@@ -1,0 +1,18 @@
+<div class="content content-elements c-observed">
+    <div class="card-elements">
+        <div *ngFor="let data of dataDummy;" class="card-container-20">
+            <div class="card-info">
+                <img [src]="data.icon" alt="">
+                <div>
+                    <h1>{{ data.title }}</h1>
+                    <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #notDataTable>
+    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
