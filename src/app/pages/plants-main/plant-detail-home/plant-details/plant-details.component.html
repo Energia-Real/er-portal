@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+  <div *ngIf="userInfo.clientes.length" class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 position-relative">
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
         (selectedTabChange)="onTabChange($event)">
@@ -76,10 +76,11 @@
         </mat-tab>
 
         <mat-tab label="Site performance">
-          <app-site-performance *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-performance>
+          <app-site-performance *ngIf="plantData" [notData]="showNotdata"
+            [plantData]="plantData"></app-site-performance>
         </mat-tab>
-
-        <!-- <mat-tab label="Inverter details">
+        <!-- 
+        <mat-tab label="Inverter details">
           <app-inverter-detail *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData" (notifyParent)="systemStatus($event)"></app-inverter-detail>
         </mat-tab> -->
 
@@ -91,10 +92,106 @@
     </div>
   </div>
 
+  <div class="c-roc" *ngIf="!userInfo.clientes.length">
+    <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">Information</h1>
+        <button class="btn-action-add">
+          <span class="material-symbols-outlined">download</span>
+          Download Infomation
+        </button>
+      </div>
+
+      <div class="card-elements">
+        <div *ngFor="let data of data;" class="c-card-20">
+          <div class="card-info ">
+            <img [src]="data.icon" alt="">
+            <div>
+              <h1>{{ data.title }}</h1>
+              <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">Services providers</h1>
+      </div>
+
+      <div class="card-elements">
+        <div *ngFor="let data of dataTwo;" class="c-card-25">
+          <div class="card-info">
+            <img [src]="data.icon" alt="">
+            <div>
+              <h1>{{ data.title }}</h1>
+              <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">QEM Devices</h1>
+      </div>
+
+      <div class="card-elements">
+        <div *ngFor="let data of dataThree;" class="c-card-33">
+          <div class="card-info card-info-three">
+            <img [src]="data.icon" alt="">
+            <div class="card-info-two-row">
+              <div>
+                <h1>{{ data.title }}</h1>
+                <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+              </div>
+              <div *ngIf="data.titleTwo">
+                <h1>{{ data.titleTwo }}</h1>
+                <h2 *ngIf="data?.descriptionTwo else notDataTable">{{ data.descriptionTwo }}</h2>
+              </div>
+              <h1 *ngIf="data?.descriptionThree">{{ data.descriptionThree }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">Asset monitoring parameter</h1>
+      </div>
+
+      <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-1 position-relative">
+          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+
+            <mat-tab label="Observed Parameters">
+              <app-observed-parameters [notData]="true" [data]="[]"></app-observed-parameters>
+            </mat-tab>
+
+            <mat-tab label="Live KPI">
+              <app-live-kpi [notData]="true" [data]="[]"></app-live-kpi>
+
+            </mat-tab>
+
+            <mat-tab label="Cumulative KPI">
+              <app-comulative-kpi [notData]="true" [data]="[]"></app-comulative-kpi>
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
+<ng-template #notDataTable>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
 
 <ng-template #notData>
   <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>

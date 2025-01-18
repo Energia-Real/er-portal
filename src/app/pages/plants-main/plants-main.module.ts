@@ -22,6 +22,9 @@ import { PlantsComponent } from './plants/plants.component';
 import { NewEquipmentComponent } from './plant-detail-home/savings/components/new-equipment/new-equipment.component';
 import { NewPlantComponent } from './plants/new-plant/new-plant.component';
 import { InverterDetailComponent } from './plant-detail-home/inverter-detail/inverter-detail.component';
+import { ObservedParametersComponent } from './plant-detail-home/monitoring/observed-parameters/observed-parameters.component';
+import { LiveKpiComponent } from './plant-detail-home/monitoring/live-kpi/live-kpi.component';
+import { ComulativeKpiComponent } from './plant-detail-home/monitoring/comulative-kpi/comulative-kpi.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { InverterDetailComponent } from './plant-detail-home/inverter-detail/inv
     NewPlantComponent,
     NewEquipmentComponent,
     PlantsComponent,
-    InverterDetailComponent
+    InverterDetailComponent,
+    ObservedParametersComponent,
+    LiveKpiComponent,
+    ComulativeKpiComponent,
   ],
   imports: [
     CommonModule,
