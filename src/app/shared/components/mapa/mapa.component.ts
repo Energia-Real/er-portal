@@ -38,10 +38,6 @@ export class MapaComponent implements AfterViewInit {
     private encryptionService: EncryptionService,
 
   ) {
-    this.filters$ = this.store.select(state => state.filters.filters);
-    this.filters$.subscribe(filters => {
-      this.filters = filters;
-    });
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
     this.generalFilters$.subscribe(generalFilters=>{
       this.getTooltipInfo(generalFilters);
@@ -134,25 +130,7 @@ export class MapaComponent implements AfterViewInit {
   }
 
   onPolygonClick(stateId: string): void {
-   /*  const index = this.selectedStates.indexOf(stateId);
-    if (index === -1) {
-      this.selectedStates.push(stateId);
-      let filters = {
-        ...this.filters,
-        states: [...this.selectedStates]
-      };
-      console.log(filters);
-      this.store.dispatch(setFilters({ filters }));
-
-    } else {
-      this.selectedStates.splice(index, 1);
-      let filters = {
-        ...this.filters,
-        states: [...this.selectedStates]
-      };
-      console.log(filters);
-      this.store.dispatch(setFilters({ filters }));
-    } */
+ 
   }
 
   createComponent(component: any): ComponentRef<any> {

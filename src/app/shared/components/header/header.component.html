@@ -1,7 +1,13 @@
 <nav class="c-header z-10">
   <div class="mx-10 flex justify-end items-center">
     <div class="flex align-items-center">
-      <div class="c-month-button">
+    <div class="c-month-button" *ngIf="
+        routeActive.includes('backoffice-home')||
+        routeActive.includes('admin-home') ||
+        routeActive.includes('client-home') ||
+        routeActive.includes('plants') ||
+        routeActive.includes('billing') ||
+        routeActive.includes('rates')">
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
           <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + selectedYearAbreviate : 'Start' }}</h1>
@@ -21,7 +27,7 @@
               {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
-            <button mat-menu-item *ngFor="let month of months" [ngClass]="{
+            <button mat-menu-item *ngFor="let month of months" [disabled]="selectedEndMonth?.value <= month.value" [ngClass]="{
                 'selected-month': selectedStartMonth.value === month.value,
                 'unselected-month': selectedStartMonth.value !== month.value
               }" (click)="selectStartMonth(month, startMenuTrigger)">
@@ -51,9 +57,9 @@
             {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
-            <button mat-menu-item *ngFor="let month of months" [disabled]="singleMonth.value" [ngClass]="{
-                'selected-month': selectedEndMonth?.value === month.value,
-                'unselected-month': selectedEndMonth?.value !== month.value
+            <button mat-menu-item *ngFor="let month of months" [disabled]="singleMonth.value || selectedStartMonth.value >= month.value" [ngClass]="{
+                'selected-month': selectedEndMonth?.value === month?.value,
+                'unselected-month': selectedEndMonth?.value !== month?.value
               }" (click)="selectEndMonth(month, endMenuTrigger)">
               {{ month.name }}
             </button>
@@ -65,7 +71,19 @@
           </div>
         </mat-menu>
       </div>
-      <button 
+
+        <div class="c-input mb-0"  *ngIf="routeActive.includes('energy')">
+          <mat-form-field class="select-year" appearance="outline">
+            <mat-select placeholder="Year" [(value)]="selectedYearSelect"
+              (valueChange)="searchWithFilters()">
+              <mat-option *ngFor="let year of years; let i = index" [value]="year">
+                {{ year.value }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      <button [ngStyle]="{'padding-top': routeActive.includes('energy') ? '0' : ''}"
         [matMenuTriggerFor]="notificationsMenu" 
         mat-icon-button 
         [disabled]="!notifications || notifications.length === 0"
@@ -81,31 +99,18 @@
             alt="Icon notification"
             class="notification-icon"
             [ngClass]="{ 'disabled-icon': !notifications || notifications.length === 0 }"
-
             />
         </div>
       </button>
 
-      <!-- <button 
-      [matMenuTriggerFor]="menu" 
-      mat-icon-button
-      >
-        <mat-icon 
-        class="custom-icon-color"
-        >
-        
-        account_circle</mat-icon>
-      </button> -->
       <mat-menu 
-      #notificationsMenu="matMenu"  
-      xPosition="before" 
-      yPosition="below" 
-      class="notificationsMenu" 
-      [hidden]="!menuOpen"
-      (opened)="menuOpen = true; updateLocalNotifications()" 
-      (closed)="menuOpen = false"
-      
-      >
+        #notificationsMenu="matMenu"  
+        xPosition="before" 
+        yPosition="below" 
+        class="notificationsMenu" 
+        [hidden]="!menuOpen"
+        (opened)="menuOpen = true; updateLocalNotifications()" 
+        (closed)="menuOpen = false">
         <div *ngFor="let notification of notifications; trackBy: trackByNotificationId" >
           <app-notification-card-center
           [@fadeOut]

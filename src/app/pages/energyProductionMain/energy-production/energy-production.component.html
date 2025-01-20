@@ -11,16 +11,6 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-
-            <div class="c-input mb-0">
-                <mat-form-field class="select-years" appearance="outline">
-                    <mat-select [disabled]="false" placeholder="Select year" [(value)]="selectedYear">
-                        <mat-option *ngFor="let year of years" [value]="year.value">
-                            {{ year.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
         </div>
 
         <div class="col-span-2 md:col-span-1  sm:grid-cols-2 flex align-center justify-center gap-2">

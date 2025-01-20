@@ -25,7 +25,7 @@ export class EnergyProductionService implements OnDestroy {
       .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
-      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+      map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
@@ -37,7 +37,7 @@ export class EnergyProductionService implements OnDestroy {
       .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
-      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+      map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
@@ -49,7 +49,7 @@ export class EnergyProductionService implements OnDestroy {
       .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
-      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+      map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 

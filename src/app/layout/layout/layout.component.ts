@@ -26,19 +26,24 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService
   ) {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.routeActive = this.router.url);
+      .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
   }
 
   ngOnInit(): void {
+    if (this.routeActive.includes('admin-home')) {
+      console.log('es home no habilitar click');
+    }
+
     this.notificationService.loadNotificationStatuses().subscribe();
     this.notificationService.loadNotificationTypes().subscribe();
-    this.notificationService.loadNotificationCenterMessages().subscribe(resp => {
-    });
+    this.notificationService.loadNotificationCenterMessages().subscribe();
+
     this.authService.getInfoUser().subscribe(data => {
       this.userInfo = data;
       const encryptedData = this.encryptionService.encryptData(data);
       localStorage.setItem('userInfo', encryptedData);
 
+      // Si la URL es '/er', redirigir dependiendo del acceso
       if (this.router.url === '/er') {
         switch (data.accessTo) {
           case 'BackOffice':
@@ -58,6 +63,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
             break;
         }
       }
+
+      // Suscribirse a los parámetros de consulta para añadir filtros a la URL
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        const queryParams = this.route.snapshot.queryParams;
+        const startday = queryParams['startday'];
+        const endday = queryParams['endday'];
+
+        if (startday && endday) {
+          // Actualizar la URL con los filtros
+          this.router.navigate([], {
+            queryParams: { startday, endday },
+            queryParamsHandling: 'merge', // Mantener los demás parámetros
+          });
+        }
+      });
     });
   }
 
