@@ -3,16 +3,16 @@
     <div class="col-span-1 appreturn">
       <app-return-bar class="app-return"></app-return-bar>
 
-      <div class="c-address">
-        <h1 *ngIf="plantData?.siteName else notData">{{ plantData.siteName }}</h1>
-        <p>Approximate address: <span *ngIf="addressPlace else notData">{{addressPlace}}</span>
+      <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
+        <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>
+        <p>Approximate address: <span *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
       </div>
     </div>
 
     <div class="col-span-2">
       <div class="c-information">
-        <div>
-          <div class="content" *ngIf="weatherData else notData">
+        <div *ngIf="!isLoadingWD else loadingSkeletonTwo">
+          <div class="content" *ngIf="weatherData else notDataTable">
             <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
             <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
           </div>
@@ -20,43 +20,43 @@
         </div>
 
         <div>
-          <div class="content">
+          <div class="content" *ngIf="!isLoadingTZ else loadingSkeletonTwo">
             <p>Local time</p>
-            <span *ngIf="timeZonePlace else notData">{{ timeZonePlace }}</span>
+            <span *ngIf="timeZonePlace else notDataTable">{{ timeZonePlace }}</span>
           </div>
 
           <div class="linea"></div>
         </div>
 
         <div>
-          <div class="content">
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>System size</p>
-            <span *ngIf="plantData?.systemSize else notData">{{ plantData?.systemSize }} kW</span>
+            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData?.systemSize }} kW</span>
           </div>
           <div class="linea"></div>
         </div>
 
         <div>
-          <div class="content">
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>AC capacity</p>
-            <span>{{ plantData?.nominalPowerAC }} kW</span>
+            <span  *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData?.nominalPowerAC }} kW</span>
           </div>
           <div class="linea"></div>
         </div>
 
         <div>
-          <div class="content">
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>Status</p>
-            <mat-icon *ngIf="plantData?.assetStatusIcon else notData" [matTooltip]="plantData.descriptionStatus">{{
+            <mat-icon *ngIf="plantData?.assetStatusIcon else notDataTable" [matTooltip]="plantData.descriptionStatus">{{
               plantData?.assetStatusIcon }} </mat-icon>
           </div>
           <div class="linea"></div>
         </div>
 
         <div>
-          <div class="content">
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo" >
             <p>System</p>
-            <div *ngIf="dataRespoSystem else notData">
+            <div *ngIf="dataRespoSystem else notDataTable">
               <i class="check" *ngIf="inverterSystemStatus" class="fa-solid fa-check mb-2"></i>
               <i *ngIf="!inverterSystemStatus" class="fa-solid fa-xmark mb-2"></i>
             </div>
@@ -98,4 +98,49 @@
 
 <ng-template #notData>
   <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
+
+<ng-template #loadingSkeletonTwo>  <!-- Loader para 2 lineas -->
+  <div class="flex flex-col dataSC " >
+    
+    <ngx-skeleton-loader 
+      count="1" 
+      appearance="line" 
+      [theme]="{ 
+        'border-radius': '32.5px'
+      }"></ngx-skeleton-loader>
+      
+    <ngx-skeleton-loader 
+      count="1" 
+      appearance="line" 
+      [theme]="{ 
+        'border-radius': '32.5px',
+        'width': '70%'
+      }"></ngx-skeleton-loader>
+  </div>
+</ng-template>
+
+<ng-template #loadingSkeletonOne>  <!-- Loader para 1 linea -->
+    <div class="dataSC ">
+    <ngx-skeleton-loader 
+      count="1" 
+      appearance="line" 
+      [theme]="{ 
+        'border-radius': '32.5px'
+      }"></ngx-skeleton-loader>  
+  </div>
+</ng-template>
+
+<ng-template #loadingSkeletonCircle>
+  <div class="flex flex-col dataSC ">
+      
+    <ngx-skeleton-loader 
+      count="1" 
+      appearance="circle" 
+      ></ngx-skeleton-loader>
+  </div>
+</ng-template>
+
+<ng-template #notDataTable>
+  <mat-icon color="warn">cancel_outlined</mat-icon>
 </ng-template>

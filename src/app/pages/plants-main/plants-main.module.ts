@@ -22,6 +22,8 @@ import { PlantsComponent } from './plants/plants.component';
 import { NewEquipmentComponent } from './plant-detail-home/savings/components/new-equipment/new-equipment.component';
 import { NewPlantComponent } from './plants/new-plant/new-plant.component';
 import { InverterDetailComponent } from './plant-detail-home/inverter-detail/inverter-detail.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { InverterDetailComponent } from './plant-detail-home/inverter-detail/inv
     NgChartsModule,
     MessageNoDataComponent,
     PdfViewerModule,
-    NgxImageZoomModule
+    NgxImageZoomModule,
+    NgxSkeletonLoaderModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

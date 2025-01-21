@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/auth.service';
-import { distinctUntilChanged, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
+import { distinctUntilChanged, map, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters, setFiltersBatu, setFiltersSolarCoverage, setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
@@ -15,6 +15,7 @@ import { NotificationsState } from '@app/core/store/reducers/notifications.reduc
 import { updateNotifications } from '@app/core/store/actions/notifications.actions';
 import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 
 
 @Component({
@@ -59,12 +60,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
    menuOpen = false;
 
+   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+
+
   constructor(
     private router: Router,
     private store: Store<{ filters: FilterState,notifications: NotificationsState }>,
     private  notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
-    private encryptionService: EncryptionService
+    private encryptionService: EncryptionService,
+    private notificationsService: NotificationService,
+
   ) {}
 
   ngOnInit(): void {
@@ -195,11 +201,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateLocalNotifications(){
-    this.notificationSubscription = this.store.select(selectTopUnreadNotifications).subscribe((notifications) => {
-      this.notifications = notifications;
-      this.hasNotifications = notifications.length > 0;
+    this.notificationSubscription = this.store.select(selectTopUnreadNotifications).pipe(
+      map((notifications) =>
+        notifications.filter(
+          (notification) =>
+            this.notificationService.getNotificationTypesById(notification.notificationTypeId).nombreTipo != this.ERROR
+        )
+      )
+    ).subscribe((filteredNotifications) => {
+      this.notifications = filteredNotifications;
+      this.hasNotifications = filteredNotifications.length > 0;
       this.cdr.detectChanges();
-
     });
   }
 
