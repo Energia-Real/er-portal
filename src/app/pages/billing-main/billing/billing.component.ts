@@ -190,36 +190,42 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
       next: (_) => {
         this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
           .afterClosed()
-          .subscribe((_ => this.getBilling(this.searchBar?.value!)));
+          .subscribe((_ => {
+            this.getBilling(this.searchBar?.value!)
+            this.modifiedElements = []
+          }));
       },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
+      error: (error: HttpErrorResponse) => {
+        const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+        this.modalErrors(errorMessages);
       }
     });
   }
 
   updateModifiedElements(oneInvoice?: entity.DataBillingTable) {
     let invoices: entity.DataBillingTable | any[] = oneInvoice ? [oneInvoice] : this.modifiedElements
-    
-    invoices.forEach(data => {
-      delete data.formattedGeneratedEnergyKwh;
-      delete data.originalGeneratedEnergyKwh;
-      delete data.formattedAmount;
-      delete data.formattedAmountWithIva;
-      delete data.formattedRate;
-      delete data.formatterStatus;
-      delete data.amountWithIva;
-    });
 
-    this.moduleServices.saveBillingTableData(invoices).subscribe({
+    const filteredInvoices = invoices.map((data) => ({
+      generatedEnergyKwh: data.generatedEnergyKwh,
+      subtotal: data.subtotal,
+      iva: data.iva,
+      total: data.total,
+      status: data.status,
+      invoiceId: data.invoiceId,
+    }));
+
+    this.moduleServices.saveBillingTableData(filteredInvoices).subscribe({
       next: () => {
         this.notificationService.notificacion(`The changes have been successfully saved, and the presented data has been adjusted.`, 'save')
           .afterClosed()
-          .subscribe((_ => this.getBilling(this.searchBar?.value!)));
+          .subscribe((_ => {
+            this.getBilling(this.searchBar?.value!)
+            this.modifiedElements = []
+          }));
       },
-      error: error => {
-        console.log(error);
+      error: (error: HttpErrorResponse) => {
+        const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+        this.modalErrors(errorMessages);
       }
     });
   }
