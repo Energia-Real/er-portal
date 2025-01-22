@@ -8,12 +8,13 @@ import { SitePerformanceComponent } from '../site-performance/site-performance.c
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { notificationData, NotificationServiceData } from '@app/shared/models/general-models';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
-import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { MatDialog } from '@angular/material/dialog';
 
+import { EncryptionService } from '@app/shared/services/encryption.service';
+import { UserInfo } from '@app/shared/models/general-models';
 
 @Component({
   selector: 'app-plant-detail',
@@ -24,6 +25,9 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   @ViewChild(SitePerformanceComponent) sitePerformanceComponent!: SitePerformanceComponent;
+
+  userInfo!: UserInfo;
+  
 
   weatherData: any = null
 
@@ -145,6 +149,87 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  data:any = [
+    {
+      icon : '../../../../../assets/icons/plantType.svg',
+      title: 'Plant type',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/moutingTech.svg',
+      title: 'Mounting technology',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/noOfSite.svg',
+      title: 'No of sites',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/plantTimeZone.svg',
+      title: 'Plant time zone',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/currency.svg',
+      title: 'Currency',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/comssionDate.svg',
+      title: 'Commission date',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/tariff.svg',
+      title: 'Tariff',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/ficed.svg',
+      title: 'Ficed tilt anglee',
+      description: 'N/A',
+    },
+  ]
+  
+  dataTwo:any = [
+    {
+      icon : '../../../../../assets/icons/epc.svg',
+      title: 'EPC',
+      description: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/oym.svg',
+      title: 'O&M',
+      description: 'N/A',
+    },
+  ]
+  
+  dataThree:any = [
+    {
+      icon : '../../../../../assets/icons/transformer.svg',
+      title: 'Transformer',
+      description: 'N/A',
+      titleTwo: 'Generic',
+      descriptionTwo: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/inverter.svg',
+      title: 'Inverter',
+      description: 'N/A',
+      titleTwo: 'Solis Solis-60K-LV-5G',
+      descriptionTwo: 'N/A',
+    },
+    {
+      icon : '../../../../../assets/icons/pvmodule.svg',
+      title: 'PV Module',
+      description: 'N/A',
+      titleTwo: 'Trina Sola',
+      descriptionTwo: 'N/A',
+      descriptionThree: 'Mono Crystalline Silicon',
+    },
+  ]
+
   plantData!: entity.DataPlant;
   dataRespoSystem!: entity.DataResponseSystem;
 
@@ -182,6 +267,8 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.route.paramMap.subscribe(params => {
       params.get('id') && this.getPlantDetailsById(params.get('id')!);
     });
+
+    this.loadUserInfo()
   }
 
   ngAfterViewInit() {
@@ -241,7 +328,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getDataRespSystem(postData: entity.PostDataByPlant) {
     this.plantsService.getDataSystem(postData).subscribe({
-      next: (response: entity.ResponseSystem) => this.dataRespoSystem = response.data,
+      next: (response: entity.ResponseSystem) => this.dataRespoSystem = response?.data,
       error: (error) => {
         this.loadingSystem = false;
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
@@ -289,6 +376,11 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error(error)
       }
     })
+  }
+
+  loadUserInfo() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
   }
 
   systemStatus(status: boolean) {

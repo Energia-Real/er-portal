@@ -3,7 +3,7 @@
         <div class="col-span-2 md:col-span-1">
             <div class="c-card-info-savings" *ngIf="!showAlert else notData">
                 <div *ngFor="let data of savingDetails?.primaryElements; let idx = index"
-                    [ngClass]="{'card-container-50': idx < 2, 'card-container-33': idx >= 2}">
+                    [ngClass]="{'c-card-50': idx < 2, 'c-card-33': idx >= 2}">
 
                     <div class="card-info">
                         <img [src]="data.icon" alt="">
@@ -16,7 +16,7 @@
 
                 <div class="separator-cards"></div>
 
-                <div *ngFor="let data of savingDetails?.additionalItems;let isLast = last" class="card-container-33">
+                <div *ngFor="let data of savingDetails?.additionalItems;let isLast = last" class="c-card-33">
                     <div class="card-info">
                         <img [src]="data.icon" alt="">
                         <div>

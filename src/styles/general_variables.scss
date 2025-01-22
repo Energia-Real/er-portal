@@ -111,6 +111,13 @@
 }
 
 
+// labels
+ .label-700-24{
+    font-size: 24px!important;
+    font-weight: 700!important;
+    color: #EE5427!important;
+}
+
 .select-years {
     width: 95px;
     height: 35px !important;
@@ -146,7 +153,7 @@
     }
 }
 
-.select-mount {
+.select-year {
     width: 140px;
     height: 35px !important;
     border-color: none !important;
@@ -602,11 +609,11 @@ select:focus {
         min-height: 80px;
     }
 
-    .card-container-50 {
+    .c-card-50 {
         flex: 1 1 48%;
     }
 
-    .card-container-33 {
+    .c-card-33 {
         flex: 1 1 30%;
     }
 
@@ -614,11 +621,11 @@ select:focus {
         min-height: 80px;
     }
 
-    .card-container-50 {
+    .c-card-50 {
         flex: 1 1 48%;
     }
 
-    .card-container-33 {
+    .c-card-33 {
         flex: 1 1 30%;
     }
 
@@ -661,6 +668,101 @@ select:focus {
             color: #595959;
             margin-bottom: 0;
             margin-top: 10px;
+        }
+    }
+}
+
+
+.content-elements {
+    padding-bottom: 30px;
+
+    .content-header {
+        display: flex;
+        justify-content: space-between
+    }
+
+    .card-elements {
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+    
+        .content-header {
+            display: flex;
+            justify-content: space-between
+        }
+
+        .c-card-50 {
+            flex: 1 1 48%;
+        }
+
+        .c-card-20 {
+            flex: 1 1 20%;
+        }
+    
+        .c-card-20-porcentage {
+            width:23.5%;
+        }
+    
+        .c-card-25 {
+            flex: 0 0 25%;
+        }
+        
+        .c-card-33 {
+            flex: 0 0 30%;
+        }
+    
+    
+        >div {
+            min-height: 80px;
+        }
+    
+        .card-info {
+            border: 1px solid #D2D2D2;
+            height: auto;
+            min-height: 80px;
+            padding: 13px 20px;
+            border-radius: 24px;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 0;
+    
+            >div {
+                display: flex;
+                align-items: start;
+                flex-direction: column;
+                justify-content: center;
+            }
+    
+            img {
+                margin-right: 20px;
+            }
+    
+            h1 {
+                color: #EE5427;
+                font-size: 12px;
+                font-weight: 700;
+                line-height: 14px;
+                margin-bottom: 0px;
+            }
+    
+            h2 {
+                color: #000000;
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 0;
+                line-height: 25px;
+            }
+        }
+
+        .card-info-three {
+            min-height: 135px;
+        }
+
+
+        .card-info-two-row {
+            flex-direction: column;
+            gap: 8px;
         }
     }
 }
