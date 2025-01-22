@@ -15,6 +15,7 @@ export class BillingService implements OnDestroy {
 
   private billingApiUrl = environment.API_URL_BILL_V1;
   private performanceApiUrl = environment.API_URL_PERFORMANCE;
+  private performanceV2ApiUrl = environment.API_URL_PERFORMANCE_V2;
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
@@ -42,10 +43,10 @@ export class BillingService implements OnDestroy {
     });
   }
 
-  saveBillingTableData(requestData: any[]): Observable<any> {
-    const url = `${this.billingApiUrl}/Facturacion/ConfirmFacturas`;
+  saveBillingTableData(requestData: entity.UpdateBilling[]): Observable<any> {
+    const url = `${this.performanceV2ApiUrl}/invoices/bulk-update`;
 
-    return this.http.post<any>(url, requestData);
+    return this.http.put<any>(url, requestData);
   }
 
   getInvoiceById(id: string) {
