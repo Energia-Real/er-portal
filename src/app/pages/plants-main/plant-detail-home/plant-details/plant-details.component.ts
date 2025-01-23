@@ -20,7 +20,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(SitePerformanceComponent) sitePerformanceComponent!: SitePerformanceComponent;
 
   userInfo!: UserInfo;
-  
+
 
   weatherData: any = null
 
@@ -142,79 +142,79 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  data:any = [
+  data: any = [
     {
-      icon : '../../../../../assets/icons/plantType.svg',
+      icon: '../../../../../assets/icons/plantType.svg',
       title: 'Plant type',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/moutingTech.svg',
+      icon: '../../../../../assets/icons/moutingTech.svg',
       title: 'Mounting technology',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/noOfSite.svg',
+      icon: '../../../../../assets/icons/noOfSite.svg',
       title: 'No of sites',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/plantTimeZone.svg',
+      icon: '../../../../../assets/icons/plantTimeZone.svg',
       title: 'Plant time zone',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/currency.svg',
+      icon: '../../../../../assets/icons/currency.svg',
       title: 'Currency',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/comssionDate.svg',
+      icon: '../../../../../assets/icons/comssionDate.svg',
       title: 'Commission date',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/tariff.svg',
+      icon: '../../../../../assets/icons/tariff.svg',
       title: 'Tariff',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/ficed.svg',
+      icon: '../../../../../assets/icons/ficed.svg',
       title: 'Ficed tilt anglee',
       description: 'N/A',
     },
   ]
-  
-  dataTwo:any = [
+
+  dataTwo: any = [
     {
-      icon : '../../../../../assets/icons/epc.svg',
+      icon: '../../../../../assets/icons/epc.svg',
       title: 'EPC',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/oym.svg',
+      icon: '../../../../../assets/icons/oym.svg',
       title: 'O&M',
       description: 'N/A',
     },
   ]
-  
-  dataThree:any = [
+
+  dataThree: any = [
     {
-      icon : '../../../../../assets/icons/transformer.svg',
+      icon: '../../../../../assets/icons/transformer.svg',
       title: 'Transformer',
       description: 'N/A',
       titleTwo: 'Generic',
       descriptionTwo: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/inverter.svg',
+      icon: '../../../../../assets/icons/inverter.svg',
       title: 'Inverter',
       description: 'N/A',
       titleTwo: 'Solis Solis-60K-LV-5G',
       descriptionTwo: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/pvmodule.svg',
+      icon: '../../../../../assets/icons/pvmodule.svg',
       title: 'PV Module',
       description: 'N/A',
       titleTwo: 'Trina Sola',
@@ -245,25 +245,21 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
     private encryptionService: EncryptionService
-    
-  
+
+
   ) { }
 
   ngOnInit(): void {
     this.showLoader = false;
     this.loadUserInfo()
 
-    this.route.paramMap.subscribe(params => {
-      if (this.userInfo.clientes.length) {
-        params.get('id') && this.getPlantDetailsById(params.get('id')!);
-      }
-    });
+
 
   }
-  
+
   ngAfterViewInit() {
-    if (this.sitePerformanceComponent && 
-       this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
+    if (this.sitePerformanceComponent &&
+      this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
   }
 
   onTabChange(event: MatTabChangeEvent) {
@@ -274,7 +270,11 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.plantsService.getDataById(id).subscribe({
       next: (response: entity.DataPlant) => {
         this.plantData = response;
-        this.verifyInformation(response);
+
+        if (this.userInfo.clientes.length) {
+          this.verifyInformation(response);
+        }
+
       },
       error: (error) => {
         this.showLoader = false;
@@ -363,6 +363,9 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+    this.route.paramMap.subscribe(params => {
+      params.get('id') && this.getPlantDetailsById(params.get('id')!);
+    });
   }
 
   systemStatus(status: boolean) {
