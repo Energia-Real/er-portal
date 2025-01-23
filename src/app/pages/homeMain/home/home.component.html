@@ -120,12 +120,18 @@
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section c-plants">
             <div class="c-section-plant">
-                <h2 class="text-er-orange text-base font-normal">Plants</h2>
+                <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingMapa">Retrieving plant data...</h2>
+                <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">Plants</h2>
                 <span class="color-57B1B1 material-symbols-outlined"
                     matTooltip="This map is for informational purposes only and shows general data by region.">info</span>
             </div>
             <div class="flex gap-4 items-stretch">
-                <app-mapa class="flex-1"></app-mapa>
+                <div  *ngIf="isLoadingMapa">
+                    <app-mapa   class="flex-1"></app-mapa>
+                </div>
+                <div  *ngIf="!isLoadingMapa">
+                    <app-mapa [tooltipsInfo]="tooltipsInfo" [statesColors]="statesColors"  class="flex-1"></app-mapa>
+                </div>
                 <div class="legend-container">
                     <div class="color-bar flex flex-col justify-between h-full">
                         <div *ngFor="let item of [0, 1, 2, 3, 4]; let i = index"
