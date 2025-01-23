@@ -251,14 +251,16 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.showLoader = false;
+    this.loadUserInfo()
 
     this.route.paramMap.subscribe(params => {
-      params.get('id') && this.getPlantDetailsById(params.get('id')!);
+      if (this.userInfo.clientes.length) {
+        params.get('id') && this.getPlantDetailsById(params.get('id')!);
+      }
     });
 
-    this.loadUserInfo()
   }
-
+  
   ngAfterViewInit() {
     if (this.sitePerformanceComponent && 
        this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
