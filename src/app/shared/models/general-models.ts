@@ -177,4 +177,6 @@ export interface ErrorRequest {
   tipo: string;
   field: string;
   descripcion: string;
+  warn?: string;
+  title?: string;
 }

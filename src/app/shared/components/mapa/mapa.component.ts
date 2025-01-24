@@ -16,17 +16,18 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss']
 })
-export class MapaComponent implements AfterViewInit {
 
+
+
+export class MapaComponent implements AfterViewInit {
+  @Input()   tooltipsInfo: entity.statesResumeTooltip[] = [];
+  @Input() statesColors:any ={};
   private tippyInstance!: Instance | null;
-  tooltipsInfo: entity.statesResumeTooltip[] = [];
-  statesColors:any ={};
   selectedStates: string[] = [];
   filters$!: Observable<FilterState['filters']>;
   filters!: FilterState['filters'];
   generalFilters$!: Observable<FilterState['generalFilters']>;
   userInfo!: UserInfo;
-
 
   constructor(
     private store: Store<{ filters: FilterState }>,
@@ -38,17 +39,18 @@ export class MapaComponent implements AfterViewInit {
     private encryptionService: EncryptionService,
 
   ) {
+    this.createTooltips();
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
     this.generalFilters$.subscribe(generalFilters=>{
-      this.getTooltipInfo(generalFilters);
-    })
+/*       this.getTooltipInfo(generalFilters);
+ */    })
   }
 
   ngAfterViewInit() {
     // Los tooltips se generan después de que se obtienen los datos
   }
 
-  getTooltipInfo(filters?: any) {
+  /* getTooltipInfo(filters?: any) {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
@@ -77,7 +79,7 @@ export class MapaComponent implements AfterViewInit {
         }
       });
     }
-  }
+  } */
 
   createTooltips() {
     const estados = this.el.nativeElement.querySelectorAll('path');
