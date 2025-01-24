@@ -35,6 +35,7 @@ export class TokenInterceptor implements HttpInterceptor {
       || request.url.startsWith(environment.API_URL_BILL_V1)  
       || request.url.startsWith(environment.API_URL_NOTIFICATIONS)
       || request.url.startsWith(environment.API_URL_PERFORMANCE)
+      || request.url.startsWith(environment.API_URL_PERFORMANCE_V2)
     ) {
       let notificationData:any=null;
 
