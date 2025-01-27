@@ -15,7 +15,7 @@
                 <div *ngFor="let data of sitePerformance?.additionalItems; let idx = index" class="c-card-50">
                     <div class="card-info">
                         <h1 [ngStyle]="{ 
-                            'color': idx === 0 ? '#57B1B1' : 
+                            'color': idx === 0 ? '#x    57B1B1' : 
                                      idx === 1 ? '#792430' : '#EE5427' 
                           }">{{ data.title }}</h1>
                         <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>

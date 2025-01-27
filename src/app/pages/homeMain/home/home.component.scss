@@ -456,3 +456,20 @@
   width: 100%;
   border-top: 2px solid #231F20;
 }
+
+.dataSC{
+  width: 80%;
+}
+
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+
+.mat-mdc-progress-spinner { --mdc-circular-progress-active-indicator-color: grey; }
+
+.messageEC{
+  font-size: 16px !important;
+}
