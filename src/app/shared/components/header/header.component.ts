@@ -140,8 +140,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateYearSelected(year: number) {
-    console.log(year);
-
     this.selectedYear = year;
     this.searchWithFilters();
     this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
