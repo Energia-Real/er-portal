@@ -127,12 +127,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
-   
+
     if (month.value == '12') {
       this.selectedEndMonth = null;
       this.singleMonth.setValue(true);
     } else this.singleMonth.setValue(false);
- 
+
     this.selectedStartMonth = month;
     this.searchWithFilters();
     menuTrigger.closeMenu();
@@ -156,27 +156,38 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     const generalFilters = {
       startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
       endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`,
-      year: this.selectedYearSelect.value
+      year: this.selectedYearSelect?.value || this.selectedYear
     };
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
       if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
         this.store.dispatch(setGeneralFilters({ generalFilters }));
+        this.updateUrlWithFilters(generalFilters);
       }
     });
   }
 
-  updateLocalNotifications(){
-    this.notificationSubscription = this.store.select(selectTopUnreadNotifications).pipe(
-      map((notifications) =>
-        notifications.filter(
-          (notification) =>
-            this.notificationService.getNotificationTypesById(notification.notificationTypeId).nombreTipo != this.ERROR
-        )
-      )
-    ).subscribe((filteredNotifications) => {
-      this.notifications = filteredNotifications;
-      this.hasNotifications = filteredNotifications.length > 0;
+  /**
+   * Actualiza los parámetros de la URL basándose en los filtros proporcionados.
+   */
+  private updateUrlWithFilters(generalFilters: { startDate: string; endDate: string | null; year: number }): void {
+    const params = new URLSearchParams(window.location.search);
+
+    if (generalFilters.startDate) params.set('startday', generalFilters.startDate);
+    if (generalFilters.endDate) params.set('endday', generalFilters.endDate);
+    else params.delete('endday');
+
+    const currentUrl = this.router.url.split('?')[0];
+    const newUrl = `${currentUrl}?${params.toString()}`;
+
+    // Actualizar la URL solo si ha cambiado
+    if (this.router.url !== newUrl) this.router.navigateByUrl(newUrl);
+  }
+
+  updateLocalNotifications() {
+    this.notificationSubscription = this.store.select(selectTopUnreadNotifications).subscribe((notifications) => {
+      this.notifications = notifications;
+      this.hasNotifications = notifications.length > 0;
       this.cdr.detectChanges();
     });
   }

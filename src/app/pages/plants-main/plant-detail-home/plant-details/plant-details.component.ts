@@ -27,7 +27,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(SitePerformanceComponent) sitePerformanceComponent!: SitePerformanceComponent;
 
   userInfo!: UserInfo;
-  
+
 
   weatherData: any = null
 
@@ -149,79 +149,79 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  data:any = [
+  data: any = [
     {
-      icon : '../../../../../assets/icons/plantType.svg',
+      icon: '../../../../../assets/icons/plantType.svg',
       title: 'Plant type',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/moutingTech.svg',
+      icon: '../../../../../assets/icons/moutingTech.svg',
       title: 'Mounting technology',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/noOfSite.svg',
+      icon: '../../../../../assets/icons/noOfSite.svg',
       title: 'No of sites',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/plantTimeZone.svg',
+      icon: '../../../../../assets/icons/plantTimeZone.svg',
       title: 'Plant time zone',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/currency.svg',
+      icon: '../../../../../assets/icons/currency.svg',
       title: 'Currency',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/comssionDate.svg',
+      icon: '../../../../../assets/icons/comssionDate.svg',
       title: 'Commission date',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/tariff.svg',
+      icon: '../../../../../assets/icons/tariff.svg',
       title: 'Tariff',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/ficed.svg',
+      icon: '../../../../../assets/icons/ficed.svg',
       title: 'Ficed tilt anglee',
       description: 'N/A',
     },
   ]
-  
-  dataTwo:any = [
+
+  dataTwo: any = [
     {
-      icon : '../../../../../assets/icons/epc.svg',
+      icon: '../../../../../assets/icons/epc.svg',
       title: 'EPC',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/oym.svg',
+      icon: '../../../../../assets/icons/oym.svg',
       title: 'O&M',
       description: 'N/A',
     },
   ]
-  
-  dataThree:any = [
+
+  dataThree: any = [
     {
-      icon : '../../../../../assets/icons/transformer.svg',
+      icon: '../../../../../assets/icons/transformer.svg',
       title: 'Transformer',
       description: 'N/A',
       titleTwo: 'Generic',
       descriptionTwo: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/inverter.svg',
+      icon: '../../../../../assets/icons/inverter.svg',
       title: 'Inverter',
       description: 'N/A',
       titleTwo: 'Solis Solis-60K-LV-5G',
       descriptionTwo: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/pvmodule.svg',
+      icon: '../../../../../assets/icons/pvmodule.svg',
       title: 'PV Module',
       description: 'N/A',
       titleTwo: 'Trina Sola',
@@ -250,7 +250,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   //banderas de carga para endpoints 
-  isLoadingPD= true;  //LOADING PARA PLANT DATA, INFORMACION DE LA CABECERA DE PLANT DATA 
+  isLoadingPD = true;  //LOADING PARA PLANT DATA, INFORMACION DE LA CABECERA DE PLANT DATA 
   isLoadingWD = true; //LOADING PARA WHEATER DATA
   isLoadingTZ = true; // LOADING PARA TIME ZONE PLACE
   constructor(
@@ -264,16 +264,12 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      params.get('id') && this.getPlantDetailsById(params.get('id')!);
-    });
-
     this.loadUserInfo()
   }
 
   ngAfterViewInit() {
-    if (this.sitePerformanceComponent && 
-       this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
+    if (this.sitePerformanceComponent &&
+      this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
   }
 
   onTabChange(event: MatTabChangeEvent) {
@@ -285,14 +281,18 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       next: (response: entity.DataPlant) => {
         this.isLoadingPD = false;
         this.plantData = response;
-        this.verifyInformation(response);
+
+        if (this.userInfo.clientes.length) {
+          this.verifyInformation(response);
+        }
+
       },
       error: (error) => {
         this.isLoadingPD = false;
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
         console.error(error)
       }
     });
@@ -347,7 +347,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       error: (error) => {
         this.isLoadingWD = false;
         this.loadingWeather = false;
-        this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_WEATHER_DATA,NOTIFICATION_CONSTANTS.ERROR_CONTENT_WEATHER_DATA)
+        this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_WEATHER_DATA, NOTIFICATION_CONSTANTS.ERROR_CONTENT_WEATHER_DATA)
         console.error(error)
       }
     })
@@ -366,13 +366,13 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.plantsService.getLocalTimeOfPlace(lat, long).subscribe({
       next: (response: string) => {
         this.timeZonePlace = response;
-        this.isLoadingTZ = false; 
+        this.isLoadingTZ = false;
         this.loadingTimeZone = false;
       },
       error: (error) => {
         this.loadingTimeZone = false;
-        this.isLoadingTZ = false; 
-        this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_TIME_ZONE,NOTIFICATION_CONSTANTS.ERROR_CONTENT_TIME_ZONE)
+        this.isLoadingTZ = false;
+        this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_TIME_ZONE, NOTIFICATION_CONSTANTS.ERROR_CONTENT_TIME_ZONE)
         console.error(error)
       }
     })
@@ -381,34 +381,37 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+    this.route.paramMap.subscribe(params => {
+      params.get('id') && this.getPlantDetailsById(params.get('id')!);
+    });
   }
 
   systemStatus(status: boolean) {
     this.inverterSystemStatus = status;
   }
 
-  createNotificationError(notificationType:string, title?:string, description?: string, warn?:string ){
-    const dataNotificationModal:notificationData|undefined = this.notificationDataService.uniqueError();
-    dataNotificationModal!.title= title;
+  createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
+    const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title = title;
     dataNotificationModal!.content = description;
     dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
-      let dataNotificationService:NotificationServiceData= { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
-        userId:userInfo.id,
-        descripcion:description,
-        notificationTypeId:dataNotificationModal?.typeId,
-        notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
-      } 
-      this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      let dataNotificationService: NotificationServiceData = { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId: userInfo.id,
+        descripcion: description,
+        notificationTypeId: dataNotificationModal?.typeId,
+        notificationStatusId: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      }
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res => {
       })
     }
 
-    
+
 
     const dialogRef = this.dialog.open(NotificationComponent, {
-      width: '540px',     
+      width: '540px',
       data: dataNotificationModal
     });
 
