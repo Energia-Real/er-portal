@@ -13,7 +13,7 @@ import * as entity from './energy-production-model';
 export class EnergyProductionService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_ENERGY_PERFORMANCE_V1;
+  private API_URL = environment.API_URL_PERFORMANCE;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
