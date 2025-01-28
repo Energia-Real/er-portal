@@ -281,11 +281,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       next: (response: entity.DataPlant) => {
         this.isLoadingPD = false;
         this.plantData = response;
-
-        if (this.userInfo.clientes.length) {
-          this.verifyInformation(response);
-        }
-
+        this.verifyInformation(response);
       },
       error: (error) => {
         this.isLoadingPD = false;
@@ -381,6 +377,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+   
     this.route.paramMap.subscribe(params => {
       params.get('id') && this.getPlantDetailsById(params.get('id')!);
     });
