@@ -37,6 +37,33 @@
         margin: 0;
         line-height: 15px;
     }
+
+    .table-content {
+        border-collapse: separate;
+        border-spacing: 0 1em !important;
+        font-size: 11px;
+
+        thead tr,
+        th {
+            border: none;
+            color: #792430;
+            line-height: 18px;
+            vertical-align: top;
+            padding-top: 15px;
+            padding-right: 0px;
+            padding-left: 15px;
+
+
+            .target {
+                background-color: #F8F8F8;
+                padding: 4px 8px;
+                border-radius: 8px;
+                border: 1px solid #EDEDED !important;
+                font-size: 10px;
+                line-height: 13px;
+            }
+        }
+    }
 }
 
 .truncate {
@@ -59,32 +86,7 @@
     }
 }
 
-.table-assets {
-    border-collapse: separate;
-    border-spacing: 0 1em !important;
-    font-size: 11px;
 
-    thead tr,
-    th {
-        border: none;
-        color: #792430;
-        line-height: 18px;
-        vertical-align: top;
-        padding-top: 15px;
-        padding-right: 0px;
-        padding-left: 15px;
-
-
-        .target {
-            background-color: #F8F8F8;
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid #EDEDED !important;
-            font-size: 10px;
-            line-height: 13px;
-        }
-    }
-}
 
 .column-extend {
     width: 170px;
@@ -205,17 +207,52 @@ tr {
 .table-container-scroll {
     width: 100%;
     overflow-y: auto;
-    height: calc(100vh - 500px);
+    height: calc(100vh - 380px);
     margin-bottom: 0 !important;
     margin-top: 0 !important;
     overflow-x: hidden;
 
+    .header-table {
+        margin: 0;
+        line-height: 15px;
+    }
+
+    .table-content {
+        border-collapse: separate;
+        border-spacing: 0 1em !important;
+        font-size: 11px;
+
+        thead tr,
+        th {
+            border: none;
+            color: #792430;
+            line-height: 18px;
+            vertical-align: top;
+            padding-top: 15px;
+            padding-right: 0px;
+            padding-left: 15px;
+
+
+            .target {
+                background-color: #F8F8F8;
+                padding: 4px 8px;
+                border-radius: 8px;
+                border: 1px solid #EDEDED !important;
+                font-size: 10px;
+                line-height: 13px;
+            }
+        }
+    }
+
     thead {
         position: sticky;
         margin-bottom: 10px;
+        left: -1px;
         top: 0;
         z-index: 1;
         background-color: white;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1),
+            0px 1px 3px rgba(0, 0, 0, 0.06);
     }
 
     td {

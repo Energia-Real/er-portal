@@ -43,83 +43,103 @@
     </div>
   </div>
 
-  <div class="c-scroll">
-    <div class="c-paginator-top mt-5">
-      <strong>items per page</strong>
-      <mat-form-field>
-          <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
-              <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
-                      }}</strong></mat-option>
-          </mat-select>
-      </mat-form-field>
+  <div class="c-paginator-top mt-5 mb-5">
+    <strong>items per page</strong>
+    <mat-form-field>
+      <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
+        <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
+            }}</strong></mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
-    <div class="c-table">
-      <table mat-table [dataSource]="dataSource" matSort class="table-assets">
+  <div class="c-scroll-table">
+    <div class="table-container-scroll">
+      <table mat-table [dataSource]="dataSource" matSort class="table-content">
         <ng-container matColumnDef="clientId">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID client </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">ID client</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="plantName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Plant name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">Plant name</div>
+          </th>
           <td mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo"
             (click)="navigate('er/plants/details/' + element.id)"> {{ element?.siteName }} </td>
         </ng-container>
 
         <ng-container matColumnDef="clientName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Client name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">Client name</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="rpu">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> RPU </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">RPU</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.rpu else notDataTable"> {{ element.rpu }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="commissionDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Commission date </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">Commission date</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.commissionDate else notDataTable"> {{ element.commissionDate }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="inverterQty">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> # of invertes </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24"># of invertes</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.numberOfInvestors else notDataTable"> {{ element.numberOfInvestors }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="systemSize">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> System size </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">System size</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.systemSize else notDataTable"> {{ element.systemSize }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="nominalPower">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> AC capacity </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">AC capacity</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.nominalPower else notDataTable"> {{ element.nominalPower }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="assetStatus">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">Status</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div *ngIf="element?.assetStatus else notDataTable"> {{ element.assetStatus }} </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="googleMapAdress">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <div class="target w-24">Address</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <div class="column-maps" *ngIf="element?.link else notDataTable">
               <a [href]="element.link" target="_blank" class="truncate" style="width: 170px;">{{ element.link }}</a>
@@ -128,7 +148,9 @@
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="target w-24">Actions</div>
+          </th>
           <td mat-cell *matCellDef="let element">
             <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
             <mat-menu #menu="matMenu">
@@ -147,14 +169,13 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
       </table>
-
-
-      <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-        aria-label="Select page of periodic elements">
-      </mat-paginator>
     </div>
+
   </div>
+  <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+    aria-label="Select page of periodic elements">
+  </mat-paginator>
 </div>
 
 <ng-template #notData>

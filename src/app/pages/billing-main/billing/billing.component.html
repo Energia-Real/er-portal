@@ -62,8 +62,8 @@
         </div>
     </div>
 
-    <div class="c-table m+t-3">
-        <table mat-table [dataSource]="dataSource" matSort class="table-assets">
+    <div class="table-container-scroll mt-3">
+        <table mat-table [dataSource]="dataSource" matSort class="table-content">
             <ng-container matColumnDef="checkbox">
                 <th mat-header-cell *matHeaderCellDef class="ps-0">
                     <div class="flex justify-center">
@@ -83,7 +83,6 @@
                     </div>
                 </td>
             </ng-container>
-
 
             <ng-container matColumnDef="rpu">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
