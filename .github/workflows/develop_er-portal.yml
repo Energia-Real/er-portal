@@ -1,8 +1,6 @@
 name: Build and deploy Node.js app to Azure Web App Dev - er-portal
 
 on:
-  push:
-    branches: [ "develop" ]
   workflow_dispatch:
 
 env:
@@ -18,6 +16,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      # Verificar que la rama sea develop
+      - name: Verify branch is develop
+        run: |
+          if [ "${{ github.ref_name }}" != "develop" ]; then
+            echo "Este workflow solo puede ejecutarse en la rama develop."
+            exit 1
+          fi
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
