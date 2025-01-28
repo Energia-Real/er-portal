@@ -204,13 +204,16 @@ tr {
     text-align: center;
 }
 
+.c-scroll-table {
+    height: calc(100vh - 400px);
+    overflow: scroll;
+  }
+
 .table-container-scroll {
     width: 100%;
-    overflow-y: auto;
     height: calc(100vh - 380px);
     margin-bottom: 0 !important;
     margin-top: 0 !important;
-    overflow-x: hidden;
 
     .header-table {
         margin: 0;
@@ -231,7 +234,6 @@ tr {
             padding-top: 15px;
             padding-right: 0px;
             padding-left: 15px;
-
 
             .target {
                 background-color: #F8F8F8;
