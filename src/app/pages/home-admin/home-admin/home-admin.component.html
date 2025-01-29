@@ -218,8 +218,8 @@
       <h1 class="label-700-24">Asset operations overview</h1>
     </div>
 
-    <div class="c-content c-taps" style="grid-template-columns: 1.5fr 1fr 1fr;">
-      <div class="position-relative">
+    <div class="c-content c-taps">
+      <div class="position-relative" style="width: 50%!important;">
         <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
           <mat-tab label="Inverter"></mat-tab>
           <mat-tab label="Transformer"></mat-tab>
@@ -227,23 +227,27 @@
           <mat-tab label="HT Panel"></mat-tab>
         </mat-tab-group>
       </div>
-    
-      <div class="position-relative">
-        <div class="c-input-search w-100">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input class="block w-full" type="text" placeholder="Search">
+
+      <div class="content-float">
+        <div class="position-relative">
+          <div class="c-input-search w-100">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input class="block w-full" type="text" placeholder="Search">
+          </div>
         </div>
-      </div>
-    
-      <div class="position-relative select-download">
-        <div class="relative w-50 c-input-select">
-          <mat-form-field class="select-general" appearance="outline">
-            <mat-select [disabled]="false" [(value)]="assetOperationsSelect" (selectionChange)="onEnergyTypeChange($event)">
-              <mat-option *ngFor="let data of assetOperations" [value]="data.value">
-                {{ data.description }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+
+        <div class="position-relative select-download">
+          <div class="relative w-50 c-input-select">
+            <mat-form-field class="select-general" appearance="outline">
+              <mat-select [disabled]="false" [(value)]="assetOperationsSelect"
+                (selectionChange)="onEnergyTypeChange($event)">
+                <mat-option *ngFor="let data of assetOperations" [value]="data.value">
+                  {{ data.description }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
         </div>
         <div class="btns-excel">
           <button class="btn-action-add">
@@ -253,9 +257,7 @@
         </div>
       </div>
     </div>
-    
   </div>
-
 </div>
 
 <ng-template #notDataTable>
