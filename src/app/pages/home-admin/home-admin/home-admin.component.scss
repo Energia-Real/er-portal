@@ -8,10 +8,11 @@
 
     .c-card-medium {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: 1fr 1fr 1fr !important; 
         gap: 20px;
 
         .card-medium {
+            height: 260px;
             border: 1px solid #D2D2D2;
             border-radius: 24px;
             padding: 16px 24px;
@@ -92,8 +93,6 @@
                         justify-content: center;
                     }
                 }
-
-
             }
         }
     }
