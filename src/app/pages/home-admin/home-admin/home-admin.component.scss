@@ -5,6 +5,11 @@
         margin: 24px 0;
     }
 
+    .select-download {
+        display: flex;  
+        align-items: start;
+        gap: 15px;
+    }
 
     .c-card-medium {
         display: grid;
@@ -96,4 +101,10 @@
             }
         }
     }
+
+    .c-taps {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 20px;
+      }
 }

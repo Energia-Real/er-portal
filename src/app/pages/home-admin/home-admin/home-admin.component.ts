@@ -87,6 +87,30 @@ export class HomeAdminComponent {
     },
   ]
 
-  co2Progress: string = '25%'
+  assetOperations:any = [
+    {
+      value :'1',
+      description :'Specific power (kW/kWp)'
+    },
+    {
+      value :'2',
+      description :'Active power (kW)'
+    },
+    {
+      value :'3',
+      description :'Irradiance'
+    }
+  ]
 
+  co2Progress: string = '25%'
+  assetOperationsSelect: string = '1';
+
+
+
+
+
+  onEnergyTypeChange(event: any): void {
+    const selectedValue = event.value;
+    console.log(selectedValue);
+  }
 }

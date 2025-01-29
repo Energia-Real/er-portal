@@ -2,7 +2,7 @@
     <span>Working progress<span class="dots"></span></span>
 </div> -->
 <div class="c-roc">
-  <div class="content content-elements ">
+  <div class="content content-elements">
     <div class="content-header">
       <h1 class="label-700-24">Information</h1>
       <button class="btn-action-add">
@@ -92,7 +92,7 @@
       </div>
     </div> -->
 
-  <div class="separator-cards"></div>
+  <!-- <div class="separator-cards"></div>
 
   <div class="c-card-medium">
     <div class="card-medium">
@@ -210,6 +210,52 @@
       </div>
     </div>
   </div>
+
+  <div class="separator-cards"></div> -->
+
+  <div class="content content-elements ">
+    <div class="content-header">
+      <h1 class="label-700-24">Asset operations overview</h1>
+    </div>
+
+    <div class="c-content c-taps" style="grid-template-columns: 1.5fr 1fr 1fr;">
+      <div class="position-relative">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+          <mat-tab label="Inverter"></mat-tab>
+          <mat-tab label="Transformer"></mat-tab>
+          <mat-tab label="Weather Station"></mat-tab>
+          <mat-tab label="HT Panel"></mat-tab>
+        </mat-tab-group>
+      </div>
+    
+      <div class="position-relative">
+        <div class="c-input-search w-100">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input class="block w-full" type="text" placeholder="Search">
+        </div>
+      </div>
+    
+      <div class="position-relative select-download">
+        <div class="relative w-50 c-input-select">
+          <mat-form-field class="select-general" appearance="outline">
+            <mat-select [disabled]="false" [(value)]="assetOperationsSelect" (selectionChange)="onEnergyTypeChange($event)">
+              <mat-option *ngFor="let data of assetOperations" [value]="data.value">
+                {{ data.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="btns-excel">
+          <button class="btn-action-add">
+            <span class="material-symbols-outlined">download</span>
+            Download Template
+          </button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
 </div>
 
 <ng-template #notDataTable>
