@@ -1,9 +1,100 @@
 .c-roc {
-   
+    padding: 50px;
+
     .separator-cards {
         margin: 24px 0;
     }
+
+
+    .c-card-medium {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+
+        .card-medium {
+            border: 1px solid #D2D2D2;
+            border-radius: 24px;
+            padding: 16px 24px;
+            text-align: center;
+            transition: transform 0.2s ease;
+
+            .c-solar-co2 {
+                margin-top: 15px;
+            }
+
+            >h1 {
+                color: #FF4713;
+                font-weight: 700;
+                font-size: 24px;
+                text-align: left;
+                margin-bottom: 9px;
+                margin-top: 15px;
+            }
+
+            .c-content-medium-three {
+                grid-template-columns: 1fr 2fr 2fr !important; 
+              }
+
+            .c-content-medium {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                justify-content: center;
+                margin-bottom: 9px;
+                height: 40px;
+                >div {
+                    display: flex;
+                    align-items: center;
+                }
+
+                p {
+                    margin: 0;
+                }
+
+                .c-content-porcentage {
+                    background-color: red($color: #000000);
+                    justify-content: center;
+                    gap: 10px;
+                    span {
+                        display: block;
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 100%;
+                        background: #18D818;
+                    }
+                 
+                }
+
+                .c-option-medium {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 5px;
+
+                    div:nth-child(1) {
+                        background: #33A02C;
+                    }
+
+                    div:nth-child(2) {
+                        background: #E31A1C;
+                    }
+
+                    div:nth-child(3) {
+                        background: #999999;
+                    }
+
+                    div {
+                        width: 60px!important;
+                        height: 18px;
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+
+
+            }
+        }
+    }
 }
-
-
-

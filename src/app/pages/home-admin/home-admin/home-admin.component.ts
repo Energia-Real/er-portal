@@ -86,4 +86,7 @@ export class HomeAdminComponent {
       descriptionThree: 'Mono Crystalline Silicon',
     },
   ]
+
+  co2Progress: string = '25%'
+
 }

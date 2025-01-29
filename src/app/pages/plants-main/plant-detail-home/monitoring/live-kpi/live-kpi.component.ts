@@ -13,12 +13,12 @@ export class LiveKpiComponent {
 
   dataDummy:any = [
     {
-      icon : '../../../../../assets/icons/dcpower - active.svg',
+      icon : '../../../../../assets/icons/power-blue.svg',
       title: 'Power Loading (%)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/hearsink - irradiation.svg',
+      icon : '../../../../../assets/icons/Hearsink.svg',
       title: 'Hearsink Temperature Avarage (Degree Celsius)',
       description: 'N/A',
     },
