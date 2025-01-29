@@ -492,7 +492,7 @@ select:focus {
     display: block;
     border: none;
     cursor: pointer;
-    height: 35px;
+    height: 42.6px;
     transition: 150ms all ease;
 }
 
@@ -510,7 +510,7 @@ select:focus {
     align-items: center;
     gap: 8px;
     transition: 150ms all ease;
-    height: 35px;
+    height: 42.6px;
     user-select: none !important;
     outline: none !important;
 
@@ -546,7 +546,7 @@ select:focus {
     align-items: center;
     gap: 8px;
     transition: 150ms all ease;
-    height: 35px;
+    height: 42.6px;
     user-select: none !important;
     outline: none !important;
 
@@ -622,7 +622,7 @@ select:focus {
     display: flex;
     align-items: center;
     gap: 8px;
-    height: 35px;
+    height: 42.6px;
 
     i {
         font-size: 15px;
@@ -802,10 +802,17 @@ select:focus {
     }
 }
 
+.border-card {
+    border: 1px solid #D2D2D2;
+    padding: 24px 20px;
+    border-radius: 12px;
+}
+
 .content-elements {
     padding-bottom: 30px;
 
     .content-header {
+        padding-left: 20px;
         display: flex;
         justify-content: space-between
     }
