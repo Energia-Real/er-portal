@@ -85,8 +85,9 @@ export interface DataPatchEnergyProd {
   id: string;
   monthSelected: number;
   year: number;
-  energyProduced: number;
-  deleteEnergyProd: true;
+  energyProduced?: number;
+  energyValue?: number;
+  deleteEnergyValue: true;
 }
 
 export interface ErrorRequest {
