@@ -1,7 +1,6 @@
 export const environment = {
   production: true,
   API_URL_PERFORMANCE: 'https://er-portal-gateway.azurewebsites.net/api/v1',
-  API_URL_PERFORMANCE_V2: 'https://er-portal-gateway.azurewebsites.net/prod/api/v1',
   API_URL_PROXY_V1: 'https://er-transformer-proxy-int.azurewebsites.net/api/v1',
   API_URL_AUTH_V1: 'https://er-auth-app.azurewebsites.net/api/v1',
   API_URL_AUTH_V2: 'https://er-auth-app.azurewebsites.net/api/',
