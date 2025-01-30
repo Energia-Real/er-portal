@@ -14,7 +14,6 @@ export class PlantsService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL_PROYECTS = environment.API_URL_PERFORMANCE;
-  private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
   private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
   private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
 
@@ -246,7 +245,7 @@ export class PlantsService implements OnDestroy {
   }
 
   getSavings(plantCode: string) {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/${plantCode}`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/${plantCode}`;
     return this.http
       .get<entity.Instalations>(url)
       .pipe(map((response) => Mapper.getInstalacionesMapper(response)));
@@ -260,12 +259,12 @@ export class PlantsService implements OnDestroy {
   }
 
   createInstalations(equipment: entity.Equipment) {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments`;
     return this.http.post<entity.Equipment>(url, equipment);
   }
 
   deleteInstalation(equipmentId: string) {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/${equipmentId}`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/${equipmentId}`;
     return this.http.delete<any>(url);
   }
 
@@ -273,27 +272,27 @@ export class PlantsService implements OnDestroy {
     id: string | number | null | undefined,
     data: Partial<entity.Equipment> | null | undefined
   ): Observable<any> {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/${id}`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/${id}`;
     return this.http.patch<any>(url, data);
   }
 
   getInverterBrands() {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterBrands`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/getInverterBrands`;
     return this.http.get<entity.CatalogEquipment[]>(url);
   }
 
   getInverterModels(id: number) {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/getInverterModels/${id}`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/getInverterModels/${id}`;
     return this.http.get<entity.CatalogEquipment[]>(url);
   }
 
   getModuleBrands() {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleBrands`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/getModuleBrands`;
     return this.http.get<entity.CatalogEquipment[]>(url);
   }
 
   getModuleModels(id: number) {
-    const url = `${this.API_URL_EQUIPMENTS}/equipments/getModuleModels/${id}`;
+    const url = `${this.API_URL_PERFORMANCE}/equipments/getModuleModels/${id}`;
     return this.http.get<entity.CatalogEquipment[]>(url);
   }
 
