@@ -60,7 +60,7 @@ export class HomeService {
   }
 
   getDataClientsList(): Observable<entity.DataRespSavingDetailsList[]> {
-    const url = `${environment.API_URL_CLIENTS_V1}/clients/list`;
+    const url = `${environment.API_URL_PERFORMANCE}/clients/list`;
     const params = new HttpParams()
       .set('imageSize', 50)
 
@@ -70,7 +70,7 @@ export class HomeService {
   }
 
   getDataSolarCoverage(filters: entity.GeneralFilters): Observable<string> {
-    const url = `${environment.API_URL_CLIENTS_V1}/projects/solar-coverage`;
+    const url = `${environment.API_URL_PERFORMANCE}/projects/solar-coverage`;
     const params = new HttpParams()
       .set('client', filters.clientId)
       .set('start_date', filters.startDate)

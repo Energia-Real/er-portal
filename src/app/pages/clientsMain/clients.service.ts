@@ -8,16 +8,23 @@ import { Mapper } from './mapper';
 import { NotificationMessages } from '@app/shared/models/general-models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClientsService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_CLIENTS_V1;
+  private API_URL = environment.API_URL_PERFORMANCE;
 
-  constructor(private http: HttpClient, public formatsService: FormatsService) { }
+  constructor(
+    private http: HttpClient,
+    public formatsService: FormatsService
+  ) {}
 
-  getClientsData(name: string, pageSize: number, page: number): Observable<entity.DataTableResponse> {
+  getClientsData(
+    name: string,
+    pageSize: number,
+    page: number
+  ): Observable<entity.DataTableResponse> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
       .set('imageSize', 150)
@@ -25,16 +32,16 @@ export class ClientsService implements OnDestroy {
       .set('page', page)
       .set('name', name);
 
-    return this.http.get<entity.DataTableResponse>(url, { params }).pipe(
-      map((response) => Mapper.getClientsDataMapper(response))
-    );
+    return this.http
+      .get<entity.DataTableResponse>(url, { params })
+      .pipe(map((response) => Mapper.getClientsDataMapper(response)));
   }
 
   getTypeClientsData(): Observable<entity.DataCatalogTypeClient[]> {
-		const url = `${this.API_URL}/tipodecliente`;
+    const url = `${this.API_URL}/tipodecliente`;
 
-		return this.http.get<entity.DataCatalogTypeClient[]>(url);
-	}
+    return this.http.get<entity.DataCatalogTypeClient[]>(url);
+  }
 
   postDataTypeClient(data: entity.DataPostTypeClient) {
     const url = `${this.API_URL}/tipodecliente`;
@@ -42,17 +49,20 @@ export class ClientsService implements OnDestroy {
     return this.http.post<any>(url, data);
   }
 
-  patchDataTypeClient(id:string, data: entity.DataPatchTypeClient) {
+  patchDataTypeClient(id: string, data: entity.DataPatchTypeClient) {
     const url = `${this.API_URL}/tipodecliente/${id}`;
-    
+
     return this.http.put<any>(url, data);
   }
 
-  postDataClient(data: entity.DataPostClient,notificationMessages: NotificationMessages) {
+  postDataClient(
+    data: entity.DataPostClient,
+    notificationMessages: NotificationMessages
+  ) {
     const url = `${this.API_URL}/clients`;
     const formData = new FormData();
     const headers = new HttpHeaders({
-      'NotificationMessages': JSON.stringify(notificationMessages),
+      NotificationMessages: JSON.stringify(notificationMessages),
     });
 
     formData.append('name', data.name);
@@ -61,14 +71,18 @@ export class ClientsService implements OnDestroy {
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
-    return this.http.post<any>(url, formData, {headers});
+    return this.http.post<any>(url, formData, { headers });
   }
 
-  patchDataClient(id:number, data: entity.DataPatchClient,notificationMessages: NotificationMessages) {
+  patchDataClient(
+    id: number,
+    data: entity.DataPatchClient,
+    notificationMessages: NotificationMessages
+  ) {
     const url = `${this.API_URL}/clients/${id}`;
     const formData = new FormData();
     const headers = new HttpHeaders({
-      'NotificationMessages': JSON.stringify(notificationMessages),
+      NotificationMessages: JSON.stringify(notificationMessages),
     });
 
     formData.append('name', data.name);
@@ -79,7 +93,7 @@ export class ClientsService implements OnDestroy {
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
-    return this.http.put<any>(url, formData,{headers});
+    return this.http.put<any>(url, formData, { headers });
   }
 
   ngOnDestroy() {
