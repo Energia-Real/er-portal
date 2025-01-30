@@ -27,3 +27,16 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ###Single-spa
+
+
+Desplegar Manualmente desde VS Code
+Si no usaste GitHub Actions, puedes desplegar manualmente con:
+
+## Compilar la aplicación:
+
+ng build --configuration=production
+
+## Publicar en Azure:
+
+az staticwebapp upload --name my-angular-app --resource-group my-resource-group --source dist/my-angular-app
+Una vez finalizado, Azure proporcionará una URL para tu app.
