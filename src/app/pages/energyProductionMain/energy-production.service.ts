@@ -61,11 +61,24 @@ export class EnergyProductionService implements OnDestroy {
   }
 
   patchDataEnergyProd(data: entity.DataPatchEnergyProd) {
-    const url = `${this.API_URL}/EditEnergyProduced`;
+    const url = `${this.API_URL}/energy/Production`;
 
     return this.http.put<any>(url, data);
   }
 
+  patchDataEnergyCon(data: entity.DataPatchEnergyProd) {
+    const url = `${this.API_URL}/energy/Consumption`;
+
+    return this.http.put<any>(url, data);
+  }
+
+  
+  patchDataEnergyEstim(data: entity.DataPatchEnergyProd) {
+    const url = `${this.API_URL}/energy/Estimated`;
+
+    return this.http.put<any>(url, data);
+  }
+  
   downloadExcel(): Observable<Blob> {
     const url = `${this.API_URL}/DownloadExcelTemplate`;
 

@@ -25,8 +25,15 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     console.log(editedData);
     this.editedPlant = editedData;
 
+    function limpiarNumerosConFormato(value: string): number {
+      return parseFloat(value.replace(/,/g, ''));
+    }
+    const dataLimpia = {
+      ...editedData,
+      energyValue: editedData.energyValue ? limpiarNumerosConFormato(editedData.energyValue) : null
+    };
     this.formData.patchValue({
-      ...editedData
+      ...dataLimpia
     })
   }
 
@@ -36,7 +43,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     monthSelectedName: [{ value: '', disabled: true }, Validators.required],
     year: [{ value: '', disabled: true }, Validators.required],
     yearName: [{ value: '', disabled: true }, Validators.required],
-    energyProduced: [{ value: '', disabled: false }, Validators.required],
+    energyValue: [{ value: '', disabled: false }, Validators.required],
   });
 
   editedPlant: any;
@@ -59,13 +66,16 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
       ...this.editedPlant,
       ...this.formData.value
     };
-
+    console.log(objData)
     delete objData.monthSelectedName;
     delete objData.siteName;
     delete objData.yearName;
+    delete objData.energyType;
+    delete objData.isCreated;
 
-    if (deleteEnergyProd) objData.deleteEnergyProd = true;
-     else objData.deleteEnergyProd = false;
+
+    if (deleteEnergyProd) objData.deleteEnergyValue = true;
+     else objData.deleteEnergyValue = false;
 
     if (this.editedPlant?.isCreated) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
@@ -82,13 +92,35 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   }
 
   saveDataPatch(objData: entity.DataPatchEnergyProd) {
-    this.moduleServices.patchDataEnergyProd(objData).subscribe({
-      next: () => { this.completionMessage(true) },
-      error: (error) => {
-        this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
-        console.error(error)
-      }
-    })
+
+    if(this.editedPlant.energyType == 1){
+      this.moduleServices.patchDataEnergyProd(objData).subscribe({
+        next: () => { this.completionMessage(true) },
+        error: (error) => {
+          this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+          console.error(error)
+        }
+      })
+    }
+    else if(this.editedPlant.energyType == 2){
+      this.moduleServices.patchDataEnergyCon(objData).subscribe({
+        next: () => { this.completionMessage(true) },
+        error: (error) => {
+          this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+          console.error(error)
+        }
+      })
+    }
+    else{
+      this.moduleServices.patchDataEnergyEstim(objData).subscribe({
+        next: () => { this.completionMessage(true) },
+        error: (error) => {
+          this.notificationService.notificacion(`Hable con el administrador.`, 'alert');
+          console.error(error)
+        }
+      })
+    }
+    
   }
 
   cancelEdit() {
@@ -116,7 +148,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
 
     if (inputValue <= 0) {
       event.target.value = '';
-      this.formData.controls['energyProduced'].setValue('');
+      this.formData.controls['energyValue'].setValue('');
     }
   }
 
