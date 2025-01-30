@@ -27,12 +27,9 @@ export class TokenInterceptor implements HttpInterceptor {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
     if (request.url.startsWith(environment.API_URL_EQUIPMENTS_V1)
-      || request.url.startsWith(environment.API_URL_BATU_V1)
       || request.url.startsWith(environment.API_URL_EQUIPMENT_HUAWEI_V1)
-      || request.url.startsWith(environment.API_URL_ENERGY_PERFORMANCE_V1)
-      || request.url.startsWith(environment.API_URL_BILL_V1)
       || request.url.startsWith(environment.API_URL_NOTIFICATIONS)
-      || request.url.startsWith(environment.API_URL_PERFORMANCE))
+      || request.url.startsWith(environment.API_URL_PERFORMANCE)
     ) {
       let notificationData:any=null;
 

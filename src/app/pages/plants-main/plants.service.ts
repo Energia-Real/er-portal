@@ -13,11 +13,7 @@ import { DataResponseArraysMapper, GeneralFilters, GeneralResponse } from '@app/
 export class PlantsService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL_BATU = environment.API_URL_BATU_V1;
-  private API_URL_ENERGY_PERFORMANCE =
-    environment.API_URL_ENERGY_PERFORMANCE_V1;
   private API_URL_PROYECTS = environment.API_URL_PERFORMANCE;
-  private API_URL_PROXY = environment.API_URL_PROXY_V1;
   private API_URL_EQUIPMENTS = environment.API_URL_EQUIPMENTS_V1;
   private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
   private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
@@ -80,7 +76,7 @@ export class PlantsService implements OnDestroy {
   getSitePerformance(
     filters: GeneralFilters
   ): Observable<DataResponseArraysMapper | null> {
-    const url = `${this.API_URL_ENERGY_PERFORMANCE}/GetSitePerformance`;
+    const url = `${this.API_URL_PERFORMANCE}/GetSitePerformance`;
 
     return this.http
       .post<any>(url, filters)
@@ -90,7 +86,7 @@ export class PlantsService implements OnDestroy {
   getSitePerformanceSummary(
     filters: GeneralFilters
   ): Observable<DataResponseArraysMapper> {
-    const url = `${this.API_URL_BATU}/energy/summary`;
+    const url = `${this.API_URL_PERFORMANCE}/energy/summary`;
     let params = new HttpParams()
       .set('rpu', filters.rpu)
       .set('startDate', filters.startDate)
@@ -138,14 +134,6 @@ export class PlantsService implements OnDestroy {
     return this.http.get<GeneralResponse<entity.getSavingsDetails>>(url, {
       params,
     });
-  }
-
-  getDataSystem(
-    data: entity.PostDataByPlant
-  ): Observable<entity.ResponseSystem> {
-    const url = `${this.API_URL_PROXY}/integrators/proxy/getStationHealtCheck`;
-
-    return this.http.post<entity.ResponseSystem>(url, data);
   }
 
   getPlants(name: string, pageSize: number, page: number): Observable<any> {
@@ -246,20 +234,6 @@ export class PlantsService implements OnDestroy {
       map(() => Date.now()),
       takeUntil(this.onDestroy$)
     );
-  }
-
-  getProyectResume(
-    brand: string,
-    plantCode: string,
-    startDate: Date,
-    endDate: Date
-  ) {
-    const url = `${this.API_URL_PROXY}/integrators/proxy/GetMonthProyectResume`;
-    const jsonObject = {
-      brand: brand,
-      plantCode: plantCode,
-    };
-    return this.http.post<entity.ProyectResume[]>(url, jsonObject);
   }
 
   getEstimatedEnergy(brand: string, plantCode: string) {
