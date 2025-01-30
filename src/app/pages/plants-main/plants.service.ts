@@ -14,7 +14,6 @@ export class PlantsService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private API_URL_PROYECTS = environment.API_URL_PERFORMANCE;
-  private API_URL_EQUIPMENT_HUAWEI_V1 = environment.API_URL_EQUIPMENT_HUAWEI_V1;
   private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
 
   constructor(
@@ -254,7 +253,7 @@ export class PlantsService implements OnDestroy {
   getInverterMonitoring(
     plantCode: string
   ): Observable<entity.InverterMonitoring> {
-    const url = `${this.API_URL_EQUIPMENT_HUAWEI_V1}/station/${plantCode}/status`;
+    const url = `${this.API_URL_PERFORMANCE}/station/${plantCode}/status`;
     return this.http.get<entity.InverterMonitoring>(url);
   }
 
