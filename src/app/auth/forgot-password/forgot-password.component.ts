@@ -29,20 +29,11 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   }
-  
+
   actionSave() {
     this.actionComplete = true;
-    
-    this.authService.forgotPassword(this.email?.value!).subscribe({
-      next: () => {
-        this.completionMessage()
-      },
-      error: (error) => {
-        this.actionComplete = false;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
-      }
-    })
+
+
   }
 
   completionMessage(edit = false) {

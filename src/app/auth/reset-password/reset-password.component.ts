@@ -22,7 +22,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   email:string = ''
   code:string = ''
-  
+
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
@@ -47,16 +47,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       email: this.email
     }
 
-    this.authService.resetyPassword(objData).subscribe({
-      next: () => {
-        this.completionMessage()
-      },
-      error: (error) => {
-        this.actionComplete = false;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
-      }
-    })
+
   }
 
   completionMessage(edit = false) {
@@ -74,7 +65,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     const confirmPassword = this.formData.get('confirmPassword')?.value;
     return password && confirmPassword && password === confirmPassword;
   }
-  
+
   toBack() {
     this.router.navigateByUrl(`/`)
   }

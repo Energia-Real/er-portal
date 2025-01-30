@@ -249,8 +249,8 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
 
-  //banderas de carga para endpoints 
-  isLoadingPD = true;  //LOADING PARA PLANT DATA, INFORMACION DE LA CABECERA DE PLANT DATA 
+  //banderas de carga para endpoints
+  isLoadingPD = true;  //LOADING PARA PLANT DATA, INFORMACION DE LA CABECERA DE PLANT DATA
   isLoadingWD = true; //LOADING PARA WHEATER DATA
   isLoadingTZ = true; // LOADING PARA TIME ZONE PLACE
   constructor(
@@ -297,7 +297,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   verifyInformation(plantData: entity.DataPlant) {
     if (plantData?.plantCode && plantData?.inverterBrand[0] == 'Huawei') {
       this.showNotdata = false
-      this.getDataRespSystem({ brand: "Huawei", plantCode: plantData.plantCode })
     } else {
       this.showNotdata = true;
       if (plantData?.plantCode && plantData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('The information provided includes an inverter brand that has not yet been implemented.');
@@ -322,16 +321,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.loadingSystem = false;
   }
 
-  getDataRespSystem(postData: entity.PostDataByPlant) {
-    this.plantsService.getDataSystem(postData).subscribe({
-      next: (response: entity.ResponseSystem) => this.dataRespoSystem = response?.data,
-      error: (error) => {
-        this.loadingSystem = false;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
-      }
-    })
-  }
 
   getWeather(lat: number, long: number) {
     this.plantsService.getWeatherData(lat, long).subscribe({
@@ -377,7 +366,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
-   
+
     this.route.paramMap.subscribe(params => {
       params.get('id') && this.getPlantDetailsById(params.get('id')!);
     });
