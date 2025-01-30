@@ -15,7 +15,6 @@ export class BillingService implements OnDestroy {
 
   private billingApiUrl = environment.API_URL_BILL_V1;
   private performanceApiUrl = environment.API_URL_PERFORMANCE;
-  private performanceV2ApiUrl = environment.API_URL_PERFORMANCE_V2;
 
   constructor(private http: HttpClient, private formatsService: FormatsService) { }
 
@@ -38,13 +37,13 @@ export class BillingService implements OnDestroy {
     const url = `${this.billingApiUrl}/FacturacionExport/DownloadExcelReport`;
 
     return this.http.get(url, {
-      params, 
-      responseType: 'blob' 
+      params,
+      responseType: 'blob'
     });
   }
 
   saveBillingTableData(requestData: entity.UpdateBilling[]): Observable<any> {
-    const url = `${this.performanceV2ApiUrl}/invoices/bulk-update`;
+    const url = `${this.performanceApiUrl}/invoices/bulk-update`;
 
     return this.http.put<any>(url, requestData);
   }
