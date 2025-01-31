@@ -2,7 +2,7 @@
     <span>Working progress<span class="dots"></span></span>
 </div> -->
 <div class="c-roc">
-  <!-- <div class="content content-elements">
+  <div class="content content-elements">
     <div class="content-header">
       <h1 class="label-700-24">Information</h1>
       <button class="btn-action-add">
@@ -11,7 +11,7 @@
       </button>
     </div>
 
-    <div class="card-elements">
+    <div class="card-elements mt-2">
       <div *ngFor="let data of data;" class="c-card-20">
         <div class="card-info ">
           <img [src]="data.icon" alt="">
@@ -22,77 +22,77 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
-  <!-- <div class="content content-elements ">
-      <div class="content-header">
-        <h1 class="label-700-24">Services providers</h1>
-      </div>
+  <div class="content content-elements ">
+    <div class="content-header">
+      <h1 class="label-700-24">Services providers</h1>
+    </div>
 
-      <div class="card-elements">
-        <div *ngFor="let data of dataTwo;" class="c-card-25">
-          <div class="card-info">
-            <img [src]="data.icon" alt="">
-            <div>
-              <h1>{{ data.title }}</h1>
-              <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
-            </div>
+    <div class="card-elements">
+      <div *ngFor="let data of dataTwo;" class="c-card-25">
+        <div class="card-info">
+          <img [src]="data.icon" alt="">
+          <div>
+            <h1>{{ data.title }}</h1>
+            <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="content content-elements ">
-      <div class="content-header">
-        <h1 class="label-700-24">QEM Devices</h1>
-      </div>
+  <div class="content content-elements pb-0">
+    <div class="content-header">
+      <h1 class="label-700-24">QEM Devices</h1>
+    </div>
 
-      <div class="card-elements">
-        <div *ngFor="let data of dataThree;" class="c-card-33">
-          <div class="card-info card-info-three">
-            <img [src]="data.icon" alt="">
-            <div class="card-info-two-row">
-              <div>
-                <h1>{{ data.title }}</h1>
-                <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
-              </div>
-              <div *ngIf="data.titleTwo">
-                <h1>{{ data.titleTwo }}</h1>
-                <h2 *ngIf="data?.descriptionTwo else notDataTable">{{ data.descriptionTwo }}</h2>
-              </div>
-              <h1 *ngIf="data?.descriptionThree">{{ data.descriptionThree }}</h1>
+    <div class="card-elements">
+      <div *ngFor="let data of dataThree;" class="c-card-33">
+        <div class="card-info card-info-three">
+          <img [src]="data.icon" alt="">
+          <div class="card-info-two-row">
+            <div>
+              <h1>{{ data.title }}</h1>
+              <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
             </div>
+            <div *ngIf="data.titleTwo">
+              <h1>{{ data.titleTwo }}</h1>
+              <h2 *ngIf="data?.descriptionTwo else notDataTable">{{ data.descriptionTwo }}</h2>
+            </div>
+            <h1 *ngIf="data?.descriptionThree">{{ data.descriptionThree }}</h1>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
+  </div>
 
-  <!-- <div class="separator-cards"></div>
+  <div class="separator-cards"></div>
 
-    <div class="content content-elements ">
-      <div class="content-header">
-        <h1 class="label-700-24">Asset monitoring parameter</h1>
+  <div class="content content-elements ">
+    <div class="content-header">
+      <h1 class="label-700-24">Asset monitoring parameter</h1>
+    </div>
+
+    <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+      <div class="col-span-1 position-relative">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+
+          <mat-tab label="Observed Parameters">
+          </mat-tab>
+
+          <mat-tab label="Live KPI">
+          </mat-tab>
+
+          <mat-tab label="Cumulative KPI">
+          </mat-tab>
+
+        </mat-tab-group>
       </div>
+    </div>
+  </div>
 
-      <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
-        <div class="col-span-1 position-relative">
-          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
-
-            <mat-tab label="Observed Parameters">
-            </mat-tab>
-
-            <mat-tab label="Live KPI">
-            </mat-tab>
-
-            <mat-tab label="Cumulative KPI">
-            </mat-tab>
-
-          </mat-tab-group>
-        </div>
-      </div>
-    </div> -->
-
-  <!-- <div class="separator-cards"></div>
+  <div class="separator-cards"></div>
 
   <div class="c-card-medium">
     <div class="card-medium">
@@ -152,7 +152,7 @@
           <div>5</div>
         </div>
       </div>
-    
+
       <div class="c-content-medium c-content-medium-three">
         <div>
           <p>Inverter</p>
@@ -211,9 +211,9 @@
     </div>
   </div>
 
-  <div class="separator-cards"></div> -->
+  <div class="separator-cards"></div>
 
-  <!-- <div class="content content-elements border-card">
+  <div class="content content-elements border-card">
     <div class="content-header">
       <h1 class="label-700-24">Asset operations overview</h1>
     </div>
@@ -225,7 +225,7 @@
 
             <div class="c-interver">
               <div class="filters-inverter">
-                <div>
+                <div >
                   <span></span>
                   <h1>Excelent (0% - 5)</h1>
                 </div>
@@ -250,7 +250,7 @@
                   <h1>Error</h1>
                 </div>
 
-                <button class="btn-show-all">
+                <button class="btn-show-all filter-selected">
                   <span class="material-symbols-outlined">visibility</span>
                   Show all
                 </button>
@@ -280,6 +280,61 @@
                     <h2>05-11-2024 10:05</h2>
                   </div>
                 </div>
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
 
                 <div class="card-inverter card-good">
                   <div class="header-inverter">
@@ -435,20 +490,8 @@
                     <h2>05-11-2024 10:05</h2>
                   </div>
                 </div>
-
-
-
               </div>
             </div>
-
-
-
-
-
-
-
-
-
           </mat-tab>
           <mat-tab label="Transformer"></mat-tab>
           <mat-tab label="Weather Station"></mat-tab>
@@ -485,11 +528,11 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <div class="separator-cards"></div>
 
-  <div class="content content-elements">
+  <div class="content content-elements pb-0">
     <div class="content-header">
       <h1 class="label-700-24">Plants event summary</h1>
 
@@ -543,12 +586,28 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-            </form>
 
+              <div class="content-footer">
+
+
+
+                <div class="btns-filters">
+                  <button class="btn-action-add">
+                    <span class="material-symbols-outlined">filter_list</span>
+                    Apply
+                  </button>
+
+                  <button class="btn-action-clean">
+                    <span class="material-symbols-outlined">delete</span>
+                    Clear
+                  </button>
+
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </mat-menu>
-
     </div>
 
     <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">

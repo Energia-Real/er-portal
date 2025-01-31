@@ -848,6 +848,10 @@ input[type="number"]:focus {
   }
 }
 
+*[class*=mat-mdc-menu-content] button {
+  border-radius: unset!important;
+}
+
 .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
   transform: unset !important;
   color: #EE5427 !important;
