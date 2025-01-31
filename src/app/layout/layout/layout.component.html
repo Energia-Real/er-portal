@@ -1,26 +1,22 @@
 <div class="layout">
-  <div class="sidebar " [ngClass]="{'extended': keepOpen}" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <div class="sidebar " [class.extended]="keepOpen" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <div class="sidebar-content">
       <div class="logo">
-        <div href="/home" class="text-white text-sm font-semibold c-version" [ngClass]="{
-          'justify-center': !isSidebarHovered && !keepOpen,
-          'justify-between': isSidebarHovered && !keepOpen
-          }"
-          >
+        <div href="/home" class="text-white text-sm font-semibold c-version" [class.siderbar-hold]="isSidebarHovered && !keepOpen">
           <div class="logo-sidebar">
             <img class="animate-durations" class="logo-white" src="../../../../assets/icons/logo001.svg" alt="Logo">
             <p class="ps-1 animate-durations"
-              [ngClass]="{'animate__animated animate__fadeIn': isSidebarHovered && !keepOpen}"
-              *ngIf="isSidebarHovered || keepOpen">energía real</p>
-          </div>
-
-          <img class="icon-extended-menu"
             [ngClass]="{'animate__animated animate__fadeIn': isSidebarHovered && !keepOpen}"
-            *ngIf="isSidebarHovered || keepOpen" (click)="keepOpen = !keepOpen"
-            [src]="keepOpen ? '../../../assets/icons/closet.svg': '../../../assets/icons/open.svg'">
+            *ngIf="isSidebarHovered || keepOpen">energía real</p>
+          </div>
+          
+          <img class="icon-extended-menu"
+          [ngClass]="{'animate__animated animate__fadeIn': isSidebarHovered && !keepOpen}"
+          *ngIf="isSidebarHovered || keepOpen" (click)="keepOpen = !keepOpen"
+          [src]="keepOpen ? '../../../assets/icons/closet.svg': '../../../assets/icons/open.svg'">
         </div>
       </div>
-
+      
       <div class="sidebar-user">
         <img class="animate-durations"
           [ngClass]="{'animate__animated animate__fadeInBottomLeft': isSidebarHovered && !keepOpen}"
