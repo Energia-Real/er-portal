@@ -26,8 +26,7 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
-    if (request.url.startsWith(environment.API_URL_EQUIPMENT_HUAWEI_V1)
-      || request.url.startsWith(environment.API_URL_PERFORMANCE)
+    if ( request.url.startsWith(environment.API_URL_PERFORMANCE)
     ) {
       let notificationData:any=null;
 
