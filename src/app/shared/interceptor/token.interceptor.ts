@@ -20,32 +20,23 @@ export class TokenInterceptor implements HttpInterceptor {
     private snackBar: MatSnackBar,
     private store: Store
   ){
-    
+
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
-    if (
-      request.url.startsWith(environment.API_URL_CLIENTS_V1) 
-      || request.url.startsWith(environment.API_URL_EQUIPMENTS_V1) 
-      || request.url.startsWith(environment.API_URL_BATU_V1) 
-      || request.url.startsWith(environment.API_URL_EQUIPMENT_HUAWEI_V1)  
-      || request.url.startsWith(environment.API_URL_ENERGY_PERFORMANCE_V1) 
-      || request.url.startsWith(environment.API_URL_BILL_V1)  
-      || request.url.startsWith(environment.API_URL_NOTIFICATIONS)
-      || request.url.startsWith(environment.API_URL_PERFORMANCE)
-      || request.url.startsWith(environment.API_URL_PERFORMANCE_V2)
+    if ( request.url.startsWith(environment.API_URL_PERFORMANCE)
     ) {
       let notificationData:any=null;
 
       if (notificationMessages) {
-        notificationData = JSON.parse(notificationMessages);  
+        notificationData = JSON.parse(notificationMessages);
       }
-  
-      
+
+
       const user = accountService.userValue;
-  
+
       const clonedRequest = user?.token
       ? request.clone({
           setHeaders: {
@@ -71,7 +62,7 @@ export class TokenInterceptor implements HttpInterceptor {
           this.openCustomComponentSnackBar(snackData);
           this.notificationService.updateNotification(editStatusData)
           .pipe(
-            switchMap(() => 
+            switchMap(() =>
               this.notificationService.updateNotificationsCenter(notificationData.userId)
             )
           )
@@ -89,13 +80,13 @@ export class TokenInterceptor implements HttpInterceptor {
             centerTextId: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).id,
             status: this.notificationService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.FAILED_STATUS).id
           };
-      
+
           let snackData: SnackData = {
             type: "FAILED",
             title: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).title,
             subtitle: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).body
           };
-          
+
           this.openCustomComponentSnackBar(snackData);
           this.notificationService.updateNotification(editStatusData)
             .pipe(
@@ -104,12 +95,12 @@ export class TokenInterceptor implements HttpInterceptor {
             .subscribe(notifications => {
               this.store.dispatch(updateNotifications({ notifications }));
             });
-        } 
+        }
         return throwError(error);
       })
-      
+
     );
-      
+
 
     }
     return next.handle(request);

@@ -189,17 +189,19 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     });
   }
 
-  editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyProduced: number) {
+  editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyEdited: number) {
+    console.log(energyEdited)
     let objData: any = {
       id: data.id,
       siteName: data?.siteName,
       year: this.selectedYear,
       monthSelected: month,
       monthSelectedName: monthName,
-      energyProduced: energyProduced > 0 ? energyProduced : '',
-      isCreated: data.isCreated
+      energyValue: energyEdited? energyEdited : '',
+      isCreated: data.isCreated,
+      energyType: this.selectedEnergyType
     }
-
+    console.log(objData)
     this.editedClient = objData
     this.updDraweStateEdit(true);
   }
