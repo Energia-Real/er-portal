@@ -60,18 +60,6 @@ export class AuthService {
     return this.http.get<any>(`${environment.API_URL_AUTH_V1}/usuario`, httpOptions);
   }
 
-  forgotPassword(email: string): Observable<any> {
-    const url = `${environment.API_URL_AUTH_V2}/ForgotPassword?email=${email}`;
-
-    return this.http.post<any>(url, null);
-  }
-
-  resetyPassword(data: any): Observable<any> {
-    const url = `${environment.API_URL_AUTH_V2}/ResetPassword`;
-
-    return this.http.post<any>(url, data);
-  }
-
   getDecryptedUser() {
     const encryptedUser = localStorage.getItem('userEnergiaReal');
 

@@ -15,12 +15,15 @@ export class NotificationComponent implements OnDestroy {
   CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
   EDIT = NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
   DELETE = NOTIFICATION_CONSTANTS.DELETE;
-  ERRORS = NOTIFICATION_CONSTANTS.ERRORS;
-
+  ERRORS = NOTIFICATION_CONSTANTS.ERRORS; // DEBE VERIFICARSE LA IMPLEMENTACVION DE MULTIPLES ERRORES Y LAS CONSTANTES
+  //EN VEZ DE LLAMARSE ERRORS PODRIA SER MULTIPLE_ERRORS_TYPE, UN POCO MAS DESCRIPTIVO 
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE; 
   constructor(
     public dialogRef: MatDialogRef<NotificationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: notificationData
-  ) { }
+  ) {
+    console.log(data)
+   }
 
   closeDialog(): void {
     this.dialogRef.close();

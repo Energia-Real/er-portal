@@ -3,7 +3,7 @@
         <div class="col-span-2 md:col-span-1">
             <div class="c-card-info-site-details" *ngIf="!showAlert else notData">
                 <div *ngFor="let data of siteDetails?.primaryElements; let idx = index"
-                    [ngClass]="{'card-container-50': idx < 2, 'card-container-33': idx >= 2}">
+                    [ngClass]="{'c-card-50': idx < 2, 'c-card-33': idx >= 2}">
                     <div class="card-info">
                         <h1>{{ data.title }}</h1>
                         <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
@@ -12,7 +12,7 @@
 
                 <div class="separator-cards"></div>
 
-                <div *ngFor="let data of siteDetails?.additionalItems" class="card-container-33">
+                <div *ngFor="let data of siteDetails?.additionalItems" class="c-card-33">
                     <div class="card-info" >
                         <h1>{{ data.title }}</h1>
                         <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
@@ -31,6 +31,18 @@
                 <div class="loader"></div>
             </div>
 
+            
+            <div
+                *ngIf="loaderMap"
+                class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
+                <mat-progress-spinner
+                [color]="'primary'"
+                [mode]="'indeterminate'"
+                [diameter]="40"
+                class="custom-spinner"
+                >
+                </mat-progress-spinner>
+            </div>
             <iframe class="iframe" *ngIf="!loaderMap" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
                 [src]="urlMap" allowfullscreen>
             </iframe>

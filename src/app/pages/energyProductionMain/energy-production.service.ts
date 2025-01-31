@@ -13,7 +13,7 @@ import * as entity from './energy-production-model';
 export class EnergyProductionService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_ENERGY_PERFORMANCE_V1;
+  private API_URL = environment.API_URL_PERFORMANCE;
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
@@ -25,7 +25,7 @@ export class EnergyProductionService implements OnDestroy {
       .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
-      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+      map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
@@ -37,7 +37,7 @@ export class EnergyProductionService implements OnDestroy {
       .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
-      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+      map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
@@ -49,7 +49,7 @@ export class EnergyProductionService implements OnDestroy {
       .set('name', name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
-      map((response) => Mapper.getEnergyProdDataDataMapper(response))
+      map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
@@ -61,11 +61,24 @@ export class EnergyProductionService implements OnDestroy {
   }
 
   patchDataEnergyProd(data: entity.DataPatchEnergyProd) {
-    const url = `${this.API_URL}/EditEnergyProduced`;
+    const url = `${this.API_URL}/energy/Production`;
 
     return this.http.put<any>(url, data);
   }
 
+  patchDataEnergyCon(data: entity.DataPatchEnergyProd) {
+    const url = `${this.API_URL}/energy/Consumption`;
+
+    return this.http.put<any>(url, data);
+  }
+
+  
+  patchDataEnergyEstim(data: entity.DataPatchEnergyProd) {
+    const url = `${this.API_URL}/energy/Estimated`;
+
+    return this.http.put<any>(url, data);
+  }
+  
   downloadExcel(): Observable<Blob> {
     const url = `${this.API_URL}/DownloadExcelTemplate`;
 

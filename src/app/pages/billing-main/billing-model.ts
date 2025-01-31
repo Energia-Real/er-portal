@@ -107,6 +107,14 @@ export interface FiltersBilling {
   page: number;
 }
 
+export interface UpdateBilling {
+  generatedEnergyKwh: number;
+  subtotal: number;
+  iva: number;
+  total: number;
+  status: number,
+  invoiceId: string
+}
 
 export interface CreateInvoice {
   clientId: string;

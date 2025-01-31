@@ -8,13 +8,17 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { DrawerGeneral } from '@app/shared/models/general-models';
+import { DrawerGeneral, FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
-import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { EnergyProductionService } from '../energy-production.service';
 import * as entity from '../energy-production-model';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { MatDialog } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
 
 
 @Component({
@@ -22,11 +26,13 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
   templateUrl: './energy-production.component.html',
   styleUrl: './energy-production.component.scss',
   providers: [
-    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() } 
+    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() }
   ]
 })
 export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -64,10 +70,10 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     { value: 2024 },
   ];
 
-  energyTypes: {value:number,description:string}[]=[
-    {value:1,description:"Energy production"},
-    {value:2,description:"Energy consumption"},
-    {value:3,description:"Energy estimated"},
+  energyTypes: { value: number, description: string }[] = [
+    { value: 1, description: "Energy production" },
+    { value: 2, description: "Energy consumption" },
+    { value: 3, description: "Energy estimated" },
   ];
 
   drawerOpenPlant: boolean = false;
@@ -83,14 +89,19 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   selectedFile: File | null = null;
 
-  selectedEnergyType: number= 1; 
+  selectedEnergyType: number = 1;
 
 
   constructor(
-    private store: Store,
+    private store: Store<{ filters: FilterState }>,
     private notificationService: OpenModalsService,
+    public dialog: MatDialog,
+    private notificationDataService: NotificationDataService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
+
+    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;
       if (this.paginator) this.paginator.pageSize = size;
@@ -116,7 +127,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getData(1,content)
+      this.getData(1, content)
     })
   }
 
@@ -127,7 +138,10 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   }
 
   setYear() {
-    this.selectedYear = this.years[0].value;
+    this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+      this.selectedYear = generalFilters.year
+      this.getData(1, this.searchValue);
+    });
   }
 
   getDataResponse(page: number, name: string) {
@@ -175,20 +189,19 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     });
   }
 
-
-
-
-  editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyProduced: number) {
+  editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyEdited: number) {
+    console.log(energyEdited)
     let objData: any = {
       id: data.id,
       siteName: data?.siteName,
       year: this.selectedYear,
       monthSelected: month,
       monthSelectedName: monthName,
-      energyProduced: energyProduced > 0 ? energyProduced : '',
-      isCreated: data.isCreated
+      energyValue: energyEdited? energyEdited : '',
+      isCreated: data.isCreated,
+      energyType: this.selectedEnergyType
     }
-
+    console.log(objData)
     this.editedClient = objData
     this.updDraweStateEdit(true);
   }
@@ -226,7 +239,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0]; 
+    this.selectedFile = event.target.files[0];
     this.uploadExcel();
   }
 
@@ -236,10 +249,9 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
         next: (response) => {
           this.completionMessage(true);
         },
-        error: error => {
-          const msg = error?.error?.detail.replace(/- /g, '<br>- ')
-          this.notificationService.notificacion(msg, 'alert');
-          console.log(error?.error);
+        error: (error: HttpErrorResponse) => {
+          const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+          this.modalErrors(errorMessages);
         }
       });
     }
@@ -264,30 +276,38 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   }
 
   onEnergyTypeChange(event: any): void {
-    const selectedValue = event.value; 
-    this.selectedEnergyType=selectedValue;
+    const selectedValue = event.value;
+    this.selectedEnergyType = selectedValue;
     console.log(selectedValue)
-    if(selectedValue==1){
+    if (selectedValue == 1) {
       this.getDataResponse(1, "");
     }
-    if(selectedValue==2){
+    if (selectedValue == 2) {
       this.getConsumptionDataResponse(1, "");
     }
-    if(selectedValue==3){
+    if (selectedValue == 3) {
       this.getEstimatedDataResponse(1, "");
     }
   }
 
-  getData(page:number,content?: string | null){
-    if(this.selectedEnergyType==1){
+  getData(page: number, content?: string | null) {
+    if (this.selectedEnergyType == 1) {
       this.getDataResponse(page, content!);
     }
-    if(this.selectedEnergyType==2){
+    if (this.selectedEnergyType == 2) {
       this.getConsumptionDataResponse(page, content!);
     }
-    if(this.selectedEnergyType==3){
+    if (this.selectedEnergyType == 3) {
       this.getEstimatedDataResponse(page, content!);
     }
+  }
+
+  modalErrors(errors: any) {
+    const dataNotificationModal: notificationData = this.notificationDataService.errors(errors)!;
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    })
   }
 
   ngOnDestroy(): void {
@@ -300,8 +320,8 @@ export function getPaginatorIntl() {
   const paginatorIntl = new MatPaginatorIntl();
 
   paginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {
-    const totalPages = Math.ceil(length / pageSize);  
-    return `${page + 1} of ${totalPages}`; 
+    const totalPages = Math.ceil(length / pageSize);
+    return `${page + 1} of ${totalPages}`;
   };
 
   return paginatorIntl;

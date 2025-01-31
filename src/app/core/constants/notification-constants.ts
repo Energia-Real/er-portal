@@ -8,12 +8,11 @@ export const NOTIFICATION_CONSTANTS = {
   EDIT_CONFIRM_TYPE: 'Edit_Confirm',
   ADD_CONFIRM_TYPE: 'Add_Confirm',
   DELETE_CONFIRM_TYPE: 'Delete_Confirm',
-  ERROR_NOTIFICATION_TYPE: 'Error Notification',
   REMINDER_TYPE: 'Reminder',
   WARNING_TYPE: 'Warning',
   INFORMATION_TYPE: 'Information',
   CANCEL_TYPE: 'Cancel',
-  ERROR_TYPE: 'Error',
+  ERROR_TYPE: 'Error_Notification',
 
 
   //Data for notification statuses
@@ -75,4 +74,10 @@ export const NOTIFICATION_CONSTANTS = {
   EDIT_GENERAL_ERROR: 'Edit_General_Error',
 
 
+  //MENSAJES CONSTANTES DE NOTIFICACIONES (NO SE CUIENTA CON LAS RESPUIESTAS DE ERROR YA QUE SON SERVICIOS EXTERNOS COMO TOMORROW io) 
+  ERROR_TITLE_WEATHER_DATA : 'Data not foud',
+  ERROR_CONTENT_WEATHER_DATA : 'Error loading Weather data',
+
+  ERROR_TITLE_TIME_ZONE : 'Data not foud',
+  ERROR_CONTENT_TIME_ZONE : 'Error loading Time Zone Place',
 };
