@@ -2,7 +2,7 @@
     <span>Working progress<span class="dots"></span></span>
 </div> -->
 <div class="c-roc">
-    <!-- <div class="content content-elements">
+  <!-- <div class="content content-elements">
     <div class="content-header">
       <h1 class="label-700-24">Information</h1>
       <button class="btn-action-add">
@@ -24,7 +24,7 @@
     </div>
   </div> -->
 
-    <!-- <div class="content content-elements ">
+  <!-- <div class="content content-elements ">
       <div class="content-header">
         <h1 class="label-700-24">Services providers</h1>
       </div>
@@ -67,7 +67,7 @@
       </div>
     </div> -->
 
-    <!-- <div class="separator-cards"></div>
+  <!-- <div class="separator-cards"></div>
 
     <div class="content content-elements ">
       <div class="content-header">
@@ -92,7 +92,7 @@
       </div>
     </div> -->
 
-    <!-- <div class="separator-cards"></div>
+  <!-- <div class="separator-cards"></div>
 
   <div class="c-card-medium">
     <div class="card-medium">
@@ -213,7 +213,7 @@
 
   <div class="separator-cards"></div> -->
 
-    <!-- <div class="content content-elements border-card">
+  <!-- <div class="content content-elements border-card">
     <div class="content-header">
       <h1 class="label-700-24">Asset operations overview</h1>
     </div>
@@ -487,209 +487,237 @@
     </div>
   </div> -->
 
-    <div class="separator-cards"></div>
+  <div class="separator-cards"></div>
 
-    <div class="content content-elements">
-        <div class="content-header">
-            <h1 class="label-700-24">Plants event summary</h1>
+  <div class="content content-elements">
+    <div class="content-header">
+      <h1 class="label-700-24">Plants event summary</h1>
 
-            <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              
-              <mat-menu #menu="matMenu" [overlapTrigger]="false">
-                <div class="c-option-filters">
-                  <div class="header-filter">
-                    <h1>Filter</h1>
-                    <span class="material-symbols-outlined close-icon" (click)="menuTrigger.closeMenu()">
-                      close
-                    </span>
-                  </div>
-              
-                  <div class="content-filters" (click)="$event.stopPropagation()">
-                    <div class="c-input">
-                      <p>Severity:</p>
-                      <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="contractTypeId" placeholder="Type of contract" disableRipple>
-                          <mat-option [value]="cat" *ngFor="let cat of catSeverety">
-                            {{ cat?.description || '-' }}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                </div>
-              </mat-menu>
-              
+      <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu" [overlapTrigger]="false">
+        <div class="c-option-filters">
+          <div class="header-filter">
+            <h1>Filter</h1>
+            <span class="material-symbols-outlined close-icon" (click)="menuTrigger.closeMenu()">
+              close
+            </span>
+          </div>
+
+          <div class="content-filters" (click)="$event.stopPropagation()">
+            <form [formGroup]="formFilters">
+              <div class="c-input">
+                <p>Severity:</p>
+                <mat-form-field class="select-ER" appearance="outline">
+                  <mat-select formControlName="severety" placeholder="" disableRipple>
+                    <mat-option value="">All</mat-option>
+                    <mat-option [value]="cat.value" *ngFor="let cat of catSeverety">
+                      {{ cat?.description || '-' }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="c-input">
+                <p>Group:</p>
+                <mat-form-field class="select-ER" appearance="outline">
+                  <mat-select formControlName="group" placeholder="" disableRipple>
+                    <mat-option value="">All</mat-option>
+                    <mat-option [value]="cat.value" *ngFor="let cat of catGroup">
+                      {{ cat?.description || '-' }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="c-input">
+                <p>Order:</p>
+                <mat-form-field class="select-ER" appearance="outline">
+                  <mat-select formControlName="order" placeholder="" disableRipple>
+                    <mat-option value="">All</mat-option>
+                    <mat-option [value]="cat.value" *ngFor="let cat of catOrder">
+                      {{ cat?.description || '-' }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </form>
+
+          </div>
         </div>
+      </mat-menu>
 
-        <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">
-            <owl-carousel-o [options]="customOptions">
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-blue.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template carouselSlide>
-                    <div class="c-content-caroucel">
-                        <div class="caroucel-info">
-                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
-                            <div>
-                                <h1>Plant name ...</h1>
-                                <h2>Inverter: Operating status</h2>
-                                <span>2 hours ago</span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-
-            </owl-carousel-o>
-        </div>
     </div>
 
-    <div class="separator-cards"></div>
+    <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-blue.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+      </owl-carousel-o>
+    </div>
+  </div>
+
+  <div class="separator-cards"></div>
 
 </div>
 
 <ng-template #notDataTable>
-    <mat-icon color="warn">cancel_outlined</mat-icon>
+  <mat-icon color="warn">cancel_outlined</mat-icon>
 </ng-template>

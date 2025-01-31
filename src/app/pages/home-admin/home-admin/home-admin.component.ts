@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
@@ -105,10 +106,6 @@ export class HomeAdminComponent {
 
   catSeverety: any = [
     {
-      value: '',
-      description: 'all'
-    },
-    {
       value: '1',
       description: 'Insignificant'
     },
@@ -127,6 +124,24 @@ export class HomeAdminComponent {
     {
       value: '5',
       description: '?'
+    },
+  ]
+
+  catGroup: any = [
+    {
+      value: '1',
+      description: 'BreackDown'
+    },
+    {
+      value: '2',
+      description: 'Curtailment'
+    },
+  ]
+
+  catOrder: any = [
+    {
+      value: '1',
+      description: 'Lastest first'
     },
   ]
 
@@ -157,6 +172,17 @@ export class HomeAdminComponent {
     },
     nav: false
   }
+
+  formFilters = this.fb.group({
+    severety: [''],
+    group: [''],
+    order: [''],
+  });
+
+
+  constructor(
+    private fb: FormBuilder,
+  ) { }
 
 
 

@@ -6,6 +6,7 @@ import { HomeAdminComponent } from './home-admin/home-admin.component';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     HomeAdminRoutingModule,
     MessageNoDataComponent,
     MaterialModule,
-    CarouselModule
+    CarouselModule,
+    ReactiveFormsModule
   ]
 })
 export class HomeAdminModule { }
