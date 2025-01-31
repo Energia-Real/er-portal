@@ -22,14 +22,14 @@ const routes: Routes = [
       {
         path: 'backoffice-home', 
         loadChildren: HomeBackOfficeModule, 
-        canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice']} 
+        // canActivate: [redirectGuard, FilterGuard],
+        // data: { roles: ['BackOffice']} 
       },
       {
         path: 'admin-home', 
         loadChildren: HomeAdminModule, 
-        canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Admin']}  
+        // canActivate: [redirectGuard, FilterGuard],
+        // data: { roles: ['Admin']}  
       },
       {
         path: 'client-home', 

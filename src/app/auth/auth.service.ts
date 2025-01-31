@@ -54,7 +54,7 @@ export class AuthService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${dataUser.token}`
+        'Authorization': `Bearer ${dataUser?.token || ''}`
       })
     };
     return this.http.get<any>(`${environment.API_URL_AUTH_V1}/usuario`, httpOptions);

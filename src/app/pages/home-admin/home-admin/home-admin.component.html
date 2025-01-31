@@ -213,7 +213,7 @@
 
   <div class="separator-cards"></div> -->
 
-  <div class="content content-elements border-card">
+  <!-- <div class="content content-elements border-card">
     <div class="content-header">
       <h1 class="label-700-24">Asset operations overview</h1>
     </div>
@@ -485,7 +485,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="separator-cards"></div>
 
@@ -498,9 +498,67 @@
         <button mat-menu-item>Filter</button>
       </mat-menu>
     </div>
+
+    <div class="carousel-container">
+      <button class="carousel-btn prev">&#8249;</button>
+      <div class="carousel-track">
+        <div class="carousel-item">
+          <div class="carousel-content">Item 1</div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-content">Item 2</div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-content">Item 3</div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-content">Item 4</div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-content">Item 5</div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-content">Item 6</div>
+        </div>
+      </div>
+      <button class="carousel-btn next">&#8250;</button>
+    </div>
   </div>
 </div>
 
 <ng-template #notDataTable>
   <mat-icon color="warn">cancel_outlined</mat-icon>
 </ng-template>
+
+<script>
+  const track = document.querySelector('.carousel-track');
+  const items = document.querySelectorAll('.carousel-item');
+  const prevButton = document.querySelector('.carousel-btn.prev');
+  const nextButton = document.querySelector('.carousel-btn.next');
+
+  let currentIndex = 0;
+  const itemsToShow = 4;
+  const itemWidth = items[0].offsetWidth;
+
+  function updateCarousel() {
+    const offset = -(currentIndex * itemWidth);
+    track.style.transform = `translateX(${offset}px)`;
+  }
+
+  nextButton.addEventListener('click', () => {
+    if (currentIndex < items.length - itemsToShow) {
+      currentIndex++;
+      updateCarousel();
+    }
+  });
+
+  prevButton.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateCarousel();
+    }
+  });
+
+  // Initialize
+  updateCarousel();
+</script>
