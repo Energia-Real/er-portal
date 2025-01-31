@@ -499,29 +499,70 @@
       </mat-menu>
     </div>
 
-    <div class="carousel-container">
-      <button class="carousel-btn prev">&#8249;</button>
-      <div class="carousel-track">
-        <div class="carousel-item">
-          <div class="carousel-content">Item 1</div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-content">Item 2</div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-content">Item 3</div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-content">Item 4</div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-content">Item 5</div>
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-content">Item 6</div>
-        </div>
-      </div>
-      <button class="carousel-btn next">&#8250;</button>
+    <div class="c-caroucel">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-blue.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>Plant name ...</h1>
+                <h2>Inverter: Operating status</h2>
+                <span>2 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+  
+      </owl-carousel-o>
     </div>
   </div>
 </div>

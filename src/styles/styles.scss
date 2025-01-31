@@ -535,6 +535,16 @@ select {
   }
 }
 
+.owl-carousel .owl-item img {
+  width: unset !important;
+}
+
+.owl-carousel.owl-drag .owl-item {
+  width: 280px !important;
+  justify-content: center!important;
+  display: flex!important;
+  border-right: 2px solid #CFCFCF!important;
+}
 
 
 .c-input {
@@ -862,6 +872,7 @@ input[type="number"]:focus {
   .mat-mdc-paginator-page-size {
     display: none;
   }
+
   .mat-mdc-paginator-range-label {
     font-weight: bold;
   }
@@ -1030,7 +1041,7 @@ input[type="number"]:focus {
   }
 }
 
-.mdc-snackbar__surface{
+.mdc-snackbar__surface {
   border-radius: 10px !important;
 }
 

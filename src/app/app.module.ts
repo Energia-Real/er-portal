@@ -17,6 +17,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { drawerReducer } from './core/store/reducers/drawer.reducer';
 import { filterReducer } from './core/store/reducers/filters.reducer';
 import { notificationsReducer } from './core/store/reducers/notifications.reducer';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -26,6 +27,7 @@ import { notificationsReducer } from './core/store/reducers/notifications.reduce
     HttpClientModule,
     GoogleMapsModule,
     CoreModule,
+    CarouselModule,
     StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer, notifications:notificationsReducer }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
   ],

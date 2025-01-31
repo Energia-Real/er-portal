@@ -3,6 +3,9 @@
 @import "tailwindcss/utilities";
 @import 'tippy.js/dist/tippy.css';
 
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
 @import url('./styles/general_variables.scss');
 @import url('./styles/table.scss');
 @import url('./styles/styles.scss');
