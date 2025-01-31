@@ -334,5 +334,37 @@
             }
         }
     }
+}
 
+
+.c-option-filters {
+    // width: 80%;
+    width: 350px;
+    height: 350px;
+    border-radius: 26px;
+
+    .header-filter {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgb(189, 49, 49);
+        padding: 10px;
+        color: white;
+        margin-bottom: 13px;
+        h1 {
+            margin: 0;
+        }
+        span {
+            cursor: pointer;
+        }
+    }
+
+    .content-filters {
+        width: 80%;
+        padding: 10px;
+        .c-input {
+            width: 100%;
+        }
+    }
 }

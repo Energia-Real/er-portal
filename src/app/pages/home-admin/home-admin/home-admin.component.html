@@ -1,3 +1,695 @@
-<div class="c-working-progress">
+<!-- <div class="c-working-progress">
     <span>Working progress<span class="dots"></span></span>
+</div> -->
+<div class="c-roc">
+    <!-- <div class="content content-elements">
+    <div class="content-header">
+      <h1 class="label-700-24">Information</h1>
+      <button class="btn-action-add">
+        <span class="material-symbols-outlined">download</span>
+        Download Infomation
+      </button>
+    </div>
+
+    <div class="card-elements">
+      <div *ngFor="let data of data;" class="c-card-20">
+        <div class="card-info ">
+          <img [src]="data.icon" alt="">
+          <div>
+            <h1>{{ data.title }}</h1>
+            <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+    <!-- <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">Services providers</h1>
+      </div>
+
+      <div class="card-elements">
+        <div *ngFor="let data of dataTwo;" class="c-card-25">
+          <div class="card-info">
+            <img [src]="data.icon" alt="">
+            <div>
+              <h1>{{ data.title }}</h1>
+              <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">QEM Devices</h1>
+      </div>
+
+      <div class="card-elements">
+        <div *ngFor="let data of dataThree;" class="c-card-33">
+          <div class="card-info card-info-three">
+            <img [src]="data.icon" alt="">
+            <div class="card-info-two-row">
+              <div>
+                <h1>{{ data.title }}</h1>
+                <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+              </div>
+              <div *ngIf="data.titleTwo">
+                <h1>{{ data.titleTwo }}</h1>
+                <h2 *ngIf="data?.descriptionTwo else notDataTable">{{ data.descriptionTwo }}</h2>
+              </div>
+              <h1 *ngIf="data?.descriptionThree">{{ data.descriptionThree }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- <div class="separator-cards"></div>
+
+    <div class="content content-elements ">
+      <div class="content-header">
+        <h1 class="label-700-24">Asset monitoring parameter</h1>
+      </div>
+
+      <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-1 position-relative">
+          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+
+            <mat-tab label="Observed Parameters">
+            </mat-tab>
+
+            <mat-tab label="Live KPI">
+            </mat-tab>
+
+            <mat-tab label="Cumulative KPI">
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- <div class="separator-cards"></div>
+
+  <div class="c-card-medium">
+    <div class="card-medium">
+      <h1>Plant status</h1>
+
+      <div class="c-content-medium">
+        <div>
+          <p>Communication</p>
+        </div>
+
+        <div class="c-content-porcentage">
+          <span> </span>
+          <p>100%</p>
+        </div>
+      </div>
+
+      <div class="c-content-medium">
+        <div>
+          <p>Plant</p>
+        </div>
+
+        <div class="c-content-porcentage">
+          <span> </span>
+          <p>100%</p>
+        </div>
+      </div>
+
+      <div class="c-content-medium">
+        <div>
+          <p>Grid</p>
+        </div>
+
+        <div class="c-content-porcentage">
+          <span> </span>
+          <p>100%</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card-medium">
+      <h1>Assets Availability</h1>
+
+      <div class="c-content-medium c-content-medium-three">
+        <div>
+          <p>Plant</p>
+        </div>
+
+        <div class="c-content-porcentage">
+          <span> </span>
+          <p>100%</p>
+        </div>
+
+        <div class="c-option-medium">
+          <div>5</div>
+          <div>5</div>
+          <div>5</div>
+        </div>
+      </div>
+    
+      <div class="c-content-medium c-content-medium-three">
+        <div>
+          <p>Inverter</p>
+        </div>
+
+        <div class="c-content-porcentage">
+          <span> </span>
+          <p>100%</p>
+        </div>
+
+        <div class="c-option-medium">
+          <div>5</div>
+          <div>5</div>
+          <div>5</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-medium">
+      <div class="c-solar-co2">
+        <div class="co2">
+          <div>
+            <div class="title-left">
+              <h1>CO2 Saving</h1>
+
+              <div>
+                <h2>11.8</h2>
+                <h3> tCO2</h3>
+              </div>
+            </div>
+
+            <div class="title-right">
+              <div class="left">
+                <img src="../../../../assets/icons/equivalent.svg" alt="">
+                <h2 class="text-base font-normal">Equivalent to 230 trees</h2>
+              </div>
+
+              <div>
+                <img src="../../../../assets/icons/eletric.svg" alt="">
+                <h2 class="text-base font-normal">Equivalent to xxx <br> electric car full charges.</h2>
+              </div>
+            </div>
+          </div>
+          <div class="bar-progresss">
+            <h1>kWh /m / anual</h1>
+
+            <div class="w-full barr h-6 bg-gray-200 rounded-full dark:bg-gray-700">
+              <div class="h-6 bg-blue-600 rounded-full dark:bg-blue-500" [ngStyle]="{ width: co2Progress }"></div>
+            </div>
+
+            <h2>Peers: 117 kWh /m</h2>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="separator-cards"></div> -->
+
+    <!-- <div class="content content-elements border-card">
+    <div class="content-header">
+      <h1 class="label-700-24">Asset operations overview</h1>
+    </div>
+
+    <div class="c-content c-taps">
+      <div class="position-relative">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+          <mat-tab label="Inverter">
+
+            <div class="c-interver">
+              <div class="filters-inverter">
+                <div>
+                  <span></span>
+                  <h1>Excelent (0% - 5)</h1>
+                </div>
+                <div>
+                  <span></span>
+                  <h1>Good (5%-7.5%)</h1>
+                </div>
+                <div>
+                  <span></span>
+                  <h1>Average (7.5% - 10%)</h1>
+                </div>
+                <div>
+                  <span></span>
+                  <h1>Poor (10%-15%)</h1>
+                </div>
+                <div>
+                  <span></span>
+                  <h1>Worst (15%-20%)</h1>
+                </div>
+                <div>
+                  <span></span>
+                  <h1>Error</h1>
+                </div>
+
+                <button class="btn-show-all">
+                  <span class="material-symbols-outlined">visibility</span>
+                  Show all
+                </button>
+
+              </div>
+
+              <div class="c-cards-inverters">
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+                <div class="card-inverter card-excelent">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-good">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-good">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-good">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-average">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-average">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-average">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-worst">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-worst">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-worst">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-poor">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+                <div class="card-inverter card-poor">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-error">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+                <div class="card-inverter card-error">
+                  <div class="header-inverter">
+                    <h1>INVERTER-01</h1>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+
+                  <div class="footer-inverter">
+                    <h1>0.57 kW / kWp</h1>
+                    <h2>05-11-2024 10:05</h2>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+          </mat-tab>
+          <mat-tab label="Transformer"></mat-tab>
+          <mat-tab label="Weather Station"></mat-tab>
+          <mat-tab label="HT Panel"></mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <div class="content-float">
+        <div class="position-relative">
+          <div class="c-input-search w-100">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input class="block w-full" type="text" placeholder="Search">
+          </div>
+        </div>
+
+        <div class="position-relative select-download">
+          <div class="relative w-50 c-input-select">
+            <mat-form-field class="select-general" appearance="outline">
+              <mat-select [disabled]="false" [(value)]="assetOperationsSelect"
+                (selectionChange)="onEnergyTypeChange($event)">
+                <mat-option *ngFor="let data of assetOperations" [value]="data.value">
+                  {{ data.description }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+        <div class="btns-excel">
+          <button class="btn-action-add">
+            <span class="material-symbols-outlined">download</span>
+            Download Template
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements">
+        <div class="content-header">
+            <h1 class="label-700-24">Plants event summary</h1>
+
+            <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              
+              <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                <div class="c-option-filters">
+                  <div class="header-filter">
+                    <h1>Filter</h1>
+                    <span class="material-symbols-outlined close-icon" (click)="menuTrigger.closeMenu()">
+                      close
+                    </span>
+                  </div>
+              
+                  <div class="content-filters" (click)="$event.stopPropagation()">
+                    <div class="c-input">
+                      <p>Severity:</p>
+                      <mat-form-field class="select-ER" appearance="outline">
+                        <mat-select formControlName="contractTypeId" placeholder="Type of contract" disableRipple>
+                          <mat-option [value]="cat" *ngFor="let cat of catSeverety">
+                            {{ cat?.description || '-' }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </mat-menu>
+              
+        </div>
+
+        <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">
+            <owl-carousel-o [options]="customOptions">
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-blue.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-red.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>Plant name ...</h1>
+                                <h2>Inverter: Operating status</h2>
+                                <span>2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+            </owl-carousel-o>
+        </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
 </div>
+
+<ng-template #notDataTable>
+    <mat-icon color="warn">cancel_outlined</mat-icon>
+</ng-template>

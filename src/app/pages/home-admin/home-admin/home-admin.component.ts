@@ -7,79 +7,79 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrl: './home-admin.component.scss'
 })
 export class HomeAdminComponent {
-  data:any = [
+  data: any = [
     {
-      icon : '../../../../../assets/icons/plantType.svg',
+      icon: '../../../../../assets/icons/plantType.svg',
       title: 'Plant type',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/moutingTech.svg',
+      icon: '../../../../../assets/icons/moutingTech.svg',
       title: 'Mounting technology',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/noOfSite.svg',
+      icon: '../../../../../assets/icons/noOfSite.svg',
       title: 'No of sites',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/plantTimeZone.svg',
+      icon: '../../../../../assets/icons/plantTimeZone.svg',
       title: 'Plant time zone',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/currency.svg',
+      icon: '../../../../../assets/icons/currency.svg',
       title: 'Currency',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/comssionDate.svg',
+      icon: '../../../../../assets/icons/comssionDate.svg',
       title: 'Commission date',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/tariff.svg',
+      icon: '../../../../../assets/icons/tariff.svg',
       title: 'Tariff',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/ficed.svg',
+      icon: '../../../../../assets/icons/ficed.svg',
       title: 'Ficed tilt anglee',
       description: 'N/A',
     },
   ]
-  
-  dataTwo:any = [
+
+  dataTwo: any = [
     {
-      icon : '../../../../../assets/icons/epc.svg',
+      icon: '../../../../../assets/icons/epc.svg',
       title: 'EPC',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/oym.svg',
+      icon: '../../../../../assets/icons/oym.svg',
       title: 'O&M',
       description: 'N/A',
     },
   ]
-  
-  dataThree:any = [
+
+  dataThree: any = [
     {
-      icon : '../../../../../assets/icons/transformer.svg',
+      icon: '../../../../../assets/icons/transformer.svg',
       title: 'Transformer',
       description: 'N/A',
       titleTwo: 'Generic',
       descriptionTwo: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/inverter.svg',
+      icon: '../../../../../assets/icons/inverter.svg',
       title: 'Inverter',
       description: 'N/A',
       titleTwo: 'Solis Solis-60K-LV-5G',
       descriptionTwo: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/pvmodule.svg',
+      icon: '../../../../../assets/icons/pvmodule.svg',
       title: 'PV Module',
       description: 'N/A',
       titleTwo: 'Trina Sola',
@@ -88,19 +88,46 @@ export class HomeAdminComponent {
     },
   ]
 
-  assetOperations:any = [
+  assetOperations: any = [
     {
-      value :'1',
-      description :'Specific power (kW/kWp)'
+      value: '1',
+      description: 'Specific power (kW/kWp)'
     },
     {
-      value :'2',
-      description :'Active power (kW)'
+      value: '2',
+      description: 'Active power (kW)'
     },
     {
-      value :'3',
-      description :'Irradiance'
+      value: '3',
+      description: 'Irradiance'
     }
+  ]
+
+  catSeverety: any = [
+    {
+      value: '',
+      description: 'all'
+    },
+    {
+      value: '1',
+      description: 'Insignificant'
+    },
+    {
+      value: '2',
+      description: 'State'
+    },
+    {
+      value: '3',
+      description: 'Low'
+    },
+    {
+      value: '4',
+      description: 'Medium'
+    },
+    {
+      value: '5',
+      description: '?'
+    },
   ]
 
   co2Progress: string = '25%'
@@ -130,6 +157,7 @@ export class HomeAdminComponent {
     },
     nav: false
   }
+
 
 
   onEnergyTypeChange(event: any): void {

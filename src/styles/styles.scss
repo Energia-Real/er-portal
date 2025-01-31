@@ -555,6 +555,10 @@ select {
   background-color: #F9731650!important;
 }
 
+.owl-carousel .owl-stage {
+  display: flex;
+}
+
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
   background-color: #F97316!important;
 }
