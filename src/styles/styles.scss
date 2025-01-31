@@ -546,6 +546,13 @@ select {
   border-right: 2px solid #CFCFCF!important;
 }
 
+.owl-theme .owl-dots .owl-dot span {
+  background-color: #F9731650!important;
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+  background-color: #F97316!important;
+}
 
 .c-input {
   text-align: left;

@@ -107,11 +107,11 @@ export class HomeAdminComponent {
   assetOperationsSelect: string = '1';
 
   customOptions: OwlOptions = {
-    loop: true,
+    loop: false,
     mouseDrag: true,
     touchDrag: true,
     pullDrag: true,
-    dots: false,
+    dots: true,
     navSpeed: 700,
     navText: ['', ''],
     responsive: {
@@ -128,7 +128,7 @@ export class HomeAdminComponent {
         items: 4
       }
     },
-    nav: true
+    nav: false
   }
 
 
