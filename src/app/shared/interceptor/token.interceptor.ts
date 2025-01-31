@@ -19,21 +19,15 @@ export class TokenInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
     private store: Store
-  ){
-
-  }
+  ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
-    if ( request.url.startsWith(environment.API_URL_PERFORMANCE)
-    ) {
+    if ( request.url.startsWith(environment.API_URL_PERFORMANCE)) {
       let notificationData:any=null;
 
-      if (notificationMessages) {
-        notificationData = JSON.parse(notificationMessages);
-      }
-
+      if (notificationMessages) notificationData = JSON.parse(notificationMessages);
 
       const user = accountService.userValue;
 
@@ -98,10 +92,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
         return throwError(error);
       })
-
     );
-
-
     }
     return next.handle(request);
   }
@@ -115,5 +106,4 @@ export class TokenInterceptor implements HttpInterceptor {
       panelClass: ['custom-snackbar']
     });
   }
-
 }

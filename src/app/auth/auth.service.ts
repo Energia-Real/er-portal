@@ -35,11 +35,11 @@ export class AuthService {
       })
     };
 
-    return this.http.post<{}>(`${environment.API_URL_AUTH_V1}/login`, { email, password }, httpOptions)
-      .pipe(map(user => {
-        const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user), 'secretKey').toString();
+    return this.http.post<entityGeneral.UserAuth>(`${environment.API_URL_AUTH_V1}/login`, { email, password }, httpOptions)
+      .pipe(map((user:entityGeneral.UserAuth) => {
+        const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user.response), 'secretKey').toString();
         localStorage.setItem('userEnergiaReal', encryptedUser);
-        this.userSubject.next(user);
+        this.userSubject.next(user.response);
         return user;
       }));
   }
@@ -54,7 +54,7 @@ export class AuthService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${dataUser.response.token}`
+        'Authorization': `Bearer ${dataUser.token}`
       })
     };
     return this.http.get<any>(`${environment.API_URL_AUTH_V1}/usuario`, httpOptions);

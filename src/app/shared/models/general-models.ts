@@ -17,6 +17,14 @@ export interface User {
   token?: string;
 }
 
+export interface UserAuth {
+  success: true,
+  response: {
+      token: string;
+      accessTo: string
+  }
+}
+
 export interface UserInfo {
   id: string,
   email: string,
