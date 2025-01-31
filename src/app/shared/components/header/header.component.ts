@@ -93,6 +93,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getFilters() {
     this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+      console.log(generalFilters);
+      
       const startMonthValue = generalFilters.startDate.split('-')[1];
       const endMonthValue = generalFilters.endDate!.split('-')[1];
 
@@ -156,7 +158,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     const generalFilters = {
       startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
       endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`,
-      year: this.selectedYearSelect?.value || this.selectedYear
+      year: this.selectedYearSelect?.value
     };
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
@@ -170,7 +172,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Actualiza los parámetros de la URL basándose en los filtros proporcionados.
    */
-  private updateUrlWithFilters(generalFilters: { startDate: string; endDate: string | null; year: number }): void {
+  updateUrlWithFilters(generalFilters: { startDate: string; endDate: string | null; year: number }): void {
     const params = new URLSearchParams(window.location.search);
 
     if (generalFilters.startDate) params.set('startday', generalFilters.startDate);

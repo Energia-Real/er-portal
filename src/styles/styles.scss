@@ -535,22 +535,32 @@ select {
   }
 }
 
-.c-select {
-  input {
-    border: 1px solid #949191 !important;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    font-size: 14px;
 
-    &::placeholder {
-      font-size: 11px;
-      font-weight: 500;
-      color: #6E6E6E;
-      line-height: normal;
-    }
-  }
+.extended {
+  width: 230px !important;
+}
+
+.owl-carousel .owl-item img {
+  width: unset !important;
+}
+
+.owl-carousel.owl-drag .owl-item {
+  width: 280px !important;
+  justify-content: center!important;
+  display: flex!important;
+  border-right: 2px solid #CFCFCF!important;
+}
+
+.owl-theme .owl-dots .owl-dot span {
+  background-color: #F9731650!important;
+}
+
+.owl-carousel .owl-stage {
+  display: flex;
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+  background-color: #F97316!important;
 }
 
 .c-input {
@@ -806,7 +816,8 @@ input[type="number"]:focus {
       display: flex;
       align-items: center;
       width: 88px;
-      min-height: 48px;
+      min-height: unset;
+      // min-height: 48px;
       padding: 0;
       border: 0;
 
@@ -878,6 +889,7 @@ input[type="number"]:focus {
   .mat-mdc-paginator-page-size {
     display: none;
   }
+
   .mat-mdc-paginator-range-label {
     font-weight: bold;
   }
@@ -1046,7 +1058,7 @@ input[type="number"]:focus {
   }
 }
 
-.mdc-snackbar__surface{
+.mdc-snackbar__surface {
   border-radius: 10px !important;
 }
 
