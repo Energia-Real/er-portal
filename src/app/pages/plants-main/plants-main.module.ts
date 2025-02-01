@@ -27,6 +27,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ObservedParametersComponent } from './plant-detail-home/monitoring/observed-parameters/observed-parameters.component';
 import { LiveKpiComponent } from './plant-detail-home/monitoring/live-kpi/live-kpi.component';
 import { ComulativeKpiComponent } from './plant-detail-home/monitoring/comulative-kpi/comulative-kpi.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { ComulativeKpiComponent } from './plant-detail-home/monitoring/comulativ
     MessageNoDataComponent,
     PdfViewerModule,
     NgxImageZoomModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    CarouselModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
