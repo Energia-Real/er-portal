@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <div *ngIf="!userInfo.clientes.length" class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+  <div *ngIf="userInfo.clientes.length" class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 position-relative">
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
         (selectedTabChange)="onTabChange($event)">
@@ -92,7 +92,7 @@
     </div>
   </div>
 
-  <div class="c-roc" *ngIf="userInfo.clientes.length">
+  <div class="c-roc" *ngIf="!userInfo.clientes.length">
     <!-- sección 1 -->
     <div class="content content-elements">
       <div class="content-header">
@@ -598,9 +598,819 @@
                 </div>
               </div>
             </mat-tab>
-            <mat-tab label="Transformer"></mat-tab>
-            <mat-tab label="Weather Station"></mat-tab>
-            <mat-tab label="HT Panel"></mat-tab>
+            <mat-tab label="Transformer">
+              <div class="c-interver">
+                <div class="filters-inverter">
+                  <div>
+                    <span></span>
+                    <h1>Excelent (0% - 5)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Good (5%-7.5%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Average (7.5% - 10%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Poor (10%-15%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Worst (15%-20%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Error</h1>
+                  </div>
+
+                  <button class="btn-show-all filter-selected">
+                    <span class="material-symbols-outlined">visibility</span>
+                    Show all
+                  </button>
+
+                </div>
+
+                <div class="c-cards-inverters">
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-poor">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-poor">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-error">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-error">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="Weather Station">
+              <div class="c-interver">
+                <div class="filters-inverter">
+                  <div>
+                    <span></span>
+                    <h1>Excelent (0% - 5)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Good (5%-7.5%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Average (7.5% - 10%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Poor (10%-15%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Worst (15%-20%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Error</h1>
+                  </div>
+
+                  <button class="btn-show-all filter-selected">
+                    <span class="material-symbols-outlined">visibility</span>
+                    Show all
+                  </button>
+
+                </div>
+
+                <div class="c-cards-inverters">
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-poor">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-poor">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-error">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-error">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab label="HT Panel">
+              <div class="c-interver">
+                <div class="filters-inverter">
+                  <div>
+                    <span></span>
+                    <h1>Excelent (0% - 5)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Good (5%-7.5%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Average (7.5% - 10%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Poor (10%-15%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Worst (15%-20%)</h1>
+                  </div>
+                  <div>
+                    <span></span>
+                    <h1>Error</h1>
+                  </div>
+
+                  <button class="btn-show-all filter-selected">
+                    <span class="material-symbols-outlined">visibility</span>
+                    Show all
+                  </button>
+
+                </div>
+
+                <div class="c-cards-inverters">
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-excelent">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-good">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-average">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-worst">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-poor">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                  <div class="card-inverter card-poor">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-error">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+
+                  <div class="card-inverter card-error">
+                    <div class="header-inverter">
+                      <h1>INVERTER-01</h1>
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+
+                    <div class="footer-inverter">
+                      <h1>N/A kW / kWp</h1>
+                      <h2>N/A</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
           </mat-tab-group>
         </div>
 
@@ -615,8 +1425,11 @@
           <div class="position-relative select-download">
             <div class="relative w-50 c-input-select">
               <mat-form-field class="select-general" appearance="outline">
-                <mat-select [disabled]="false">
-
+                <mat-select [disabled]="false" [(value)]="assetOperationsSelect"
+                  >
+                  <mat-option *ngFor="let data of assetOperations" [value]="data.value">
+                    {{ data.description }}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>

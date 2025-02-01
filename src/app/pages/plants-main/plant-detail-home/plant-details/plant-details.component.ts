@@ -381,6 +381,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.loadUserInfo()
+    this.completionMessage()
   }
 
   ngAfterViewInit() {
@@ -517,6 +518,17 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       data: dataNotificationModal
     });
 
+  }
+
+
+  completionMessage(edit = false) {
+    this.notificationService
+      .notificacion(
+        `¡We are working on building this module. It will be available soon.!`,
+        'alert',
+      )
+      .afterClosed()
+      .subscribe((_) => {});
   }
 
   ngOnDestroy(): void {
