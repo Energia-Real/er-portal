@@ -170,8 +170,8 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
       </table>
     </div>
-
   </div>
+  
   <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
     [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
     aria-label="Select page of periodic elements">

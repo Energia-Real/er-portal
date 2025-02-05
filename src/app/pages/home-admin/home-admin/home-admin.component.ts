@@ -1,13 +1,72 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home-admin',
   templateUrl: './home-admin.component.html',
   styleUrl: './home-admin.component.scss'
 })
-export class HomeAdminComponent {
+export class HomeAdminComponent implements OnInit {
+  private onDestroy$ = new Subject<void>();
+
+  dataSource = new MatTableDataSource<any>([]);
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
+  displayedColumns: string[] = [
+    'state',
+    'siteName',
+    'customer',
+  ];
+
+  dummyTabla: any[] = [
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+  ]
+
   data: any = [
     {
       icon: '../../../../../assets/icons/plantType.svg',
@@ -199,12 +258,13 @@ export class HomeAdminComponent {
     order: [''],
   });
 
-
   constructor(
     private fb: FormBuilder,
   ) { }
 
-
+ngOnInit(): void {
+  this.dataSource.data = this.dummyTabla;
+}
 
   onEnergyTypeChange(event: any): void {
     const selectedValue = event.value;

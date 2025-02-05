@@ -7,6 +7,7 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
 import { MaterialModule } from '@app/shared/material/material.module';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MessageNoDataComponent,
     MaterialModule,
     CarouselModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedComponensModule
   ]
 })
 export class HomeAdminModule { }

@@ -207,7 +207,7 @@ tr {
 .c-scroll-table {
     height: calc(100vh - 400px);
     overflow: scroll;
-  }
+}
 
 .table-container-scroll {
     width: 100%;
@@ -278,7 +278,47 @@ tr {
         margin: 0;
         line-height: 18px;
     }
+
+    .state-column {
+        width: 60px;
+        min-width: 60px;
+        max-width: 60px;
+    }
+
+    .state-table {
+        display: block;
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        text-align: center;
+        margin: auto;
+    }
 }
+
+.state-excelent {
+    background-color: #57B1B1;
+}
+
+.state-good {
+    background-color: #57B15F;
+}
+
+.state-average {
+    background: #B6BE4A;
+}
+
+.state-poor {
+    background: #F97316;
+}
+
+.state-worst {
+    background: #E40000;
+}
+
+.state-error {
+    background: #A0A0A0;
+}
+
 
 // INPUTS 
 .c-table-energy-input {
