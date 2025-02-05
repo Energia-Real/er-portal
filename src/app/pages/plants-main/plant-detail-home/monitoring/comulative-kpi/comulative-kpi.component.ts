@@ -13,27 +13,27 @@ private onDestroy$ = new Subject<void>();
 
   dataDummy:any = [
     {
-      icon : '../../../../../assets/icons/dcpower - active.svg',
+      icon : '../../../../../assets/icons/energy.export.svg',
       title: 'Energy export (MWh)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/hearsink - irradiation.svg',
+      icon : '../../../../../assets/icons/availability.svg',
       title: 'Availability daily (%)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/hearsink - irradiation.svg',
+      icon : '../../../../../assets/icons/inverter.availability.svg',
       title: 'Inverter availability (Energy based) (%)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/rms.svg',
+      icon : '../../../../../assets/icons/specific.yield.svg',
       title: 'Specific yield (kWh/kWp)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/dcpower - active.svg',
+      icon : '../../../../../assets/icons/inverter.daily.svg',
       title: 'Inverter breakdown loss (Energy based) (kWh)',
       description: 'N/A',
     }

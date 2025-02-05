@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <div *ngIf="userInfo.clientes.length" class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+  <div *ngIf="!userInfo.clientes.length" class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 position-relative">
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
         (selectedTabChange)="onTabChange($event)">
@@ -92,7 +92,7 @@
     </div>
   </div>
 
-  <div class="c-roc" *ngIf="!userInfo.clientes.length">
+  <div class="c-roc" *ngIf="userInfo.clientes.length">
     <!-- sección 1 -->
     <div class="content content-elements">
       <div class="content-header">

@@ -342,8 +342,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
- 
-
   plantData!: entity.DataPlant;
   dataRespoSystem!: entity.DataResponseSystem;
 
@@ -368,8 +366,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoadingWD = true; //LOADING PARA WHEATER DATA
   isLoadingTZ = true; // LOADING PARA TIME ZONE PLACE
   constructor(
-        private fb: FormBuilder,
-    
+    private fb: FormBuilder,
     private plantsService: PlantsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
@@ -381,7 +378,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.loadUserInfo()
-    this.completionMessage()
+    // this.completionMessage()
   }
 
   ngAfterViewInit() {
