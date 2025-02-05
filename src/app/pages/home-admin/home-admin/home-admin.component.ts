@@ -15,6 +15,7 @@ export class HomeAdminComponent implements OnInit {
   private onDestroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<any>([]);
+  dataSourcePlants = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
@@ -65,6 +66,95 @@ export class HomeAdminComponent implements OnInit {
       siteName: 'N/A',
       customer: 'N/A',
     },
+  ]
+
+  displayedColumnsPlant: string[] = [
+    'plantName',
+    'comm',
+    'alarms',
+    'inverterAsset',
+    'plantAvailability',
+    'gridAvailability',
+    'perfomanceRatio',
+    'activePower',
+    'irradiation',
+    'specificPower',
+  ]; 
+
+  dummyTablaPlant: any[] = [
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+   
   ]
 
   data: any = [
@@ -262,12 +352,16 @@ export class HomeAdminComponent implements OnInit {
     private fb: FormBuilder,
   ) { }
 
-ngOnInit(): void {
-  this.dataSource.data = this.dummyTabla;
-}
+  ngOnInit(): void {
+    this.dataSource.data = this.dummyTabla;
+    this.dataSourcePlants.data = this.dummyTablaPlant;
+  }
 
   onEnergyTypeChange(event: any): void {
     const selectedValue = event.value;
     console.log(selectedValue);
+  }
+
+  onFileSelected(event: any) {
   }
 }
