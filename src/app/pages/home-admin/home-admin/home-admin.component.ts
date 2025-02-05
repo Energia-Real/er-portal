@@ -123,7 +123,11 @@ export class HomeAdminComponent {
     },
     {
       value: '5',
-      description: '?'
+      description: 'High'
+    },
+    {
+      value: '6',
+      description: 'Critical'
     },
   ]
 
@@ -136,12 +140,28 @@ export class HomeAdminComponent {
       value: '2',
       description: 'Curtailment'
     },
+    {
+      value: '3',
+      description: 'Manual stop'
+    },
+    {
+      value: '4',
+      description: 'System OK'
+    },
+    {
+      value: '5',
+      description: 'Undefined'
+    },
   ]
 
   catOrder: any = [
     {
       value: '1',
-      description: 'Lastest first'
+      description: 'Lastest First'
+    },
+    {
+      value: '1',
+      description: 'Earliest First'
     },
   ]
 
