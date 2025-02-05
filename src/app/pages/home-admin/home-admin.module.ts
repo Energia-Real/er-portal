@@ -8,11 +8,13 @@ import { MaterialModule } from '@app/shared/material/material.module';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
+import { PlantsMainModule } from '../plants-main/plants-main.module';
 
 
 @NgModule({
   declarations: [
-    HomeAdminComponent
+    HomeAdminComponent,
+  
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { SharedComponensModule } from '@app/shared/components/shared-components.
     MaterialModule,
     CarouselModule,
     ReactiveFormsModule,
-    SharedComponensModule
+    SharedComponensModule,
+    PlantsMainModule 
   ]
 })
 export class HomeAdminModule { }
