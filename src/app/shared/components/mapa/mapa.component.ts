@@ -16,17 +16,18 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss']
 })
-export class MapaComponent implements AfterViewInit {
 
+
+
+export class MapaComponent implements AfterViewInit {
+  @Input()   tooltipsInfo: entity.statesResumeTooltip[] = [];
+  @Input() statesColors:any ={};
   private tippyInstance!: Instance | null;
-  tooltipsInfo: entity.statesResumeTooltip[] = [];
-  statesColors:any ={};
   selectedStates: string[] = [];
   filters$!: Observable<FilterState['filters']>;
   filters!: FilterState['filters'];
   generalFilters$!: Observable<FilterState['generalFilters']>;
   userInfo!: UserInfo;
-
 
   constructor(
     private store: Store<{ filters: FilterState }>,
@@ -38,21 +39,18 @@ export class MapaComponent implements AfterViewInit {
     private encryptionService: EncryptionService,
 
   ) {
-    this.filters$ = this.store.select(state => state.filters.filters);
-    this.filters$.subscribe(filters => {
-      this.filters = filters;
-    });
+    this.createTooltips();
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
     this.generalFilters$.subscribe(generalFilters=>{
-      this.getTooltipInfo(generalFilters);
-    })
+/*       this.getTooltipInfo(generalFilters);
+ */    })
   }
 
   ngAfterViewInit() {
     // Los tooltips se generan después de que se obtienen los datos
   }
 
-  getTooltipInfo(filters?: any) {
+  /* getTooltipInfo(filters?: any) {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
@@ -81,7 +79,7 @@ export class MapaComponent implements AfterViewInit {
         }
       });
     }
-  }
+  } */
 
   createTooltips() {
     const estados = this.el.nativeElement.querySelectorAll('path');
@@ -134,25 +132,7 @@ export class MapaComponent implements AfterViewInit {
   }
 
   onPolygonClick(stateId: string): void {
-   /*  const index = this.selectedStates.indexOf(stateId);
-    if (index === -1) {
-      this.selectedStates.push(stateId);
-      let filters = {
-        ...this.filters,
-        states: [...this.selectedStates]
-      };
-      console.log(filters);
-      this.store.dispatch(setFilters({ filters }));
-
-    } else {
-      this.selectedStates.splice(index, 1);
-      let filters = {
-        ...this.filters,
-        states: [...this.selectedStates]
-      };
-      console.log(filters);
-      this.store.dispatch(setFilters({ filters }));
-    } */
+ 
   }
 
   createComponent(component: any): ComponentRef<any> {

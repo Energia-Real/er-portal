@@ -6,6 +6,17 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { ActivatedRoute } from '@angular/router';
 import { SitePerformanceComponent } from '../site-performance/site-performance.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { notificationData, NotificationServiceData } from '@app/shared/models/general-models';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { MatDialog } from '@angular/material/dialog';
+
+import { EncryptionService } from '@app/shared/services/encryption.service';
+import { UserInfo } from '@app/shared/models/general-models';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-plant-detail',
@@ -16,6 +27,200 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   @ViewChild(SitePerformanceComponent) sitePerformanceComponent!: SitePerformanceComponent;
+
+  userInfo!: UserInfo;
+
+
+  data: any = [
+    {
+      icon: '../../../../../assets/icons/plantType.svg',
+      title: 'Plant type',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/moutingTech.svg',
+      title: 'Mounting technology',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/noOfSite.svg',
+      title: 'No of sites',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/plantTimeZone.svg',
+      title: 'Plant time zone',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/currency.svg',
+      title: 'Currency',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/comssionDate.svg',
+      title: 'Commission date',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/tariff.svg',
+      title: 'Tariff',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/ficed.svg',
+      title: 'Ficed tilt anglee',
+      description: 'N/A',
+    },
+  ]
+
+  dataTwo: any = [
+    {
+      icon: '../../../../../assets/icons/epc.svg',
+      title: 'EPC',
+      description: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/oym.svg',
+      title: 'O&M',
+      description: 'N/A',
+    },
+  ]
+
+  dataThree: any = [
+    {
+      icon: '../../../../../assets/icons/transformer.svg',
+      title: 'Transformer',
+      description: 'N/A',
+      titleTwo: 'Generic',
+      descriptionTwo: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/inverter.svg',
+      title: 'Inverter',
+      description: 'N/A',
+      titleTwo: 'Solis Solis-60K-LV-5G',
+      descriptionTwo: 'N/A',
+    },
+    {
+      icon: '../../../../../assets/icons/pvmodule.svg',
+      title: 'PV Module',
+      description: 'N/A',
+      titleTwo: 'Trina Sola',
+      descriptionTwo: 'N/A',
+      descriptionThree: 'Mono Crystalline Silicon',
+    },
+  ]
+
+  assetOperations: any = [
+    {
+      value: '1',
+      description: 'Specific power (kW/kWp)'
+    },
+    {
+      value: '2',
+      description: 'Active power (kW)'
+    },
+    {
+      value: '3',
+      description: 'Irradiance'
+    }
+  ]
+
+  catSeverety: any = [
+    {
+      value: '1',
+      description: 'Insignificant'
+    },
+    {
+      value: '2',
+      description: 'State'
+    },
+    {
+      value: '3',
+      description: 'Low'
+    },
+    {
+      value: '4',
+      description: 'Medium'
+    },
+    {
+      value: '5',
+      description: 'High'
+    },
+    {
+      value: '6',
+      description: 'Critical'
+    },
+  ]
+
+  catGroup: any = [
+    {
+      value: '1',
+      description: 'BreackDown'
+    },
+    {
+      value: '2',
+      description: 'Curtailment'
+    },
+    {
+      value: '3',
+      description: 'Manual stop'
+    },
+    {
+      value: '4',
+      description: 'System OK'
+    },
+    {
+      value: '5',
+      description: 'Undefined'
+    },
+  ]
+
+  catOrder: any = [
+    {
+      value: '1',
+      description: 'Lastest First'
+    },
+    {
+      value: '1',
+      description: 'Earliest First'
+    },
+  ]
+
+  co2Progress: string = '25%'
+  assetOperationsSelect: string = '1';
+
+  customOptions: OwlOptions = {
+    loop: false,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: true,
+    navSpeed: 700,
+    navText: ['', ''],
+    responsive: {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 2
+      },
+      740: {
+        items: 3
+      },
+      940: {
+        items: 4
+      }
+    },
+    nav: false
+  }
+
+  formFilters = this.fb.group({
+    severety: [''],
+    group: [''],
+    order: [''],
+  });
 
   weatherData: any = null
 
@@ -137,6 +342,8 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+ 
+
   plantData!: entity.DataPlant;
   dataRespoSystem!: entity.DataResponseSystem;
 
@@ -148,28 +355,38 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showNotdata: boolean = false;
   showOverviewSite: boolean = false;
-  showLoader: boolean = true;
   loadingWeather: boolean = true;
   loadingTimeZone: boolean = true;
   loadingSystem: boolean = true;
   inverterSystemStatus: boolean = false;
 
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+
+
+  //banderas de carga para endpoints
+  isLoadingPD = true;  //LOADING PARA PLANT DATA, INFORMACION DE LA CABECERA DE PLANT DATA
+  isLoadingWD = true; //LOADING PARA WHEATER DATA
+  isLoadingTZ = true; // LOADING PARA TIME ZONE PLACE
   constructor(
+        private fb: FormBuilder,
+    
     private plantsService: PlantsService,
     private notificationService: OpenModalsService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private notificationDataService: NotificationDataService,
+    private encryptionService: EncryptionService,
+    private notificationsService: NotificationService,
+    public dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
-    this.showLoader = false;
-
-    this.route.paramMap.subscribe(params => {
-      params.get('id') && this.getPlantDetailsById(params.get('id')!);
-    });
+    this.loadUserInfo()
+    this.completionMessage()
   }
 
   ngAfterViewInit() {
-    if (this.sitePerformanceComponent && 
-       this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
+    if (this.sitePerformanceComponent &&
+      this.sitePerformanceComponent.plantData) this.sitePerformanceComponent.refreshChart();
   }
 
   onTabChange(event: MatTabChangeEvent) {
@@ -179,12 +396,16 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getPlantDetailsById(id: string) {
     this.plantsService.getDataById(id).subscribe({
       next: (response: entity.DataPlant) => {
+        this.isLoadingPD = false;
         this.plantData = response;
         this.verifyInformation(response);
       },
       error: (error) => {
-        this.showLoader = false;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        this.isLoadingPD = false;
+        let errorArray = error.error.errors.errors;
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
         console.error(error)
       }
     });
@@ -193,7 +414,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   verifyInformation(plantData: entity.DataPlant) {
     if (plantData?.plantCode && plantData?.inverterBrand[0] == 'Huawei') {
       this.showNotdata = false
-      this.getDataRespSystem({ brand: "Huawei", plantCode: plantData.plantCode })
     } else {
       this.showNotdata = true;
       if (plantData?.plantCode && plantData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('The information provided includes an inverter brand that has not yet been implemented.');
@@ -218,26 +438,18 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.loadingSystem = false;
   }
 
-  getDataRespSystem(postData: entity.PostDataByPlant) {
-    this.plantsService.getDataSystem(postData).subscribe({
-      next: (response: entity.ResponseSystem) => this.dataRespoSystem = response.data,
-      error: (error) => {
-        this.loadingSystem = false;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.error(error)
-      }
-    })
-  }
 
   getWeather(lat: number, long: number) {
     this.plantsService.getWeatherData(lat, long).subscribe({
       next: (response) => {
+        this.isLoadingWD = false;
         this.loadingWeather = false;
         this.weatherData = response.data.values;
       },
       error: (error) => {
+        this.isLoadingWD = false;
         this.loadingWeather = false;
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_WEATHER_DATA, NOTIFICATION_CONSTANTS.ERROR_CONTENT_WEATHER_DATA)
         console.error(error)
       }
     })
@@ -256,18 +468,67 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.plantsService.getLocalTimeOfPlace(lat, long).subscribe({
       next: (response: string) => {
         this.timeZonePlace = response;
+        this.isLoadingTZ = false;
         this.loadingTimeZone = false;
       },
       error: (error) => {
         this.loadingTimeZone = false;
-        this.notificationService.notificacion(`Could not get time zone information.`, 'alert')
+        this.isLoadingTZ = false;
+        this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_TIME_ZONE, NOTIFICATION_CONSTANTS.ERROR_CONTENT_TIME_ZONE)
         console.error(error)
       }
     })
   }
 
+  loadUserInfo() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
+
+    this.route.paramMap.subscribe(params => {
+      params.get('id') && this.getPlantDetailsById(params.get('id')!);
+    });
+  }
+
   systemStatus(status: boolean) {
     this.inverterSystemStatus = status;
+  }
+
+  createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
+    const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title = title;
+    dataNotificationModal!.content = description;
+    dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      let dataNotificationService: NotificationServiceData = { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId: userInfo.id,
+        descripcion: description,
+        notificationTypeId: dataNotificationModal?.typeId,
+        notificationStatusId: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      }
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res => {
+      })
+    }
+
+
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
+
+  }
+
+
+  completionMessage(edit = false) {
+    this.notificationService
+      .notificacion(
+        `¡We are working on building this module. It will be available soon.!`,
+        'alert',
+      )
+      .afterClosed()
+      .subscribe((_) => {});
   }
 
   ngOnDestroy(): void {

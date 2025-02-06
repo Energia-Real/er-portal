@@ -21,8 +21,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   @Input() plantData!: entity.DataPlant;
   @Input() notData!: boolean;
 
-  filtersSolarCoverage$!: Observable<FilterState['filtersSolarCoverage']>;
-
   drawerOpenSub: Subscription;
 
   urlMap!: SafeResourceUrl;
@@ -47,7 +45,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     private store: Store<{ filters: FilterState }>
   ) {
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => this.drawerOpen = resp.drawerOpen);
-    this.filtersSolarCoverage$ = this.store.select(state => state.filters.filtersSolarCoverage);
   }
 
   ngOnInit() {

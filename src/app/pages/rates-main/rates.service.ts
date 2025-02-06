@@ -7,27 +7,32 @@ import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RatesService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  private API_URL = environment.API_URL_BILL_V1;
+  private API_URL = environment.API_URL_PERFORMANCE;
 
-  constructor(private http: HttpClient, public formatsService: FormatsService) { }
+  constructor(
+    private http: HttpClient,
+    public formatsService: FormatsService
+  ) {}
 
-  getPricingData(filters: entity.FiltersRates): Observable<entity.DataPricingTableMapper> {
+  getPricingData(
+    filters: entity.FiltersRates
+  ): Observable<entity.DataPricingTableMapper> {
     const url = `${this.API_URL}/Tarifa/GetTarifas`;
     const params = new HttpParams()
-    .set('pageSize', filters.pageSize)
-    .set('pageNumber', filters.page)
-    .set('plantName', filters.plantName)
-    .set('startDate', filters.startDate)
-    .set('endDate', filters.endDate!)
+      .set('pageSize', filters.pageSize)
+      .set('pageNumber', filters.page)
+      .set('plantName', filters.plantName)
+      .set('startDate', filters.startDate)
+      .set('endDate', filters.endDate!);
 
-    return this.http.get<entity.DataTablePricingResponse>(url, { params }).pipe(
-      map((response) => Mapper.getPricingDataMapper(response))
-    );
+    return this.http
+      .get<entity.DataTablePricingResponse>(url, { params })
+      .pipe(map((response) => Mapper.getPricingDataMapper(response)));
   }
 
   downloadExcel(): Observable<Blob> {

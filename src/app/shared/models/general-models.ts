@@ -17,6 +17,14 @@ export interface User {
   token?: string;
 }
 
+export interface UserAuth {
+  success: true,
+  response: {
+      token: string;
+      accessTo: string
+  }
+}
+
 export interface UserInfo {
   id: string,
   email: string,
@@ -35,6 +43,7 @@ export interface GeneralFilters {
   clientId?:number | string
   startDate: string;
   endDate: string | null;
+  year?: string | null;
 }
 
 export interface DataResponseArraysMapper {
@@ -89,7 +98,7 @@ export interface FilterState {
 export interface notificationData{
   type:     string,
   typeId?:   number|undefined,
-  title:    string,
+  title?:    string,
   subtitle?:    string,
   content?:  string,
   warn?:     string, 
@@ -176,4 +185,6 @@ export interface ErrorRequest {
   tipo: string;
   field: string;
   descripcion: string;
+  warn?: string;
+  title?: string;
 }

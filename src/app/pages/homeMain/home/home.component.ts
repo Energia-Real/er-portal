@@ -18,16 +18,32 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, GeneralResponse, notificationData, NotificationServiceData, UserInfo } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { MatDialog } from '@angular/material/dialog';
+
+
 
 Chart.register(...registerables);
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  imports: [CommonModule, SharedComponensModule, MaterialModule, MessageNoDataComponent, ReactiveFormsModule, NgChartsModule],
+  imports: [
+    CommonModule, 
+    SharedComponensModule, 
+    MaterialModule, 
+    MessageNoDataComponent, 
+    ReactiveFormsModule, 
+    NgChartsModule,
+    NgxSkeletonLoaderModule
+  ],
   styleUrl: './home.component.scss',
   providers: [provideNativeDateAdapter()],
   encapsulation: ViewEncapsulation.None
@@ -46,6 +62,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   displayChartES: boolean = false;
   chartES: any;
+
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
 
   labels = [
@@ -223,6 +241,27 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   co2Progress: string = '25%'
 
+  statesColors:any ={};
+
+  tooltipsInfo: entity.statesResumeTooltip[] = [];
+
+
+  isLoadingSDWidget= true;  //loading saving details
+  
+  isLoadingSCWidget = true; //loading solar coverage
+
+  isLoadingCO2Widget = true; //loading co2Widget
+
+  isLoadingESWidget = true; //loading economic savings  
+
+  isLoadingECWidget = true; //loading energy consumption  
+
+  isLoadingMapa = true;
+
+  
+
+
+
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
     rangeDateEnd: [{ value: '', disabled: false }]
@@ -232,13 +271,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     private moduleServices: HomeService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private notificationService: OpenModalsService,
     private formatsService: FormatsService,
     private encryptionService: EncryptionService,
-    private store: Store<{ filters: FilterState }>
+    private store: Store<{ filters: FilterState }>,
+    private notificationsService: NotificationService,
+    private notificationDataService: NotificationDataService,
+    public dialog: MatDialog,
   ) {
-    this.filters$ = this.store.select(state => state.filters.filters);
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$.subscribe(generalFilters=>{
+            this.getTooltipInfo(generalFilters);
+          })
   }
 
   ngOnInit(): void {
@@ -327,22 +370,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataSavingDetails(filters).subscribe({
       next: (response: entity.SDResponse) => {
         this.savingsDetails = response
-        console.log(response);
-        
+        this.isLoadingSDWidget=false;        
       },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
+        this.isLoadingSDWidget=false;
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
       }
     })
   }
 
   getCo2Saving(filters: GeneralFilters) {
     this.moduleServices.getCo2Saving(filters).subscribe({
-      next: (response: entity.Co2SavingResponse) => this.co2Saving = response,
+      next: (response: entity.Co2SavingResponse) => {
+        this.isLoadingCO2Widget = false; 
+        this.co2Saving = response
+      },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
+        this.isLoadingCO2Widget = false; 
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
       }
     })
   }
@@ -350,6 +401,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getDataClients(filters: entity.GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
+        this.isLoadingECWidget = false;
         this.dataSource.data = response.data
         this.dataSource.sort = this.sort;
         this.selection.clear();
@@ -357,17 +409,27 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.allRowsInit = false;
       },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
-        console.log(error);
+        this.isLoadingECWidget = false;
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
       }
     })
   }
  
   getDataSolarCoverga(filters: entity.GeneralFilters) {
     this.moduleServices.getDataSolarCoverage(filters).subscribe({
-      next: (response: string) => this.solarCoverage = response,
+      next: (response: string) => {
+        this.isLoadingSCWidget=false;
+        this.solarCoverage = response
+      },
       error: (error) => {
-        console.error(error)
+        this.isLoadingSCWidget=false;
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
       }
     })
   }
@@ -436,6 +498,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getEconomicSavings(filters: GeneralFilters) {
     this.moduleServices.getSavings(filters).subscribe({
       next: (response) => {
+        this.isLoadingESWidget=false;
         this.lineChartDataES = {
           labels: [''],
           datasets: [
@@ -479,6 +542,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         };
         this.displayChartES = true;
         this.initChartES();
+      },
+      error: (error) => {
+        this.isLoadingESWidget=false;
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
       }
     })
   }
@@ -492,6 +562,75 @@ export class HomeComponent implements OnInit, OnDestroy {
         options: this.lineChartOptionsES
       });
     }
+  }
+
+  getTooltipInfo(filters?: any) {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.moduleServices.getDataStates({ clientId: userInfo?.clientes[0], ...filters }).subscribe({
+        next: (response: GeneralResponse<entity.MapStatesResponse>) => {
+  
+          response.response?.kwhByStateResponse?.forEach((state) => {
+            var color:string; 
+  
+            color="#FFFFFF";
+            if(state.totalInstalledCapacity>0 && state.totalInstalledCapacity <= 1500) color="#9AE3E1"
+            else if(state.totalInstalledCapacity>1500 && state.totalInstalledCapacity <= 3000) color="#64E2E2"
+            else if(state.totalInstalledCapacity>3000 && state.totalInstalledCapacity <= 4500) color="#00E5FF"
+            else if(state.totalInstalledCapacity>4500 && state.totalInstalledCapacity <= 6000) color="#08C4DA"
+            else if(state.totalInstalledCapacity>6000) color="#008796"
+            this.statesColors[state.state] = {
+              color: color,
+            };
+          });
+
+          if(response?.response?.kwhByStateResponse){
+            this.tooltipsInfo = response.response.kwhByStateResponse;
+
+          }
+  
+          this.isLoadingMapa = false;
+          //this.createTooltips();
+        },
+        error: (error) => {
+          this.isLoadingMapa = false;
+          let errorArray = error.error.errors.errors;
+          if(errorArray.length == 1){
+            this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+            }
+        }
+      });
+    }
+  }
+
+
+
+  createNotificationError(notificationType:string, title?:string, description?: string, warn?:string ){
+    const dataNotificationModal:notificationData|undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title= title;
+    dataNotificationModal!.content = description;
+    dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      let dataNotificationService:NotificationServiceData= { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId:userInfo.id,
+        descripcion:description,
+        notificationTypeId:dataNotificationModal?.typeId,
+        notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      } 
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      })
+    }
+
+    
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',     
+      data: dataNotificationModal
+    });
+
   }
 
   ngOnDestroy(): void {

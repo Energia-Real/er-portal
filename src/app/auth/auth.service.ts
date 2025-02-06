@@ -35,11 +35,11 @@ export class AuthService {
       })
     };
 
-    return this.http.post<{}>(`${environment.API_URL_AUTH_V1}/login`, { email, password }, httpOptions)
-      .pipe(map(user => {
-        const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user), 'secretKey').toString();
+    return this.http.post<entityGeneral.UserAuth>(`${environment.API_URL_AUTH_V1}/login`, { email, password }, httpOptions)
+      .pipe(map((user:entityGeneral.UserAuth) => {
+        const encryptedUser = CryptoJS.AES.encrypt(JSON.stringify(user.response), 'secretKey').toString();
         localStorage.setItem('userEnergiaReal', encryptedUser);
-        this.userSubject.next(user);
+        this.userSubject.next(user.response);
         return user;
       }));
   }
@@ -58,18 +58,6 @@ export class AuthService {
       })
     };
     return this.http.get<any>(`${environment.API_URL_AUTH_V1}/usuario`, httpOptions);
-  }
-
-  forgotPassword(email: string): Observable<any> {
-    const url = `${environment.API_URL_AUTH_V2}/ForgotPassword?email=${email}`;
-
-    return this.http.post<any>(url, null);
-  }
-
-  resetyPassword(data: any): Observable<any> {
-    const url = `${environment.API_URL_AUTH_V2}/ResetPassword`;
-
-    return this.http.post<any>(url, data);
   }
 
   getDecryptedUser() {

@@ -15,6 +15,13 @@
   width: 230px !important;
 }
 
+.siderbar-hold {
+  justify-content: space-between!important;
+}
+.siderbar-closet {
+  justify-content: center;
+}
+
 .icon-extended-menu {
   cursor: pointer;
 }
@@ -53,16 +60,14 @@
 
     }
   }
-
 }
 
 
 .c-version {
   display: flex;
-  justify-content: space-between;
   text-align: center;
   width: 100%;
-
+  justify-content: center;
 }
 
 .linea {
@@ -100,6 +105,8 @@
     font-size: 12px !important;
     font-weight: 400 !important;
     color: #FFFFFF;
+    margin-left: 10px;
+    margin-bottom: 0;
   }
 }
 

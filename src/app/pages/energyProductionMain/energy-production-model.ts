@@ -11,18 +11,19 @@ export interface DataTableEnergyProdResponse {
 export interface DataEnergyProdTable {
   id: string;
   siteName: string;
-  energyProdMonth1: number;
-  energyProdMonth2: number;
-  energyProdMonth3: number;
-  energyProdMonth4: number;
-  energyProdMonth5: number;
-  energyProdMonth6: number;
-  energyProdMonth7: number;
-  energyProdMonth8: number;
-  energyProdMonth9: number;
-  energyProdMonth10: number;
-  energyProdMonth11: number;
-  energyProdMonth12: number;
+  energyMonth1: any;
+  energyMonth2: any;
+  energyMonth3: any;
+  energyMonth4: any;
+  energyMonth5: any;
+  energyMonth6: any;
+  energyMonth7: any;
+  energyMonth8: any;
+  energyMonth9: any;
+  energyMonth10: any;
+  energyMonth11: any;
+  energyMonth12: any;
+  annualTotal: any;
   isCreated: boolean;
 }
 
@@ -84,8 +85,9 @@ export interface DataPatchEnergyProd {
   id: string;
   monthSelected: number;
   year: number;
-  energyProduced: number;
-  deleteEnergyProd: true;
+  energyProduced?: number;
+  energyValue?: number;
+  deleteEnergyValue: true;
 }
 
 export interface ErrorRequest {

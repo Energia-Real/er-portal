@@ -22,11 +22,14 @@ export class LoadingInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
-    if (this.activeRequests === 0 && !req.url.includes(environment.API_URL_NOTIFICATIONS)) {
+
+    if (
+      this.activeRequests === 0 &&
+      !req.url.includes(`${environment.API_URL_PERFORMANCE}/notification`)
+    ) {
       this.loadingService.show();
     }
-    if( !req.url.includes(environment.API_URL_NOTIFICATIONS)){
+    if (!req.url.includes(`${environment.API_URL_PERFORMANCE}/notification`)) {
       this.activeRequests++;
     }
 
@@ -41,11 +44,16 @@ export class LoadingInterceptor implements HttpInterceptor {
         return throwError(error);
       }),
       finalize(() => {
-        if( !req.url.includes(environment.API_URL_NOTIFICATIONS)){
+        if (
+          !req.url.includes(`${environment.API_URL_PERFORMANCE}/notification`)
+        ) {
           this.activeRequests--;
         }
-    
-        if (this.activeRequests === 0 && !req.url.includes(environment.API_URL_NOTIFICATIONS)) {
+
+        if (
+          this.activeRequests === 0 &&
+          !req.url.includes(`${environment.API_URL_PERFORMANCE}/notification`)
+        ) {
           this.loadingService.hide();
         }
       })

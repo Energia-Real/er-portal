@@ -7,9 +7,14 @@ import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { PlantsService } from '../../plants.service';
-import { FilterState, GeneralFilters } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-site-performance',
@@ -101,13 +106,22 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   fullLoad: boolean = false;
 
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+
+
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
     private encryptionService: EncryptionService,
     private formatsService: FormatsService,
-    private store: Store<{ filters: FilterState }>
+    private store: Store<{ filters: FilterState }>,
+    public dialog: MatDialog,
+    private notificationsService: NotificationService,
+    private notificationDataService: NotificationDataService,
+
+
+
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
   }
@@ -189,7 +203,10 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
       },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
         console.error(error)
       }
     })
@@ -223,6 +240,34 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         options: this.lineChartOptions
       });
     }
+  }
+
+
+  createNotificationError(notificationType:string, title?:string, description?: string, warn?:string ){
+    const dataNotificationModal:notificationData|undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title= title;
+    dataNotificationModal!.content = description;
+    dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      let dataNotificationService:NotificationServiceData= { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId:userInfo.id,
+        descripcion:description,
+        notificationTypeId:dataNotificationModal?.typeId,
+        notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      } 
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      })
+    }
+
+    
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',     
+      data: dataNotificationModal
+    });
+
   }
 
   ngOnDestroy(): void {

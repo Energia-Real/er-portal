@@ -58,15 +58,11 @@ span {
 }
 
 .c-main {
-  padding: 20px 60px 60px 60px;
+  padding: 20px 60px 35px 60px;
   height: calc(100vh - 70px);
   overflow: auto;
 }
 
-.c-scroll {
-  // overflow: auto;
-  // height: calc(100vh - 300px);
-}
 
 .c-modal-lateral {
   padding: 15px 20px;
@@ -539,22 +535,32 @@ select {
   }
 }
 
-.c-select {
-  input {
-    border: 1px solid #949191 !important;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
-    font-size: 14px;
 
-    &::placeholder {
-      font-size: 11px;
-      font-weight: 500;
-      color: #6E6E6E;
-      line-height: normal;
-    }
-  }
+.extended {
+  width: 230px !important;
+}
+
+.owl-carousel .owl-item img {
+  width: unset !important;
+}
+
+.owl-carousel.owl-drag .owl-item {
+  width: 280px !important;
+  justify-content: center!important;
+  display: flex!important;
+  border-right: 2px solid #CFCFCF!important;
+}
+
+.owl-theme .owl-dots .owl-dot span {
+  background-color: #F9731650!important;
+}
+
+.owl-carousel .owl-stage {
+  display: flex;
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+  background-color: #F97316!important;
 }
 
 .c-input {
@@ -759,7 +765,7 @@ input[type="number"]:focus {
               transform: unset !important;
 
               .mat-mdc-select-arrow {
-                border-top-color: var(--fuse-primary);
+                // border-top-color: var(--fuse-primary);
               }
             }
           }
@@ -810,7 +816,8 @@ input[type="number"]:focus {
       display: flex;
       align-items: center;
       width: 88px;
-      min-height: 48px;
+      min-height: unset;
+      // min-height: 48px;
       padding: 0;
       border: 0;
 
@@ -839,6 +846,10 @@ input[type="number"]:focus {
   .mdc-line-ripple {
     display: none;
   }
+}
+
+*[class*=mat-mdc-menu-content] button {
+  border-radius: unset!important;
 }
 
 .mat-form-field-appearance-fill .mat-mdc-select-arrow-wrapper {
@@ -882,6 +893,7 @@ input[type="number"]:focus {
   .mat-mdc-paginator-page-size {
     display: none;
   }
+
   .mat-mdc-paginator-range-label {
     font-weight: bold;
   }
@@ -1050,7 +1062,7 @@ input[type="number"]:focus {
   }
 }
 
-.mdc-snackbar__surface{
+.mdc-snackbar__surface {
   border-radius: 10px !important;
 }
 
