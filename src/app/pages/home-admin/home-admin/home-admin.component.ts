@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Subject } from 'rxjs';
 
@@ -79,7 +80,7 @@ export class HomeAdminComponent implements OnInit {
     'activePower',
     'irradiation',
     'specificPower',
-  ]; 
+  ];
 
   dummyTablaPlant: any[] = [
     {
@@ -154,7 +155,7 @@ export class HomeAdminComponent implements OnInit {
       irradiation: 'N/A',
       specificPower: 'N/A',
     },
-   
+
   ]
 
   data: any = [
@@ -349,21 +350,24 @@ export class HomeAdminComponent implements OnInit {
   });
 
   hours: string[] = [];
-  
-  plants: { 
-    name: string; 
+
+  plants: {
+    name: string;
     hourStatuses: string[]; // Puede ser 'optimal', 'medium', 'out-of-range'
   }[] = [];
 
 
   constructor(
     private fb: FormBuilder,
+    private notificationService: OpenModalsService
+
   ) { }
 
   ngOnInit(): void {
     this.dataSource.data = this.dummyTabla;
     this.dataSourcePlants.data = this.dummyTablaPlant;
 
+    this.completionMessage();
     this.initializeHours();
     this.loadPlantData();
   }
@@ -386,106 +390,117 @@ export class HomeAdminComponent implements OnInit {
   loadPlantData(): void {
     this.plants = [
       {
-        name: 'Planta 1',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 2',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 3',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 4',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 5',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 6',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 1',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 2',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 3',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 4',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 5',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 6',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 1',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 2',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 3',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 4',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 5',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 6',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 1',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 2',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 3',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 4',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 5',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
       {
-        name: 'Planta 6',
+        name: 'Planta',
         hourStatuses: this.generateRandomStatuses()
       },
     ];
   }
 
   generateRandomStatuses(): string[] {
-    const statuses = ['cero', 'twenty', 'forty','sixty','eighty','hundred'];
+    const statuses = ['cero', 'twenty', 'forty', 'sixty', 'eighty', 'hundred'];
     return Array.from({ length: 24 }, () => statuses[Math.floor(Math.random() * statuses.length)]);
+  }
+
+
+  completionMessage(edit = false) {
+    this.notificationService
+      .notificacion(
+        `¡We are working on building this module. It will be available soon.!`,
+        'alert',
+      )
+      .afterClosed()
+      .subscribe((_) => { });
   }
 }

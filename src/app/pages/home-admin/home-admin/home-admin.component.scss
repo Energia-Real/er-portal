@@ -501,12 +501,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 28px;
 
     .trends-filter {
         width: 130px;
 
         >div {
             font-size: 14px;
+            cursor: pointer;
             font-weight: 500;
             color: #EE6A0A;
             line-height: 16px;
