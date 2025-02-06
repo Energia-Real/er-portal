@@ -38,8 +38,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
       .pipe(first())
       .subscribe({
-        next: (response: any) => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/er' : '/er'}`;
+        next: ({ response }: any) => {
+          console.log(response.accessTo);
+          
+          const accessRoutes: { [key: string]: string } = {
+            'BackOffice': '/er',
+            'Clients': '/er/client-home',
+            'Billing': '/er/rates',
+            'Admin': '/er/admin-home',
+          };
+          
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || accessRoutes[response.accessTo] || '/er';
+          
 
           const startday = this.route.snapshot.queryParams['startday'];
           const endday = this.route.snapshot.queryParams['endday'];

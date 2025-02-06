@@ -32,6 +32,16 @@
       <div class="linea"></div>
 
       <ul class="flex flex-col titles-header">
+        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'Clients'"
+          [ngClass]="{'p-0': isSidebarHovered || keepOpen , 'menu-selected': routeActive.includes('home'), 'ps-2' : isSidebarHovered || keepOpen  }">
+          <img src="../../../assets/icons/home-icon.svg" alt="Home">
+          <a [ngClass]="{
+            'show-names': isSidebarHovered || keepOpen,
+            'menu-selected': routeActive.includes('client-home'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
+          }" [routerLink]="routeActive.includes('client-home') ? null : 'client-home'"
+            class="hover:text-gray-300 cursor-pointer animate-durations">Home</a>
+        </li>
+
         <li class="animate-durations" *ngIf="userInfo?.accessTo == 'BackOffice'"
           [ngClass]="{'p-0': isSidebarHovered || keepOpen , 'menu-selected': routeActive.includes('backoffice'), 'ps-2' : isSidebarHovered || keepOpen  }">
           <img src="../../../assets/icons/home-icon.svg" alt="Home">

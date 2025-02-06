@@ -64,7 +64,7 @@
             .c-scroll-table {
                 width: 100%;
                 overflow-x: hidden;
-                height: calc(100vh - 500px) !important;
+                height: 330px !important;
 
                 .table-container-scroll td {
                     text-align: left;
@@ -75,7 +75,6 @@
         .c-input-search {
             margin-top: 15px;
         }
-
     }
 }
 
@@ -528,7 +527,8 @@
     .c-trends-data {
         display: flex;
         flex-direction: column;
-        width: 920px;
+        // max-width: 920px;
+        width: 75%;
         height: 380px;
         border: 1px solid #D2D2D2;
         border-radius: 16px;
@@ -546,7 +546,7 @@
 
         .data-scroll {
             overflow-y: auto;
-            overflow-x: hidden;
+            overflow-x: auto;
             max-height: 350px;
             display: grid;
             grid-template-columns: 150px repeat(24, 30px);
