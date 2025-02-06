@@ -135,15 +135,9 @@
 
                         <div class="c-trends">
                             <div class="trends-filter">
-                                <div class="selected">
-                                    Day
-                                </div>
-                                <div>
-                                    Week
-                                </div>
-                                <div>
-                                    Month
-                                </div>
+                                <div class="selected">Day</div>
+                                <div>Week</div>
+                                <div>Month</div>
                             </div>
 
                             <div class="c-trends-data">
@@ -151,18 +145,19 @@
                                     <div class="empty-cell"></div>
                                     <div class="hour-cell" *ngFor="let hour of hours">{{ hour }}</div>
                                 </div>
-    
-                                <div class="row" *ngFor="let plant of plants">
-                                    <div class="plant-name">{{ plant.name }}</div>
-    
-                                    <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
-                                         'cero': status == 'cero',
-                                         'twenty': status == 'twenty',
-                                         'forty': status == 'forty',
-                                         'sixty': status == 'sixty',
-                                         'eighty': status == 'eighty',
-                                         'hundred': status == 'hundred',
-                                       }">
+
+                                <div class="data-scroll">
+                                    <div class="row" *ngFor="let plant of plants">
+                                        <div class="plant-name">{{ plant.name }}</div>
+                                        <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
+                                       'cero': status == 'cero',
+                                       'twenty': status == 'twenty',
+                                       'forty': status == 'forty',
+                                       'sixty': status == 'sixty',
+                                       'eighty': status == 'eighty',
+                                       'hundred': status == 'hundred'
+                                     }">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -170,16 +165,7 @@
                             <div class="trends-bar">
                                 <img src="../../../../assets/icons/trends.svg" alt="">
                             </div>
-
-
-
-
                         </div>
-
-
-
-
-
 
 
 

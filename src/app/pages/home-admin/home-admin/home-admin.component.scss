@@ -497,17 +497,10 @@
     }
 }
 
-
-
-
-
-
-
 .c-trends {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
 
     .trends-filter {
         width: 130px;
@@ -525,24 +518,39 @@
             justify-content: center;
         }
 
-        > div.selected {
+        >div.selected {
             border: 1px solid #EE6A0A;
         }
     }
 
     .c-trends-data {
-        display: grid;
-        grid-template-columns: 150px repeat(24, 30px);
-        grid-auto-rows: 30px;
-        border: 1px solid #D2D2D2;
-        border-radius: 16px;
-        padding: 24px;
+        display: flex;
+        flex-direction: column;
         width: 920px;
         height: 380px;
-        overflow-x: hidden;
-        overflow-y: auto;
+        border: 1px solid #D2D2D2;
+        border-radius: 16px;
+        overflow: hidden;
 
-        .header,
+        .header {
+            display: grid;
+            grid-template-columns: 150px repeat(24, 30px);
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            padding: 5px;
+        }
+
+        .data-scroll {
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 350px;
+            display: grid;
+            grid-template-columns: 150px repeat(24, 30px);
+            padding: 26px;
+        }
+
         .row {
             display: contents;
         }
@@ -550,6 +558,7 @@
         .hour-cell {
             text-align: center;
             padding: 5px;
+            margin-top: 20px;
             font-weight: 500;
             font-size: 11px;
             line-height: 12px;
@@ -596,6 +605,5 @@
         .status-cell.hundred {
             background-color: #36B954;
         }
-
     }
 }
