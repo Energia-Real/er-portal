@@ -1,5 +1,5 @@
 <div class="c-portafolio-map c-main">
-    <div class="content content-elements">
+    <!-- <div class="content content-elements">
         <div class="content-header">
             <h1 class="label-700-24 ms-0">Portafolio map</h1>
         </div>
@@ -89,11 +89,11 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="separator-cards"></div>
+    <!-- <div class="separator-cards"></div> -->
 
-    <div class="content content-elements pb-0">
+    <!-- <div class="content content-elements pb-0">
         <div class="content-header">
             <h1 class="label-700-24">Asset monitoring parameter</h1>
         </div>
@@ -118,9 +118,9 @@
                 </mat-tab-group>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="separator-cards"></div>
+    <!-- <div class="separator-cards"></div> -->
 
     <div class="content content-elements">
         <div class="content-header">
@@ -131,6 +131,71 @@
             <div class="position-relative">
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
                     <mat-tab label="Active power">
+                        <br><br>
+
+                        <div class="c-trends">
+                            <div class="trends-filter">
+                                <div class="selected">
+                                    Day
+                                </div>
+                                <div>
+                                    Week
+                                </div>
+                                <div>
+                                    Month
+                                </div>
+                            </div>
+
+                            <div class="c-trends-data">
+                                <div class="header">
+                                    <div class="empty-cell"></div>
+                                    <div class="hour-cell" *ngFor="let hour of hours">{{ hour }}</div>
+                                </div>
+    
+                                <div class="row" *ngFor="let plant of plants">
+                                    <div class="plant-name">{{ plant.name }}</div>
+    
+                                    <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
+                                         'cero': status == 'cero',
+                                         'twenty': status == 'twenty',
+                                         'forty': status == 'forty',
+                                         'sixty': status == 'sixty',
+                                         'eighty': status == 'eighty',
+                                         'hundred': status == 'hundred',
+                                       }">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trends-bar">
+                                <img src="../../../../assets/icons/trends.svg" alt="">
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     </mat-tab>
 
@@ -150,7 +215,7 @@
 
             <div class="content-float">
                 <div class="position-relative">
-                    <div class="c-input-search w-100">
+                    <div class="c-input-search w-80">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input class="block w-full" type="text" placeholder="Search">
                     </div>
@@ -166,9 +231,37 @@
         </div>
     </div>
 
-    <div class="separator-cards"></div>
 
-    <div class="content content-elements pb-0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <div class="separator-cards"></div> -->
+
+    <!-- <div class="content content-elements pb-0">
         <div class="content-header">
             <h1 class="label-700-24">Plants event summary</h1>
 
@@ -404,11 +497,11 @@
 
             </owl-carousel-o>
         </div>
-    </div>
+    </div> -->
 
-    <div class="separator-cards"></div>
+    <!-- <div class="separator-cards"></div> -->
 
-    <div class="content content-elements">
+    <!-- <div class="content content-elements">
         <div class="content-header header-filter">
             <h1 class="label-700-24">Plant status</h1>
 
@@ -566,7 +659,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <ng-template #notDataTable>
