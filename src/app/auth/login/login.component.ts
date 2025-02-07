@@ -39,8 +39,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe({
         next: ({ response }: any) => {
-          console.log(response.accessTo);
-          
           const accessRoutes: { [key: string]: string } = {
             'BackOffice': '/er',
             'Clients': '/er/client-home',
@@ -49,14 +47,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           };
           
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || accessRoutes[response.accessTo] || '/er';
-          
-
           const startday = this.route.snapshot.queryParams['startday'];
           const endday = this.route.snapshot.queryParams['endday'];
 
           const queryParams = startday && endday ? { startday, endday } : null;
           this.router.navigate([returnUrl], { queryParams });
-
         },
         error: (err) => {
           this.loading = false;
@@ -71,7 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   passwordValidator(control: any) {
     const password = control.value;
-
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
