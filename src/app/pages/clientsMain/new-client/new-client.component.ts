@@ -96,20 +96,16 @@ export class NewClientComponent implements OnInit, OnDestroy {
     else this.createNotificationModal(this.ADD);
   }
 
- 
-
   saveDataPost(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
     delete objData.clientId;
-    this.moduleServices.postDataClient(objData,notificationmessages).subscribe({
-    })
+    this.moduleServices.postDataClient(objData,notificationmessages).subscribe({})
   }
 
   saveDataPatch(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
     if (this.editedClient?.id) objData.clientId = this.formData.get('clientId')?.value;
-    this.moduleServices.patchDataClient(this.editedClient?.id!, objData,notificationmessages).subscribe({
-    })
+    this.moduleServices.patchDataClient(this.editedClient?.id!, objData,notificationmessages).subscribe({})
   }
 
   onFileChange(event: any) {
@@ -161,17 +157,17 @@ export class NewClientComponent implements OnInit, OnDestroy {
     this.imagePreview = null;
   }
 
-  closeDrawer(cancel?:boolean) {
+  closeDrawer(reload:boolean) {
     this.isOpen = false;
     setTimeout(() => this.cancelEdit(), 300);
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: cancel ? false : true }));
+    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: reload }));
   }
 
   completionMessage(edit = false) {
     this.notificationService
       .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
-      .subscribe((_ => this.closeDrawer()));
+      .subscribe((_ => this.closeDrawer(true)));
   }
  
 
@@ -242,9 +238,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
       }    
     });
   }
-
-
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
