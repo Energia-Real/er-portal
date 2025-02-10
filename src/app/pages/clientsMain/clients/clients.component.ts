@@ -127,6 +127,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   editClient(data: any) {
     this.editedClient = data
+    console.log(data)
     this.updDraweStateEdit(true);
   }
 

@@ -67,6 +67,8 @@ export class ClientsService implements OnDestroy {
 
     formData.append('name', data.name);
     formData.append('tipoDeClienteId', data.tipoDeClienteId);
+    formData.append('clientId', data.clientId!);
+
 
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);

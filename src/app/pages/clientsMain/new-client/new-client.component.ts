@@ -41,7 +41,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
       this.formData.patchValue({
         ...editedData,
         name: editedData?.nombre,
-        tipoDeClienteId: editedData?.tipoDeCliente?.id
+        tipoDeClienteId: editedData?.tipoDeCliente?.id,
+        clientId: editedData?.clientId
       })
     }
   }
@@ -49,7 +50,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   formData = this.fb.group({
     name: ['', Validators.required],
     tipoDeClienteId: ['', Validators.required],
-    clientId: [''],
+    clientId: ['', Validators.maxLength(4)],
     image: [null as File | null]
   });
 
@@ -100,7 +101,6 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   saveDataPost(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
-    delete objData.clientId;
     this.moduleServices.postDataClient(objData,notificationmessages).subscribe({
     })
   }
