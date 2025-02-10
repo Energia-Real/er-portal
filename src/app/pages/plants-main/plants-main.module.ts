@@ -63,7 +63,12 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     NgxSkeletonLoaderModule,
     CarouselModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  exports : [
+    LiveKpiComponent,
+    ComulativeKpiComponent,
+    ObservedParametersComponent
+  ]
 })
 
 export class PlantsMainModule { }
