@@ -342,8 +342,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
- 
-
   plantData!: entity.DataPlant;
   dataRespoSystem!: entity.DataResponseSystem;
 
@@ -368,8 +366,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoadingWD = true; //LOADING PARA WHEATER DATA
   isLoadingTZ = true; // LOADING PARA TIME ZONE PLACE
   constructor(
-        private fb: FormBuilder,
-    
+    private fb: FormBuilder,
     private plantsService: PlantsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
@@ -381,7 +378,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.loadUserInfo()
-    this.completionMessage()
   }
 
   ngAfterViewInit() {
@@ -483,7 +479,8 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
-
+    if (!this.userInfo.clientes.length) this.completionMessage();
+    
     this.route.paramMap.subscribe(params => {
       params.get('id') && this.getPlantDetailsById(params.get('id')!);
     });
@@ -528,7 +525,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         'alert',
       )
       .afterClosed()
-      .subscribe((_) => {});
+      .subscribe((_) => { });
   }
 
   ngOnDestroy(): void {

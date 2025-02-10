@@ -13,27 +13,27 @@ export class LiveKpiComponent {
 
   dataDummy:any = [
     {
-      icon : '../../../../../assets/icons/power-blue.svg',
+      icon : '../../../../../assets/icons/power.loading.svg',
       title: 'Power Loading (%)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/Hearsink.svg',
+      icon : '../../../../../assets/icons/hearsink.svg',
       title: 'Hearsink Temperature Avarage (Degree Celsius)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/hearsink - irradiation.svg',
+      icon : '../../../../../assets/icons/specific.power.svg',
       title: 'Specific power (kW/kWp)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/rms.svg',
+      icon : '../../../../../assets/icons/efficiency.svg',
       title: 'Eficiency (%)',
       description: 'N/A',
     },
     {
-      icon : '../../../../../assets/icons/dcpower - active.svg',
+      icon : '../../../../../assets/icons/thermal.loading.svg',
       title: 'Thermal loading (%)',
       description: 'N/A',
     }

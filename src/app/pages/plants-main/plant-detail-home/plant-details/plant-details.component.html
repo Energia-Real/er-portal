@@ -1422,19 +1422,6 @@
             </div>
           </div>
 
-          <div class="position-relative select-download">
-            <div class="relative w-50 c-input-select">
-              <mat-form-field class="select-general" appearance="outline">
-                <mat-select [disabled]="false" [(value)]="assetOperationsSelect"
-                  >
-                  <mat-option *ngFor="let data of assetOperations" [value]="data.value">
-                    {{ data.description }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-          </div>
           <div class="btns-excel">
             <button class="btn-action-add">
               <span class="material-symbols-outlined">download</span>
