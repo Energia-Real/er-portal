@@ -14,6 +14,7 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 import{NotificationServiceData,EditNotificationStatus}from '@app/shared/models/general-models';
 import { AuthService } from '@app/auth/auth.service';
 import { NotificationService } from '@app/shared/services/notification.service';
+import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
   selector: 'app-new-client',
@@ -25,6 +26,8 @@ export class NewClientComponent implements OnInit, OnDestroy {
   CANCEL=NOTIFICATION_CONSTANTS.CANCEL_TYPE;
   EDIT=NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
   DELETE=NOTIFICATION_CONSTANTS.DELETE;
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+
 
   private onDestroy$ = new Subject<void>();
   private _client?: any | null | undefined;
@@ -72,7 +75,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private authService: AuthService,
-    private notificationsService: NotificationService
+    private notificationsService: NotificationService,
+    private encryptionService: EncryptionService,
+    
   ) { }
 
   ngOnInit() {
@@ -100,13 +105,32 @@ export class NewClientComponent implements OnInit, OnDestroy {
   saveDataPost(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
     this.moduleServices.postDataClient(objData,notificationmessages).subscribe({
+      next:() =>{
+
+      },
+      error: (error) => {
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
+      }
     })
   }
 
   saveDataPatch(notificationmessages:NotificationMessages) {
     let objData: any = { ...this.formData.value }
     if (this.editedClient?.id) objData.clientId = this.formData.get('clientId')?.value;
-    this.moduleServices.patchDataClient(this.editedClient?.id!, objData,notificationmessages).subscribe({})
+    this.moduleServices.patchDataClient(this.editedClient?.id!, objData,notificationmessages).subscribe({
+      next:() =>{
+
+      },
+      error:(error) => {
+        let errorArray = error.error.errors.errors;
+        if(errorArray.length == 1){
+          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
+          }
+      }
+    })
   }
 
   onFileChange(event: any) {
@@ -238,6 +262,33 @@ export class NewClientComponent implements OnInit, OnDestroy {
         }
       }    
     });
+  }
+
+  createNotificationError(notificationType:string, title?:string, description?: string, warn?:string ){
+    const dataNotificationModal:notificationData|undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title= title;
+    dataNotificationModal!.content = description;
+    dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      let dataNotificationService:NotificationServiceData= { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId:userInfo.id,
+        descripcion:description,
+        notificationTypeId:dataNotificationModal?.typeId,
+        notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      } 
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      })
+    }
+
+    
+
+    const dialogRef = this.dialog.open(NotificationComponent, {
+      width: '540px',     
+      data: dataNotificationModal
+    });
+
   }
 
   ngOnDestroy(): void {
