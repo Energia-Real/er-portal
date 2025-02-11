@@ -20,6 +20,10 @@ body {
   font-weight: 400;
 }
 
+.separator-cards {
+  margin: 24px 0;
+}
+
 
 .div-groups {
   >div {
@@ -520,7 +524,7 @@ select {
 .c-search {
   input {
     border: 1px solid #949191 !important;
-    height: 35px;
+    height: 35px!important;
     display: flex;
     align-items: center;
     padding-left: 30px;
@@ -534,7 +538,6 @@ select {
     }
   }
 }
-
 
 .extended {
   width: 230px !important;
@@ -575,6 +578,10 @@ select {
   p {
     color: #b84d2d;
     font-weight: 500;
+  }
+
+  ::ng-deep .mat-mdc-form-field-flex {
+      height: 38px !important;
   }
 }
 
@@ -816,8 +823,7 @@ input[type="number"]:focus {
       display: flex;
       align-items: center;
       width: 88px;
-      min-height: unset;
-      // min-height: 48px;
+      min-height: 38px;
       padding: 0;
       border: 0;
 
@@ -955,7 +961,7 @@ input[type="number"]:focus {
 
 
   .mat-mdc-form-field-flex {
-    height: 38px;
+    height: 38px !important;
   }
 
   .mat-mdc-form-field-infix {

@@ -1,13 +1,163 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home-admin',
   templateUrl: './home-admin.component.html',
   styleUrl: './home-admin.component.scss'
 })
-export class HomeAdminComponent {
+export class HomeAdminComponent implements OnInit {
+  private onDestroy$ = new Subject<void>();
+
+  dataSource = new MatTableDataSource<any>([]);
+  dataSourcePlants = new MatTableDataSource<any>([]);
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
+  displayedColumns: string[] = [
+    'state',
+    'siteName',
+    'customer',
+  ];
+
+  dummyTabla: any[] = [
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+    {
+      state: false,
+      siteName: 'N/A',
+      customer: 'N/A',
+    },
+  ]
+
+  displayedColumnsPlant: string[] = [
+    'plantName',
+    'comm',
+    'alarms',
+    'inverterAsset',
+    'plantAvailability',
+    'gridAvailability',
+    'perfomanceRatio',
+    'activePower',
+    'irradiation',
+    'specificPower',
+  ];
+
+  dummyTablaPlant: any[] = [
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+    {
+      plantName: 'N/A',
+      comm: 'N/A',
+      alarms: 'N/A',
+      inverterAsset: 'N/A',
+      plantAvailability: 'N/A',
+      gridAvailability: 'N/A',
+      perfomanceRatio: 'N/A',
+      activePower: 'N/A',
+      irradiation: 'N/A',
+      specificPower: 'N/A',
+    },
+
+  ]
+
   data: any = [
     {
       icon: '../../../../../assets/icons/plantType.svg',
@@ -199,15 +349,158 @@ export class HomeAdminComponent {
     order: [''],
   });
 
+  hours: string[] = [];
+
+  plants: {
+    name: string;
+    hourStatuses: string[]; // Puede ser 'optimal', 'medium', 'out-of-range'
+  }[] = [];
+
 
   constructor(
     private fb: FormBuilder,
+    private notificationService: OpenModalsService
+
   ) { }
 
+  ngOnInit(): void {
+    this.dataSource.data = this.dummyTabla;
+    this.dataSourcePlants.data = this.dummyTablaPlant;
 
+    this.completionMessage();
+    this.initializeHours();
+    this.loadPlantData();
+  }
 
   onEnergyTypeChange(event: any): void {
     const selectedValue = event.value;
     console.log(selectedValue);
+  }
+
+  onFileSelected(event: any) {
+  }
+
+  initializeHours(): void {
+    for (let i = 0; i < 24; i++) {
+      const hour = `${i.toString().padStart(2, '0')}:00`;
+      this.hours.push(hour);
+    }
+  }
+
+  loadPlantData(): void {
+    this.plants = [
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+      {
+        name: 'Planta',
+        hourStatuses: this.generateRandomStatuses()
+      },
+    ];
+  }
+
+  generateRandomStatuses(): string[] {
+    const statuses = ['cero', 'twenty', 'forty', 'sixty', 'eighty', 'hundred'];
+    return Array.from({ length: 24 }, () => statuses[Math.floor(Math.random() * statuses.length)]);
+  }
+
+
+  completionMessage(edit = false) {
+    this.notificationService
+      .notificacion(
+        `¡We are working on building this module. It will be available soon.!`,
+        'alert',
+      )
+      .afterClosed()
+      .subscribe((_) => { });
   }
 }
