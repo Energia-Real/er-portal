@@ -46,3 +46,18 @@ export interface DataCatalogTypeClient {
   description: string;
   tipo: string;
 }
+
+export interface DataCientList {
+  id: string;
+  clientId: number;
+  nombre: string;
+  razonSocialCount: number;
+  plantsCount: number; 
+  imageBase64: string;
+  tipoDeCliente: TipoDeCliente;
+}
+
+export interface TipoDeCliente{
+  id: string;
+  tipo: string; 
+}
