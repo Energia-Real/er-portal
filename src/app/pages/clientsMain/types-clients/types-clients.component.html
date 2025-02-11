@@ -27,11 +27,12 @@
                             </div>
                             <div class="col-span-1 md:col-span-1 d-flex align-items-center mt-2">
                                 <div class="button-container d-flex justify-content-between pt-0 gap-2">
-                                    <button class="btn-cancel" *ngIf="description?.value?.trim() || editedClient" (click)="cancelEdit()"
-                                        type="button">Cancel</button>
+                                    <button class="btn-cancel" *ngIf="description?.value?.trim() || editedClient"
+                                        (click)="cancelEdit()" type="button">Cancel</button>
                                     <div>
                                         <button class="btn-action-add" (click)="actionSave()">
-                                            <i [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
+                                            <i
+                                                [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
                                             {{ this.editedClient ? 'Edit' : 'Save' }}
                                         </button>
                                     </div>
@@ -45,9 +46,20 @@
                 </div>
             </div>
         </form>
+        
+        <div class="c-paginator-top">
+            <strong>Items per page</strong>
+            <mat-form-field>
+                <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+                    <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                        <strong>{{ size }}</strong>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
 
         <div class="table-container-scroll mt-1 mb-5">
-            <table mat-table [dataSource]="dataSource" matSort>
+            <table mat-table [dataSource]="dataSource" matSort class="table-content">
                 <caption></caption>
 
                 <ng-container matColumnDef="description">
@@ -80,5 +92,10 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
         </div>
+
+        <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
     </div>
 </div>

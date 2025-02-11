@@ -314,6 +314,7 @@ tr {
     height: calc(100vh - 380px);
     margin-bottom: 0 !important;
     margin-top: 0 !important;
+    overflow: auto;
 
     .header-table {
         margin: 0;

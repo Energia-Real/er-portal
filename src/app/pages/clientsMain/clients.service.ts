@@ -24,7 +24,7 @@ export class ClientsService implements OnDestroy {
     name: string,
     pageSize: number,
     page: number
-  ): Observable<entity.DataTableResponse> {
+  ): Observable<entity.DataClientsTableMapper> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
       .set('imageSize', 150)
@@ -33,14 +33,14 @@ export class ClientsService implements OnDestroy {
       .set('name', name);
 
     return this.http
-      .get<entity.DataTableResponse>(url, { params })
+      .get<entity.DataClientsTableMapper>(url, { params })
       .pipe(map((response) => Mapper.getClientsDataMapper(response)));
   }
 
-  getTypeClientsData(): Observable<entity.DataCatalogTypeClient[]> {
+  getTypeClientsData(): Observable<entity.DataTypeClientsTableMapper> {
     const url = `${this.API_URL}/tipodecliente`;
 
-    return this.http.get<entity.DataCatalogTypeClient[]>(url);
+    return this.http.get<entity.DataTypeClientsTableMapper>(url);
   }
 
   postDataTypeClient(data: entity.DataPostTypeClient) {

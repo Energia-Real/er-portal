@@ -112,7 +112,7 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   getDataTable(page: number, name: string) {
     this.moduleServices.getClientsData(name, this.pageSize, page).subscribe({
-      next: (response: entity.DataTableResponse) => {
+      next: (response: entity.DataClientsTableMapper) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;

@@ -2,13 +2,16 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import * as entity from '../clients-model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { updatePagination } from '@app/core/store/actions/paginator.actions';
+import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 
 @Component({
   selector: 'app-types-clients',
@@ -20,6 +23,11 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSize: number = 10;
+  pageIndex: number = 1;
+  totalItems: number = 0;
   displayedColumns: string[] = [
     'description',
     'actions'
@@ -28,16 +36,31 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
 
   description = new FormControl({ value: '', disabled: false }, Validators.required);
-
   editedClient !: entity.DataPostTypeClient | entity.DataPostTypeClient | null;
-
   searchValue: string = '';
 
   constructor(
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
     private store: Store
-  ) { }
+  ) {
+    combineLatest([
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([pageSize, pageIndex]) => {
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex + 1;
+
+        if (this.paginator) {
+          this.paginator.pageSize = pageSize;
+          this.paginator.pageIndex = pageIndex;
+        }
+
+        this.getDataTable();
+      });
+  }
 
   ngOnInit() {
     this.getDataTable();
@@ -50,21 +73,22 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
     }
 
     let objData: any = {}
-
     if (this.editedClient?.id) {
-      objData.tipo = this.description.value
-      this.saveDataPatch(objData)
+      objData.tipo = this.description.value;
+      this.saveDataPatch(objData);
     } else {
-      objData.description = this.description.value
-      this.saveDataPost(objData)
+      objData.description = this.description.value;
+      this.saveDataPost(objData);
     }
   }
 
   getDataTable() {
     this.moduleServices.getTypeClientsData().subscribe({
-      next: (response: DataCatalogs[]) => {
-        this.dataSource.data = response;
+      next: (response: entity.DataTypeClientsTableMapper) => {
+        this.dataSource.data = response.data;
+        this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
+        this.pageIndex = this.pageIndex;
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -73,11 +97,21 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
     });
   }
 
+  changePageSize(event: any) {
+    const newSize = event.value;
+    this.pageSize = newSize;
+
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+
+    this.getDataTable();
+  }
+
   saveDataPost(objData: entity.DataPostTypeClient) {
     this.moduleServices.postDataTypeClient(objData).subscribe({
-      next: () => {
-        this.completionMessage()
-      },
+      next: () => this.completionMessage(),
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
@@ -87,9 +121,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   saveDataPatch(objData: entity.DataPatchTypeClient) {
     this.moduleServices.patchDataTypeClient(this.editedClient?.id!, objData).subscribe({
-      next: () => {
-        this.completionMessage(true)
-      },
+      next: () => this.completionMessage(true),
       error: (error) => {
         this.notificationService.notificacion(`Hable con el administrador.`, 'alert')
         console.error(error)
@@ -121,12 +153,18 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   completionMessage(edit = false) {
     this.notificationService
-      .notificacion(`Record ${ edit ? 'editado' : 'guardado' }.`, 'save')
+      .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
       .subscribe((_ => {
         this.cancelEdit();
         this.getDataTable();
       }));
+  }
+
+  getServerData(event: PageEvent): void {
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    }
   }
 
   ngOnDestroy(): void {

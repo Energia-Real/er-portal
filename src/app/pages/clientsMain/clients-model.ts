@@ -1,10 +1,36 @@
-export interface DataTableResponse {
+export interface DataClientsTableMapper {
   page: number;
   pageSize: number;
   totalItems: number;
   data: DataClientsTable[]
 }
 
+export interface DataClientsTable {
+  id: string;
+  clientId: number;
+  nombre: string;
+  imageBase64: string;
+}
+
+export interface DataTypeClientsTableMapper {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  data: DataTypeClientsTable[]
+}
+
+export interface DataTypeClientsTable {
+  id: string;
+  description: string;
+  tipo: string;
+}
+
+export interface DataTableResponse {
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  data: DataClientsTable[]
+}
 
 export interface DataClientsTable {
   id: string;
@@ -39,10 +65,4 @@ export interface DataPatchClient {
   name: string,
   tipoDeClienteId: string
   image?: any
-}
-
-export interface DataCatalogTypeClient {
-  id: string;
-  description: string;
-  tipo: string;
 }

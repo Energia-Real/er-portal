@@ -35,8 +35,8 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dataSource = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 10;
   pageIndex: number = 1;
