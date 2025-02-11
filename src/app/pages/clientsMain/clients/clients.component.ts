@@ -93,7 +93,6 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     });
 
     this.drawerOpenSubClient = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
-      console.log(resp);
 
       if (this.drawerOpenClient || this.editedClient?.id) {
         this.drawerOpenClient = resp.drawerOpen;
@@ -120,14 +119,12 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
       }
     });
   }
 
   editClient(data: any) {
     this.editedClient = data
-    console.log(data)
     this.updDraweStateEdit(true);
   }
 

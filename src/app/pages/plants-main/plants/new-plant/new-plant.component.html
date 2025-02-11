@@ -119,6 +119,19 @@
 
               <div class="col-span-1 md:col-span-1">
                 <div class="c-input">
+                  <p>Client:</p>
+                  <mat-form-field class="select-ER" appearance="outline">
+                    <mat-select formControlName="clientId" placeholder="Client">
+                      <mat-option value="">Choose one</mat-option>
+                      <mat-option [value]="cat.id" *ngFor="let cat of catClients">{{ cat?.nombre || '-'
+                        }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-span-1 md:col-span-1">
+                <div class="c-input">
                   <p>Operation scheme:</p>
                   <mat-form-field class="select-ER" appearance="outline">
                     <mat-select formControlName="netZero" placeholder="Operation scheme">

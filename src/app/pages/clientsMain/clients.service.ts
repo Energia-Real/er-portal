@@ -98,6 +98,11 @@ export class ClientsService implements OnDestroy {
     return this.http.put<any>(url, formData, { headers });
   }
 
+  getClientsList(){
+    const url = `${this.API_URL}/clients/list`;
+    return this.http.get<entity.DataCientList[]>(url);
+  }
+
   ngOnDestroy() {
     this.onDestroy$.next();
     this.onDestroy$.complete();
