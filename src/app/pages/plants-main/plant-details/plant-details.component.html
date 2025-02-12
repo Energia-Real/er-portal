@@ -1,0 +1,220 @@
+<div class="c-main c-plant-details">
+  <div class="plant-header grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
+    <div class="col-span-1 appreturn">
+      <app-return-bar class="app-return"></app-return-bar>
+
+      <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
+        <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>
+        <p>Approximate address: <span *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
+      </div>
+    </div>
+
+    <div class="col-span-2">
+      <div class="c-information">
+        <div *ngIf="!isLoadingWD else loadingSkeletonTwo">
+          <div class="content" *ngIf="weatherData else notDataTable">
+            <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
+            <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content" *ngIf="!isLoadingTZ else loadingSkeletonTwo">
+            <p>Local time</p>
+            <span *ngIf="timeZonePlace else notDataTable">{{ timeZonePlace }}</span>
+          </div>
+
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
+            <p>System size</p>
+            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData?.systemSize }} kW</span>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
+            <p>AC capacity</p>
+            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData?.nominalPowerAC }} kW</span>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
+            <p>Status</p>
+            <mat-icon *ngIf="plantData?.assetStatusIcon else notDataTable" [matTooltip]="plantData.descriptionStatus">{{
+              plantData?.assetStatusIcon }} </mat-icon>
+          </div>
+          <div class="linea"></div>
+        </div>
+
+        <div>
+          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
+            <p>System</p>
+            <div *ngIf="dataRespoSystem else notDataTable">
+              <i class="check" *ngIf="inverterSystemStatus" class="fa-solid fa-check mb-2"></i>
+              <i *ngIf="!inverterSystemStatus" class="fa-solid fa-xmark mb-2"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!userInfo.clientes.length" class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+    <div class="col-span-1 position-relative">
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
+        (selectedTabChange)="onTabChange($event)">
+
+        <mat-tab label="Site details">
+          <app-site-details *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-details>
+        </mat-tab>
+
+        <mat-tab label="Site performance">
+          <app-site-performance *ngIf="plantData" [notData]="showNotdata"
+            [plantData]="plantData"></app-site-performance>
+        </mat-tab>
+
+        <mat-tab label="Savings">
+          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-savings>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+  </div>
+
+  <div class="c-roc" *ngIf="userInfo.clientes.length">
+    <app-info-providers-devices [notData]="true" [data]="[]"></app-info-providers-devices>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements">
+      <div class="content-header">
+        <h1 class="label-700-24">Asset monitoring parameter</h1>
+      </div>
+
+      <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-1 position-relative">
+          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+
+            <mat-tab label="Observed Parameters">
+              <app-observed-parameters [notData]="true" [data]="[]"></app-observed-parameters>
+            </mat-tab>
+
+            <mat-tab label="Live KPI">
+              <app-live-kpi [notData]="true" [data]="[]"></app-live-kpi>
+
+            </mat-tab>
+
+            <mat-tab label="Cumulative KPI">
+              <app-comulative-kpi [notData]="true" [data]="[]"></app-comulative-kpi>
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <app-plant-assets-co2 [notData]="true" [data]="[]"></app-plant-assets-co2>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements border-card">
+      <div class="content-header">
+        <h1 class="label-700-24">Asset operations overview</h1>
+      </div>
+
+      <div class="c-content c-taps">
+        <div class="position-relative">
+          <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+            <mat-tab label="Inverter">
+              <app-inverter [notData]="true" [data]="[]"></app-inverter>
+            </mat-tab>
+
+            <mat-tab label="Transformer">
+              <app-transformer [notData]="true" [data]="[]"></app-transformer>
+            </mat-tab>
+
+            <mat-tab label="Weather Station">
+              <app-weather-station [notData]="true" [data]="[]"></app-weather-station>
+            </mat-tab>
+
+            <mat-tab label="HT Panel">
+              <app-ht-panel [notData]="true" [data]="[]"></app-ht-panel>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+
+        <div class="content-float">
+          <div class="position-relative">
+            <div class="c-input-search w-100">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input class="block w-full" type="text" placeholder="Search">
+            </div>
+          </div>
+
+          <div class="btns-excel">
+            <button class="btn-action-add">
+              <span class="material-symbols-outlined">download</span>
+              Download Template
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <app-plants-evenet-summary [notData]="true" [data]="[]"></app-plants-evenet-summary>
+
+    <div class="separator-cards"></div>
+  </div>
+</div>
+
+<ng-template #notDataTable>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
+
+<ng-template #notData>
+  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
+
+<ng-template #loadingSkeletonTwo> <!-- Loader para 2 lineas -->
+  <div class="flex flex-col dataSC ">
+
+    <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+        'border-radius': '32.5px'
+      }"></ngx-skeleton-loader>
+
+    <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+        'border-radius': '32.5px',
+        'width': '70%'
+      }"></ngx-skeleton-loader>
+  </div>
+</ng-template>
+
+<ng-template #loadingSkeletonOne> <!-- Loader para 1 linea -->
+  <div class="dataSC ">
+    <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+        'border-radius': '32.5px'
+      }"></ngx-skeleton-loader>
+  </div>
+</ng-template>
+
+<ng-template #loadingSkeletonCircle>
+  <div class="flex flex-col dataSC ">
+
+    <ngx-skeleton-loader count="1" appearance="circle"></ngx-skeleton-loader>
+  </div>
+</ng-template>
+
+<ng-template #notDataTable>
+  <mat-icon color="warn">cancel_outlined</mat-icon>
+</ng-template>

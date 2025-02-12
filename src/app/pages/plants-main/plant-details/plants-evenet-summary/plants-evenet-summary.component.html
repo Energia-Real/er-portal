@@ -1,0 +1,237 @@
+<div class="content content-elements pb-0">
+    <div class="content-header">
+      <h1 class="label-700-24">Plants event summary</h1>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu" [overlapTrigger]="false">
+        <div class="c-option-filters">
+          <div class="header-filter">
+            <h1>Filter</h1>
+            <span class="material-symbols-outlined close-icon" (click)="menuTrigger.closeMenu()">
+              close
+            </span>
+          </div>
+
+          <div class="content-filters" (click)="$event.stopPropagation()">
+            <form [formGroup]="formFilters">
+              <div class="c-input">
+                <p>Severity:</p>
+                <mat-form-field class="select-ER" appearance="outline">
+                  <mat-select formControlName="severety" placeholder="" disableRipple>
+                    <mat-option value="">All</mat-option>
+                    <mat-option [value]="cat.value" *ngFor="let cat of catSeverety">
+                      {{ cat?.description || '-' }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="c-input">
+                <p>Group:</p>
+                <mat-form-field class="select-ER" appearance="outline">
+                  <mat-select formControlName="group" placeholder="" disableRipple>
+                    <mat-option value="">All</mat-option>
+                    <mat-option [value]="cat.value" *ngFor="let cat of catGroup">
+                      {{ cat?.description || '-' }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="c-input">
+                <p>Order:</p>
+                <mat-form-field class="select-ER" appearance="outline">
+                  <mat-select formControlName="order" placeholder="" disableRipple>
+                    <mat-option value="">All</mat-option>
+                    <mat-option [value]="cat.value" *ngFor="let cat of catOrder">
+                      {{ cat?.description || '-' }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="content-footer">
+                <div class="btns-filters">
+                  <button class="btn-action-add">
+                    <span class="material-symbols-outlined">filter_list</span>
+                    Apply
+                  </button>
+
+                  <button class="btn-action-clean">
+                    <span class="material-symbols-outlined">delete</span>
+                    Clear
+                  </button>
+
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </mat-menu>
+    </div>
+
+    <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-blue.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-red.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-red.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="c-content-caroucel">
+            <div class="caroucel-info">
+              <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+              <div>
+                <h1>N/A</h1>
+                <h2>N/A</h2>
+                <span>N/A</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+      </owl-carousel-o>
+    </div>
+  </div>
