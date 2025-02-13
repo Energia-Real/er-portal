@@ -46,25 +46,22 @@ export interface IVA {
 }
 
 export interface DataBillingTable {
-  invoiceId: string;
-  plantName: string;
-  clientName: string;
-  billingMonth: string;
-  plantId: string;
-  rate: number;
-  amount: number;
-  iva: number;
-  amountWithIva: number;
-  rpu: string;
-  status: number;
-  month: string;
-  formatterStatus: string;
-  generatedEnergyKwh: number;
-  originalGeneratedEnergyKwh: number;
-  formattedGeneratedEnergyKwh: string;
-  formattedAmount: string;
-  formattedAmountWithIva: string;
-  formattedRate: string;
+  clienteId: number,
+  cliente: string,
+  subclienteId: number,
+  subcliente: null,
+  razonSocial: string,
+  esFacturaciónIndividual: boolean,
+  month: string,
+  year: number,
+  rpu: string,
+  tarifa: string,
+  generatedEnergyKwh: number | string,
+  montoTotal: string,
+  montoPagoAnterior: any,
+  startDate: string,
+  endDate: string,
+  createdInvoiceDocDate: any
 }
 
 export interface PostConfirmInvoices {
@@ -102,7 +99,6 @@ export interface FiltersBilling {
   clientId?: any
   startDate: string;
   endDate: string | null;
-  plantName: string;
   pageSize: number;
   page: number;
 }

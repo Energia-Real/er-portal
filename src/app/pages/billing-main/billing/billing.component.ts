@@ -11,13 +11,15 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { FilterState, GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-billing',
@@ -64,212 +66,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   formatTimer: any;
 
-  dummy: any[] = [
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-    {
-      clientId: '001',
-      subClientId: '026',
-      clientName: 'Customer name',
-      subClient: 'Plant name',
-      rfc: 'ER02856969UX3',
-      month: 'Jan',
-      year: '2025',
-      billingPeriodStart: '01/01/2025',
-      billingPeriodEnd: '31/01/2025',
-      receiptGenerationDate: '31/01/2025',
-      cfcContact: 'CFE-987654',
-      rate: '$000,000.00 MXN',
-      production: '5,000 kWh',
-      previousPaymentAmount: '$000,000.00 MXN',
-      totalAmount: '$000,000.00 MXN',
-    },
-  ];
+  selectedFile: File | null = null;
 
   searchBar = new FormControl('');
 
@@ -320,7 +117,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$), distinctUntilChanged()).subscribe(content => {
-      this.getBilling(content!);
+      this.getBilling();
     });
   }
 
@@ -329,28 +126,50 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
   }
 
-  getBilling(searchTerm: string = '') {
-    // const filters = {
-    //   plantName: searchTerm,
-    //   pageSize: this.pageSize,
-    //   page: this.pageIndex,
-    //   ...this.generalFilters
-    // };
+  getBilling() {
+    const filters = {
+      pageSize: this.pageSize,
+      page: this.pageIndex,
+      ...this.generalFilters
+    };
 
-    // this.moduleServices.getBillingData(filters).subscribe({
-    //   next: (response: entity.DataBillingTableMapper) => {
-    //     this.dataSource.data = response?.data;
-    //     this.totalItems = response?.totalItems;
-    //     this.dataSource.sort = this.sort;
-    //     this.pageIndex = filters.page;
-    //   },
-    //   error: error => {
-    //     this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-    //     console.log(error);
-    //   }
-    // });
-    this.dataSource.data = this.dummy
+    this.moduleServices.getBillingData(filters).subscribe({
+      next: (response: entity.DataBillingTableMapper) => {
+        this.dataSource.data = response?.data;
+        this.totalItems = response?.totalItems;
+        this.dataSource.sort = this.sort;
+        this.pageIndex = filters.page;
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
 
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    this.uploadExcel();
+  }
+
+  uploadExcel() {
+    console.log(this.selectedFile);
+    if (this.selectedFile) {
+      this.moduleServices.uploadExcel(this.selectedFile).subscribe({
+        next: (response: any) => {
+          if (response?.errors?.errors?.length) {
+            const errorMessages = response?.errors?.errors?.map((e: any) => e.descripcion)
+            this.modalErrors(errorMessages);
+          } else {
+            this.completionMessage(true);
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+          this.modalErrors(errorMessages);
+        }
+      });
+    }
   }
 
   changePageSize(event: any) {
@@ -363,6 +182,19 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     }
 
     this.getBilling();
+  }
+
+  completionMessage(load: boolean) {
+    this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
+    this.getBilling();
+  }
+
+  modalErrors(errors: any) {
+    const dataNotificationModal: notificationData = this.notificationDataService.errors(errors)!;
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    })
   }
 
   getServerData(event: PageEvent): void {
