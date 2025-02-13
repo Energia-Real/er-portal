@@ -13,21 +13,28 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { NgxImageZoomModule } from 'ngx-image-zoom';
 import { PlantsRoutingModule } from './plants-routing.module';
-import { SiteDetailsComponent } from './plant-detail-home/site-details/site-details.component';
-import { PlantsDetailComponent } from './plant-detail-home/plant-details/plant-details.component';
-import { SitePerformanceComponent } from './plant-detail-home/site-performance/site-performance.component';
-import { SavingsComponent } from './plant-detail-home/savings/savings.component';
-import { ModalExportDataComponent } from './plant-detail-home/site-performance/modal-export-data/modal-export-data.component';
 import { PlantsComponent } from './plants/plants.component';
-import { NewEquipmentComponent } from './plant-detail-home/savings/components/new-equipment/new-equipment.component';
 import { NewPlantComponent } from './plants/new-plant/new-plant.component';
-import { InverterDetailComponent } from './plant-detail-home/inverter-detail/inverter-detail.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
-import { ObservedParametersComponent } from './plant-detail-home/monitoring/observed-parameters/observed-parameters.component';
-import { LiveKpiComponent } from './plant-detail-home/monitoring/live-kpi/live-kpi.component';
-import { ComulativeKpiComponent } from './plant-detail-home/monitoring/comulative-kpi/comulative-kpi.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { SavingsComponent } from './plant-details/savings/savings.component';
+import { SiteDetailsComponent } from './plant-details/site-details/site-details.component';
+import { SitePerformanceComponent } from './plant-details/site-performance/site-performance.component';
+import { PlantsDetailComponent } from './plant-details/plant-details.component';
+import { ModalExportDataComponent } from './plant-details/site-performance/modal-export-data/modal-export-data.component';
+import { NewEquipmentComponent } from './plant-details/savings/components/new-equipment/new-equipment.component';
+import { InverterDetailComponent } from './plant-details/inverter-detail/inverter-detail.component';
+import { ObservedParametersComponent } from './plant-details/observed-parameters/observed-parameters.component';
+import { LiveKpiComponent } from './plant-details/live-kpi/live-kpi.component';
+import { ComulativeKpiComponent } from './plant-details/comulative-kpi/comulative-kpi.component';
+import { InfoProvidersDevicesComponent } from './plant-details/info-providers-devices/info-providers-devices.component';
+import { PlantAssetsCo2Component } from './plant-details/plant-assets-co2/plant-assets-co2.component';
+import { InverterComponent } from './plant-details/inverter/inverter.component';
+import { TransformerComponent } from './plant-details/transformer/transformer.component';
+import { WeatherStationComponent } from './plant-details/weather-station/weather-station.component';
+import { HtPanelComponent } from './plant-details/ht-panel/ht-panel.component';
+import { PlantsEvenetSummaryComponent } from './plant-details/plants-evenet-summary/plants-evenet-summary.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +50,13 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     ObservedParametersComponent,
     LiveKpiComponent,
     ComulativeKpiComponent,
+    InfoProvidersDevicesComponent,
+    PlantAssetsCo2Component,
+    InverterComponent,
+    TransformerComponent,
+    WeatherStationComponent,
+    HtPanelComponent,
+    PlantsEvenetSummaryComponent,
   ],
   imports: [
     CommonModule,

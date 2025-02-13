@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PlantsDetailComponent } from './plant-detail-home/plant-details/plant-details.component';
 import { PlantsComponent } from './plants/plants.component';
 import { NewPlantComponent } from './plants/new-plant/new-plant.component';
 import { FilterGuard } from '@app/shared/guards/filter.guard';
+import { PlantsDetailComponent } from './plant-details/plant-details.component';
 
 
 const routes: Routes = [

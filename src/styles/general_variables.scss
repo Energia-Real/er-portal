@@ -578,6 +578,30 @@ select:focus {
 }
 
 
+.btn-show-all {
+    height: 44px;
+    width: 130px;
+    border-radius: 24px;
+    color: #EE6A0A;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    span,
+    i {
+        margin-right: 10px;
+        font-size: 24px;
+        color: #EE6A0A;
+    }
+  }
+
+  
+.filter-selected {
+    border: 1px solid #EE6A0A;
+  }
+  
 .btn-action-cancel {
     background: #a7a7a7 !important;
     color: white !important;
