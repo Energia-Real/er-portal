@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import * as entity from '../../plants-model';
-import { PlantsService } from '../../plants.service';
+import * as entity from '../plants-model';
+import { PlantsService } from '../plants.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { ActivatedRoute } from '@angular/router';
-import { SitePerformanceComponent } from '../site-performance/site-performance.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { notificationData, NotificationServiceData } from '@app/shared/models/general-models';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
@@ -17,6 +16,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { UserInfo } from '@app/shared/models/general-models';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { FormBuilder } from '@angular/forms';
+import { SitePerformanceComponent } from './site-performance/site-performance.component';
 
 @Component({
   selector: 'app-plant-detail',
@@ -30,87 +30,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   userInfo!: UserInfo;
 
-
-  data: any = [
-    {
-      icon: '../../../../../assets/icons/plantType.svg',
-      title: 'Plant type',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/moutingTech.svg',
-      title: 'Mounting technology',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/noOfSite.svg',
-      title: 'No of sites',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/plantTimeZone.svg',
-      title: 'Plant time zone',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/currency.svg',
-      title: 'Currency',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/comssionDate.svg',
-      title: 'Commission date',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/tariff.svg',
-      title: 'Tariff',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/ficed.svg',
-      title: 'Ficed tilt anglee',
-      description: 'N/A',
-    },
-  ]
-
-  dataTwo: any = [
-    {
-      icon: '../../../../../assets/icons/epc.svg',
-      title: 'EPC',
-      description: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/oym.svg',
-      title: 'O&M',
-      description: 'N/A',
-    },
-  ]
-
-  dataThree: any = [
-    {
-      icon: '../../../../../assets/icons/transformer.svg',
-      title: 'Transformer',
-      description: 'N/A',
-      titleTwo: 'Generic',
-      descriptionTwo: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/inverter.svg',
-      title: 'Inverter',
-      description: 'N/A',
-      titleTwo: 'Solis Solis-60K-LV-5G',
-      descriptionTwo: 'N/A',
-    },
-    {
-      icon: '../../../../../assets/icons/pvmodule.svg',
-      title: 'PV Module',
-      description: 'N/A',
-      titleTwo: 'Trina Sola',
-      descriptionTwo: 'N/A',
-      descriptionThree: 'Mono Crystalline Silicon',
-    },
-  ]
 
   assetOperations: any = [
     {
@@ -127,94 +46,9 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   ]
 
-  catSeverety: any = [
-    {
-      value: '1',
-      description: 'Insignificant'
-    },
-    {
-      value: '2',
-      description: 'State'
-    },
-    {
-      value: '3',
-      description: 'Low'
-    },
-    {
-      value: '4',
-      description: 'Medium'
-    },
-    {
-      value: '5',
-      description: 'High'
-    },
-    {
-      value: '6',
-      description: 'Critical'
-    },
-  ]
-
-  catGroup: any = [
-    {
-      value: '1',
-      description: 'BreackDown'
-    },
-    {
-      value: '2',
-      description: 'Curtailment'
-    },
-    {
-      value: '3',
-      description: 'Manual stop'
-    },
-    {
-      value: '4',
-      description: 'System OK'
-    },
-    {
-      value: '5',
-      description: 'Undefined'
-    },
-  ]
-
-  catOrder: any = [
-    {
-      value: '1',
-      description: 'Lastest First'
-    },
-    {
-      value: '1',
-      description: 'Earliest First'
-    },
-  ]
-
   co2Progress: string = '25%'
   assetOperationsSelect: string = '1';
 
-  customOptions: OwlOptions = {
-    loop: false,
-    mouseDrag: true,
-    touchDrag: true,
-    pullDrag: true,
-    dots: true,
-    navSpeed: 700,
-    navText: ['', ''],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 3
-      },
-      940: {
-        items: 4
-      }
-    },
-    nav: false
-  }
 
   formFilters = this.fb.group({
     severety: [''],

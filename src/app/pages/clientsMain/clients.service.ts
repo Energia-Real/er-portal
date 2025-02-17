@@ -67,6 +67,8 @@ export class ClientsService implements OnDestroy {
 
     formData.append('name', data.name);
     formData.append('tipoDeClienteId', data.tipoDeClienteId);
+    formData.append('clientId', data.clientId!);
+
 
     const imageFile = data.image;
     if (imageFile) formData.append('image', imageFile, imageFile.name);
@@ -94,6 +96,11 @@ export class ClientsService implements OnDestroy {
     if (imageFile) formData.append('image', imageFile, imageFile.name);
 
     return this.http.put<any>(url, formData, { headers });
+  }
+
+  getClientsList(){
+    const url = `${this.API_URL}/clients/list`;
+    return this.http.get<entity.DataCientList[]>(url);
   }
 
   ngOnDestroy() {
