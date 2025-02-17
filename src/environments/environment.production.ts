@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   API_URL_PERFORMANCE: 'https://er-portal-gateway.azurewebsites.net/api/v1',
-  API_URL_AUTH_V1: 'https://er-auth-app.azurewebsites.net/api/v1',
+  API_URL_AUTH_V1: 'https://er-auth-app.azurewebsites.net/api/v1/realm/prod',
   APP: 'backoffice',
   GOOGLE_API_KEY: 'AIzaSyAO4bqxxS4-CkLR_vY1RKJNwDanh5vyvq8',
   TOMORROW_KEY: '8lD2yWTpkIuHYCXCXNtBhMkeghYU4dau',
