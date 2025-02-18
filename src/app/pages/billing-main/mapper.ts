@@ -7,17 +7,12 @@ export class Mapper {
 		response?.data?.forEach((data: entity.DataBillingTable): void => {
 			dataList.push({
 				...data,
-				invoiceId: data?.invoiceId || '',
-				rate : data?.rate || 0,
-				clientName: data?.clientName || '',
-				plantName: data?.plantName || '',
-				formatterStatus: data.status == 0 ? 'Created' : data.status == 1 ? 'Edited' : data.status == 2 ? 'Confirmed' : 'Pending',
-				formattedRate: formatsService.moneyFormat(data.rate),
-				formattedAmount: formatsService.moneyFormat(data.amount),
-				formattedAmountWithIva: formatsService.moneyFormat(data.iva),
-				generatedEnergyKwh: data.generatedEnergyKwh,
-				originalGeneratedEnergyKwh: data.generatedEnergyKwh,
-				formattedGeneratedEnergyKwh: formatsService.energyWithDecimals(data.generatedEnergyKwh)
+				endDate: formatsService.dateFormat(data.endDate),
+				startDate: formatsService.dateFormat(data.startDate),
+				generatedEnergyKwh: formatsService.energyWithDecimals(data.generatedEnergyKwh),
+				montoPagoAnterior: formatsService.moneyFormat(data.montoPagoAnterior),
+				montoTotal: formatsService.moneyFormat(parseFloat(data.montoTotal)),
+				tarifa: formatsService.moneyFormat(parseFloat(data.tarifa)),
 			});
 		});
 

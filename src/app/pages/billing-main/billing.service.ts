@@ -23,12 +23,11 @@ export class BillingService implements OnDestroy {
   getBillingData(
     filters: entity.FiltersBilling
   ): Observable<entity.DataBillingTableMapper> {
-    const url = `${this.performanceApiUrl}/invoices`;
+    const url = `${this.performanceApiUrl}/invoices/receipts`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
       .set('page', filters.page)
-      .set('plantName', filters.plantName)
       .set('startDate', filters.startDate)
       .set('endDate', filters.endDate!);
 
@@ -87,6 +86,14 @@ export class BillingService implements OnDestroy {
       url,
       data
     );
+  }
+
+  uploadExcel(file: File): Observable<any> {
+    const url = `${this.performanceApiUrl}/invoices/upload-excel`;
+    const formData: FormData = new FormData();
+    formData.append('File', file, file.name);
+
+    return this.http.post<any>(`${url}`, formData);
   }
 
   ngOnDestroy() {
