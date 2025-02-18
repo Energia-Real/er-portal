@@ -17,6 +17,7 @@ import { ClientsRoutingModule } from './clients-routing.module';
 import { ClientsComponent } from './clients/clients.component';
 import { TypesClientsComponent } from './types-clients/types-clients.component';
 import { NewClientComponent } from './new-client/new-client.component';
+import { CorporateNamesComponent } from './corporate-names/corporate-names.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { NewClientComponent } from './new-client/new-client.component';
     ClientsComponent,
     TypesClientsComponent,
     NewClientComponent,
+    CorporateNamesComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,77 @@
+.c-clients {
+    z-index: 3;
+//overflow: scroll;
+
+  
+  
+  mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 28px;
+  }
+
+  .client-title{
+    color: #EE5427;   
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  mat-icon{
+    color: #EE5427;
+  }
+
+  .header-message{
+    color: #7F7F7F;
+    font-size:16px;
+  }
+
+  .main-container-corp{
+    max-height: 66vh !important;
+    height: auto !important; 
+    overflow-y: auto;
+    flex-shrink: 0 !important;
+    .corporate-title{
+      color: #EE5427;
+      font-size: 16px;
+      margin-bottom: 12px !important;
+      font-weight: 800;
+      margin-top: 18px;
+    }
+   
+    
+    &.expanded {
+      max-height: 40vh !important; 
+    }
+ 
+  }
+
+  .btn-corporate-name{
+    font-size: 14px;
+    width: auto!important;
+    border-radius: 24px;
+    background-color: #FCFCFC;
+    align-items: center !important;
+  }
+
+  .btn-action-back{
+    width: 120px !important;
+  }
+
+  
+  
+  
+}
+p{
+  color: #7F7F7F;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 9px !important;
+}
+.plant-title{
+  color: #EE5427;
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 9px;
+}
+
+.button-add-title{
+  color: #EE5427 !important;
+}

@@ -222,7 +222,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
               errorTitleSnack:'',
               errorContentSnack:'',
               notificationId:this.notificationId,
-              successCenterMessage:NOTIFICATION_CONSTANTS.ADD_CLIENT_SUCCESS,
+              successCenterMessage:NOTIFICATION_CONSTANTS.ADD_CORPORATE_SUCCESS,
               errorCenterMessage:NOTIFICATION_CONSTANTS.ADD_CLIENT_ERROR,
               userId:this.user.id
             }

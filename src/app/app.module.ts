@@ -14,7 +14,7 @@ import { paginatorReducer } from './core/store/reducers/paginator.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { drawerReducer } from './core/store/reducers/drawer.reducer';
+import { corporateDrawerReducer, drawerReducer } from './core/store/reducers/drawer.reducer';
 import { filterReducer } from './core/store/reducers/filters.reducer';
 import { notificationsReducer } from './core/store/reducers/notifications.reducer';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -28,7 +28,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     GoogleMapsModule,
     CoreModule,
     CarouselModule,
-    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer, notifications:notificationsReducer }),
+    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer, notifications:notificationsReducer,  corporateDrawer: corporateDrawerReducer}),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
   ],
   providers: [

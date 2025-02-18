@@ -1,7 +1,11 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { DrawerState } from '../reducers/drawer.reducer';
+import { CorporateDrawerState } from '../reducers/drawer.reducer';
 
 export const selectDrawer = createFeatureSelector<DrawerState>('drawer');
+
+export const selectCorporateDrawer = createFeatureSelector<CorporateDrawerState>('corporateDrawer');
+
 
 export const selecDrawerOpen = createSelector(
   selectDrawer,
@@ -21,4 +25,15 @@ export const selecDrawerInfo= createSelector(
 export const needReload= createSelector(
   selectDrawer,
   state => state.needReload
+);
+
+
+export const selectCorporateClient = createSelector(
+  selectCorporateDrawer,
+  state => state.clientId
+);
+
+export const selectClientName = createSelector(
+  selectCorporateDrawer,
+  state => state.clientName
 );
