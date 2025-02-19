@@ -1,0 +1,122 @@
+<div class="c-clients fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-2/6 
+  c-modal-lateral create-asset-main-container flex flex-col " [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
+    <div class="flex justify-between">
+        <div class=" w-auto client-title   ">
+            CUSTOMER NAME: {{clientName}}
+            <button class=" w-auto ">
+                <mat-icon  (click)="changeEditMode()" fontIcon="edit"></mat-icon>
+             </button>
+         </div>
+         
+         <button>
+            <mat-icon  (click)="closeDrawer()" fontIcon="close"></mat-icon>
+         </button>
+    </div>
+    <div class="header-message mt-6">
+        Below are the plants related to each corporate name. Select one to view more details.
+    </div>
+
+
+    <div class="main-container-corp mt-6  overflow-auto "  [ngClass]="{'expanded': isMainExpanded}" *ngIf="corporateData!=null">
+      <div *ngFor="let corporate of corporateData.data">
+        <div>
+            <h2 class="corporate-title "> {{corporate.corporateName}}</h2>
+            <p>Associated plants</p>
+        </div>
+        <div class="w-90">
+            <mat-divider></mat-divider>
+        </div>
+
+        <div *ngIf="corporate.plants.length>0">
+            <div *ngFor="let plant of corporate.plants" class="mx-7 flex">
+                <div class="plant-title">
+                    {{plant.plantName}}
+                </div>
+                <mat-icon fontIcon="remove" class="ml-3" *ngIf="editMode" (click)="removePlant(plant,corporate)"></mat-icon>
+            </div>
+        </div>
+
+       
+
+        <div class="flex justify-end"  *ngIf="editMode && !isMainExpanded">
+            <button mat-button [matMenuTriggerFor]="menuEdit" class="btn-cancel btn-corporate-name  flex"> 
+            <mat-icon fontIcon="add"></mat-icon>                    
+            Add Plant</button>
+            <mat-menu #menuEdit="matMenu">
+                <button mat-menu-item *ngFor="let pl of plants" (click)="createEditJson(corporate,pl)">{{pl.siteName}}</button>
+            </mat-menu>
+        </div>
+
+        <div class="w-90">
+            <mat-divider></mat-divider>
+        </div>
+
+      </div>
+      
+    </div>
+
+    <div *ngIf="isMainExpanded" class=" mt-3">
+
+        <div class="">
+            <div >
+                <form class="relative w-80  c-search" [formGroup]="formData"  (ngSubmit)="actionSave()" >
+                    <div class="flex justify-content-between">
+                        <input class="block w-full rounded-full  h-7 mb-3" type="text" placeholder="Corporate Name"
+                        formControlName="inputCorporateName">
+                        <mat-icon fontIcon="delete" (click)="toggleHeight()" ></mat-icon>
+                    </div>
+                    <input class="block w-full rounded-full  h-7" type="text" placeholder="RFC"
+                        formControlName="rfc">
+
+                </form>
+            </div>
+            <div class="mt-3">
+                <p>Associated plants</p>
+            </div>
+            <div class="w-90 mt-3">
+                <mat-divider></mat-divider>
+            </div>
+            <div *ngIf="selectedPlants.length">
+                <div *ngFor="let plant of selectedPlants" class="mx-5 flex ">
+                    <div class="plant-title">
+                        {{plant.siteName}}
+                    </div>
+                    <mat-icon fontIcon="remove" class="ml-3" (click)="removePlant(plant)"></mat-icon>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button mat-button [matMenuTriggerFor]="menu" class=" btn-cancel btn-corporate-name  flex button-add-title"> 
+                <mat-icon  fontIcon="add"></mat-icon>                    
+                Add Plant</button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item *ngFor="let pl of plants" (click)="addArrayPlant(pl)">{{pl.siteName}}</button>
+                </mat-menu>
+            </div>
+           
+        </div>
+
+       
+       
+
+    </div>
+
+
+
+    <div class="flex justify-end" *ngIf="editMode && !isMainExpanded  && !isEditing">
+        <button class="btn-cancel btn-corporate-name  flex" (click)="toggleHeight()" >
+            <mat-icon fontIcon="add"></mat-icon>
+            Add Corporate Name
+        </button>
+    </div>
+
+    <div *ngIf="editMode" class=" flex justify-around mt-5">
+        <button class="btn-action-back" (click)="createNotificationModal(CANCEL)">
+            Close
+        </button>
+        <button class="btn-action-add" (click)="actionSave()">
+            Apply
+        </button>
+    </div>
+
+    
+</div>

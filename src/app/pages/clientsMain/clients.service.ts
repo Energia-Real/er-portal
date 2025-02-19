@@ -5,7 +5,7 @@ import { Observable, Subject, map } from 'rxjs';
 import * as entity from './clients-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
-import { NotificationMessages } from '@app/shared/models/general-models';
+import { GeneralResponse, NotificationMessages } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root',
@@ -102,6 +102,51 @@ export class ClientsService implements OnDestroy {
     const url = `${this.API_URL}/clients/list`;
     return this.http.get<entity.DataCientList[]>(url);
   }
+
+  getCorporates(clientId:string){
+    const url = `${this.API_URL}/clients/${clientId}/razon-social`;
+    return this.http.get<GeneralResponse<entity.DataCorporateResponse>>(url);
+  }
+
+  getPlantsWithoutCorporate(){
+    const url = `${this.API_URL}/projects/ProjectsWithoutRazonSocial`;
+    return this.http.get<GeneralResponse<entity.DataPlantWhitoutCorporateResponse>>(url);
+  }
+
+  postRazonSocial(
+    data: entity.DataPostRazonSocial[],
+    clientId:string,
+    notificationMessages: NotificationMessages
+  ) {
+    const url = `${this.API_URL}/clients/${clientId}/razon-social`;
+    const formData = new FormData();
+    const headers = new HttpHeaders({
+      NotificationMessages: JSON.stringify(notificationMessages),
+    });
+
+
+
+
+    return this.http.post<any>(url, data,{ headers });
+  }
+
+  patchRazonSocial(
+    data: any[],
+    clientId:string,
+    notificationMessages: NotificationMessages
+  ) {
+    const url = `${this.API_URL}/clients/${clientId}/razon-social`;
+    const formData = new FormData();
+    const headers = new HttpHeaders({
+      NotificationMessages: JSON.stringify(notificationMessages),
+    });
+
+
+
+
+    return this.http.put<any>(url, data,{ headers });
+  }
+
 
   ngOnDestroy() {
     this.onDestroy$.next();

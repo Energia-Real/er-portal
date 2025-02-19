@@ -11,7 +11,7 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { FormControl } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
-import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { corporateDrawer, updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { DrawerGeneral } from '@app/shared/models/general-models';
 
@@ -40,7 +40,8 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'clientName',
     'clientId',
     'typeClient',
-    'actions'
+    'corporateName',
+    'actions',
   ];
 
 
@@ -54,6 +55,8 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   showLoader: boolean = true;
   drawerOpen: boolean = false;
   drawerOpenClient: boolean = false;
+  drawerOpenCorporateName: boolean = false;
+
   needReload: boolean = false;
 
   loadingtotalPlants: boolean = true;
@@ -132,6 +135,11 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.editedClient, needReload: false }));
   }
 
+  updCorporateDrawer(id:string, name: string){
+    this.store.dispatch(corporateDrawer({ drawerOpen: true, clientId: id, clientName: name}));
+
+  }
+
   toggleDrawer() {
     this.updDraweState(!this.drawerOpen);
   }
@@ -140,6 +148,11 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.editedClient = data
     this.drawerOpenClient = !this.drawerOpenClient
     this.updDraweState(this.drawerOpenClient);
+  }
+
+  toggleDrawerCorporateName( id: string, name:string) {
+    this.updCorporateDrawer(id,name)
+    this.drawerOpenCorporateName = !this.drawerOpenCorporateName
   }
 
   updDraweState(estado: boolean): void {
@@ -159,6 +172,10 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.pageSize = event.value;
     this.paginator.pageSize = this.pageSize;
     this.paginator._changePageSize(this.pageSize);
+  }
+
+  corporateEmitter(emit: boolean){
+    this.drawerOpenCorporateName = false;
   }
 
   ngOnDestroy(): void {
