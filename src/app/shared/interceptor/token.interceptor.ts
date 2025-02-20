@@ -75,13 +75,7 @@ export class TokenInterceptor implements HttpInterceptor {
             status: this.notificationService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.FAILED_STATUS).id
           };
 
-          let snackData: SnackData = {
-            type: "FAILED",
-            title: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).title,
-            subtitle: this.notificationService.getNotificationCenterMessageByCode(notificationData.errorCenterMessage).body
-          };
-
-          this.openCustomComponentSnackBar(snackData);
+         
           this.notificationService.updateNotification(editStatusData)
             .pipe(
               switchMap(() => this.notificationService.updateNotificationsCenter(notificationData.userId))

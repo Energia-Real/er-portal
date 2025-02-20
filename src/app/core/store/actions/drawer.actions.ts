@@ -5,3 +5,8 @@ export const updateDrawer = createAction(
   '[Drawer] Update Drawer',
   props<{ drawerOpen:boolean, drawerAction:"Create"|"Edit", drawerInfo:Equipment|null|undefined|any,needReload: boolean}>()
 );
+
+export const corporateDrawer = createAction(
+  '[CorporateDrawer] Corporate Drawer',
+  props<{ drawerOpen:boolean, clientId: string, clientName: string}>()
+);
