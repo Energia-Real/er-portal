@@ -18,9 +18,9 @@ export class BillingService implements OnDestroy {
   constructor(
     private http: HttpClient,
     private formatsService: FormatsService
-  ) {}
+  ) { }
 
-  getBillingData(
+  getBilling(
     filters: entity.FiltersBilling
   ): Observable<entity.DataBillingTableMapper> {
     const url = `${this.performanceApiUrl}/invoices/receipts`;
@@ -36,6 +36,24 @@ export class BillingService implements OnDestroy {
       .pipe(
         map((response) =>
           Mapper.getBillingDataMapper(response, this.formatsService)
+        )
+      );
+  }
+
+  getBillingOverview(
+    filters: any
+  ): Observable<entity.DataBillingOverviewTableMapper> {
+    const url = `${this.performanceApiUrl}/client/${filters.clientId}/invoices`;
+
+    const params = new HttpParams()
+      .set('pageSize', filters.pageSize)
+      .set('page', filters.page)
+
+    return this.http
+      .get<entity.DataBillingOverviewTableMapper>(url, { params })
+      .pipe(
+        map((response) =>
+          Mapper.getBillingOverviewMapper(response, this.formatsService)
         )
       );
   }

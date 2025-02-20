@@ -21,4 +21,21 @@ export class Mapper {
 			data: dataList
 		}
 	}
+	
+	static getBillingOverviewMapper(response: entity.DataBillingOverviewTableMapper, formatsService: FormatsService): entity.DataBillingOverviewTableMapper {
+		let dataList: entity.DataBillingOverviewTable[] = [];
+
+		response?.data?.forEach((data: entity.DataBillingOverviewTable): void => {
+			dataList.push({
+				...data,
+				date: formatsService.dateFormat(data.date),
+				amount: formatsService.moneyFormat(parseFloat(data.amount)),
+			});
+		});
+
+		return {
+			...response,
+			data: dataList
+		}
+	}
 }

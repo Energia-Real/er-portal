@@ -11,13 +11,15 @@ import { MessageNoDataComponent } from '@app/shared/components/message-no-data/m
 import { BillingRoutingModule } from './billing-routing.module';
 import { NumberFormatInputPipe } from '@app/shared/pipes/numberFormatInput.pipe';
 import { PreviousBillingComponent } from './previous-billing/previous-billing.component';
+import { BillingOverviewComponent } from './billing-overview/billing-overview.component';
 
 
 @NgModule({
   declarations: [
     BillingComponent,
     NumberFormatInputPipe,
-    PreviousBillingComponent
+    PreviousBillingComponent,
+    BillingOverviewComponent
   ],
   imports: [
     CommonModule,

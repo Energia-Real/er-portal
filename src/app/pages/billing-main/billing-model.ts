@@ -83,6 +83,20 @@ export interface PostConfirmInvoices {
   endDate: string;
 }
 
+export interface DataBillingOverviewTableMapper {
+  pageSize: number,
+  page: number,
+  data: DataBillingOverviewTable[],
+  totalItems: number
+}
+
+export interface DataBillingOverviewTable {
+  invoiceNumber: string;
+  date: string;
+  amount: string;
+  currency: string;
+  status: string;
+}
 export interface DataBillingTableMapper {
   pageSize: number,
   page: number,
