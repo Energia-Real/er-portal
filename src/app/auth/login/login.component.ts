@@ -38,15 +38,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
       .pipe(first())
       .subscribe({
-        next: (response: any) => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || `${response.accessTo == 'BackOffice' ? '/er' : '/er'}`;
-
+        next: ({ response }: any) => {
+          const accessRoutes: { [key: string]: string } = {
+            'BackOffice': '/er',
+            'Clients': '/er/client-home',
+            'Billing': '/er/rates',
+            'Admin': '/er/admin-home',
+          };
+          
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || accessRoutes[response.accessTo] || '/er';
           const startday = this.route.snapshot.queryParams['startday'];
           const endday = this.route.snapshot.queryParams['endday'];
 
           const queryParams = startday && endday ? { startday, endday } : null;
           this.router.navigate([returnUrl], { queryParams });
-
         },
         error: (err) => {
           this.loading = false;
@@ -61,7 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   passwordValidator(control: any) {
     const password = control.value;
-
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);

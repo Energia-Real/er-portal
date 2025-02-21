@@ -29,7 +29,10 @@ export class FormatsService {
   }
  
   energyWithDecimals(content: string | number): string {
-    let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
+    let numberValue = typeof content == 'string' ? parseFloat(content.replace(/,/g, '')) : content;
+
+    if (!numberValue) return ''
+    
     if (!isNaN(numberValue)) {
       return numberValue.toLocaleString('en-US', {
         minimumFractionDigits: 2,

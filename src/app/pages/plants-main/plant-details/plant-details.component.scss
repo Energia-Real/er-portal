@@ -1,0 +1,136 @@
+.c-plant-details {
+  padding-bottom: 4%;
+  width: 100%;
+  min-height: 160px;
+
+  .appreturn {
+    position: relative;
+  }
+
+  .app-return {
+    position: absolute;
+    left: -40px;
+  }
+
+  .plant-header {
+    border-bottom: 1px solid #E2E2E2;
+    height: 130px;
+
+    .c-address {
+      width: 80%;
+
+      h1 {
+        font-size: 32px;
+        font-weight: 500;
+        margin-bottom: 12px;
+      }
+
+      p {
+        font-size: 12px;
+        font-weight: 500;
+
+        span {
+          font-weight: 500;
+          color: #4F4F4F;
+        }
+      }
+    }
+
+    .c-information {
+      height: 106px;
+      border-radius: 24px;
+      border: 1px solid #D2D2D2;
+      display: flex;
+      flex-wrap: wrap;
+
+      >div {
+        flex: 1 1 16.66%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding: 10px;
+
+        .linea {
+          width: 1px;
+          height: 34px;
+          background: #CFCFCF;
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .content {
+          text-align: center;
+
+          .check {
+            color: #22C55E;
+          }
+
+          p {
+            font-size: 12px;
+            font-: 500;
+            margin-bottom: 8px;
+          }
+
+          span,
+          i {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+
+  .c-content {
+    margin-top: 20px;
+  }
+}
+
+.dataSC{
+  width: 80% ;
+}
+
+// .c-roc {
+//    padding-top: 24px;
+//   .separator-cards {
+//       margin: 24px 0;
+//   }
+// }
+
+
+.c-roc {
+  margin-top: 20px;
+  .separator-cards {
+      margin: 24px 0;
+  }
+
+  .select-download {
+      display: flex;
+      align-items: start;
+      gap: 15px;
+  }
+
+
+
+  .c-taps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      position: relative;
+
+      .content-float {
+          position: absolute;
+          top: 0;
+          gap: 15px;
+          justify-content: end;
+          z-index: 10;
+          right: 0;
+          width: 50%;
+          display: flex;
+      }
+  }
+}
+
+

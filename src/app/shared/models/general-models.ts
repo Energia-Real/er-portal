@@ -148,13 +148,13 @@ export interface SnackData{
 }
 
 export interface NotificationMessages{
-  completedTitleSnack:string,
-  completedContentSnack:string,
-  errorTitleSnack:string,
-  errorContentSnack:string,
-  notificationId:string,
-  successCenterMessage:string,
-  errorCenterMessage: string,
+  completedTitleSnack?:string,
+  completedContentSnack?:string,
+  errorTitleSnack?:string,
+  errorContentSnack?:string,
+  notificationId?:string,
+  successCenterMessage?:string,
+  errorCenterMessage?: string,
   userId?:string
 }
 

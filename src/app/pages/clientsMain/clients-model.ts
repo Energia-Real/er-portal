@@ -11,6 +11,14 @@ export interface DataClientsTable {
   clientId: number;
   nombre: string;
   imageBase64: string;
+  razonSocialCount: number; 
+  razonesSociales: DataRazonSocial[]
+}
+
+export interface DataRazonSocial{
+  externalId: number; 
+  razonSocialName: string; 
+  rfc: string; 
 }
 
 export interface DataPostPatchClient {
@@ -34,6 +42,14 @@ export interface DataPostClient {
   image: any
   clientId?: string
 }
+
+export interface DataPostRazonSocial {
+  id?: string;
+  corporateName: string,
+  plantsIds: string[],
+  rfc: string
+}
+
 export interface DataPatchClient {
   clientId:  string
   name: string,
@@ -45,4 +61,50 @@ export interface DataCatalogTypeClient {
   id: string;
   description: string;
   tipo: string;
+}
+
+export interface DataCientList {
+  id: string;
+  clientId: number;
+  nombre: string;
+  razonSocialCount: number;
+  plantsCount: number; 
+  imageBase64: string;
+  tipoDeCliente: TipoDeCliente;
+}
+
+export interface DataCorporateResponse{
+  data: corporate[]
+}
+
+export interface corporate{
+  id:string,
+  internalClientId: number,
+  corporateName: string,
+  rfc: string,
+  plants: corporatePlant[]
+}
+
+export interface corporatePlant{
+  id:number,
+  externalId:string,
+  plantName: string, 
+  
+  internalPlantId?: number
+}
+
+export interface TipoDeCliente{
+  id: string;
+  tipo: string; 
+}
+
+export interface DataPlantWhitoutCorporateResponse{
+  projects: PlantWhitoutCorporate[]
+}
+
+export interface PlantWhitoutCorporate{
+  siteName: string; 
+  externalId: string; 
+  internalId: number;
+  
 }

@@ -1,3 +1,702 @@
-<div class="c-working-progress">
-    <span>Working progress<span class="dots"></span></span>
+<div class="c-portafolio-map c-main">
+    <div class="content content-elements">
+        <div class="content-header">
+            <h1 class="label-700-24 ms-0">Portafolio map</h1>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+            <div class="col-span-1 position-relative">
+                <app-mapa class="flex-1"></app-mapa>
+            </div>
+
+            <div class="col-span-1 position-relative">
+                <div class="portafolio-content">
+                    <div class="portafolio-header">
+                        <div>
+                            <span></span>
+                            <h1>Excelent</h1>
+                        </div>
+                        <div>
+                            <span></span>
+                            <h1>Good</h1>
+                        </div>
+                        <div>
+                            <span></span>
+                            <h1>Avarage</h1>
+                        </div>
+                        <div>
+                            <span></span>
+                            <h1>Worst</h1>
+                        </div>
+                        <div>
+                            <span></span>
+                            <h1>Error</h1>
+                        </div>
+                        <div>
+                            <span></span>
+                            <h1>Desconectad</h1>
+                        </div>
+                    </div>
+
+                    <div class="c-input-search w-80 float-right">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="block w-full" type="text" placeholder="Search">
+                    </div>
+
+                    <div class="portafolio-table">
+                        <div class="c-scroll-table w-100">
+                            <div class="table-container-scroll">
+                                <table mat-table [dataSource]="dataSource" matSort class="table-content">
+                                    <ng-container matColumnDef="state">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header class="state-column">
+                                            <div class="target">State</div>
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="state-column">
+                                            <span class="state-table state-excelent"></span>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="siteName">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            <div class="target w-24">Site name</div>
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo">
+                                            {{ element?.siteName }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="customer">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                            <div class="target w-24">Customer</div>
+                                        </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div *ngIf="element?.customer else notDataTable"> {{ element.customer }}
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr *matNoDataRow>
+                                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                            <h5 class="text-center my-5">No results found.</h5>
+                                        </td>
+                                    </tr>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements pb-0">
+        <div class="content-header">
+            <h1 class="label-700-24">Asset monitoring parameter</h1>
+        </div>
+
+        <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+            <div class="col-span-1 position-relative">
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+
+                    <mat-tab label="Observed Parameters">
+                        <app-observed-parameters [notData]="true" [data]="[]"></app-observed-parameters>
+                    </mat-tab>
+
+                    <mat-tab label="Live KPI">
+                        <app-live-kpi [notData]="true" [data]="[]"></app-live-kpi>
+
+                    </mat-tab>
+
+                    <mat-tab label="Cumulative KPI">
+                        <app-comulative-kpi [notData]="true" [data]="[]"></app-comulative-kpi>
+                    </mat-tab>
+
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements">
+        <div class="content-header">
+            <h1 class="label-700-24">Trends</h1>
+        </div>
+
+        <div class="c-content c-taps">
+            <div class="position-relative">
+                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+                    <mat-tab label="Active power">
+                        <div class="c-trends">
+                            <div class="trends-filter">
+                                <div class="selected">Day</div>
+                                <div>Week</div>
+                                <div>Month</div>
+                            </div>
+
+                            <div class="c-trends-data">
+                                <div class="header">
+                                    <div class="empty-cell"></div>
+                                    <div class="hour-cell" *ngFor="let hour of hours">{{ hour }}</div>
+                                </div>
+
+                                <div class="data-scroll">
+                                    <div class="row" *ngFor="let plant of plants">
+                                        <div class="plant-name">{{ plant.name }}</div>
+                                        <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
+                                       'cero': status == 'cero',
+                                       'twenty': status == 'twenty',
+                                       'forty': status == 'forty',
+                                       'sixty': status == 'sixty',
+                                       'eighty': status == 'eighty',
+                                       'hundred': status == 'hundred'
+                                     }">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trends-bar">
+                                <img src="../../../../assets/icons/trends.svg" alt="">
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Specific Power">
+                        <div class="c-trends">
+                            <div class="trends-filter">
+                                <div class="selected">Day</div>
+                                <div>Week</div>
+                                <div>Month</div>
+                            </div>
+
+                            <div class="c-trends-data">
+                                <div class="header">
+                                    <div class="empty-cell"></div>
+                                    <div class="hour-cell" *ngFor="let hour of hours">{{ hour }}</div>
+                                </div>
+
+                                <div class="data-scroll">
+                                    <div class="row" *ngFor="let plant of plants">
+                                        <div class="plant-name">{{ plant.name }}</div>
+                                        <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
+                                       'cero': status == 'cero',
+                                       'twenty': status == 'twenty',
+                                       'forty': status == 'forty',
+                                       'sixty': status == 'sixty',
+                                       'eighty': status == 'eighty',
+                                       'hundred': status == 'hundred'
+                                     }">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trends-bar">
+                                <img src="../../../../assets/icons/trends.svg" alt="">
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Specific Yield">
+                        <div class="c-trends">
+                            <div class="trends-filter">
+                                <div class="selected">Day</div>
+                                <div>Week</div>
+                                <div>Month</div>
+                            </div>
+
+                            <div class="c-trends-data">
+                                <div class="header">
+                                    <div class="empty-cell"></div>
+                                    <div class="hour-cell" *ngFor="let hour of hours">{{ hour }}</div>
+                                </div>
+
+                                <div class="data-scroll">
+                                    <div class="row" *ngFor="let plant of plants">
+                                        <div class="plant-name">{{ plant.name }}</div>
+                                        <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
+                                       'cero': status == 'cero',
+                                       'twenty': status == 'twenty',
+                                       'forty': status == 'forty',
+                                       'sixty': status == 'sixty',
+                                       'eighty': status == 'eighty',
+                                       'hundred': status == 'hundred'
+                                     }">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trends-bar">
+                                <img src="../../../../assets/icons/trends.svg" alt="">
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Perfomance ratio">
+                        <div class="c-trends">
+                            <div class="trends-filter">
+                                <div class="selected">Day</div>
+                                <div>Week</div>
+                                <div>Month</div>
+                            </div>
+
+                            <div class="c-trends-data">
+                                <div class="header">
+                                    <div class="empty-cell"></div>
+                                    <div class="hour-cell" *ngFor="let hour of hours">{{ hour }}</div>
+                                </div>
+
+                                <div class="data-scroll">
+                                    <div class="row" *ngFor="let plant of plants">
+                                        <div class="plant-name">{{ plant.name }}</div>
+                                        <div class="status-cell" *ngFor="let status of plant.hourStatuses" [ngClass]="{
+                                       'cero': status == 'cero',
+                                       'twenty': status == 'twenty',
+                                       'forty': status == 'forty',
+                                       'sixty': status == 'sixty',
+                                       'eighty': status == 'eighty',
+                                       'hundred': status == 'hundred'
+                                     }">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trends-bar">
+                                <img src="../../../../assets/icons/trends.svg" alt="">
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+
+            <div class="content-float">
+                <div class="position-relative">
+                    <div class="c-input-search w-80">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="block w-full" type="text" placeholder="Search">
+                    </div>
+                </div>
+
+                <div class="btns-excel">
+                    <button class="btn-action-add">
+                        <span class="material-symbols-outlined">download</span>
+                        Download Template
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements pb-0">
+        <div class="content-header">
+            <h1 class="label-700-24">Plants event summary</h1>
+
+            <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                <div class="c-option-filters">
+                    <div class="header-filter">
+                        <h1>Filter</h1>
+                        <span class="material-symbols-outlined close-icon" (click)="menuTrigger.closeMenu()">
+                            close
+                        </span>
+                    </div>
+
+                    <div class="content-filters" (click)="$event.stopPropagation()">
+                        <form [formGroup]="formFilters">
+                            <div class="c-input">
+                                <p>Severity:</p>
+                                <mat-form-field class="select-ER" appearance="outline">
+                                    <mat-select formControlName="severety" placeholder="" disableRipple>
+                                        <mat-option value="">All</mat-option>
+                                        <mat-option [value]="cat.value" *ngFor="let cat of catSeverety">
+                                            {{ cat?.description || '-' }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="c-input">
+                                <p>Group:</p>
+                                <mat-form-field class="select-ER" appearance="outline">
+                                    <mat-select formControlName="group" placeholder="" disableRipple>
+                                        <mat-option value="">All</mat-option>
+                                        <mat-option [value]="cat.value" *ngFor="let cat of catGroup">
+                                            {{ cat?.description || '-' }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="c-input">
+                                <p>Order:</p>
+                                <mat-form-field class="select-ER" appearance="outline">
+                                    <mat-select formControlName="order" placeholder="" disableRipple>
+                                        <mat-option value="">All</mat-option>
+                                        <mat-option [value]="cat.value" *ngFor="let cat of catOrder">
+                                            {{ cat?.description || '-' }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="content-footer">
+                                <div class="btns-filters">
+                                    <button class="btn-action-add">
+                                        <span class="material-symbols-outlined">filter_list</span>
+                                        Apply
+                                    </button>
+
+                                    <button class="btn-action-clean">
+                                        <span class="material-symbols-outlined">delete</span>
+                                        Clear
+                                    </button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </mat-menu>
+        </div>
+
+        <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">
+            <owl-carousel-o [options]="customOptions">
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-blue.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-red.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-red.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="c-content-caroucel">
+                        <div class="caroucel-info">
+                            <img src="../../../../../assets/icons/caroucel-alert-yellow.svg" alt="">
+                            <div>
+                                <h1>N/A</h1>
+                                <h2>N/A</h2>
+                                <span>N/A</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+            </owl-carousel-o>
+        </div>
+    </div>
+
+    <div class="separator-cards"></div>
+
+    <div class="content content-elements">
+        <div class="content-header header-filter">
+            <h1 class="label-700-24">Plant status</h1>
+
+            <div class="header-filter">
+                <div class="position-relative">
+                    <div class="c-input-search w-80">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input class="block w-full" type="text" placeholder="Search">
+                    </div>
+                </div>
+
+                <div class="btns-excel">
+                    <button class="btn-action-add">
+                        <span class="material-symbols-outlined">download</span>
+                        Download Template
+                    </button>
+
+
+                    <button class="neutro-button " (click)="fileInput.click()">
+                        <img src="../../../../../assets/svg/upload_orange.svg" alt="Icon Search">
+                        Bulk upload
+                    </button>
+
+                    <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                        style="display: none;" />
+                </div>
+            </div>
+        </div>
+        <div class="c-scroll-table w-100">
+            <div class="table-container-scroll">
+                <table mat-table [dataSource]="dataSourcePlants" matSort class="table-content">
+                    <ng-container matColumnDef="plantName">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Plant name</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo">
+                            {{ element?.plantName }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="comm">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Comm.</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="column-wifi-icon">
+                                <span class="green material-symbols-outlined">
+                                    wifi
+                                </span>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="alarms">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Alarms</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element?.alarms else notDataTable"> {{ element.alarms }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="inverterAsset">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Inverter asset availability (%)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="column-availability">
+                                <div>
+                                    <span class="state-table green"></span>
+                                    <h1>{{element.inverterAsset}}</h1>
+                                </div>
+
+                                <div>
+                                    <div>N/A</div>
+                                    <div>N/A</div>
+                                    <div>N/A</div>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="plantAvailability">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Plant availability (Energy based %)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="column-icon-porcentage">
+                                <span class="state-table green"></span>
+                                <h1>{{element.inverterAsset}}</h1>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gridAvailability">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Grid availability (Energy based %)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div class="column-icon-porcentage">
+                                <span class="state-table green"></span>
+                                <h1>{{element.gridAvailability}}</h1>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="perfomanceRatio">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Perfomance ratio (%)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element?.perfomanceRatio else notDataTable"> {{ element.perfomanceRatio }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="activePower">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Active Power (MW)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element?.activePower else notDataTable"> {{ element.activePower }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="irradiation">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Irradiation (kWh/m²)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element?.irradiation else notDataTable"> {{ element.irradiation }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="specificPower">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                            <div class="target w-24">Specific power (kW/kWp)</div>
+                        </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element?.specificPower else notDataTable"> {{ element.specificPower }}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumnsPlant.length">
+                            <h5 class="text-center my-5">No results found.</h5>
+                        </td>
+                    </tr>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsPlant"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsPlant;" class="tr-table"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<ng-template #notDataTable>
+    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>

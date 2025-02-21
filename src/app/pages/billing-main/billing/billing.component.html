@@ -1,55 +1,20 @@
 <div class="c-main px-16 c-billing">
-    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+    <div class="grid md:grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1">
             <div class="btns-excel">
-                <button class="btn-action-add">
-                    <span class="material-symbols-outlined">download</span>
-                    Download .xlsx
-                </button>
-
-                <button class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': modifiedElements.length}"
-                    (click)="updateModifiedElements()">
-                    <span class="material-symbols-outlined">save</span>
-                    Apply changes
-                </button>
-
-                <!-- <button class="btn-upload" (click)="fileInput.click()">
+                <button class="btn-action-add" (click)="fileInput.click()">
                     <span class="material-symbols-outlined">upload</span>
-                    Bulk upload
+                    Upload Document
                 </button>
-                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;" /> -->
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
+                    style="display: none;" />
             </div>
         </div>
-
-        <div class="col-span-1 d-flex justify-center">
-            <div class="search-add">
-                <form class="relative w-80 ms-auto c-search">
-                    <label class="input-search">
-                        <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                    </label>
-                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Plant name"
-                        [formControl]="searchBar">
-                </form>
-            </div>
-        </div>
-
-        <div class="col-span-1"></div>
     </div>
 
     <div class="separator-cards mt-4 mb-4"></div>
 
-    <div class="col-span-1 d-flex align-center justify-between">
-        <div class="btns-excel">
-            <button (click)="generateInvoiceAction()" class="btn-action-apply-changes apply-changes-active">
-                Generate Invoice
-            </button>
-
-            <button (click)="confirmInvoiceAction()" [disabled]="!selection.selected.length"
-                class="btn-action-apply-changes" [ngClass]="{'apply-changes-active': selection.selected.length}">
-                Confirm invoce
-            </button>
-        </div>
-
+    <div class="col-span-1 d-flex align-center justify-end">
         <div class="c-paginator-top">
             <strong>Items per page</strong>
             <mat-form-field>
@@ -62,162 +27,162 @@
         </div>
     </div>
 
-    <div class="table-container-scroll mt-3">
-        <table mat-table [dataSource]="dataSource" matSort class="table-content">
-            <ng-container matColumnDef="checkbox">
-                <th mat-header-cell *matHeaderCellDef class="ps-0">
-                    <div class="flex justify-center">
-                        <mat-checkbox class="check-color" (change)="$event ? toggleAllRows() : null"
-                            [checked]="selection.hasValue() && isAllSelected() || allRowsInit"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-                        </mat-checkbox>
-                    </div>
-                </th>
-                <td mat-cell *matCellDef="let element" class="ps-0">
-                    <div class="flex justify-center">
-                        <mat-checkbox *ngIf="element.status != 2" class="check-color" (click)="$event.stopPropagation()"
-                            (change)="$event ? toggleRow(element) : null"
-                            [checked]="selection.isSelected(element) || allRowsInit"
-                            [aria-label]="checkboxLabel(element)">
-                        </mat-checkbox>
-                    </div>
-                </td>
-            </ng-container>
+    <div class="c-scroll-table">
+        <div class="table-container-scroll">
+            <table mat-table [dataSource]="dataSource" matSort class="table-content">
+                <ng-container matColumnDef="clientId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Client ID</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.clienteId else notDataTable"> {{ element.clienteId }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="rpu">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">RPU</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.rpu else notDataTable"> {{ element.rpu }} </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="subClientId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Subclient ID</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.subclienteId else notDataTable"> {{ element.subclienteId }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="clientName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Client name</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.clientName else notDataTable"> {{ element.clientName }} </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="clientName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Client Name</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="color-F97316" *ngIf="element?.cliente else notDataTable"> {{ element.cliente }}</div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Status</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="column-status" [ngClass]="{
-                        'column-status-pending': element.status == 3,
-                        'column-status-confirmed': element.status == 2,
-                        'column-status-edited': element.status == 1,
+                <ng-container matColumnDef="subClient">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Subclient</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.subcliente else notDataTable"> {{ element.subcliente }} </div>
+                    </td>
+                </ng-container>
 
-                    }" *ngIf="element?.formatterStatus else notDataTable">
-                        <i class="fa-solid fa-circle"></i>
-                        {{ element.formatterStatus }}
-                    </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="rfc">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">RFC</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.razonSocial else notDataTable"> {{ element.razonSocial }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="plantName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Plant name</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="color-F97316" *ngIf="element?.plantName else notDataTable"> {{ element.plantName }}
-                    </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="month">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Month</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="year">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Year</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.billingYear else notDataTable"> {{ element.billingYear }} </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="year">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Year</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="month">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Generation Month</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div *ngIf="element?.billingMonth else notDataTable"> {{ element.billingMonth }} </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="billingPeriodStart">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Billing Period Start Date</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.startDate else notDataTable"> {{ element.startDate }}
+                        </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="energyGeneration">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Energy generation</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="c-input c-table-energy-input column-extend">
-                        <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-                            <input type="text" placeholder="000,000.00" matInput
-                                [(ngModel)]="element.formattedGeneratedEnergyKwh"
-                                (blur)="handleInput($event, element, true)">
-                        </mat-form-field>
-                        <span>kWh</span>
-                    </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="billingPeriodEnd">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Billing Period End Date</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.endDate else notDataTable"> {{ element.endDate }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="rate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Rate</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="column-extend" *ngIf="element?.rate else notDataTable"> {{ element.formattedRate }}
-                    </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="receiptGenerationDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Receipt Generation Date</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.createdInvoiceDocDate else notDataTable"> {{ element.createdInvoiceDocDate}}</div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">Amount</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="column-extend" *ngIf="element?.formattedAmount else notDataTable"> {{
-                        element.formattedAmount }} </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="cfcContact">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">CFE Contract Number</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.rpu else notDataTable"> {{ element.rpu }} </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="amountWithIva">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    <div class="target w-24">IVA</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="column-extend" *ngIf="element?.formattedAmountWithIva else notDataTable"> {{
-                        element.formattedAmountWithIva }} </div>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="rate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Rate</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="column-extend" *ngIf="element?.tarifa else notDataTable"> {{ element.tarifa }}
+                        </div>
+                    </td>
+                </ng-container>
 
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>
-                    <div class="target w-24">Actions</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item (click)="updateModifiedElements(element)">Apply Changes</button>
-                        <button mat-menu-item>Generate Invoice</button>
-                        <button mat-menu-item (click)="confirmInvoiceAction(element)" *ngIf="element.status != 2" >Confirm Invoice</button>
-                    </mat-menu>
-                </td>
-            </ng-container>
+                <ng-container matColumnDef="production">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Production (kWh)</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="column-extend" *ngIf="element?.generatedEnergyKwh else notDataTable"> {{ element.generatedEnergyKwh}}</div>
+                    </td>
+                </ng-container>
 
-            <tr *matNoDataRow>
-                <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                    <h5 class="text-center my-5">No results found.</h5>
-                </td>
-            </tr>
+                <ng-container matColumnDef="previousPaymentAmount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Previous Payment Amount</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="column-extend" *ngIf="element?.montoPagoAnterior else notDataTable"> {{
+                            element.montoPagoAnterior }}
+                        </div>
+                    </td>
+                </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
-        </table>
+                <ng-container matColumnDef="totalAmount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Total Amount</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="column-extend" *ngIf="element?.montoTotal else notDataTable"> {{
+                            element.montoTotal }}
+                        </div>
+                    </td>
+                </ng-container>
 
+                <tr *matNoDataRow>
+                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                        <h5 class="text-center my-5">No results found.</h5>
+                    </td>
+                </tr>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
+            </table>
+        </div>
     </div>
+
     <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
         [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
         aria-label="Select page of periodic elements">

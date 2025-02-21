@@ -10,12 +10,16 @@ import { InfoCardComponent } from '@app/shared/components/info-card/info-card.co
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 import { BillingRoutingModule } from './billing-routing.module';
 import { NumberFormatInputPipe } from '@app/shared/pipes/numberFormatInput.pipe';
+import { PreviousBillingComponent } from './previous-billing/previous-billing.component';
+import { BillingOverviewComponent } from './billing-overview/billing-overview.component';
 
 
 @NgModule({
   declarations: [
     BillingComponent,
-    NumberFormatInputPipe
+    NumberFormatInputPipe,
+    PreviousBillingComponent,
+    BillingOverviewComponent
   ],
   imports: [
     CommonModule,

@@ -43,6 +43,18 @@ export const NOTIFICATION_CONSTANTS = {
   CANCEL_ADD_CLIENT_TITLE: 'Cancel new client',
   CANCEL_ADD_CLIENT_CONTENT: 'Are you sure you want to cancel adding this company? All entered information will be lost, and no changes will be saved',
 
+  //Corporate Name
+  ADD_CORPORATE_NAME_TITLE: 'Add new corporate',
+  ADD_CORPORATE_NAME_CONTENT: 'Please review the data carefully before saving.',
+  ADD_CORPORATE_NAME_WARN: 'Some details, like the name and RFC, cannot be modified after saving.',
+  ADD_CORPORATE_NAME_COMPLETE_TITLE: 'Corporate Name added',
+  ADD_CORPORATE_SUCCESS:'Add_Corporate_Success',
+  ADD_CORPORATE_NAME_COMPLETE_CONTENT: 'A new corporate name has been successfully added',
+  CANCEL_ADD_CORPORATE_NAME_TITLE: 'Cancel new corporate',
+  CANCEL_ADD_CORPORATE_NAME_CONTENT: 'Are you sure you want to cancel adding this corporate? All entered information will be lost, and no changes will be saved',
+  EDIT_CORPORATE_SUCCESS: 'Edit_Corporate_Success',
+
+
   // Invoices 
   GENERATE_INVOICE_TITLE: 'Confirm Invoice Generation',
   GENERATE_INVOICE_CONTENT: 'You are about to generate invoices for the selected period.',

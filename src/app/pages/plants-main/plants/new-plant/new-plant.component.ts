@@ -14,6 +14,8 @@ import { environment } from '@environment/environment';
 import { PlantsService } from '../../plants.service';
 import { UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { ClientsService } from '@app/pages/clientsMain/clients.service';
+import { DataCientList } from '@app/pages/clientsMain/clients-model';
 
 @Component({
   selector: 'app-new-plant',
@@ -43,6 +45,7 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     statusPlantId: [''],
     netZero: [''],
     searchAddress: [''],
+    clientId: ['']
   });
 
   map!: google.maps.Map;
@@ -55,6 +58,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
   catInstallationType: entityCatalogs.DataCatalogs[] = [];
   catPlantStatus: entityCatalogs.DataCatalogs[] = [];
   editedClient!: entity.DataPlant;
+
+  catClients: DataCientList[] = [];
 
   showLoader: boolean = false;
   loading: boolean = false;
@@ -71,13 +76,15 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private encryptionService: EncryptionService,
     private moduleServices: PlantsService,
-    private router: Router
+    private router: Router,
+    private clientsService: ClientsService
   ) { }
 
   ngOnInit(): void {
     this.getCatalogs();
     this.mapTo();
     this.getUserClient();
+    this.getClients();
   }
 
   getId() {
@@ -165,6 +172,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     if (this.formData.get('systemSize')?.value) objData.systemSize = this.formData.get('systemSize')?.value;
     if (this.formData.get('rpu')?.value) objData.rpu = this.formData.get('rpu')?.value;
     if (this.formData.get('statusPlantId')?.value) objData.statusPlantId = this.formData.get('statusPlantId')?.value;
+    if (this.formData.get('clientId')?.value) objData.clientId = this.formData.get('clientId')?.value;
+
     if (this.formData.get('commissionDate')?.value) objData.commissionDate = moment(this.formData.get('commissionDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('endInstallationDate')?.value) objData.endInstallationDate = moment(this.formData.get('endInstallationDate')?.value).format('YYYY-MM-DD');
     if (this.formData.get('contractSignatureDate')?.value) objData.contractSignatureDate = moment(this.formData.get('contractSignatureDate')?.value).format('YYYY-MM-DD');
@@ -314,6 +323,12 @@ export class NewPlantComponent implements OnInit, OnDestroy {
 
   toBack() {
     this.router.navigateByUrl(`er/plants`)
+  }
+
+  getClients(){
+    this.clientsService.getClientsList().subscribe(resp => {
+      this.catClients = resp;
+    })
   }
 
   ngOnDestroy(): void {
