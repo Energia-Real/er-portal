@@ -131,7 +131,7 @@ export class PreviousBillingComponent implements OnDestroy, OnInit, AfterViewChe
       ...this.generalFilters
     };
 
-    this.moduleServices.getBillingData(filters).subscribe({
+    this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
