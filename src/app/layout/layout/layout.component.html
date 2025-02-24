@@ -115,12 +115,12 @@
         </li>
 
         <li class="animate-durations" *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('billing'), 'ps-2' : isSidebarHovered || keepOpen }">
+          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('invoice'), 'ps-2' : isSidebarHovered || keepOpen }">
           <img src="../../../assets/icons/invoices-icon.svg" alt="Invoice">
           <a [ngClass]="{
             'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('billing'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('billing') ? null : 'billing'"
+            'menu-selected': routeActive.includes('invoice'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
+          }" [routerLink]="routeActive.includes('invoice') ? null : 'invoice'"
             class="hover:text-gray-300 cursor-pointer animate-durations">Invoice</a>
         </li>
       </ul>

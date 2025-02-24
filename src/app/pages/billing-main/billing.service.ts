@@ -43,11 +43,12 @@ export class BillingService implements OnDestroy {
   getBillingOverview(
     filters: any
   ): Observable<entity.DataBillingOverviewTableMapper> {
-    const url = `${this.performanceApiUrl}/client/${filters.clientId}/invoices`;
+    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
       .set('page', filters.page)
+      .set('year', filters.year)
 
     return this.http
       .get<entity.DataBillingOverviewTableMapper>(url, { params })
@@ -57,6 +58,7 @@ export class BillingService implements OnDestroy {
         )
       );
   }
+// https://er-portal-gateway.azurewebsites.net/dev/api/v1/clients/{clientId}/invoices?page={page}&pagesize={pagesize}&year={year}
 
   downloadExcelReport(params: { [key: string]: string }): Observable<Blob> {
     const url = `${this.performanceApiUrl}/FacturacionExport/DownloadExcelReport`;

@@ -32,10 +32,10 @@ export class BillingOverviewComponent {
   pageSize: number = 10;
   pageIndex: number = 1;
   totalItems: number = 0;
-  displayedColumns: string[] = [
-    'invoiceNumber',
-    'date',
-    'corporateName',
+  displayedColumnsOverview: string[] = [
+    'razonSocial',
+    'year',
+    'month',
     'amount',
     'actions'
   ];
@@ -44,33 +44,9 @@ export class BillingOverviewComponent {
 
   dataDummy: any = [
     {
-      invoiceNumber: 'ER 012',
-      date: 'Dec 2024',
-      corporateName: 'Corporate name S.A de C.V.',
-      amount: '$100,000.00 MXN',
-    },
-    {
-      invoiceNumber: 'ER 012',
-      date: 'Dec 2024',
-      corporateName: 'Corporate name S.A de C.V.',
-      amount: '$100,000.00 MXN',
-    },
-    {
-      invoiceNumber: 'ER 012',
-      date: 'Dec 2024',
-      corporateName: 'Corporate name S.A de C.V.',
-      amount: '$100,000.00 MXN',
-    },
-    {
-      invoiceNumber: 'ER 012',
-      date: 'Dec 2024',
-      corporateName: 'Corporate name S.A de C.V.',
-      amount: '$100,000.00 MXN',
-    },
-    {
-      invoiceNumber: 'ER 012',
-      date: 'Dec 2024',
-      corporateName: 'Corporate name S.A de C.V.',
+      razonSocial: 'ER 012',
+      year: '2024',
+      month: 'Dec',
       amount: '$100,000.00 MXN',
     },
   ]
@@ -154,3 +130,5 @@ export class BillingOverviewComponent {
     }
   }
 }
+
+

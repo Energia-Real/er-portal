@@ -37,30 +37,30 @@
     <div class="c-scroll-table">
         <div class="table-container-scroll">
             <table mat-table [dataSource]="dataSource" matSort class="table-content">
-                <ng-container matColumnDef="invoiceNumber">
+                <ng-container matColumnDef="razonSocial">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        <div class="target w-24">Client ID</div>
+                        <div class="target w-24">Social</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.invoiceNumber else notDataTable"> {{ element.invoiceNumber }} </div>
+                        <div *ngIf="element?.razonSocial else notDataTable"> {{ element.razonSocial }} </div>
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="date">
+                <ng-container matColumnDef="year">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        <div class="target w-24">Date</div>
+                        <div class="target w-24">Year</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.date else notDataTable"> {{ element.date }} </div>
+                        <div *ngIf="element?.year else notDataTable"> {{ element.year }} </div>
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="corporateName">
+                <ng-container matColumnDef="month">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        <div class="target w-24">Corporate Name</div>
+                        <div class="target w-24">Month</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.corporateName else notDataTable"> {{ element.corporateName }} </div>
+                        <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
                     </td>
                 </ng-container>
 
@@ -85,13 +85,13 @@
                 </ng-container>
 
                 <tr *matNoDataRow>
-                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                    <td class="mat-cell" [attr.colspan]="displayedColumnsOverview.length">
                         <h5 class="text-center my-5">No results found.</h5>
                     </td>
                 </tr>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsOverview"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsOverview;" class="tr-table"></tr>
             </table>
         </div>
     </div>
