@@ -25,17 +25,28 @@ export class BillingOverviewComponent {
 
   generalFilters$!: Observable<FilterState['generalFilters']>;
 
-  dataSource = new MatTableDataSource<any>([]);
+  dataSourceBilling = new MatTableDataSource<any>([]);
+  dataSourceHistory = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 10;
-  pageIndex: number = 1;
-  totalItems: number = 0;
-  displayedColumnsOverview: string[] = [
-    'razonSocial',
-    'year',
+  pageSizeBilling: number = 10;
+  pageIndexBilling: number = 1;
+  totalItemsBilling: number = 0;
+  displayedColumnsBilling: string[] = [
+    'corporateName',
     'month',
+    'year',
+    'amount',
+    'actions'
+  ];
+  pageSizeHistory: number = 10;
+  pageIndexHistory: number = 1;
+  totalItemsHistory: number = 0;
+  displayedColumnsHistory: string[] = [
+    'corporateName',
+    'month',
+    'year',
     'amount',
     'actions'
   ];
@@ -72,9 +83,13 @@ export class BillingOverviewComponent {
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
+        console.log(pageSize);
+        
         this.generalFilters = generalFilters;
-        this.pageSize = pageSize;
-        this.pageIndex = pageIndex + 1;
+        this.pageSizeBilling = pageSize;
+        this.pageIndexBilling = pageIndex + 1;
+        this.pageSizeHistory = pageSize;
+        this.pageIndexHistory = pageIndex + 1;
 
         if (this.paginator) {
           this.paginator.pageSize = pageSize;
@@ -82,26 +97,51 @@ export class BillingOverviewComponent {
         }
 
         this.getBilling();
+        this.getHistory();
       });
   }
 
   getBilling() {
     const filters: any = {
-      pageSize: this.pageSize,
-      page: this.pageIndex,
+      pageSize: this.pageSizeBilling,
+      page: this.pageIndexBilling,
       year: this.generalFilters.year,
       clientId: this.getUserClient.clientes[0]
     };
 
     this.moduleServices.getBillingOverview(filters).subscribe({
       next: (response: entity.DataBillingOverviewTableMapper) => {
-        this.dataSource.data = response?.data;
-        this.totalItems = response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = filters.page;
+        this.dataSourceBilling.data = response?.data;
+        this.totalItemsBilling = response?.totalItems;
+        this.dataSourceBilling.sort = this.sort;
+        this.pageIndexBilling = filters.page;
       },
       error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  getHistory() {
+    const filters: any = {
+      pageSize: this.pageSizeHistory,
+      page: this.pageIndexHistory,
+      year: this.generalFilters.year,
+      clientId: this.getUserClient.clientes[0]
+    };
+
+    this.moduleServices.getBillingHistory(filters).subscribe({
+      next: (response: entity.DataHistoryOverviewTableMapper) => {
+        console.log('getBillingHistory', response);
+        
+        this.dataSourceHistory.data = response?.data;
+        this.totalItemsHistory = response?.totalItems;
+        this.dataSourceHistory.sort = this.sort;
+        this.pageIndexHistory = filters.page;
+      },
+      error: error => {
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
     });
@@ -109,7 +149,7 @@ export class BillingOverviewComponent {
 
   changePageSize(event: any) {
     const newSize = event.value;
-    this.pageSize = newSize;
+    this.pageSizeBilling = newSize;
 
     if (this.paginator) {
       this.paginator.pageSize = newSize;
@@ -125,10 +165,9 @@ export class BillingOverviewComponent {
   }
 
   getServerData(event: PageEvent): void {
-    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+    if (event.pageSize !== this.pageSizeBilling || event.pageIndex !== this.pageIndexBilling - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
   }
 }
-
 

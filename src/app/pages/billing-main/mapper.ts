@@ -28,8 +28,25 @@ export class Mapper {
 		response?.data?.forEach((data: entity.DataBillingOverviewTable): void => {
 			dataList.push({
 				...data,
-				date: formatsService.dateFormat(data.date),
 				amount: formatsService.moneyFormat(parseFloat(data.amount)),
+				month: formatsService.getMonthName(parseFloat(data.month)),
+			});
+		});
+
+		return {
+			...response,
+			data: dataList
+		}
+	}
+
+	static getBillingHistoryMapper(response: entity.DataHistoryOverviewTableMapper, formatsService: FormatsService): entity.DataHistoryOverviewTableMapper {
+		let dataList: entity.DataHistoryOverviewTable[] = [];
+
+		response?.data?.forEach((data: entity.DataHistoryOverviewTable): void => {
+			dataList.push({
+				...data,
+				amount: formatsService.moneyFormat(parseFloat(data.amount)),
+				month: formatsService.getMonthName(parseFloat(data.month)),
 			});
 		});
 

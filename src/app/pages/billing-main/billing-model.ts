@@ -91,11 +91,11 @@ export interface DataBillingOverviewTableMapper {
 }
 
 export interface DataBillingOverviewTable {
-  invoiceNumber: string;
-  date: string;
+  month: string;
+  year: string;
   amount: string;
-  currency: string;
-  status: string;
+  rfc: string;
+  razonSocial: string;
 }
 export interface DataBillingTableMapper {
   pageSize: number,
@@ -103,6 +103,22 @@ export interface DataBillingTableMapper {
   data: DataBillingTable[],
   totalItems: number
 }
+
+export interface DataHistoryOverviewTableMapper {
+  pageSize: number,
+  page: number,
+  data: DataHistoryOverviewTable[],
+  totalItems: number
+}
+
+export interface DataHistoryOverviewTable {
+  month: string;
+  year: string;
+  amount: string;
+  rfc: string;
+  razonSocial: string;
+}
+
 
 export interface ErrorRequest {
   message: string;

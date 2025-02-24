@@ -43,12 +43,11 @@ export class BillingService implements OnDestroy {
   getBillingOverview(
     filters: any
   ): Observable<entity.DataBillingOverviewTableMapper> {
-    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
+    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/current-invoices`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
       .set('page', filters.page)
-      .set('year', filters.year)
 
     return this.http
       .get<entity.DataBillingOverviewTableMapper>(url, { params })
@@ -58,7 +57,25 @@ export class BillingService implements OnDestroy {
         )
       );
   }
-// https://er-portal-gateway.azurewebsites.net/dev/api/v1/clients/{clientId}/invoices?page={page}&pagesize={pagesize}&year={year}
+
+  getBillingHistory(
+    filters: any
+  ): Observable<entity.DataHistoryOverviewTableMapper> {
+    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
+
+    const params = new HttpParams()
+      .set('page', filters.page)
+      .set('pagesize', filters.pageSize)
+      .set('year', filters.year)
+
+    return this.http
+      .get<entity.DataHistoryOverviewTableMapper>(url, { params })
+      .pipe(
+        map((response) =>
+          Mapper.getBillingHistoryMapper(response, this.formatsService)
+        )
+      );
+  }
 
   downloadExcelReport(params: { [key: string]: string }): Observable<Blob> {
     const url = `${this.performanceApiUrl}/FacturacionExport/DownloadExcelReport`;
