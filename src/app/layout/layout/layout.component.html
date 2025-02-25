@@ -146,8 +146,8 @@
   </div>
 
   <div class="content" [ngStyle]="{ 'margin-left': keepOpen ? '230px' : '' }">
-    <app-header [routeActive]="routeActive"></app-header>
-    <router-outlet></router-outlet>
+    <app-header [routeActive]="routeActive" *ngIf="userInfo"></app-header>
+    <router-outlet  *ngIf="userInfo"></router-outlet>
     <app-footer></app-footer>
   </div>
 </div>
