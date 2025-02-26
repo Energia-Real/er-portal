@@ -105,14 +105,6 @@ export class DetailsOverviewComponent implements OnInit {
     this.getBillingDetails();
   }
 
-  // closeDrawer(reload: boolean) {
-  //   this.isOpen = false;
-  //   setTimeout(() => {
-  //     this.cancelEdit()
-  //   }, 300);
-  //   this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: reload }));
-  // }
-
   cancelEdit() {
     this.billingData = null;
     this.billingDetails = null;
