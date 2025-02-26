@@ -64,7 +64,7 @@ pipeline {
 
                         echo "Desplegando en Azure Web App: ${STATIC_WEB_APP_NAME}..."
                         def deployResponse = sh(script: """
-                        az webapp deploy --resource-group ${RESOURCE_GROUP} --name ${STATIC_WEB_APP_NAME} --src-path publish.zip --type zip
+                        az staticwebapp upload --resource-group ${RESOURCE_GROUP} --name ${STATIC_WEB_APP_NAME} --source ${BUILD_PATH}
                         """, returnStatus: true)
 
                         if (deployResponse != 0) {
