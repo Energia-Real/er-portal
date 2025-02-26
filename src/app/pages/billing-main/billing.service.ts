@@ -76,6 +76,26 @@ export class BillingService implements OnDestroy {
         )
       );
   }
+ 
+  getBillingDetails(
+    filters: any
+  ): Observable<entity.DataHistoryOverviewTableMapper> {
+    const url = `${this.performanceApiUrl}/invoices/razon-social/${filters.rfc}/detail`;
+
+    const params = new HttpParams()
+      .set('page', filters.page)
+      .set('pageSize', filters.pageSize)
+      .set('year_start', filters.year)
+      // .set('month_start', filters.year)
+
+    return this.http
+      .get<entity.DataDetailsOverviewTableMapper>(url, { params })
+      .pipe(
+        map((response) =>
+          Mapper.getBillingDetailsMapper(response, this.formatsService)
+        )
+      );
+  }
 
   downloadExcelReport(params: { [key: string]: string }): Observable<Blob> {
     const url = `${this.performanceApiUrl}/FacturacionExport/DownloadExcelReport`;

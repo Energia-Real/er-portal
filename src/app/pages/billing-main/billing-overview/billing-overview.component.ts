@@ -4,16 +4,14 @@ import * as entity from '../billing-model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
-import { NotificationDataService } from '@app/shared/services/notificationData.service';
-import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 @Component({
   selector: 'app-billing-overview',
@@ -53,24 +51,18 @@ export class BillingOverviewComponent {
   pageSizeSub!: Subscription;
   pageIndexSub!: Subscription;
 
-  dataDummy: any = [
-    {
-      razonSocial: 'ER 012',
-      year: '2024',
-      month: 'Dec',
-      amount: '$100,000.00 MXN',
-    },
-  ]
+  drawerOpen: boolean = false;
+  drawerAction: "Create" | "Edit" = "Create";
+  drawerInfo: any | null | undefined = null;
 
   generalFilters!: GeneralFilters
   userInfo!: UserInfo;
 
+  dataBilling:any
+
   constructor(
     private store: Store<{ filters: FilterState }>,
-    private notificationService: OpenModalsService,
-    private router: Router,
     public dialog: MatDialog,
-    private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
@@ -83,8 +75,6 @@ export class BillingOverviewComponent {
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
-        console.log(pageSize);
-        
         this.generalFilters = generalFilters;
         this.pageSizeBilling = pageSize;
         this.pageIndexBilling = pageIndex + 1;
@@ -118,7 +108,7 @@ export class BillingOverviewComponent {
       },
       error: error => {
         // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
+        // console.log(error);
       }
     });
   }
@@ -133,8 +123,6 @@ export class BillingOverviewComponent {
 
     this.moduleServices.getBillingHistory(filters).subscribe({
       next: (response: entity.DataHistoryOverviewTableMapper) => {
-        console.log('getBillingHistory', response);
-        
         this.dataSourceHistory.data = response?.data;
         this.totalItemsHistory = response?.totalItems;
         this.dataSourceHistory.sort = this.sort;
@@ -142,21 +130,45 @@ export class BillingOverviewComponent {
       },
       error: error => {
         // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
+        // console.log(error);
       }
     });
   }
 
-  changePageSize(event: any) {
+  changePageSize(event: any, type?: string) {
     const newSize = event.value;
-    this.pageSizeBilling = newSize;
 
-    if (this.paginator) {
-      this.paginator.pageSize = newSize;
-      this.paginator._changePageSize(newSize);
+    if (type == 'overview') {
+      this.pageSizeBilling = newSize;
+
+      if (this.paginator) {
+        this.paginator.pageSize = newSize;
+        this.paginator._changePageSize(newSize);
+      }
+
+      this.getBilling();
     }
 
-    this.getBilling();
+    else {
+      this.pageSizeHistory = newSize;
+
+      if (this.paginator) {
+        this.paginator.pageSize = newSize;
+        this.paginator._changePageSize(newSize);
+      }
+
+      this.getHistory();
+    }
+  }
+
+  viewDetails(data: any) {
+    this.dataBilling = { ...data, year: this.generalFilters.year };
+    this.drawerOpen = !this.drawerOpen;
+    this.updDraweStateEdit(true);
+  }
+
+  updDraweStateEdit(estado: boolean): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.dataBilling, needReload: false }));
   }
 
   get getUserClient() {

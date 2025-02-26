@@ -119,6 +119,42 @@ export interface DataHistoryOverviewTable {
   razonSocial: string;
 }
 
+export interface DataDetailsOverviewTableMapper {
+  pageSize: number,
+  page: number,
+  data: DataDetailsOverviewTable[],
+  totalItems: number
+}
+
+export interface DataDetailsOverviewTable {
+  month: string;
+  year: string;
+  amount: string;
+  rfc: string;
+  razonSocial: string;
+}
+
+
+export interface DataDetailsOverviewTableMapper {
+  pageSize: number;
+  page: number;
+  data: DataDetailsOverviewTable[];
+  totalItems: number;
+}
+
+export interface DataDetailsOverviewTable {
+  razonSocial: string;
+  rfc: string;
+  startPeriod: string;
+  endPeriod: string;
+  plants: {
+    subclient: string;
+    rate: number;
+    productionKwh: number;
+    previousPayment: number;
+    totalAmount: number;
+  }[];
+}
 
 export interface ErrorRequest {
   message: string;

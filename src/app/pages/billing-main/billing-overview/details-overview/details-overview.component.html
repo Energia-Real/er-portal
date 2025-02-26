@@ -1,0 +1,116 @@
+<div class="c-overview-details c-modal-lateral fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
+  c-modal-lateral-padd " [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
+    <div class="modal-lateral-header">
+        <div class="mx-auto text-left w-full">
+            <h2 class="mb-0">Billing details</h2>
+        </div>
+
+        <div class="return-bar-container">
+            <button class="button-transparent" type="button" (click)="closeDrawer(false)">
+                <span class="material-symbols-outlined close-icon">
+                    close
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="header-content border-card">
+        <div class="grid md:grid-cols-3 sm:grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
+            <div class="col-span-1">
+               <img src="../../../../../assets/icons/Logo-svg.svg" alt="">
+            </div>
+            <div class="col-span-2">
+                <h1>Customer name: <span>Razón social</span></h1>
+                <h1>RFC: <span>WRRS25589245</span></h1>
+                <h1>Billing Period Start Date: <span>01 - 05 - 2025</span></h1>
+                <h1>Billing Period End Date: <span>01 - 05 - 2025</span></h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-span-1 d-flex align-center justify-end mt-4">
+        <div class="c-paginator-top">
+            <strong>Items per page</strong>
+            <mat-form-field>
+                <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+                    <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                        <strong>{{ size }}</strong>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="c-scroll-table">
+        <div class="table-container-scroll">
+            <table mat-table [dataSource]="dataSource" matSort class="table-content">
+                <ng-container matColumnDef="subClient">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Subclient</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.subclient else notDataTable"> {{ element.subclient }} </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="rate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Rate</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.rate else notDataTable"> {{ element.rate }} </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="production">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Production (kWh)</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.productionKwh else notDataTable"> {{ element.productionKwh }} </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="previousPayDate">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Previous Payment Amount</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.previousPayment else notDataTable"> {{ element.previousPayment }} </div>
+                    </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="totalAmount">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <div class="target w-24">Total Amount</div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element?.totalAmount else notDataTable"> {{ element.totalAmount }} </div>
+                    </td>
+                </ng-container>
+
+
+                <tr *matNoDataRow>
+                    <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                        <h5 class="text-center my-5">No results found.</h5>
+                    </td>
+                </tr>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
+            </table>
+        </div>
+    </div>
+
+    <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+
+</div>
+
+
+
+<ng-template #notDataTable>
+    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>

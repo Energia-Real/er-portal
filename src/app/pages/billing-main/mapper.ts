@@ -55,4 +55,22 @@ export class Mapper {
 			data: dataList
 		}
 	}
+
+	static getBillingDetailsMapper(response: entity.DataDetailsOverviewTableMapper, formatsService: FormatsService): any {
+		let dataList: entity.DataDetailsOverviewTable[] = [];
+
+		console.log(response.data);
+		
+
+		response?.data?.forEach((data: entity.DataDetailsOverviewTable): void => {
+			dataList.push({
+				...data,
+			});
+		});
+
+		return {
+			...response,
+			data: dataList
+		}
+	}
 }

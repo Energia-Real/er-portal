@@ -12,6 +12,7 @@ import { BillingRoutingModule } from './billing-routing.module';
 import { NumberFormatInputPipe } from '@app/shared/pipes/numberFormatInput.pipe';
 import { PreviousBillingComponent } from './previous-billing/previous-billing.component';
 import { BillingOverviewComponent } from './billing-overview/billing-overview.component';
+import { DetailsOverviewComponent } from './billing-overview/details-overview/details-overview.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { BillingOverviewComponent } from './billing-overview/billing-overview.co
     BillingComponent,
     NumberFormatInputPipe,
     PreviousBillingComponent,
-    BillingOverviewComponent
+    BillingOverviewComponent,
+    DetailsOverviewComponent
   ],
   imports: [
     CommonModule,

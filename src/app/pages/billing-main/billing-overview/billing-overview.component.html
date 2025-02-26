@@ -13,7 +13,7 @@
         <div class="c-paginator-top">
             <strong>Items per page</strong>
             <mat-form-field>
-                <mat-select [(value)]="pageSizeBilling" (selectionChange)="changePageSize($event)">
+                <mat-select [(value)]="pageSizeBilling" (selectionChange)="changePageSize($event, 'overview')">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
                         <strong>{{ size }}</strong>
                     </mat-option>
@@ -156,7 +156,7 @@
                         <div class="target w-24">Actions</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <button class="btn-action-add">
+                        <button class="btn-action-add" (click)="viewDetails(element)">
                             View details
                         </button>
                     </td>
@@ -174,11 +174,12 @@
         </div>
     </div>
 
+    <app-details-overview [isOpen]="drawerOpen" [billing]="dataBilling"></app-details-overview>
+
     <mat-paginator #paginator class="c-paginator" [length]="totalItemsHistory" [pageSize]="pageSizeHistory"
         [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
         aria-label="Select page of periodic elements">
     </mat-paginator>
-
 </div>
 
 <ng-template #notDataTable>
