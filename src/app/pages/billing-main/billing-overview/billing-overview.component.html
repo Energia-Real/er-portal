@@ -1,3 +1,5 @@
+<app-details-overview [isOpen]="drawerOpen" [billing]="dataBilling"></app-details-overview>
+
 <div class="c-main px-16 c-billing-overviw">
     <div class="grid md:grid-cols-3 sm:grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1">
@@ -84,8 +86,8 @@
         </div>
     </div>
 
-    <mat-paginator #paginator class="c-paginator" [length]="totalItemsBilling" [pageSize]="pageSizeBilling"
-        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+    <mat-paginator #paginatorBilling class="c-paginator" [length]="totalItemsBilling" [pageSize]="pageSizeBilling"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event, 'billing')" showFirstLastButtons
         aria-label="Select page of periodic elements">
     </mat-paginator>
 
@@ -174,10 +176,10 @@
         </div>
     </div>
 
-    <app-details-overview [isOpen]="drawerOpen" [billing]="dataBilling"></app-details-overview>
 
-    <mat-paginator #paginator class="c-paginator" [length]="totalItemsHistory" [pageSize]="pageSizeHistory"
-        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+
+    <mat-paginator #paginatorHistory class="c-paginator" [length]="totalItemsHistory" [pageSize]="pageSizeHistory"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event, 'history')" showFirstLastButtons
         aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>

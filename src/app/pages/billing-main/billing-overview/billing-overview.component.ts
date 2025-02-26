@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import * as entity from '../billing-model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -19,15 +19,18 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
   templateUrl: './billing-overview.component.html',
   styleUrl: './billing-overview.component.scss'
 })
-export class BillingOverviewComponent {
+export class BillingOverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   generalFilters$!: Observable<FilterState['generalFilters']>;
 
   dataSourceBilling = new MatTableDataSource<any>([]);
   dataSourceHistory = new MatTableDataSource<any>([]);
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
+  @ViewChild('paginatorBilling', { static: false }) paginatorBilling!: MatPaginator;
+  @ViewChild('paginatorHistory', { static: false }) paginatorHistory!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSizeBilling: number = 10;
   pageIndexBilling: number = 1;
@@ -55,25 +58,25 @@ export class BillingOverviewComponent {
   drawerOpen: boolean = false;
   drawerAction: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
-  drawerOpenSub: Subscription;
+  drawerOpenSub: Subscription = new Subscription();
 
   generalFilters!: GeneralFilters
   userInfo!: UserInfo;
 
-  dataBilling: any
+  dataBilling!: entity.DataBillingOverviewTableMapper;
 
   constructor(
     private store: Store<{ filters: FilterState }>,
     public dialog: MatDialog,
     private encryptionService: EncryptionService,
-    private moduleServices: BillingService,
+    private moduleServices: BillingService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),
       this.store.select(selectPageSize).pipe(distinctUntilChanged()),
-      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged()),
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
@@ -83,22 +86,42 @@ export class BillingOverviewComponent {
         this.pageSizeHistory = pageSize;
         this.pageIndexHistory = pageIndex + 1;
 
-        if (this.paginator) {
-          this.paginator.pageSize = pageSize;
-          this.paginator.pageIndex = pageIndex;
+        if (this.paginatorBilling) {
+          this.paginatorBilling.pageSize = this.pageSizeBilling;
+          this.paginatorBilling.pageIndex = this.pageIndexBilling - 1;
+        }
+
+        if (this.paginatorHistory) {
+          this.paginatorHistory.pageSize = this.pageSizeHistory;
+          this.paginatorHistory.pageIndex = this.pageIndexHistory - 1;
         }
 
         this.getBilling();
         this.getHistory();
       });
+  }
+
+  ngOnInit(): void {
+    this.drawerOpenSubsctiption();
+  }
+
+  // Usando el takeUntil(this.onDestroy$), no es necesario almacenar la suscripción en una variable
+  // como this.drawerOpenSub, ya que takeUntil 
+  // se encarga de limpiar la suscripción automáticamente cuando el 
+  // componente es destruido (lo que ocurre cuando se emite el onDestroy$).
+  drawerOpenSubsctiption() {
 
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe((response: DrawerGeneral) => {
-      if (this.drawerOpen) {
+      this.drawerOpen = response.drawerOpen;
+      this.drawerAction = response.drawerAction;
+      this.drawerInfo = response.drawerInfo;
+    });
+    
+    this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((response: DrawerGeneral) => {
         this.drawerOpen = response.drawerOpen;
         this.drawerAction = response.drawerAction;
         this.drawerInfo = response.drawerInfo;
-      }
-    });
+      });
   }
 
   getBilling() {
@@ -148,23 +171,22 @@ export class BillingOverviewComponent {
   changePageSize(event: any, type?: string) {
     const newSize = event.value;
 
-    if (type == 'overview') {
+    if (type === 'overview') {
       this.pageSizeBilling = newSize;
 
-      if (this.paginator) {
-        this.paginator.pageSize = newSize;
-        this.paginator._changePageSize(newSize);
+      if (this.paginatorBilling) {
+        this.paginatorBilling.pageSize = newSize;
+        this.paginatorBilling._changePageSize(newSize);
       }
 
       this.getBilling();
     }
-
     else {
       this.pageSizeHistory = newSize;
 
-      if (this.paginator) {
-        this.paginator.pageSize = newSize;
-        this.paginator._changePageSize(newSize);
+      if (this.paginatorHistory) {
+        this.paginatorHistory.pageSize = newSize;
+        this.paginatorHistory._changePageSize(newSize);
       }
 
       this.getHistory();
@@ -183,13 +205,24 @@ export class BillingOverviewComponent {
 
   get getUserClient() {
     const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) return this.encryptionService.decryptData(encryptedData);
+    return encryptedData ? this.encryptionService.decryptData(encryptedData) : null;
   }
 
-  getServerData(event: PageEvent): void {
-    if (event.pageSize !== this.pageSizeBilling || event.pageIndex !== this.pageIndexBilling - 1) {
-      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+  getServerData(event: PageEvent, type: 'billing' | 'history'): void {
+    if (type === 'billing') {
+      if (event.pageSize != this.pageSizeBilling || event.pageIndex != this.pageIndexBilling - 1) {
+        this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+      }
+    } else {
+      if (event.pageSize != this.pageSizeHistory || event.pageIndex != this.pageIndexHistory - 1) {
+        this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+      }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }
 
