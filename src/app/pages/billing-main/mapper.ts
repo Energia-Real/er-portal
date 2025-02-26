@@ -29,7 +29,7 @@ export class Mapper {
 			dataList.push({
 				...data,
 				amount: formatsService.moneyFormat(parseFloat(data.amount)),
-				month: formatsService.getMonthName(parseFloat(data.month)),
+				monthFormatter: formatsService.getMonthName(parseFloat(data.month)),
 			});
 		});
 
@@ -46,7 +46,7 @@ export class Mapper {
 			dataList.push({
 				...data,
 				amount: formatsService.moneyFormat(parseFloat(data.amount)),
-				month: formatsService.getMonthName(parseFloat(data.month)),
+				monthFormatter: formatsService.getMonthName(parseFloat(data.month)),
 			});
 		});
 
@@ -56,21 +56,22 @@ export class Mapper {
 		}
 	}
 
-	static getBillingDetailsMapper(response: entity.DataDetailsOverviewTableMapper, formatsService: FormatsService): any {
+	static getBillingDetailsMapper(response: entity.DataDetailsOverviewTableMapper, formatsService: FormatsService): entity.DataDetailsOverviewTableMapper {
 		let dataList: entity.DataDetailsOverviewTable[] = [];
 
-		console.log(response.data);
-		
-
-		response?.data?.forEach((data: entity.DataDetailsOverviewTable): void => {
+		response.data[0].plants.forEach((data: any): void => {
 			dataList.push({
 				...data,
+				productionKwh: formatsService.energyWithDecimals(data.productionKwh),
+				previousPayment: formatsService.moneyFormat(data.previousPayment),
+				rate: formatsService.moneyFormat(data.rate),
+				totalAmount: formatsService.moneyFormat(data.totalAmount),
 			});
 		});
 
 		return {
 			...response,
-			data: dataList
+			dataPlants : dataList
 		}
 	}
 }

@@ -39,7 +39,7 @@
                         <div class="target w-24">Month</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
+                        <div *ngIf="element?.monthFormatter else notDataTable"> {{ element.monthFormatter }} </div>
                     </td>
                 </ng-container>
 
@@ -129,7 +129,7 @@
                         <div class="target w-24">Month</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.month else notDataTable"> {{ element.month }} </div>
+                        <div *ngIf="element?.monthFormatter else notDataTable"> {{ element.monthFormatter }} </div>
                     </td>
                 </ng-container>
 

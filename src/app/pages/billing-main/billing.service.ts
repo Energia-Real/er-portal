@@ -79,14 +79,14 @@ export class BillingService implements OnDestroy {
  
   getBillingDetails(
     filters: any
-  ): Observable<entity.DataHistoryOverviewTableMapper> {
+  ): Observable<entity.DataDetailsOverviewTableMapper> {
     const url = `${this.performanceApiUrl}/invoices/razon-social/${filters.rfc}/detail`;
 
     const params = new HttpParams()
       .set('page', filters.page)
       .set('pageSize', filters.pageSize)
       .set('year_start', filters.year)
-      // .set('month_start', filters.year)
+      .set('month_start', filters.month)
 
     return this.http
       .get<entity.DataDetailsOverviewTableMapper>(url, { params })

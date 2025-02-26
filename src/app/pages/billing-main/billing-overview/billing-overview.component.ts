@@ -4,7 +4,7 @@ import * as entity from '../billing-model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { DrawerGeneral, FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
@@ -12,6 +12,7 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 
 @Component({
   selector: 'app-billing-overview',
@@ -54,11 +55,12 @@ export class BillingOverviewComponent {
   drawerOpen: boolean = false;
   drawerAction: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
+  drawerOpenSub: Subscription;
 
   generalFilters!: GeneralFilters
   userInfo!: UserInfo;
 
-  dataBilling:any
+  dataBilling: any
 
   constructor(
     private store: Store<{ filters: FilterState }>,
@@ -89,6 +91,14 @@ export class BillingOverviewComponent {
         this.getBilling();
         this.getHistory();
       });
+
+    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((response: DrawerGeneral) => {
+      if (this.drawerOpen) {
+        this.drawerOpen = response.drawerOpen;
+        this.drawerAction = response.drawerAction;
+        this.drawerInfo = response.drawerInfo;
+      }
+    });
   }
 
   getBilling() {
@@ -162,13 +172,13 @@ export class BillingOverviewComponent {
   }
 
   viewDetails(data: any) {
-    this.dataBilling = { ...data, year: this.generalFilters.year };
+    this.dataBilling = { ...data };
     this.drawerOpen = !this.drawerOpen;
     this.updDraweStateEdit(true);
   }
 
   updDraweStateEdit(estado: boolean): void {
-    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.dataBilling, needReload: false }));
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: this.dataBilling, needReload: false }));
   }
 
   get getUserClient() {

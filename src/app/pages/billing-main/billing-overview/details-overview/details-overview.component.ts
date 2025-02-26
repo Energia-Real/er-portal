@@ -44,7 +44,8 @@ export class DetailsOverviewComponent implements OnInit {
     'totalAmount',
   ];
 
-  billingData:any = null;
+  billingData: any = null;
+  billingDetails: any = null;
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
@@ -56,23 +57,15 @@ export class DetailsOverviewComponent implements OnInit {
     }
   }
 
-  formData = this.fb.group({
-    name: ['', Validators.required],
-    tipoDeClienteId: ['', Validators.required],
-    clientId: ['', Validators.maxLength(4)],
-    image: [null as File | null]
-  });
 
   constructor(
     private moduleServices: BillingService,
-    private fb: FormBuilder,
     private store: Store,
-
   ) { }
 
   ngOnInit(): void {
 
-    
+
   }
 
   getBillingDetails() {
@@ -80,24 +73,24 @@ export class DetailsOverviewComponent implements OnInit {
       pageSize: this.pageSize,
       page: this.pageIndex,
       year: this.billingData.year,
-      // clientId: this.getUserClient.clientes[0]
+      month: this.billingData.month,
+      rfc: this.billingData.rfc
     };
 
-    console.log('getBillingDetails', filters);
-    
-    // this.moduleServices.getBillingHistory(filters).subscribe({
-    //   next: (response: entity.DataHistoryOverviewTableMapper) => {
-    //     console.log('getBillingHistory', response);
-    //     this.dataSource.data = response?.data;
-    //     this.totalItems = response?.totalItems;
-    //     this.dataSource.sort = this.sort;
-    //     this.pageIndex = filters.page;
-    //   },
-    //   error: error => {
-    //     // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-    //     console.log(error);
-    //   }
-    // });
+    this.moduleServices.getBillingDetails(filters).subscribe({
+      next: (response: any) => {
+        console.log('getBillingDetails', response);
+        this.dataSource.data = response.dataPlants;
+        this.billingDetails = response.data[0];
+        this.totalItems = response?.totalItems;
+        this.pageIndex = filters.page;
+        this.dataSource.sort = this.sort;
+      },
+      error: error => {
+        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
   }
 
   changePageSize(event: any) {
@@ -112,17 +105,49 @@ export class DetailsOverviewComponent implements OnInit {
     this.getBillingDetails();
   }
 
-  closeDrawer(reload: boolean) {
-    this.isOpen = false;
-    setTimeout(() => {
-      // this.cancelEdit()
-    }, 300);
-    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: reload }));
+  // closeDrawer(reload: boolean) {
+  //   this.isOpen = false;
+  //   setTimeout(() => {
+  //     this.cancelEdit()
+  //   }, 300);
+  //   this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: reload }));
+  // }
+
+  cancelEdit() {
+    this.billingData = null;
+    this.billingDetails = null;
+    this.dataSource.data = [];
+    this.totalItems = 0;
+    this.pageIndex = 1;
+    this.pageSize = 10;
+
+    if (this.paginator) {
+      this.paginator.pageIndex = 0;
+      this.paginator.pageSize = this.pageSize;
+    }
   }
 
+  closeDrawer(reload: boolean) {
+    this.cancelEdit(); 
+    this.isOpen = false;
+  
+    this.store.dispatch(updateDrawer({ 
+      drawerOpen: false, 
+      drawerAction: "Create", 
+      drawerInfo: null, 
+      needReload: reload 
+    }));
+  }
+
+  
   getServerData(event: PageEvent): void {
     if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.unsubscribe();
   }
 }

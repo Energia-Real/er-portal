@@ -17,13 +17,16 @@
     <div class="header-content border-card">
         <div class="grid md:grid-cols-3 sm:grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
             <div class="col-span-1">
-               <img src="../../../../../assets/icons/Logo-svg.svg" alt="">
+                <img src="../../../../../assets/icons/Logo-svg.svg" alt="">
             </div>
             <div class="col-span-2">
-                <h1>Customer name: <span>Razón social</span></h1>
-                <h1>RFC: <span>WRRS25589245</span></h1>
-                <h1>Billing Period Start Date: <span>01 - 05 - 2025</span></h1>
-                <h1>Billing Period End Date: <span>01 - 05 - 2025</span></h1>
+                <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">Customer name: <span
+                        *ngIf="billingDetails?.razonSocial else notDataTable">{{billingDetails.razonSocial}}</span></h1>
+                <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">RFC: <span *ngIf="billingDetails?.rfc else notDataTable">{{billingDetails.rfc}}</span></h1>
+                <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">Billing Period Start Date: <span
+                        *ngIf="billingDetails?.startPeriod else notDataTable">{{billingDetails.startPeriod}}</span></h1>
+                <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">Billing Period End Date: <span
+                        *ngIf="billingDetails?.endPeriod else notDataTable">{{billingDetails.endPeriod}} </span></h1>
             </div>
         </div>
     </div>
@@ -79,7 +82,7 @@
                         <div *ngIf="element?.previousPayment else notDataTable"> {{ element.previousPayment }} </div>
                     </td>
                 </ng-container>
-            
+
                 <ng-container matColumnDef="totalAmount">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         <div class="target w-24">Total Amount</div>

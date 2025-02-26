@@ -94,6 +94,7 @@ export interface DataBillingOverviewTable {
   month: string;
   year: string;
   amount: string;
+  monthFormatter: string;
   rfc: string;
   razonSocial: string;
 }
@@ -115,30 +116,16 @@ export interface DataHistoryOverviewTable {
   month: string;
   year: string;
   amount: string;
+  monthFormatter: string;
   rfc: string;
   razonSocial: string;
 }
-
-export interface DataDetailsOverviewTableMapper {
-  pageSize: number,
-  page: number,
-  data: DataDetailsOverviewTable[],
-  totalItems: number
-}
-
-export interface DataDetailsOverviewTable {
-  month: string;
-  year: string;
-  amount: string;
-  rfc: string;
-  razonSocial: string;
-}
-
 
 export interface DataDetailsOverviewTableMapper {
   pageSize: number;
   page: number;
   data: DataDetailsOverviewTable[];
+  dataPlants?: DataDetailsOverviewTable[];
   totalItems: number;
 }
 
