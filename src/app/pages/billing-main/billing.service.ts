@@ -43,7 +43,7 @@ export class BillingService implements OnDestroy {
   getBillingOverview(
     filters: any
   ): Observable<entity.DataBillingOverviewTableMapper> {
-    const url = `${this.performanceApiUrl}/client/${filters.clientId}/invoices`;
+    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/current-invoices`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)
@@ -54,6 +54,45 @@ export class BillingService implements OnDestroy {
       .pipe(
         map((response) =>
           Mapper.getBillingOverviewMapper(response, this.formatsService)
+        )
+      );
+  }
+
+  getBillingHistory(
+    filters: any
+  ): Observable<entity.DataHistoryOverviewTableMapper> {
+    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
+
+    const params = new HttpParams()
+      .set('page', filters.page)
+      .set('pagesize', filters.pageSize)
+      .set('year', filters.year)
+
+    return this.http
+      .get<entity.DataHistoryOverviewTableMapper>(url, { params })
+      .pipe(
+        map((response) =>
+          Mapper.getBillingHistoryMapper(response, this.formatsService)
+        )
+      );
+  }
+ 
+  getBillingDetails(
+    filters: any
+  ): Observable<entity.DataDetailsOverviewTableMapper> {
+    const url = `${this.performanceApiUrl}/invoices/razon-social/${filters.rfc}/detail`;
+
+    const params = new HttpParams()
+      .set('page', filters.page)
+      .set('pageSize', filters.pageSize)
+      .set('year_start', filters.year)
+      .set('month_start', filters.month)
+
+    return this.http
+      .get<entity.DataDetailsOverviewTableMapper>(url, { params })
+      .pipe(
+        map((response) =>
+          Mapper.getBillingDetailsMapper(response, this.formatsService)
         )
       );
   }
