@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        nodejs 'node-20'  // Usa la configuración del plugin de NodeJS
+    }
     environment {
         NODE_VERSION = "20.x"
         BUILD_PATH = "dist"
@@ -31,10 +34,8 @@ pipeline {
         stage('Setup Node.js') {
             steps {
                 script {
-                    sh "nvm install ${NODE_VERSION}"
-                    sh "nvm use ${NODE_VERSION}"
-                    sh "node --version"
-                    sh "npm --version"
+                    sh 'node --version'
+                    sh 'npm --version'
                 }
             }
         }
