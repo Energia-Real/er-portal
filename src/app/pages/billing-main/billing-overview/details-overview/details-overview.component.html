@@ -22,7 +22,8 @@
             <div class="col-span-2">
                 <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">Customer name: <span
                         *ngIf="billingDetails?.razonSocial else notDataTable">{{billingDetails.razonSocial}}</span></h1>
-                <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">RFC: <span *ngIf="billingDetails?.rfc else notDataTable">{{billingDetails.rfc}}</span></h1>
+                <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">RFC: <span
+                        *ngIf="billingDetails?.rfc else notDataTable">{{billingDetails.rfc}}</span></h1>
                 <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">Billing Period Start Date: <span
                         *ngIf="billingDetails?.startPeriod else notDataTable">{{billingDetails.startPeriod}}</span></h1>
                 <h1 [ngClass]="{'flex': !billingDetails, 'gap-2': !billingDetails }">Billing Period End Date: <span
@@ -109,10 +110,7 @@
         [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
         aria-label="Select page of periodic elements">
     </mat-paginator>
-
 </div>
-
-
 
 <ng-template #notDataTable>
     <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>

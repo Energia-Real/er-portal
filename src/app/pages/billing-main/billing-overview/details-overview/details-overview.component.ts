@@ -1,8 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { BillingService } from '../../billing.service';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { MatTableDataSource } from '@angular/material/table';
@@ -16,20 +14,11 @@ import * as entity from '../../billing-model';
   templateUrl: './details-overview.component.html',
   styleUrl: './details-overview.component.scss'
 })
-export class DetailsOverviewComponent implements OnInit {
-  ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
-  CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
-  EDIT = NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
-  DELETE = NOTIFICATION_CONSTANTS.DELETE;
-  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
-
+export class DetailsOverviewComponent {
   private onDestroy$ = new Subject<void>();
-  private _client?: any | null | undefined;
-  private notificationId?: string;
-
-  get client(): any | null | undefined { return this._client }
 
   dataSource = new MatTableDataSource<any>([]);
+
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -44,29 +33,22 @@ export class DetailsOverviewComponent implements OnInit {
     'totalAmount',
   ];
 
-  billingData: any = null;
-  billingDetails: any = null;
+  billingData!: entity.DataBillingOverviewTable | any;
+  billingDetails!: entity.DataDetailsOverviewTable | any;
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
-  @Input() set billing(billingData: any | null | undefined) {
-    if (billingData) {
-      console.log(billingData);
-      this.billingData = billingData;
+  @Input() set billing(data: entity.DataBillingOverviewTable | null | undefined) {
+    if (data) {
+      this.billingData = data;
       this.getBillingDetails()
     }
   }
-
 
   constructor(
     private moduleServices: BillingService,
     private store: Store,
   ) { }
-
-  ngOnInit(): void {
-
-
-  }
 
   getBillingDetails() {
     const filters: any = {
@@ -78,16 +60,14 @@ export class DetailsOverviewComponent implements OnInit {
     };
 
     this.moduleServices.getBillingDetails(filters).subscribe({
-      next: (response: any) => {
-        console.log('getBillingDetails', response);
-        this.dataSource.data = response.dataPlants;
+      next: (response: entity.DataDetailsOverviewTableMapper) => {
+        this.dataSource.data = response.dataPlants!;
         this.billingDetails = response.data[0];
         this.totalItems = response?.totalItems;
         this.pageIndex = filters.page;
         this.dataSource.sort = this.sort;
       },
       error: error => {
-        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
     });
@@ -107,7 +87,7 @@ export class DetailsOverviewComponent implements OnInit {
 
   cancelEdit() {
     this.billingData = null;
-    this.billingDetails = null;
+    this.billingDetails = null
     this.dataSource.data = [];
     this.totalItems = 0;
     this.pageIndex = 1;
@@ -120,20 +100,19 @@ export class DetailsOverviewComponent implements OnInit {
   }
 
   closeDrawer(reload: boolean) {
-    this.cancelEdit(); 
+    this.cancelEdit();
     this.isOpen = false;
-  
-    this.store.dispatch(updateDrawer({ 
-      drawerOpen: false, 
-      drawerAction: "Create", 
-      drawerInfo: null, 
-      needReload: reload 
+
+    this.store.dispatch(updateDrawer({
+      drawerOpen: false,
+      drawerAction: "Create",
+      drawerInfo: null,
+      needReload: reload
     }));
   }
 
-  
   getServerData(event: PageEvent): void {
-    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+    if (event.pageSize != this.pageSize || event.pageIndex != this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
   }

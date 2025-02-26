@@ -134,15 +134,16 @@ export interface DataDetailsOverviewTable {
   rfc: string;
   startPeriod: string;
   endPeriod: string;
-  plants: {
-    subclient: string;
-    rate: number;
-    productionKwh: number;
-    previousPayment: number;
-    totalAmount: number;
-  }[];
+  plants: PlantData[]
 }
 
+export interface PlantData {
+  subclient: string;
+  rate: number;
+  productionKwh: number;
+  previousPayment: number;
+  totalAmount: number;
+}
 export interface ErrorRequest {
   message: string;
   code: string;

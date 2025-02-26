@@ -63,7 +63,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   generalFilters!: GeneralFilters
   userInfo!: UserInfo;
 
-  dataBilling!: entity.DataBillingOverviewTableMapper;
+  dataBilling!: entity.DataBillingOverviewTable;
 
   constructor(
     private store: Store<{ filters: FilterState }>,
@@ -110,18 +110,11 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   // se encarga de limpiar la suscripción automáticamente cuando el 
   // componente es destruido (lo que ocurre cuando se emite el onDestroy$).
   drawerOpenSubsctiption() {
-
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((response: DrawerGeneral) => {
+    this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((response: DrawerGeneral) => {
       this.drawerOpen = response.drawerOpen;
       this.drawerAction = response.drawerAction;
       this.drawerInfo = response.drawerInfo;
     });
-    
-    this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((response: DrawerGeneral) => {
-        this.drawerOpen = response.drawerOpen;
-        this.drawerAction = response.drawerAction;
-        this.drawerInfo = response.drawerInfo;
-      });
   }
 
   getBilling() {
@@ -222,7 +215,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.complete();
+    this.onDestroy$.unsubscribe();
   }
 }
 
