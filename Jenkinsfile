@@ -77,9 +77,12 @@ pipeline {
                             error "Error en la autenticación con Azure."
                         }
 
+                        echo "Verificando comandos disponibles..."
+                        sh 'az staticwebapp --help'
+
                         echo "Desplegando en Azure Web App: ${STATIC_WEB_APP_NAME}..."
                         def deployResponse = sh(script: """
-                        az staticwebapp deploy --resource-group ${RESOURCE_GROUP} --name ${STATIC_WEB_APP_NAME} --source ${BUILD_PATH}
+                        az staticwebapp update --resource-group ${RESOURCE_GROUP} --name ${STATIC_WEB_APP_NAME} --source ${BUILD_PATH}
                         """, returnStatus: true)
 
                         if (deployResponse != 0) {
