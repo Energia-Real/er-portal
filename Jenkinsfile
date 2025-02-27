@@ -6,6 +6,8 @@ pipeline {
     environment {
         NODE_VERSION = "20.x"
         BUILD_PATH = "dist"
+        TOKEN_DEV = credentials('STATIC_WEB_APP_TOKEN')
+        TOKEN_PROD = credentials('STATIC_WEB_APP_DEV_TOKEN')
         STATIC_WEB_APP_TOKEN = ""
         DEPLOY_ENV =""
         APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
@@ -18,12 +20,12 @@ pipeline {
                     echo "Rama actual: ${env.GIT_BRANCH}"
                     if (env.GIT_BRANCH ==~ 'origin/main') {
                         echo "Se desplegará en Producción."
-                        env.STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
-                        env.DEPLOY_ENV = "production"
+                        STATIC_WEB_APP_TOKEN = TOKEN_PROD
+                        DEPLOY_ENV = "production"
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
-                        env.STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_DEV_TOKEN')
-                        env.DEPLOY_ENV = "development"
+                        STATIC_WEB_APP_TOKEN = TOKEN_DEV
+                        DEPLOY_ENV = "development"
                     } else {
                         echo "Rama no destinada para despliegue. Saliendo..."
                         currentBuild.result = 'ABORTED'
@@ -54,7 +56,7 @@ pipeline {
         }
         stage('Build Application') {
             steps {
-                sh "npm run build -- --configuration=${env.DEPLOY_ENV}"
+                sh "npm run build -- --configuration=${DEPLOY_ENV}"
             }
         }
         stage('Deploy to Azure Web App') {
@@ -72,7 +74,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
-                        sh "swa deploy ${env.OUTPUT_LOCATION} --deployment-token ${env.STATIC_WEB_APP_TOKEN} --env ${env.DEPLOY_ENV} --verbose"
+                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env ${DEPLOY_ENV} --verbose"
                     }
                 }
             }
