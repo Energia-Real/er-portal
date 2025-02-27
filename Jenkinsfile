@@ -52,14 +52,6 @@ pipeline {
                 sh "npm run build -- --configuration=production"
             }
         }
-        stage('Install Azure Static Web Apps Extension') {
-            steps {
-                script {
-                    echo "Instalando la extensión Static Web Apps..."
-                    sh "az extension add --name staticwebapp --yes"
-                }
-            }
-        }
         stage('Deploy to Azure Web App') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
@@ -76,7 +68,7 @@ pipeline {
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
                         def deployResponse = sh(script: """
-                        sh 'swa deploy ./dist --deployment-token ${STATIC_WEB_APP_TOKEN} --env production'
+                        sh 'swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production'
                         """, returnStatus: true)
 
 
