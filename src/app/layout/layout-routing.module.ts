@@ -16,60 +16,60 @@ const ratesModule = () => import('../pages/rates-main/rates-main.module').then(x
 
 const routes: Routes = [
   {
-    path: '', 
+    path: '',
     component: LayoutComponent,
-    children:[
+    children: [
       {
-        path: 'backoffice-home', 
-        loadChildren: HomeBackOfficeModule, 
+        path: 'backoffice-home',
+        loadChildren: HomeBackOfficeModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice']} 
+        data: { roles: ['BackOffice'] },
       },
       {
-        path: 'admin-home', 
-        loadChildren: HomeAdminModule, 
+        path: 'admin-home',
+        loadChildren: HomeAdminModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Admin']}  
+        data: { roles: ['Admin'] },
       },
       {
-        path: 'client-home', 
-        component: HomeComponent,  
+        path: 'client-home',
+        component: HomeComponent,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Clients'] }
+        data: { roles: ['Clients'] },
       },
-     
+
       {
         path: 'plants',
-        loadChildren:plantsModule ,
+        loadChildren: plantsModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin', 'Clients']} 
+        data: { roles: ['BackOffice', 'Admin', 'Clients'] },
       },
       {
         path: 'clients',
         loadChildren: clientModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin']}
+        data: { roles: ['BackOffice', 'Admin'] },
       },
       {
         path: 'energy',
         loadChildren: energyProductionModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin']}
+        data: { roles: ['BackOffice', 'Admin'] },
       },
       {
         path: 'billing',
         loadChildren: billingModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Billing', 'Admin', 'Clients']}
+        data: { roles: [] },
       },
       {
         path: 'rates',
         loadChildren: ratesModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Billing', 'Admin']}
-      }
-    ]
-  }
+        data: { roles: [] },
+      },
+    ],
+  },
 ];
 
 @NgModule({
