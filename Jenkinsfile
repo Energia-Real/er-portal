@@ -49,6 +49,13 @@ pipeline {
                 sh "npm run build -- --configuration=production"
             }
         }
+        stage('Check Azure CLI Extensions') {
+            steps {
+                script {
+                    sh "az extension list --query \"[?name=='staticwebapp']\""
+                }
+            }
+        }
         stage('Deploy to Azure Web App') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
