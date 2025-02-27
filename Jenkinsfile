@@ -67,14 +67,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
-                        def deployResponse = sh(script: """
-                        sh 'swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production'
-                        """, returnStatus: true)
-
-
-                        if (deployResponse != 0) {
-                            error "Error en el despliegue a Azure."
-                        }
+                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production"
                     }
                 }
             }
