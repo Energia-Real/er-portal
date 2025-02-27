@@ -6,8 +6,8 @@ pipeline {
     environment {
         NODE_VERSION = "20.x"
         BUILD_PATH = "dist"
-        TOKEN_DEV = credentials('STATIC_WEB_APP_TOKEN')
-        TOKEN_PROD = credentials('STATIC_WEB_APP_DEV_TOKEN')
+        TOKEN_DEV = credentials('STATIC_WEB_APP_DEV_TOKEN')
+        TOKEN_PROD = credentials('STATIC_WEB_APP_TOKEN')
         STATIC_WEB_APP_TOKEN = ""
         DEPLOY_ENV =""
         STATIC_WEB_APP_DEV_TOKEN=""
