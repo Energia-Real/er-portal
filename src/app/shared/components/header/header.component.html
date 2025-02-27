@@ -6,7 +6,8 @@
         routeActive.includes('admin-home') ||
         routeActive.includes('client-home') ||
         routeActive.includes('invoice') ||
-        routeActive.includes('rates')">
+        routeActive.includes('rates') ||  
+        routeActive.includes('details')">
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
           <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + selectedYearAbreviate : 'Start' }}</h1>
