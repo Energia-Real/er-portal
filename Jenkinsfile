@@ -67,7 +67,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
-                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production"
+                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production --verbose"
                     }
                 }
             }
