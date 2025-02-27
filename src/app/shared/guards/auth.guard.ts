@@ -36,7 +36,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         const newFilters: GeneralFilters = {
           startDate: startday ?? '2025-01-01',
           endDate,
-          year: year ?? '2024',
+          year: year ?? '2025',
         };
   
         // Despachar los nuevos filtros al store

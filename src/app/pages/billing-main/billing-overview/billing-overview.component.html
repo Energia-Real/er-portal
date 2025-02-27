@@ -68,7 +68,7 @@
                         <div class="target w-24">Actions</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <button class="btn-action-add">
+                        <button class="btn-action-add" (click)="viewDetails(element)">
                             View details
                         </button>
                     </td>
