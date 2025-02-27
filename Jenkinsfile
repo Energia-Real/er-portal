@@ -18,12 +18,12 @@ pipeline {
                     echo "Rama actual: ${env.GIT_BRANCH}"
                     if (env.GIT_BRANCH ==~ 'origin/main') {
                         echo "Se desplegará en Producción."
-                        STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
-                        DEPLOY_ENV = "production"
+                        env.STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
+                        env.DEPLOY_ENV = "production"
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
-                        STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_DEV_TOKEN')
-                        DEPLOY_ENV = "development"
+                        env.STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_DEV_TOKEN')
+                        env.DEPLOY_ENV = "development"
                     } else {
                         echo "Rama no destinada para despliegue. Saliendo..."
                         currentBuild.result = 'ABORTED'
@@ -54,7 +54,7 @@ pipeline {
         }
         stage('Build Application') {
             steps {
-                sh "npm run build -- --configuration=${DEPLOY_ENV}"
+                sh "npm run build -- --configuration=${env.DEPLOY_ENV}"
             }
         }
         stage('Deploy to Azure Web App') {
@@ -72,7 +72,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
-                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env ${DEPLOY_ENV} --verbose"
+                        sh "swa deploy ${env.OUTPUT_LOCATION} --deployment-token ${env.STATIC_WEB_APP_TOKEN} --env ${env.DEPLOY_ENV} --verbose"
                     }
                 }
             }
@@ -81,7 +81,7 @@ pipeline {
             steps {
                 script {
                     echo "Validando despliegue en ${STATIC_WEB_APP_NAME}..."
-                    def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' https://white-coast-0fa879810.4.azurestaticapps.net", returnStdout: true).trim()
+                    def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' https://delightful-river-002b49710.4.azurestaticapps.net", returnStdout: true).trim()
 
                     if (response != '200') {
                         error "La aplicación no responde correctamente después del despliegue (HTTP $response)."
