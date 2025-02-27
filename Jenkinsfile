@@ -11,7 +11,7 @@ pipeline {
         STATIC_WEB_APP_TOKEN = ""
         DEPLOY_ENV =""
         STATIC_WEB_APP_DEV_TOKEN:""
-        URL=""
+        STATIC_WEB_APP_URL=""
         APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
         OUTPUT_LOCATION = 'dist/er-portal/browser/browser' // Carpeta de salida (generada por npm run build)
     }
@@ -24,13 +24,13 @@ pipeline {
                         echo "Se desplegará en Producción."
                         STATIC_WEB_APP_TOKEN = TOKEN_PROD
                         DEPLOY_ENV = "production"
-                        STATIC_WEB_APP_NAME="er-portal-app"
+                        STATIC_WEB_APP_URL="er-portal-app"
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
                         STATIC_WEB_APP_TOKEN = TOKEN_DEV
                         DEPLOY_ENV = "development"
                         STATIC_WEB_APP_NAME="er-portal-app-dev"
-                        URL="https://delightful-river-002b49710.4.azurestaticapps.net"
+                        STATIC_WEB_APP_URL="https://delightful-river-002b49710.4.azurestaticapps.net"
                     } else {
                         echo "Rama no destinada para despliegue. Saliendo..."
                         currentBuild.result = 'ABORTED'
@@ -88,7 +88,7 @@ pipeline {
             steps {
                 script {
                     echo "Validando despliegue en ${STATIC_WEB_APP_NAME}..."
-                    def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${URL}", returnStdout: true).trim()
+                    def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${STATIC_WEB_APP_URL}", returnStdout: true).trim()
 
                     if (response != '200') {
                         error "La aplicación no responde correctamente después del despliegue (HTTP $response)."
