@@ -52,6 +52,14 @@ pipeline {
                 sh "npm run build -- --configuration=production"
             }
         }
+        stage('Install Azure Static Web Apps Extension') {
+            steps {
+                script {
+                    echo "Instalando la extensión Static Web Apps..."
+                    sh "az extension add --name staticwebapp --yes"
+                }
+            }
+        }
         stage('Deploy to Azure Web App') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
