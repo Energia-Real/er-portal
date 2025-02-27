@@ -6,6 +6,7 @@ pipeline {
     environment {
         NODE_VERSION = "20.x"
         BUILD_PATH = "dist"
+        STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
     }
     stages {
         stage('Validate Branch') {
@@ -77,12 +78,9 @@ pipeline {
                             error "Error en la autenticación con Azure."
                         }
 
-                        echo "Verificando comandos disponibles..."
-                        sh 'az staticwebapp --help'
-
-                        echo "Desplegando en Azure Web App: ${STATIC_WEB_APP_NAME}..."
+                        echo "Ejecutando despliegue con swa deploy..."
                         def deployResponse = sh(script: """
-                        az staticwebapp update --resource-group ${RESOURCE_GROUP} --name ${STATIC_WEB_APP_NAME} --source ${BUILD_PATH}
+                        swa deploy ${BUILD_PATH} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production
                         """, returnStatus: true)
 
                         if (deployResponse != 0) {
