@@ -19,11 +19,11 @@ pipeline {
                     if (env.GIT_BRANCH ==~ 'origin/main') {
                         echo "Se desplegará en Producción."
                         STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
-                        DEPLOY_ENV = "development"
+                        DEPLOY_ENV = "production"
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
                         STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_DEV_TOKEN')
-                        DEPLOY_ENV = "production"
+                        DEPLOY_ENV = "development"
                     } else {
                         echo "Rama no destinada para despliegue. Saliendo..."
                         currentBuild.result = 'ABORTED'
