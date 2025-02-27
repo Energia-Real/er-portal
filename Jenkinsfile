@@ -67,7 +67,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         def deployResponse = sh(script: """
-                        az staticwebapp deploy \
+                        az staticwebapp upload \
                         --source . \
                         --app-location ${APP_LOCATION} \
                         --output-location ${OUTPUT_LOCATION} \
