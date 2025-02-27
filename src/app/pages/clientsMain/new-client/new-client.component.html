@@ -32,7 +32,7 @@
                                     <mat-form-field class="select-ER" appearance="outline">
                                         <mat-select formControlName="tipoDeClienteId" placeholder="Type of client">
                                             <mat-option value="">Choose one</mat-option>
-                                            <mat-option [value]="cat.id" *ngFor="let cat of cattypesClients">{{
+                                            <mat-option [value]="cat.id" *ngFor="let cat of catTypesClients">{{
                                                 cat?.tipo || '-'
                                                 }}</mat-option>
                                         </mat-select>

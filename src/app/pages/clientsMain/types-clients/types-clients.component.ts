@@ -62,8 +62,8 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   getDataTable() {
     this.moduleServices.getTypeClientsData().subscribe({
-      next: (response: DataCatalogs[]) => {
-        this.dataSource.data = response;
+      next: (response: entity.DataCatalogTypeClient) => {
+        this.dataSource.data = response.data;
         this.dataSource.sort = this.sort;
       },
       error: error => {
