@@ -10,7 +10,7 @@ pipeline {
         TOKEN_PROD = credentials('STATIC_WEB_APP_DEV_TOKEN')
         STATIC_WEB_APP_TOKEN = ""
         DEPLOY_ENV =""
-        STATIC_WEB_APP_DEV_TOKEN:""
+        STATIC_WEB_APP_DEV_TOKEN=""
         STATIC_WEB_APP_URL=""
         APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
         OUTPUT_LOCATION = 'dist/er-portal/browser/browser' // Carpeta de salida (generada por npm run build)
