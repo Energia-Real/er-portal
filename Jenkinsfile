@@ -49,6 +49,14 @@ pipeline {
                 sh "npm run build -- --configuration=production"
             }
         }
+        stage('Install Azure Static Web Apps Extension') {
+            steps {
+                script {
+                    echo "Instalando la extensión Static Web Apps..."
+                    sh "az extension add --name staticwebapp --yes"
+                }
+            }
+        }
         stage('Check Azure CLI Extensions') {
             steps {
                 script {
