@@ -93,8 +93,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getFilters() {
     this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-      console.log(generalFilters);
-      
       const startMonthValue = generalFilters.startDate.split('-')[1];
       const endMonthValue = generalFilters.endDate!.split('-')[1];
 
