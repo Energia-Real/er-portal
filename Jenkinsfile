@@ -7,6 +7,8 @@ pipeline {
         NODE_VERSION = "20.x"
         BUILD_PATH = "dist"
         STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
+        APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
+        OUTPUT_LOCATION = 'dist/er-portal/browser' // Carpeta de salida (generada por npm run build)
     }
     stages {
         stage('Validate Branch') {
@@ -50,21 +52,6 @@ pipeline {
                 sh "npm run build -- --configuration=production"
             }
         }
-        stage('Install Azure Static Web Apps Extension') {
-            steps {
-                script {
-                    echo "Instalando la extensión Static Web Apps..."
-                    sh "az extension add --name staticwebapp --yes"
-                }
-            }
-        }
-        stage('Check Azure CLI Extensions') {
-            steps {
-                script {
-                    sh "az extension list --query \"[?name=='staticwebapp']\""
-                }
-            }
-        }
         stage('Deploy to Azure Web App') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
@@ -78,9 +65,13 @@ pipeline {
                             error "Error en la autenticación con Azure."
                         }
 
-                        echo "Ejecutando despliegue con swa deploy..."
+                        echo "Ejecutando despliegue ..."
                         def deployResponse = sh(script: """
-                        swa deploy ${BUILD_PATH} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production
+                        az staticwebapp deploy \
+                        --source . \
+                        --app-location ${APP_LOCATION} \
+                        --output-location ${OUTPUT_LOCATION} \
+                        --token ${STATIC_WEB_APP_TOKEN}
                         """, returnStatus: true)
 
                         if (deployResponse != 0) {
