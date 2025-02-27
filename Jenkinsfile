@@ -24,7 +24,8 @@ pipeline {
                         echo "Se desplegará en Producción."
                         STATIC_WEB_APP_TOKEN = TOKEN_PROD
                         DEPLOY_ENV = "production"
-                        STATIC_WEB_APP_URL="er-portal-app"
+                        STATIC_WEB_APP_NAME="er-portal-app"
+                        STATIC_WEB_APP_URL="https://white-coast-0fa879810.4.azurestaticapps.net"
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
                         STATIC_WEB_APP_TOKEN = TOKEN_DEV
@@ -79,7 +80,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
-                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env ${DEPLOY_ENV} --verbose"
+                        sh "swa deploy ${OUTPUT_LOCATION} --app-name ${STATIC_WEB_APP_NAME} --deployment-token ${STATIC_WEB_APP_TOKEN} --env ${DEPLOY_ENV} --verbose"
                     }
                 }
             }
