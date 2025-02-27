@@ -8,7 +8,7 @@ pipeline {
         BUILD_PATH = "dist"
         STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
         APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
-        OUTPUT_LOCATION = 'dist/er-portal/browser' // Carpeta de salida (generada por npm run build)
+        OUTPUT_LOCATION = 'dist/er-portal/browser/browser' // Carpeta de salida (generada por npm run build)
     }
     stages {
         stage('Validate Branch') {
