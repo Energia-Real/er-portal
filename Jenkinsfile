@@ -6,7 +6,8 @@ pipeline {
     environment {
         NODE_VERSION = "20.x"
         BUILD_PATH = "dist"
-        STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
+        STATIC_WEB_APP_TOKEN = ""
+        DEPLOY_ENV =""
         APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
         OUTPUT_LOCATION = 'dist/er-portal/browser/browser' // Carpeta de salida (generada por npm run build)
     }
@@ -17,8 +18,12 @@ pipeline {
                     echo "Rama actual: ${env.GIT_BRANCH}"
                     if (env.GIT_BRANCH ==~ 'origin/main') {
                         echo "Se desplegará en Producción."
-                        STATIC_WEB_APP_NAME = "er-portal-app"
-                        RESOURCE_GROUP = "er-rg-portal"
+                        STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_TOKEN')
+                        DEPLOY_ENV = "development"
+                    } else if (env.GIT_BRANCH ==~ 'origin/develop') {
+                        echo "Se desplegará en Desarrollo."
+                        STATIC_WEB_APP_TOKEN = credentials('STATIC_WEB_APP_DEV_TOKEN')
+                        DEPLOY_ENV = "production"
                     } else {
                         echo "Rama no destinada para despliegue. Saliendo..."
                         currentBuild.result = 'ABORTED'
@@ -49,7 +54,7 @@ pipeline {
         }
         stage('Build Application') {
             steps {
-                sh "npm run build -- --configuration=production"
+                sh "npm run build -- --configuration=${DEPLOY_ENV}"
             }
         }
         stage('Deploy to Azure Web App') {
@@ -67,7 +72,7 @@ pipeline {
 
                         echo "Ejecutando despliegue ..."
                         sh 'npm install -g @azure/static-web-apps-cli'
-                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env production --verbose"
+                        sh "swa deploy ${OUTPUT_LOCATION} --deployment-token ${STATIC_WEB_APP_TOKEN} --env ${DEPLOY_ENV} --verbose"
                     }
                 }
             }
