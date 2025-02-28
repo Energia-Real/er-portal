@@ -354,9 +354,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getUserClient() {
     const encryptedData = localStorage.getItem('userInfo');
+    console.log(encryptedData)
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        console.log("general filter")
         this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
         this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
         this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });

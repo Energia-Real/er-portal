@@ -37,10 +37,10 @@ export class ClientsService implements OnDestroy {
       .pipe(map((response) => Mapper.getClientsDataMapper(response)));
   }
 
-  getTypeClientsData(): Observable<entity.DataCatalogTypeClient[]> {
+  getTypeClientsData(): Observable<entity.DataCatalogTypeClient> {
     const url = `${this.API_URL}/tipodecliente`;
 
-    return this.http.get<entity.DataCatalogTypeClient[]>(url);
+    return this.http.get<entity.DataCatalogTypeClient>(url);
   }
 
   postDataTypeClient(data: entity.DataPostTypeClient) {

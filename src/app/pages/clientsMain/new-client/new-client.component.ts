@@ -57,7 +57,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
     image: [null as File | null]
   });
 
-  cattypesClients: entity.DataCatalogTypeClient[] = []
+  catTypesClients: entity.TypeClient[] = []
   editedClient: any;
 
   imagePreview: string | ArrayBuffer | null = null;
@@ -89,7 +89,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   getCatalogs() {
     this.moduleServices.getTypeClientsData().subscribe({
-      next: (response: entity.DataCatalogTypeClient[]) => this.cattypesClients = response,
+      next: (response: entity.DataCatalogTypeClient) => this.catTypesClients = response.data,
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)
