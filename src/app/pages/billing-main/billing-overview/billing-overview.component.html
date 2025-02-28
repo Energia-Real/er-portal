@@ -15,7 +15,7 @@
         <div class="c-paginator-top">
             <strong>Items per page</strong>
             <mat-form-field>
-                <mat-select [(value)]="pageSizeBilling" (selectionChange)="changePageSize($event, 'overview')">
+                <mat-select [(value)]="pageSizeBilling" (selectionChange)="changePageSize($event, 'billing')">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
                         <strong>{{ size }}</strong>
                     </mat-option>
@@ -105,7 +105,7 @@
         <div class="c-paginator-top">
             <strong>Items per page</strong>
             <mat-form-field>
-                <mat-select [(value)]="pageSizeHistory" (selectionChange)="changePageSize($event)">
+                <mat-select [(value)]="pageSizeHistory" (selectionChange)="changePageSize($event,'history')">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
                         <strong>{{ size }}</strong>
                     </mat-option>

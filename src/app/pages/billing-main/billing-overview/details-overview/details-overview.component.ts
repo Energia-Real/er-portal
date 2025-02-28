@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { BillingService } from '../../billing.service';
 import { Store } from '@ngrx/store';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import * as entity from '../../billing-model';
+import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 
 @Component({
   selector: 'app-details-overview',
@@ -48,15 +49,32 @@ export class DetailsOverviewComponent {
   constructor(
     private moduleServices: BillingService,
     private store: Store,
-  ) { }
+  ) {
+    combineLatest([
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([pageSize, pageIndex]) => {
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex + 1;
+
+        if (this.paginator) {
+          this.paginator.pageSize = pageSize;
+          this.paginator.pageIndex = pageIndex;
+        }
+
+        this.getBillingDetails();
+      });
+  }
 
   getBillingDetails() {
     const filters: any = {
       pageSize: this.pageSize,
       page: this.pageIndex,
-      year: this.billingData.year,
-      month: this.billingData.month,
-      rfc: this.billingData.rfc
+      year: this.billingData?.year,
+      month: this.billingData?.month,
+      rfc: this.billingData?.rfc
     };
 
     this.moduleServices.getBillingDetails(filters).subscribe({
@@ -112,7 +130,7 @@ export class DetailsOverviewComponent {
   }
 
   getServerData(event: PageEvent): void {
-    if (event.pageSize != this.pageSize || event.pageIndex != this.pageIndex - 1) {
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
     }
   }

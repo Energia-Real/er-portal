@@ -10,9 +10,9 @@ import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-billing-overview',
@@ -81,24 +81,21 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
         this.generalFilters = generalFilters;
-        this.pageSizeBilling = pageSize;
-        this.pageIndexBilling = pageIndex + 1;
-        this.pageSizeHistory = pageSize;
-        this.pageIndexHistory = pageIndex + 1;
-
+    
         if (this.paginatorBilling) {
-          this.paginatorBilling.pageSize = this.pageSizeBilling;
-          this.paginatorBilling.pageIndex = this.pageIndexBilling - 1;
+          this.pageSizeBilling = this.paginatorBilling.pageSize;
+          this.pageIndexBilling = this.paginatorBilling.pageIndex + 1;
         }
-
+    
         if (this.paginatorHistory) {
-          this.paginatorHistory.pageSize = this.pageSizeHistory;
-          this.paginatorHistory.pageIndex = this.pageIndexHistory - 1;
+          this.pageSizeHistory = this.paginatorHistory.pageSize;
+          this.pageIndexHistory = this.paginatorHistory.pageIndex + 1;
         }
-
-        this.getBilling();
-        this.getHistory();
+    
+        this.getServerData({ pageIndex: this.pageIndexBilling - 1, pageSize: this.pageSizeBilling }, 'billing');
+        this.getServerData({ pageIndex: this.pageIndexHistory - 1, pageSize: this.pageSizeHistory }, 'history');
       });
+    
   }
 
   ngOnInit(): void {
@@ -161,30 +158,18 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  changePageSize(event: any, type?: string) {
-    const newSize = event.value;
-
-    if (type === 'overview') {
-      this.pageSizeBilling = newSize;
-
-      if (this.paginatorBilling) {
-        this.paginatorBilling.pageSize = newSize;
-        this.paginatorBilling._changePageSize(newSize);
-      }
-
-      this.getBilling();
-    }
-    else {
-      this.pageSizeHistory = newSize;
-
-      if (this.paginatorHistory) {
-        this.paginatorHistory.pageSize = newSize;
-        this.paginatorHistory._changePageSize(newSize);
-      }
-
-      this.getHistory();
+  changePageSize(event: MatSelectChange, type: 'billing' | 'history') {
+    if (type === 'billing') {
+      this.pageSizeBilling = event.value;
+      this.paginatorBilling.pageSize = this.pageSizeBilling;
+      this.getServerData({ pageIndex: this.pageIndexBilling - 1, pageSize: this.pageSizeBilling }, 'billing');
+    } else if (type === 'history') {
+      this.pageSizeHistory = event.value;
+      this.paginatorHistory.pageSize = this.pageSizeHistory;
+      this.getServerData({ pageIndex: this.pageIndexHistory - 1, pageSize: this.pageSizeHistory }, 'history');
     }
   }
+  
 
   viewDetails(data: any) {
     this.dataBilling = { ...data };
@@ -201,17 +186,18 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
     return encryptedData ? this.encryptionService.decryptData(encryptedData) : null;
   }
 
-  getServerData(event: PageEvent, type: 'billing' | 'history'): void {
+  getServerData(event: PageEvent | any, type: 'billing' | 'history') {
     if (type === 'billing') {
-      if (event.pageSize != this.pageSizeBilling || event.pageIndex != this.pageIndexBilling - 1) {
-        this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-      }
-    } else {
-      if (event.pageSize != this.pageSizeHistory || event.pageIndex != this.pageIndexHistory - 1) {
-        this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-      }
+      this.pageIndexBilling = event.pageIndex + 1;
+      this.pageSizeBilling = event.pageSize;
+      this.getBilling();
+    } else if (type === 'history') {
+      this.pageIndexHistory = event.pageIndex + 1;
+      this.pageSizeHistory = event.pageSize;
+      this.getHistory();
     }
   }
+  
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
