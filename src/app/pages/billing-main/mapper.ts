@@ -28,14 +28,50 @@ export class Mapper {
 		response?.data?.forEach((data: entity.DataBillingOverviewTable): void => {
 			dataList.push({
 				...data,
-				date: formatsService.dateFormat(data.date),
 				amount: formatsService.moneyFormat(parseFloat(data.amount)),
+				monthFormatter: formatsService.getMonthName(parseFloat(data.month)),
 			});
 		});
 
 		return {
 			...response,
 			data: dataList
+		}
+	}
+
+	static getBillingHistoryMapper(response: entity.DataHistoryOverviewTableMapper, formatsService: FormatsService): entity.DataHistoryOverviewTableMapper {
+		let dataList: entity.DataHistoryOverviewTable[] = [];
+
+		response?.data?.forEach((data: entity.DataHistoryOverviewTable): void => {
+			dataList.push({
+				...data,
+				amount: formatsService.moneyFormat(parseFloat(data.amount)),
+				monthFormatter: formatsService.getMonthName(parseFloat(data.month)),
+			});
+		});
+
+		return {
+			...response,
+			data: dataList
+		}
+	}
+
+	static getBillingDetailsMapper(response: entity.DataDetailsOverviewTableMapper, formatsService: FormatsService): entity.DataDetailsOverviewTableMapper {
+		let dataList: entity.DataDetailsOverviewTable[] = [];
+
+		response.data[0].plants.forEach((data: any): void => {
+			dataList.push({
+				...data,
+				productionKwh: formatsService.energyWithDecimals(data.productionKwh),
+				previousPayment: formatsService.moneyFormat(data.previousPayment),
+				rate: formatsService.moneyFormat(data.rate),
+				totalAmount: formatsService.moneyFormat(data.totalAmount),
+			});
+		});
+
+		return {
+			...response,
+			dataPlants : dataList
 		}
 	}
 }

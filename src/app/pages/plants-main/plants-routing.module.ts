@@ -7,7 +7,11 @@ import { PlantsDetailComponent } from './plant-details/plant-details.component';
 
 
 const routes: Routes = [
-  { path: '', component: PlantsComponent },
+  { 
+    path: '', 
+    component: PlantsComponent,
+    canActivate: [FilterGuard]
+   },
   { path: 'create', component: NewPlantComponent },
   { path: 'edit/:id', component: NewPlantComponent },
   {

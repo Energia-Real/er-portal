@@ -5,9 +5,6 @@ import { setFilters, setFiltersBatu, setFiltersSolarCoverage, setGeneralFilters 
 const _filterReducer = createReducer(
   initialFilterState,
   on(setGeneralFilters, (state, { generalFilters }) => ({ ...state, generalFilters })),
-  // on(setFilters, (state, { filters }) => ({ ...state, filters })),
-  // on(setFiltersBatu, (state, { filtersBatu }) => ({ ...state, filtersBatu })),
-  // on(setFiltersSolarCoverage, (state, { filtersSolarCoverage }) => ({ ...state, filtersSolarCoverage }))
 );
 
 export function filterReducer(state: FilterState | undefined, action: any) {

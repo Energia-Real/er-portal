@@ -66,9 +66,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   notificationSubscription!: Subscription;
   hasNotifications = false;
 
-   menuOpen = false;
+  menuOpen = false;
 
-   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
 
   constructor(
@@ -93,8 +93,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getFilters() {
     this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-      console.log(generalFilters);
-      
       const startMonthValue = generalFilters.startDate.split('-')[1];
       const endMonthValue = generalFilters.endDate!.split('-')[1];
 
@@ -129,10 +127,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
-
     if (month.value == '12') {
-      this.selectedEndMonth = null;
+      this.selectedEndMonth = null
       this.singleMonth.setValue(true);
+      
     } else this.singleMonth.setValue(false);
 
     this.selectedStartMonth = month;
@@ -155,11 +153,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchWithFilters() {
-    const generalFilters = {
+    const generalFilters: any = {
       startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
-      endDate: this.singleMonth.value ? null : `${this.selectedYear}-${this.selectedEndMonth.value}-01`,
       year: this.selectedYearSelect?.value
     };
+
+    generalFilters.endDate = this.singleMonth.value ? this.getLastDayOfMonth(this.selectedStartMonth.value) : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
+    console.log('generalFilters', generalFilters);
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
       if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
@@ -224,6 +224,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.removeItem('generalFilters');
     this.router.navigate(['']);
   }
+
+  getLastDayOfMonth = (dateStr: string): string => {
+    const date = new Date(dateStr);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return lastDay.toISOString().split('T')[0];
+  };
+
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
