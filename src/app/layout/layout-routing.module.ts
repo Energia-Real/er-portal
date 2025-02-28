@@ -23,44 +23,44 @@ const routes: Routes = [
         path: 'backoffice-home',
         loadChildren: HomeBackOfficeModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice'] },
+        data: { roles: [] },
       },
       {
         path: 'admin-home',
         loadChildren: HomeAdminModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Admin'] },
+        data: { roles: [] },
       },
       {
         path: 'client-home',
         component: HomeComponent,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Clients'] },
+        data: { roles: [] },
       },
 
       {
         path: 'plants',
         loadChildren: plantsModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin', 'Clients'] },
+        data: { roles: [] },
       },
       {
         path: 'clients',
         loadChildren: clientModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin'] },
+        data: { roles: [] },
       },
       {
         path: 'energy',
         loadChildren: energyProductionModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin'] },
+        data: { roles: [] },
       },
       {
         path: 'invoice',
         loadChildren: billingModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['Billing', 'Admin', 'Clients']}
+        data: { roles: [] },
       },
       {
         path: 'billing',
