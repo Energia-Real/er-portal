@@ -83,7 +83,7 @@
                         <div class="target w-24">CorporateName</div>
                     </th>
                     <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.razonSocialCount!=0 else notDataTable">
+                        <div *ngIf="element?.razonSocialCount!=0 else notCorporateName">
                             <div *ngIf="element?.razonSocialCount==1" class="check-razon-social" (click)="toggleDrawerCorporateName(element.id,element.nombre)">
                                 {{element?.razonesSociales[0].razonSocialName}}
                             </div>
@@ -132,4 +132,10 @@
 
 <ng-template #notDataTable>
     <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
+
+<ng-template #notCorporateName>
+    <div class="check-razon-social">
+        Add Corporate Name
+    </div>
 </ng-template>

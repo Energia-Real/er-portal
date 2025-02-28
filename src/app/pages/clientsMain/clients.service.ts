@@ -115,7 +115,7 @@ export class ClientsService implements OnDestroy {
 
   postRazonSocial(
     data: entity.DataPostRazonSocial[],
-    clientId:string,
+    clientId:any,
     notificationMessages: NotificationMessages
   ) {
     const url = `${this.API_URL}/clients/${clientId}/razon-social`;

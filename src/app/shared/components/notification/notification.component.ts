@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
@@ -20,10 +20,14 @@ export class NotificationComponent implements OnDestroy {
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE; 
   constructor(
     public dialogRef: MatDialogRef<NotificationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: notificationData
+    @Inject(MAT_DIALOG_DATA) public data: notificationData,
+    private cdr: ChangeDetectorRef,
   ) {
     console.log(data)
-   }
+    setTimeout(() => {
+      this.cdr.detectChanges(); // Fuerza la actualización del HTML
+    }, 0); 
+  }
 
   closeDialog(): void {
     this.dialogRef.close();
