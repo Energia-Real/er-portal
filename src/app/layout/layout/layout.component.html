@@ -1,144 +1,66 @@
 <div class="layout">
-  <div class="sidebar " [class.extended]="keepOpen" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  <div class="sidebar" [class.extended]="keepOpen" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
     <div class="sidebar-content">
       <div class="logo">
         <div href="/home" class="text-white text-sm font-semibold c-version" [class.siderbar-hold]="isSidebarHovered && !keepOpen">
           <div class="logo-sidebar">
-            <img class="animate-durations" class="logo-white" src="../../../../assets/icons/logo001.svg" alt="Logo">
+            <img class="animate-durations logo-white" src="../../../../assets/icons/logo001.svg" alt="Logo">
             <p class="ps-1 animate-durations"
             [ngClass]="{'animate__animated animate__fadeIn': isSidebarHovered && !keepOpen}"
-            *ngIf="isSidebarHovered || keepOpen">energía real</p>
+            *ngIf="isSidebarHovered || keepOpen">Energía Real</p>
           </div>
-          
+
           <img class="icon-extended-menu"
           [ngClass]="{'animate__animated animate__fadeIn': isSidebarHovered && !keepOpen}"
           *ngIf="isSidebarHovered || keepOpen" (click)="keepOpen = !keepOpen"
           [src]="keepOpen ? '../../../assets/icons/closet.svg': '../../../assets/icons/open.svg'">
         </div>
       </div>
-      
+
       <div class="sidebar-user">
         <img class="animate-durations"
           [ngClass]="{'animate__animated animate__fadeInBottomLeft': isSidebarHovered && !keepOpen}"
-          src="../../../../assets/icons/user-profile-icon.svg" alt="Logo">
+          src="../../../../assets/icons/user-profile-icon.svg" alt="User">
         <p class="animate-durations"
           [ngClass]="{'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen}"
           *ngIf="isSidebarHovered || keepOpen">
-
-          <span> {{userInfo?.persona?.nombres || 'USER'}} {{userInfo?.persona?.apellidos || ''}}</span>
+          <span> {{ userInfo?.persona?.nombres || 'USER' }} {{ userInfo?.persona?.apellidos || '' }}</span>
         </p>
       </div>
 
       <div class="linea"></div>
 
+      <!-- Menú dinámico -->
       <ul class="flex flex-col titles-header">
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'Clients'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen , 'menu-selected': routeActive.includes('home'), 'ps-2' : isSidebarHovered || keepOpen  }">
-          <img src="../../../assets/icons/home-icon.svg" alt="Home">
+        <li *ngFor="let module of modules" class="animate-durations"
+          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes(module.routePath), 'ps-2': isSidebarHovered || keepOpen}">
+          <img [src]="'../../../assets/icons/' + module.name.toLowerCase() + '-icon.svg'" [alt]="module.name">
           <a [ngClass]="{
             'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('client-home'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('client-home') ? null : 'client-home'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Home</a>
-        </li>
-      
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'Clients'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen , 'menu-selected': routeActive.includes('overview'), 'ps-2' : isSidebarHovered || keepOpen  }">
-          <img src="../../../assets/icons/invoices-icon.svg" alt="Invoice">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('overview'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('overview') ? null : 'billing/overview'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Billing Overview</a>
-        </li>
-
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'BackOffice'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen , 'menu-selected': routeActive.includes('backoffice'), 'ps-2' : isSidebarHovered || keepOpen  }">
-          <img src="../../../assets/icons/home-icon.svg" alt="Home">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('backoffice-home'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('backoffice-home') ? null : 'backoffice-home'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Home</a>
-        </li>
-
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'Admin'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen , 'menu-selected': routeActive.includes('home'), 'ps-2': isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/home-icon.svg" alt="Home">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('admin-home'), 'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen,
-          }" [routerLink]="routeActive.includes('admin-home') ? null : 'admin-home'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">
-            Home
+            'menu-selected': routeActive.includes(module.routePath),
+            'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen
+          }"
+          [routerLink]="routeActive.includes(module.routePath) ? null : module.routePath"
+          class="hover:text-gray-300 cursor-pointer animate-durations">
+            {{ module.name }}
           </a>
-        </li>
-
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('plants'), 'ps-2' : isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/plants-icon.svg" alt="Plants">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-             'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('plants') ? null : 'plants'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Plants</a>
-        </li>
-
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('clients'), 'ps-2' : isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/clients-icon.svg" alt="Clients">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('clients'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('clients') ? null : 'clients'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Clients</a>
-        </li>
-
-        <li class="animate-durations" *ngIf="userInfo?.accessTo == 'BackOffice' || userInfo?.accessTo == 'Admin'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('energy'), 'ps-2' : isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/energy-icon.svg" alt="Energy">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('energy'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('energy') ? null : 'energy'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Energy</a>
-        </li>
-
-        <li class="animate-durations" *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('rates'), 'ps-2' : isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/rates-icon.svg" alt="Rates">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('rates'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('rates') ? null : 'rates'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Rates</a>
-        </li>
-
-        <li class="animate-durations" *ngIf=" userInfo?.accessTo == 'Admin' || userInfo?.accessTo == 'Billing'"
-          [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes('invoice'), 'ps-2' : isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/invoices-icon.svg" alt="Invoice">
-          <a [ngClass]="{
-            'show-names': isSidebarHovered || keepOpen,
-            'menu-selected': routeActive.includes('invoice'), 'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
-          }" [routerLink]="routeActive.includes('invoice') ? null : 'invoice'"
-            class="hover:text-gray-300 cursor-pointer animate-durations">Invoice</a>
         </li>
       </ul>
 
       <div class="sidebar-footer">
         <div class="linea"></div>
-        <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/Assistance-icon.svg" alt="Home">
+        <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen}">
+          <img src="../../../assets/icons/Assistance-icon.svg" alt="Assistance">
           <p class="animate-durations" [ngClass]="{
             'show-names': isSidebarHovered || keepOpen,
-            'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
+            'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen
           }">Assistance</p>
         </div>
-        <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen }">
-          <img src="../../../assets/icons/logout-icon.svg" alt="Home">
+        <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen}">
+          <img src="../../../assets/icons/logout-icon.svg" alt="Logout">
           <p (click)="signOut()" class="animate-durations" [ngClass]="{
             'show-names': isSidebarHovered || keepOpen,
-            'animate__animated animate__fadeInRight':isSidebarHovered && !keepOpen
+            'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen
           }">Log out</p>
         </div>
       </div>
@@ -151,7 +73,3 @@
     <app-footer></app-footer>
   </div>
 </div>
-
-<ng-template #notDataTable>
-  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
-</ng-template>

@@ -5,11 +5,12 @@ import { AuthService } from '@app/auth/auth.service';
 import { UserInfo } from '@app/shared/models/general-models';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { Module } from '@app/layout/layout/modules.interface';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+  styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -17,6 +18,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   userInfo!: UserInfo;
   isSidebarHovered = false;
   keepOpen = false;
+  modules: Module[] = []; // Lista de módulos dinámicos
 
   constructor(
     private router: Router,
@@ -25,29 +27,27 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private notificationService: NotificationService
   ) {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => (this.routeActive = this.router.url.split('?')[0]));
   }
 
   ngOnInit(): void {
-    if (this.routeActive.includes('admin-home')) {
-      console.log('es home no habilitar click');
-    }
-
     this.notificationService.loadNotificationStatuses().subscribe();
     this.notificationService.loadNotificationTypes().subscribe();
     this.notificationService.loadNotificationCenterMessages().subscribe();
 
-    this.authService.getInfoUser().subscribe(data => {
+    this.authService.getInfoUser().subscribe((data) => {
       this.userInfo = data;
       const encryptedData = this.encryptionService.encryptData(data);
       localStorage.setItem('userInfo', encryptedData);
 
-      // Si la URL es '/er', redirigir dependiendo del acceso
       if (this.router.url === '/er') {
         switch (data.accessTo) {
           case 'BackOffice':
-            this.router.navigate(['backoffice-home'], { relativeTo: this.route });
+            this.router.navigate(['backoffice-home'], {
+              relativeTo: this.route,
+            });
             break;
           case 'Admin':
             this.router.navigate(['admin-home'], { relativeTo: this.route });
@@ -64,22 +64,25 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
       }
 
-      // Suscribirse a los parámetros de consulta para añadir filtros a la URL
-      this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe(() => {
-        const queryParams = this.route.snapshot.queryParams;
-        const startday = queryParams['startday'];
-        const endday = queryParams['endday'];
 
-        if (startday && endday) {
-          // Actualizar la URL con los filtros
-          this.router.navigate([], {
-            queryParams: { startday, endday },
-            queryParamsHandling: 'merge', // Mantener los demás parámetros
-          });
-        }
+      this.authService.getModules().subscribe((modules) => {
+        this.modules = modules;
       });
+
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          const queryParams = this.route.snapshot.queryParams;
+          const startday = queryParams['startday'];
+          const endday = queryParams['endday'];
+
+          if (startday && endday) {
+            this.router.navigate([], {
+              queryParams: { startday, endday },
+              queryParamsHandling: 'merge',
+            });
+          }
+        });
     });
   }
 

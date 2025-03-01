@@ -18,11 +18,12 @@ export interface User {
 }
 
 export interface UserAuth {
-  success: true,
+  success: true;
   response: {
-      token: string;
-      accessTo: string
-  }
+    userId: string;
+    token: string;
+    accessTo: string;
+  };
 }
 
 export interface UserInfo {
@@ -101,8 +102,8 @@ export interface notificationData{
   title?:    string,
   subtitle?:    string,
   content?:  string,
-  warn?:     string, 
-  errors?:     string, 
+  warn?:     string,
+  errors?:     string,
   buttonAction?: string
 }
 
@@ -175,6 +176,12 @@ export interface GeneralResponse<T> {
   errors: {
     errors: ErrorRequest[]
   }
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  response: T;
+  errors?: any[];
 }
 
 export interface NotificationsResponse {
