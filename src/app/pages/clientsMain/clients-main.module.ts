@@ -18,6 +18,7 @@ import { ClientsComponent } from './clients/clients.component';
 import { TypesClientsComponent } from './types-clients/types-clients.component';
 import { NewClientComponent } from './new-client/new-client.component';
 import { CorporateNamesComponent } from './corporate-names/corporate-names.component';
+import { EditCorporateNameComponent } from './edit-corporate-name/edit-corporate-name.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { CorporateNamesComponent } from './corporate-names/corporate-names.compo
     TypesClientsComponent,
     NewClientComponent,
     CorporateNamesComponent,
+    EditCorporateNameComponent,
   ],
   imports: [
     CommonModule,
