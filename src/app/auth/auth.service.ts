@@ -76,7 +76,14 @@ export class AuthService {
   }
 
   getModules(): Observable<Module[]> {
-    let dataUser = this.getDecryptedUser();
+    const dataUser = this.getDecryptedUser();
+
+    if (!dataUser || !dataUser.id) {
+      console.error('User ID not found in decrypted user data.');
+      return new Observable<Module[]>();
+    }
+
+    const userId = dataUser.id;
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -85,8 +92,8 @@ export class AuthService {
       }),
     };
 
-    return this.http.get<any[]>(
-      `${environment.API_URL_AUTH_V1}/user/5b2e7715-7845-4a2f-bb80-03d3483cff98/modules`,
+    return this.http.get<Module[]>(
+      `${environment.API_URL_AUTH_V1}/user/${userId}/modules`,
       httpOptions
     );
   }
