@@ -38,7 +38,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
