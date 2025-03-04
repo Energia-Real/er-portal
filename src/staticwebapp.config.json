@@ -1,6 +1,13 @@
 {
-    "globalHeaders": {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*"
+  "globalHeaders": {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "*"
+  },
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
     }
-  }
+  ]
+}
