@@ -14,13 +14,10 @@
         </div>
 
         <div class="col-span-2 md:col-span-1  sm:grid-cols-2 flex align-center justify-center gap-2">
-            <form class="relative w-80  c-search">
-                <label class="input-search">
-                    <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                </label>
-                <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Plant name"
-                    [formControl]="searchBar">
-            </form>
+            <div class="c-input-search w-80 float-right">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input class="block w-full" type="text" placeholder="Plant name" [formControl]="searchBar">
+            </div>
         </div>
 
         <div class="col-span-2 md:col-span-1 sm:grid-cols-2 flex align-center lg:justify-end sm:justify-start gap-2">

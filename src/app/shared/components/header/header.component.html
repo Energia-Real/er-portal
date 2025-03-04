@@ -70,12 +70,14 @@
             <p>Consider a single month only</p>
           </div>
         </mat-menu>
+
+        <h2 [matTooltip]="'Pick a date or range to apply changes to the screen.'" (click)="searchWithFilters()">Apply</h2 >
       </div>
 
         <div class="c-input mb-0"  *ngIf="routeActive.includes('energy') || routeActive.includes('overview')">
           <mat-form-field class="select-year" appearance="outline">
             <mat-select placeholder="Year" [(value)]="selectedYearSelect"
-              (valueChange)="searchWithFilters()">
+            (valueChange)="searchWithFilters()">
               <mat-option *ngFor="let year of years; let i = index" [value]="year">
                 {{ year.value }}
               </mat-option>

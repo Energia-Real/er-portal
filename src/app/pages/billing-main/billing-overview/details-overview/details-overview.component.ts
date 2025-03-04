@@ -30,7 +30,6 @@ export class DetailsOverviewComponent {
     'subClient',
     'rate',
     'production',
-    'previousPayDate',
     'totalAmount',
   ];
 

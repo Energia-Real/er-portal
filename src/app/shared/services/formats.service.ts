@@ -28,7 +28,7 @@ export class FormatsService {
     } else return '';
   }
  
-  energyWithDecimals(content: string | number): string {
+  energyWithDecimals(content: string | number, kwh?:boolean): string {
     let numberValue = typeof content == 'string' ? parseFloat(content.replace(/,/g, '')) : content;
 
     if (!numberValue) return ''
@@ -37,7 +37,7 @@ export class FormatsService {
       return numberValue.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      });
+      }) + kwh ? ' kWh' : '';
     } else return '';
   }
     

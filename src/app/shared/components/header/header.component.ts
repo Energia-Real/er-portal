@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, Observable, map, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
@@ -77,7 +77,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
     private encryptionService: EncryptionService,
-    private notificationsService: NotificationService,
 
   ) {
     this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
@@ -107,7 +106,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       if (isSingleMonthSelected) {
         this.selectedEndMonth = null;
         this.selectedMonths.pop()
-        this.searchWithFilters();
       }
     });
   }
@@ -134,14 +132,12 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     } else this.singleMonth.setValue(false);
 
     this.selectedStartMonth = month;
-    this.searchWithFilters();
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
     if (month.value > this.selectedStartMonth.value && !this.singleMonth.value) {
       this.selectedEndMonth = month;
-      this.searchWithFilters();
       menuTrigger.closeMenu();
     }
   }

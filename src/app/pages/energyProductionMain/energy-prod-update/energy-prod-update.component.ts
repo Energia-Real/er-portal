@@ -30,7 +30,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     }
     const dataLimpia = {
       ...editedData,
-      energyValue: editedData.energyValue ? limpiarNumerosConFormato(editedData.energyValue) : null
+      energyValue: editedData?.energyValue ? limpiarNumerosConFormato(editedData.energyValue) : null
     };
     this.formData.patchValue({
       ...dataLimpia

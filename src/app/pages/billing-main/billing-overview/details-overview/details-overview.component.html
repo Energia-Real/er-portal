@@ -75,15 +75,6 @@
                     </td>
                 </ng-container>
 
-                <ng-container matColumnDef="previousPayDate">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                        <div class="target w-24">Previous Payment Amount</div>
-                    </th>
-                    <td mat-cell *matCellDef="let element">
-                        <div *ngIf="element?.previousPayment else notDataTable"> {{ element.previousPayment }} </div>
-                    </td>
-                </ng-container>
-
                 <ng-container matColumnDef="totalAmount">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
                         <div class="target w-24">Total Amount</div>
