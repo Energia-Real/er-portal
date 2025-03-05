@@ -78,12 +78,12 @@ export class AuthService {
   getModules(): Observable<Module[]> {
     const dataUser = this.getDecryptedUser();
 
-    if (!dataUser || !dataUser.id) {
+    if (!dataUser || !dataUser.userId) {
       console.error('User ID not found in decrypted user data.');
       return new Observable<Module[]>();
     }
 
-    const userId = dataUser.id;
+    const userId = dataUser.userId;
 
     const httpOptions = {
       headers: new HttpHeaders({
