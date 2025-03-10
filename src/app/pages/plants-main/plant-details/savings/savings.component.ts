@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { DataResponseArraysMapper, FilterState, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { DataResponseArraysMapper, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Mapper } from '../../mapper';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { FormatsService } from '@app/shared/services/formats.service';

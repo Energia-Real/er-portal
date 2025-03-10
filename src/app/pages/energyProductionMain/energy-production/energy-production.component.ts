@@ -8,7 +8,7 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { DrawerGeneral, FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
 import { debounceTime, Observable, Subject, Subscription, takeUntil } from 'rxjs';

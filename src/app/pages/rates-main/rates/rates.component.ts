@@ -11,7 +11,7 @@ import { RatesService } from '../rates.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
+import { GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';

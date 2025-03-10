@@ -9,7 +9,6 @@ import { MaterialModule } from '@app/shared/material/material.module';
 import * as entity from './home-model';
 import { Router } from '@angular/router';
 import { HomeService } from './home.service';
-import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { CommonModule } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
 import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
@@ -18,7 +17,7 @@ import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js
 import moment from 'moment';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FormatsService } from '@app/shared/services/formats.service';
-import { FilterState, GeneralFilters, GeneralResponse, notificationData, NotificationServiceData, UserInfo } from '@app/shared/models/general-models';
+import { GeneralFilters, GeneralResponse, notificationData, NotificationServiceData, UserInfo } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -64,7 +63,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   chartES: any;
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
-
 
   labels = [
     { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
@@ -113,7 +111,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
-  filters$!: Observable<FilterState['filters']>;
   generalFilters$!: Observable<GeneralFilters>;
 
   months: { value: string, viewValue: string }[] = [

@@ -4,7 +4,7 @@ import * as entity from '../billing-model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DrawerGeneral, FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';

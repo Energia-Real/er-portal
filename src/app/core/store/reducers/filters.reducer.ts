@@ -1,4 +1,4 @@
-import { FilterState, GeneralFilters, initialFilterState } from '@app/shared/models/general-models';
+import { GeneralFilters, initialFilterState } from '@app/shared/models/general-models';
 import { createReducer, on } from '@ngrx/store';
 import { setGeneralFilters } from '../actions/filters.actions';
 

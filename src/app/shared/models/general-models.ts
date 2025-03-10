@@ -41,8 +41,8 @@ export interface UserInfo {
 export interface GeneralFilters {
   clientId?:number | string
   startDate: string;
-  endDate: string | null;
-  year: string | null;
+  endDate: string;
+  year: string;
 }
 
 export interface DataResponseArraysMapper {
@@ -72,27 +72,6 @@ export interface ConfirmationConfig
     dismissible?: boolean;
 }
 
-
-export interface FilterState {
-  filters: {
-    requestType: string;
-    months: string[];
-    states?: string[];
-  };
-  generalFilters: {
-    startDate: string;
-    endDate: string | null;
-  };
-  filtersBatu: {
-    months: string[];
-  };
-  filtersSolarCoverage: {
-    brand: string;
-    clientName: string;
-    months: string[];
-    requestType: number;
-  };
-}
 
 export interface notificationData{
   type:     string,
@@ -178,4 +157,9 @@ export interface ErrorRequest {
   descripcion: string;
   warn?: string;
   title?: string;
+}
+
+export interface MonthsFilters {
+  name: string;
+  value: string;
 }
