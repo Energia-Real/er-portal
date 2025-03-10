@@ -1,10 +1,5 @@
 import { ErrorRequest } from "@app/shared/models/general-models";
 
-export interface GeneralFilters {
-  clientId?: any
-  startDate: string;
-  endDate: string | null;
-}
 
 export interface FiltersClients {
   months: string[]

@@ -22,7 +22,7 @@ import { MatSelectChange } from '@angular/material/select';
 export class BillingOverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSourceBilling = new MatTableDataSource<any>([]);
   dataSourceHistory = new MatTableDataSource<any>([]);
@@ -66,12 +66,12 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   dataBilling!: entity.DataBillingOverviewTable;
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     public dialog: MatDialog,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),

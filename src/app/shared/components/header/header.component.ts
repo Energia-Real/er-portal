@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedStartMonth: any = this.months[5];
   selectedEndMonth: any = this.months[6];
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   currentYear = new Date().getFullYear().toString().slice(-2);
   currentYearComplete = new Date().getFullYear();
@@ -70,16 +70,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
-
   constructor(
     private router: Router,
-    private store: Store<{ filters: FilterState, notifications: NotificationsState }>,
+    private store: Store<{ filters: GeneralFilters, notifications: NotificationsState }>,
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
     private encryptionService: EncryptionService,
 
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
   }
@@ -155,11 +154,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     generalFilters.endDate = this.singleMonth.value ? this.getLastDayOfMonth(this.selectedStartMonth.value) : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
-    console.log('generalFilters', generalFilters);
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
       if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
-        this.store.dispatch(setGeneralFilters({ generalFilters }));
+        this.store.dispatch(setGeneralFilters( generalFilters ));
         this.updateUrlWithFilters(generalFilters);
       }
     });

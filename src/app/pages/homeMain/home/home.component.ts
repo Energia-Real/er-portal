@@ -36,11 +36,11 @@ Chart.register(...registerables);
   standalone: true,
   templateUrl: './home.component.html',
   imports: [
-    CommonModule, 
-    SharedComponensModule, 
-    MaterialModule, 
-    MessageNoDataComponent, 
-    ReactiveFormsModule, 
+    CommonModule,
+    SharedComponensModule,
+    MaterialModule,
+    MessageNoDataComponent,
+    ReactiveFormsModule,
     NgChartsModule,
     NgxSkeletonLoaderModule
   ],
@@ -114,7 +114,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   };
 
   filters$!: Observable<FilterState['filters']>;
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
+
   months: { value: string, viewValue: string }[] = [
     { value: '01', viewValue: 'January' },
     { value: '02', viewValue: 'February' },
@@ -241,13 +242,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   co2Progress: string = '25%'
 
-  statesColors:any ={};
+  statesColors: any = {};
 
   tooltipsInfo: entity.statesResumeTooltip[] = [];
 
+  isLoadingSDWidget = true;  //loading saving details
 
-  isLoadingSDWidget= true;  //loading saving details
-  
   isLoadingSCWidget = true; //loading solar coverage
 
   isLoadingCO2Widget = true; //loading co2Widget
@@ -257,10 +257,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   isLoadingECWidget = true; //loading energy consumption  
 
   isLoadingMapa = true;
-
-  
-
-
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -273,15 +269,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private formatsService: FormatsService,
     private encryptionService: EncryptionService,
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationsService: NotificationService,
     private notificationDataService: NotificationDataService,
     public dialog: MatDialog,
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
-    this.generalFilters$.subscribe(generalFilters=>{
-            this.getTooltipInfo(generalFilters);
-          })
+    this.generalFilters$ = this.store.select(state => state.filters);
+    this.generalFilters$.subscribe(generalFilters => {
+      this.getTooltipInfo(generalFilters);
+    })
   }
 
   ngOnInit(): void {
@@ -372,14 +368,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataSavingDetails(filters).subscribe({
       next: (response: entity.SDResponse) => {
         this.savingsDetails = response
-        this.isLoadingSDWidget=false;        
+        this.isLoadingSDWidget = false;
       },
       error: (error) => {
-        this.isLoadingSDWidget=false;
+        this.isLoadingSDWidget = false;
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
       }
     })
   }
@@ -387,20 +383,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   getCo2Saving(filters: GeneralFilters) {
     this.moduleServices.getCo2Saving(filters).subscribe({
       next: (response: entity.Co2SavingResponse) => {
-        this.isLoadingCO2Widget = false; 
+        this.isLoadingCO2Widget = false;
         this.co2Saving = response
       },
       error: (error) => {
-        this.isLoadingCO2Widget = false; 
+        this.isLoadingCO2Widget = false;
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
       }
     })
   }
 
-  getDataClients(filters: entity.GeneralFilters) {
+  getDataClients(filters: GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.isLoadingECWidget = false;
@@ -413,25 +409,25 @@ export class HomeComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.isLoadingECWidget = false;
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
       }
     })
   }
- 
-  getDataSolarCoverga(filters: entity.GeneralFilters) {
+
+  getDataSolarCoverga(filters: GeneralFilters) {
     this.moduleServices.getDataSolarCoverage(filters).subscribe({
       next: (response: string) => {
-        this.isLoadingSCWidget=false;
+        this.isLoadingSCWidget = false;
         this.solarCoverage = response
       },
       error: (error) => {
-        this.isLoadingSCWidget=false;
+        this.isLoadingSCWidget = false;
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
       }
     })
   }
@@ -500,7 +496,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getEconomicSavings(filters: GeneralFilters) {
     this.moduleServices.getSavings(filters).subscribe({
       next: (response) => {
-        this.isLoadingESWidget=false;
+        this.isLoadingESWidget = false;
         this.lineChartDataES = {
           labels: [''],
           datasets: [
@@ -546,11 +542,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.initChartES();
       },
       error: (error) => {
-        this.isLoadingESWidget=false;
+        this.isLoadingESWidget = false;
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
       }
     })
   }
@@ -572,35 +568,35 @@ export class HomeComponent implements OnInit, OnDestroy {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.moduleServices.getDataStates({ clientId: userInfo?.clientes[0], ...filters }).subscribe({
         next: (response: GeneralResponse<entity.MapStatesResponse>) => {
-  
+
           response.response?.kwhByStateResponse?.forEach((state) => {
-            var color:string; 
-  
-            color="#FFFFFF";
-            if(state.totalInstalledCapacity>0 && state.totalInstalledCapacity <= 1500) color="#9AE3E1"
-            else if(state.totalInstalledCapacity>1500 && state.totalInstalledCapacity <= 3000) color="#64E2E2"
-            else if(state.totalInstalledCapacity>3000 && state.totalInstalledCapacity <= 4500) color="#00E5FF"
-            else if(state.totalInstalledCapacity>4500 && state.totalInstalledCapacity <= 6000) color="#08C4DA"
-            else if(state.totalInstalledCapacity>6000) color="#008796"
+            var color: string;
+
+            color = "#FFFFFF";
+            if (state.totalInstalledCapacity > 0 && state.totalInstalledCapacity <= 1500) color = "#9AE3E1"
+            else if (state.totalInstalledCapacity > 1500 && state.totalInstalledCapacity <= 3000) color = "#64E2E2"
+            else if (state.totalInstalledCapacity > 3000 && state.totalInstalledCapacity <= 4500) color = "#00E5FF"
+            else if (state.totalInstalledCapacity > 4500 && state.totalInstalledCapacity <= 6000) color = "#08C4DA"
+            else if (state.totalInstalledCapacity > 6000) color = "#008796"
             this.statesColors[state.state] = {
               color: color,
             };
           });
 
-          if(response?.response?.kwhByStateResponse){
+          if (response?.response?.kwhByStateResponse) {
             this.tooltipsInfo = response.response.kwhByStateResponse;
 
           }
-  
+
           this.isLoadingMapa = false;
           //this.createTooltips();
         },
         error: (error) => {
           this.isLoadingMapa = false;
           let errorArray = error.error.errors.errors;
-          if(errorArray.length == 1){
-            this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-            }
+          if (errorArray.length == 1) {
+            this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+          }
         }
       });
     }
@@ -608,28 +604,28 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
 
-  createNotificationError(notificationType:string, title?:string, description?: string, warn?:string ){
-    const dataNotificationModal:notificationData|undefined = this.notificationDataService.uniqueError();
-    dataNotificationModal!.title= title;
+  createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
+    const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title = title;
     dataNotificationModal!.content = description;
     dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
-      let dataNotificationService:NotificationServiceData= { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
-        userId:userInfo.id,
-        descripcion:description,
-        notificationTypeId:dataNotificationModal?.typeId,
-        notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
-      } 
-      this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      let dataNotificationService: NotificationServiceData = { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId: userInfo.id,
+        descripcion: description,
+        notificationTypeId: dataNotificationModal?.typeId,
+        notificationStatusId: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      }
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res => {
       })
     }
 
-    
+
 
     const dialogRef = this.dialog.open(NotificationComponent, {
-      width: '540px',     
+      width: '540px',
       data: dataNotificationModal
     });
 

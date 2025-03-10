@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { selectFilterState } from '@app/core/store/selectors/filters.selector';
+import { GeneralFilters } from '../models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,17 @@ export class FilterGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.store.select(selectFilterState).pipe(
-      map((generalFilters: any) => {
-        const { startDate, endDate } = generalFilters.generalFilters;
-        const startDayYear: number = startDate.split('-')[0];
-        const endDayYear: number = endDate.split('-')[0];
+      map((generalFilters: GeneralFilters) => {
+        const { startDate, endDate } = generalFilters;
+        const startDayYear: string = startDate.split('-')[0];
+        const endDayYear: string = endDate!.split('-')[0];
         const currentUrl: string = state.url.split('?')[0];
         const currentParams = new URLSearchParams(route.queryParams as any);
         const startday: string = startDate;
-        const endday: string = endDate;
+        const endday: string = endDate!;
         const newParams = new URLSearchParams(currentParams);
 
-        if ((startDayYear == 2024 || startDayYear == 2025) && (endDayYear == 2024 || endDayYear == 2025)) {
+        if ((startDayYear == '2024' || startDayYear == '2025') && (endDayYear == '2024' || endDayYear == '2025')) {
           // Si startday ha cambiado o no está en la URL, lo actualizamos
           if (startday !== currentParams.get('startday')) newParams.set('startday', startday);
           // Si endday ha cambiado o no está en la URL, lo actualizamos

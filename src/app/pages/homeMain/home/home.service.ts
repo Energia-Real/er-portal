@@ -18,7 +18,7 @@ export class HomeService {
     public formatsService: FormatsService
   ) { }
 
-  getDataClients(filters: entity.GeneralFilters): Observable<entity.DataRespSavingDetailsMapper> {
+  getDataClients(filters: GeneralFilters): Observable<entity.DataRespSavingDetailsMapper> {
     const url = `${environment.API_URL_PERFORMANCE}/energy-performance/sites`;
 
     return this.http.post<entity.DataTablePlantsResponse>(url, filters).pipe(
@@ -30,18 +30,18 @@ export class HomeService {
     const url = `${this.performanceApiUrl}/performance/details`;
 
     const params = new HttpParams()
-    .set('startDate', filters.startDate)
-    .set('endDate', filters.endDate!)
+      .set('startDate', filters.startDate)
+      .set('endDate', filters.endDate!)
 
     return this.http.get<entity.SavingDetailsResponse>(url, { params }).pipe(
       map((response) => Mapper.getDataSavingDetailsMapper(response, this.formatsService))
     );
   }
 
-  getCo2Saving(filters: entity.GeneralFilters): Observable<entity.Co2SavingResponse> {
+  getCo2Saving(filters: GeneralFilters): Observable<entity.Co2SavingResponse> {
     const url = `${this.performanceApiUrl}/savings/Co2`;
     const params = new HttpParams()
-      .set('ClientId', filters.clientId)
+      .set('ClientId', filters.clientId!)
       .set('startDate', filters.startDate)
       .set('endDate', filters.endDate!)
 
@@ -50,11 +50,11 @@ export class HomeService {
     );
   }
 
-  getDataStates(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.MapStatesResponse>> {
+  getDataStates(filters: GeneralFilters): Observable<GeneralResponse<entity.MapStatesResponse>> {
     const url = `${environment.API_URL_PERFORMANCE}/client/${filters.clientId}/state`;
     const params = new HttpParams()
-    .set('startDate', filters.startDate)
-    .set('endDate', filters.endDate!)
+      .set('startDate', filters.startDate)
+      .set('endDate', filters.endDate!)
 
     return this.http.get<GeneralResponse<entity.MapStatesResponse>>(url, { params })
   }
@@ -69,17 +69,17 @@ export class HomeService {
     );
   }
 
-  getDataSolarCoverage(filters: entity.GeneralFilters): Observable<string> {
+  getDataSolarCoverage(filters: GeneralFilters): Observable<string> {
     const url = `${environment.API_URL_PERFORMANCE}/projects/solar-coverage`;
     const params = new HttpParams()
-      .set('client', filters.clientId)
+      .set('client', filters.clientId!)
       .set('start_date', filters.startDate)
       .set('end_date', filters.endDate!)
 
     return this.http.get<string>(url, { params })
   }
 
-  getSavings(filters: entity.GeneralFilters): Observable<GeneralResponse<entity.EconomicSavings>> {
+  getSavings(filters: GeneralFilters): Observable<GeneralResponse<entity.EconomicSavings>> {
     const url = `${environment.API_URL_PERFORMANCE}/saving/details`;
     return this.http.post<GeneralResponse<entity.EconomicSavings>>(url, filters)
   }

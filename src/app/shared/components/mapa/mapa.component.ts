@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnInit, ViewContainerRef } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
-import { setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { FilterState, GeneralResponse, UserInfo } from '@app/shared/models/general-models';
 import { Observable } from 'rxjs';
@@ -16,8 +15,6 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss']
 })
-
-
 
 export class MapaComponent implements AfterViewInit {
   @Input()   tooltipsInfo: entity.statesResumeTooltip[] = [];

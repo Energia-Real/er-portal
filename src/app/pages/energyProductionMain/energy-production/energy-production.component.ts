@@ -32,7 +32,7 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -93,14 +93,14 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     public dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
 
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;

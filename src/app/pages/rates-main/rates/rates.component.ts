@@ -25,7 +25,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -59,12 +59,12 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
   constructor(
     private router: Router,
     public dialog: MatDialog,
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     private notificationDataService: NotificationDataService,
     private moduleServices: RatesService
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),

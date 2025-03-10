@@ -32,7 +32,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -81,7 +81,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     private router: Router,
     public dialog: MatDialog,
@@ -89,7 +89,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),
@@ -136,8 +136,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
         this.dataSource.data = response?.data;
-        console.log(response.data);
-        
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = filters.page;
