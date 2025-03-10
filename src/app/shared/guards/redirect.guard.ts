@@ -12,12 +12,7 @@ export const redirectGuard: CanActivateFn = (route, state) => {
 
   return authService.getInfoUser().pipe(
     map(userInfo => {
-      if (expectedRoles.includes(userInfo.accessTo)) {
-        return true; 
-      } else {        
-        router.navigate(['/er']);
-        return false; 
-      }
+      return true;
     }),
     catchError(() => {
       router.navigate(['/login']);
