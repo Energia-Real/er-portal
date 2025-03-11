@@ -40,7 +40,7 @@ export class Mapper {
 			response.data.forEach((data: entity.FormatCards, i): void => {
 				dataList.push({
 					title: data?.title,
-					value: i == 0 ? data.value + '%': formatsService.energyFormat(parseFloat(data.value)) + ' TCO²'
+					value: i == 0 ? data.value + '%' : formatsService.energyFormat(parseFloat(data.value)) + ' TCO²'
 				});
 			});
 		}
@@ -63,19 +63,16 @@ export class Mapper {
 
 	static getCo2SavingMapper(response: entity.Co2Saving, formatsService: FormatsService): entity.Co2SavingResponse {
 
-		return  {
-			co2_saving_tCO2 : formatsService.energyFormat(response?.response?.co2_saving_tCO2),
-			tree_equivalent : formatsService.energyFormat(response?.response?.tree_equivalent),
-			ev_charges_equivalent : formatsService.energyFormat(response?.response?.ev_charges_equivalent)
+		return {
+			co2_saving_tCO2: formatsService.energyFormat(response?.response?.co2_saving_tCO2),
+			tree_equivalent: formatsService.energyFormat(response?.response?.tree_equivalent),
+			ev_charges_equivalent: formatsService.energyFormat(response?.response?.ev_charges_equivalent)
 		}
 	}
 
 	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse, formatsService: FormatsService): entity.SDResponse {
-		return  {
-			totalEnergyConsumption: formatsService.energyWithDecimals(response.response.totalEnergyConsumption),
-			totalEnergyProduction: formatsService.energyWithDecimals(response.response.totalEnergyProduction),
-			cfeCostWithoutSolar: formatsService.energyWithDecimals(response.response.cfeCostWithoutSolar),
-			totalSavings: formatsService.energyWithDecimals(response.response.totalSavings)
-		}
+		// static getDataSavingDetailsMapper(response: any, formatsService: FormatsService): any{
+		// console.log(response.response);
+		return response.response
 	}
 }

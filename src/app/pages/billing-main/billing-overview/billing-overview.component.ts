@@ -26,11 +26,9 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
 
   dataSourceBilling = new MatTableDataSource<any>([]);
   dataSourceHistory = new MatTableDataSource<any>([]);
-
   @ViewChild('paginatorBilling', { static: false }) paginatorBilling!: MatPaginator;
   @ViewChild('paginatorHistory', { static: false }) paginatorHistory!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
-
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSizeBilling: number = 10;
   pageIndexBilling: number = 1;
@@ -58,7 +56,6 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   drawerOpen: boolean = false;
   drawerAction: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
-  drawerOpenSub: Subscription = new Subscription();
 
   generalFilters!: GeneralFilters
   userInfo!: UserInfo;
@@ -95,7 +92,6 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
         this.getServerData({ pageIndex: this.pageIndexBilling - 1, pageSize: this.pageSizeBilling }, 'billing');
         this.getServerData({ pageIndex: this.pageIndexHistory - 1, pageSize: this.pageSizeHistory }, 'history');
       });
-    
   }
 
   ngOnInit(): void {
@@ -169,7 +165,6 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       this.getServerData({ pageIndex: this.pageIndexHistory - 1, pageSize: this.pageSizeHistory }, 'history');
     }
   }
-  
 
   viewDetails(data: any) {
     this.dataBilling = { ...data };
@@ -197,11 +192,10 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       this.getHistory();
     }
   }
-  
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }
 

@@ -6,7 +6,15 @@ export interface FiltersClients {
   requestType: string;
 }
 
+export interface Labels {
+  text: string
+  color: string;
+}
 
+export interface Months {
+  value: string
+  viewValue: string;
+}
 
 export interface SavingDetailsResponse {
   success: boolean,
@@ -17,10 +25,11 @@ export interface SavingDetailsResponse {
 }
 
 export interface SDResponse {
-  cfeCostWithoutSolar: number | string
-  totalEnergyConsumption : number | string
-  totalEnergyProduction : number | string
-  totalSavings : number | string
+  costoXKw: string;
+  totalEnergyConsumption: string;
+  totalEnergyProduction: string;
+  cfeCostWithoutSolar: string;
+  totalSavings: string;
 }
 
 export interface PeriodicElement {
@@ -82,13 +91,13 @@ export interface DataRespSavingDetailsMapper {
 }
 
 export interface statesResumeTooltip {
-  state : string;
+  state: string;
   plants: string;
   totalInstalledCapacity: number;
   tco2Savings: string;
 }
 
-export interface MapStatesResponse{
+export interface MapStatesResponse {
   kwhByStateResponse: statesResumeTooltip[]
 }
 

@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, first } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -10,10 +10,14 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  loginForm!: FormGroup;
+  loginForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, this.passwordValidator]]
+  });
+
   showPassword: boolean = false;
   buttonDisabled: boolean = false;
   loading: boolean = false;
@@ -24,18 +28,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AuthService,
-  ) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, this.passwordValidator]]
-    });
-  }
-
-  ngOnInit(): void { }
+  ) {}
 
   onSubmit() {
     this.loading = true;
-    this.accountService.login(this.loginForm.get('email')?.value, this.loginForm.get('password')?.value)
+    this.accountService.login(this.loginForm.get('email')?.value!, this.loginForm.get('password')?.value!)
       .pipe(first())
       .subscribe({
         next: ({ response }: any) => {
@@ -45,7 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             'Billing': '/er/rates',
             'Admin': '/er/admin-home',
           };
-          
+
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || accessRoutes[response.accessTo] || '/er';
           const startday = this.route.snapshot.queryParams['startday'];
           const endday = this.route.snapshot.queryParams['endday'];
@@ -80,6 +77,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

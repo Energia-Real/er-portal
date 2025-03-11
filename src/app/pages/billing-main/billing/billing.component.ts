@@ -64,8 +64,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   allRowsInit: boolean = false;
 
-  formatTimer: any;
-
   selectedFile: File | null = null;
 
   searchBar = new FormControl('');
@@ -83,7 +81,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
-    private router: Router,
     public dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
@@ -135,6 +132,9 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
     this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
+        console.log(response.data);
+        
+
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
@@ -205,6 +205,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

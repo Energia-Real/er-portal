@@ -48,23 +48,31 @@ Chart.register(...registerables);
   encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<GeneralFilters>;
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
 
-  economicSavingsData: entity.EconomicSavings = {
-    cfeSubtotal: 0,
-    energiaRealSubtotal: 0,
-    economicSaving: 0,
-    expensesWithoutEnergiaReal: 0
-  }
+  months: entity.Months[] = [
+    { value: '01', viewValue: 'January' },
+    { value: '02', viewValue: 'February' },
+    { value: '03', viewValue: 'March' },
+    { value: '04', viewValue: 'April' },
+    { value: '05', viewValue: 'May' },
+    { value: '06', viewValue: 'June' },
+    { value: '07', viewValue: 'July' },
+    { value: '08', viewValue: 'August' },
+    { value: '09', viewValue: 'September' },
+    { value: '10', viewValue: 'October' },
+    { value: '11', viewValue: 'November' },
+    { value: '12', viewValue: 'December' }
+  ];
 
-  displayChartES: boolean = false;
-  chartES: any;
-
-  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
-
-  labels = [
+  labels: entity.Labels[] = [
     { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
     { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
     { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
@@ -111,25 +119,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
-  generalFilters$!: Observable<GeneralFilters>;
-
-  months: { value: string, viewValue: string }[] = [
-    { value: '01', viewValue: 'January' },
-    { value: '02', viewValue: 'February' },
-    { value: '03', viewValue: 'March' },
-    { value: '04', viewValue: 'April' },
-    { value: '05', viewValue: 'May' },
-    { value: '06', viewValue: 'June' },
-    { value: '07', viewValue: 'July' },
-    { value: '08', viewValue: 'August' },
-    { value: '09', viewValue: 'September' },
-    { value: '10', viewValue: 'October' },
-    { value: '11', viewValue: 'November' },
-    { value: '12', viewValue: 'December' }
-  ];
+  displayChartES: boolean = false;
+  chartES: any;
 
   dataSource = new MatTableDataSource<any>([]);
-  data = [5, 4, 3]
+  data: number[] = [5, 4, 3]
   displayedColumns: string[] = [
     'siteName',
     'energyConsumption',
@@ -234,6 +228,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   co2Saving!: entity.Co2SavingResponse;
   savingsDetails!: entity.SDResponse;
+  economicSavingsData!: entity.EconomicSavings
 
   userInfo!: UserInfo;
 
@@ -243,17 +238,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   tooltipsInfo: entity.statesResumeTooltip[] = [];
 
-  isLoadingSDWidget = true;  //loading saving details
+  isLoadingSDWidget: boolean = true;  //loading saving details
 
-  isLoadingSCWidget = true; //loading solar coverage
+  isLoadingSCWidget: boolean = true; //loading solar coverage
 
-  isLoadingCO2Widget = true; //loading co2Widget
+  isLoadingCO2Widget: boolean = true; //loading co2Widget
 
-  isLoadingESWidget = true; //loading economic savings  
+  isLoadingESWidget: boolean = true; //loading economic savings  
 
-  isLoadingECWidget = true; //loading energy consumption  
+  isLoadingECWidget: boolean = true; //loading energy consumption  
 
-  isLoadingMapa = true;
+  isLoadingMapa: boolean = true;
 
   formFilters = this.formBuilder.group({
     rangeDateStart: [{ value: '', disabled: false }],
@@ -272,9 +267,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
-    this.generalFilters$.subscribe(generalFilters => {
-      this.getTooltipInfo(generalFilters);
-    })
   }
 
   ngOnInit(): void {
@@ -300,8 +292,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           label: 'Energía Real Subtotal (MXN)',
           backgroundColor: 'rgba(238, 84, 39, 1)',
           maxBarThickness: 112,
-
-
         },
         {
           type: 'bar',
@@ -310,7 +300,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           backgroundColor: 'rgba(87, 177, 177, 1)',
           order: 2,
           maxBarThickness: 112,
-
         },
         {
           type: 'line',
@@ -347,24 +336,56 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getUserClient() {
     const encryptedData = localStorage.getItem('userInfo');
-    console.log(encryptedData)
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
+
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        console.log("general filter")
-        this.getDataClients({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getDataSavingDetails({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getDataSolarCoverga({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getEconomicSavings({ clientId: userInfo?.clientes[0], ...generalFilters });
-        this.getCo2Saving({ clientId: userInfo?.clientes[0], ...generalFilters });
+        this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
+        this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
+        this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
+        this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
+        this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
+        this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
       });
     }
+  }
+
+  getTooltipInfo(filters: GeneralFilters) {
+    this.moduleServices.getDataStates(filters).subscribe({
+      next: (response: GeneralResponse<entity.MapStatesResponse>) => {
+        response.response?.kwhByStateResponse?.forEach((state) => {
+          let color: string = "#FFFFFF";
+          if (state.totalInstalledCapacity > 0 && state.totalInstalledCapacity <= 1500) color = "#9AE3E1"
+          else if (state.totalInstalledCapacity > 1500 && state.totalInstalledCapacity <= 3000) color = "#64E2E2"
+          else if (state.totalInstalledCapacity > 3000 && state.totalInstalledCapacity <= 4500) color = "#00E5FF"
+          else if (state.totalInstalledCapacity > 4500 && state.totalInstalledCapacity <= 6000) color = "#08C4DA"
+          else if (state.totalInstalledCapacity > 6000) color = "#008796"
+          this.statesColors[state.state] = {
+            color: color,
+          };
+        });
+
+        if (response?.response?.kwhByStateResponse) {
+          this.tooltipsInfo = response.response.kwhByStateResponse;
+        }
+
+        this.isLoadingMapa = false;
+        //this.createTooltips();
+      },
+      error: (error) => {
+        this.isLoadingMapa = false;
+        let errorArray = error.error.errors.errors;
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
+      }
+    });
   }
 
   getDataSavingDetails(filters: GeneralFilters) {
     this.moduleServices.getDataSavingDetails(filters).subscribe({
       next: (response: entity.SDResponse) => {
-        this.savingsDetails = response
+        this.savingsDetails = response;
         this.isLoadingSDWidget = false;
       },
       error: (error) => {
@@ -381,7 +402,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getCo2Saving(filters).subscribe({
       next: (response: entity.Co2SavingResponse) => {
         this.isLoadingCO2Widget = false;
-        this.co2Saving = response
+        this.co2Saving = response;
       },
       error: (error) => {
         this.isLoadingCO2Widget = false;
@@ -397,7 +418,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         this.isLoadingECWidget = false;
-        this.dataSource.data = response.data
+        this.dataSource.data = response.data;
         this.dataSource.sort = this.sort;
         this.selection.clear();
         this.toggleAllRows();
@@ -417,7 +438,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataSolarCoverage(filters).subscribe({
       next: (response: string) => {
         this.isLoadingSCWidget = false;
-        this.solarCoverage = response
+        this.solarCoverage = response;
       },
       error: (error) => {
         this.isLoadingSCWidget = false;
@@ -477,8 +498,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   convertToISO8601(month: string): string {
     const year = new Date().getFullYear();
-    const date = moment(`${year}-${month}-01`).startOf('month').toISOString();
-    return date;
+    return moment(`${year}-${month}-01`).startOf('month').toISOString();
   }
 
   checkboxLabel(row?: entity.PeriodicElement): string {
@@ -559,48 +579,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getTooltipInfo(filters?: any) {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-      this.moduleServices.getDataStates({ clientId: userInfo?.clientes[0], ...filters }).subscribe({
-        next: (response: GeneralResponse<entity.MapStatesResponse>) => {
-
-          response.response?.kwhByStateResponse?.forEach((state) => {
-            var color: string;
-
-            color = "#FFFFFF";
-            if (state.totalInstalledCapacity > 0 && state.totalInstalledCapacity <= 1500) color = "#9AE3E1"
-            else if (state.totalInstalledCapacity > 1500 && state.totalInstalledCapacity <= 3000) color = "#64E2E2"
-            else if (state.totalInstalledCapacity > 3000 && state.totalInstalledCapacity <= 4500) color = "#00E5FF"
-            else if (state.totalInstalledCapacity > 4500 && state.totalInstalledCapacity <= 6000) color = "#08C4DA"
-            else if (state.totalInstalledCapacity > 6000) color = "#008796"
-            this.statesColors[state.state] = {
-              color: color,
-            };
-          });
-
-          if (response?.response?.kwhByStateResponse) {
-            this.tooltipsInfo = response.response.kwhByStateResponse;
-
-          }
-
-          this.isLoadingMapa = false;
-          //this.createTooltips();
-        },
-        error: (error) => {
-          this.isLoadingMapa = false;
-          let errorArray = error.error.errors.errors;
-          if (errorArray.length == 1) {
-            this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-          }
-        }
-      });
-    }
-  }
-
-
-
   createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
     const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
     dataNotificationModal!.title = title;
@@ -619,17 +597,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
     }
 
-
-
     const dialogRef = this.dialog.open(NotificationComponent, {
       width: '540px',
       data: dataNotificationModal
     });
-
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }
