@@ -1,4 +1,10 @@
-.check-razon-social{
-    color: #EE5427 !important;
-    font-weight: bold;
+.c-clients {
+    .check-razon-social{
+        color: #EE5427 !important;
+        font-weight: bold;
+    }
+
+    .c-scroll-table {
+        height: calc(100vh - 320px);
+    }
 }

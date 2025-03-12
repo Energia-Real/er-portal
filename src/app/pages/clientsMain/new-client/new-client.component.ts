@@ -89,7 +89,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
   getCatalogs() {
     this.moduleServices.getTypeClientsData().subscribe({
-      next: (response: entity.DataCatalogTypeClient) => this.catTypesClients = response.data,
+      next: (response: entity.DataCatalogTypeClient) => this.catTypesClients = response.response.data,
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
         console.error(error)

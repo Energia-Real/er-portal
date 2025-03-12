@@ -1,9 +1,13 @@
 .c-types-clients {
   z-index: 3;
 
-  .table-container-scroll {
-    height: calc(100vh - 470px);
+  .c-scroll-table {
+    height: calc(100vh - 435px);
   }
+
+  .width-50 {
+    width: 50%
+  };
 }
 
 mdc-text-field--outlined {

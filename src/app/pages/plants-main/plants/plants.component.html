@@ -43,6 +43,8 @@
     </div>
   </div>
 
+  <div class="separator-cards mt-4 mb-4"></div>
+
   <div class="c-paginator-top mt-5 mb-5">
     <strong>items per page</strong>
     <mat-form-field>
@@ -171,7 +173,7 @@
       </table>
     </div>
   </div>
-  
+
   <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
     [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
     aria-label="Select page of periodic elements">
