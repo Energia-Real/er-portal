@@ -35,7 +35,7 @@
       <ul class="flex flex-col titles-header">
         <li *ngFor="let module of modules" class="animate-durations"
           [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes(module.routePath), 'ps-2': isSidebarHovered || keepOpen}">
-          <img [src]="'../../../assets/icons/' + module.visualHelper.toLowerCase() + '-icon.svg'" [alt]="module.name">
+          <img [src]="'../../../assets/icons/' + module?.visualHelper?.toLowerCase() + '-icon.svg'" [alt]="module.name">
           <a [ngClass]="{
             'show-names': isSidebarHovered || keepOpen,
             'menu-selected': routeActive.includes(module.routePath),

@@ -63,13 +63,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
 
       this.authService.getModules().subscribe((modules) => {
-        // this.modules = modules;
-        this.modules = modules.map((module) => {
-          return {
-            ...module,
-            routePath : module.name == 'billing-dev' ? 'billing/overview' : module.name == 'billings-home-dev' ? 'invoice' :  module.routePath
-          }
-        });
+        this.modules = modules;
       });
 
       this.router.events
