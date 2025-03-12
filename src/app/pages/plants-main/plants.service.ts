@@ -81,21 +81,6 @@ export class PlantsService implements OnDestroy {
       .pipe(map((response) => Mapper.getSitePerformanceMapper(response)));
   }
 
-  getSitePerformanceSummary(
-    filters: GeneralFilters
-  ): Observable<DataResponseArraysMapper> {
-    const url = `${this.API_URL_PERFORMANCE}/energy/summary`;
-    let params = new HttpParams()
-      .set('rpu', filters.rpu)
-      .set('startDate', filters.startDate)
-      .set('endDate', filters.endDate!);
-    return this.http
-      .get<entity.BatuSummary>(url, { params })
-      .pipe(
-        map((response) => Mapper.getSitePerformanceSummaryMapper(response))
-      );
-  }
-
   getSitePerformanceDetails(
     plantId: string,
     filters: GeneralFilters

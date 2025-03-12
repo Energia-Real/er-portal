@@ -40,9 +40,10 @@
                 <div>
                     <img src="../../../../assets/icons/solar-coverage.png" alt="">
                     <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSCWidget">Solar Coverage</h2>
-                    <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSCWidget">Calculating solar coverage...</h2>
+                    <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSCWidget">Calculating solar
+                        coverage...</h2>
                     <div *ngIf="!isLoadingSCWidget else loadingSkeleton" class="dataSC">
-                        <p *ngIf="solarCoverage else notDataTable" >                   
+                        <p *ngIf="solarCoverage else notDataTable">
                             {{ solarCoverage }}%</p>
                     </div>
                 </div>
@@ -51,8 +52,8 @@
             <div class="c-card-section co2">
                 <div>
                     <div class="title-left">
-                        <h1 *ngIf="!isLoadingCO2Widget" >CO2 Saving</h1>
-                        <h1 *ngIf="isLoadingCO2Widget" >Calculating saved CO2 emissions...</h1>
+                        <h1 *ngIf="!isLoadingCO2Widget">CO2 Saving</h1>
+                        <h1 *ngIf="isLoadingCO2Widget">Calculating saved CO2 emissions...</h1>
 
                         <div *ngIf="!isLoadingCO2Widget else loadingSkeleton">
                             <h2 *ngIf="co2Saving else notDataTable">{{co2Saving?.co2_saving_tCO2}}</h2>
@@ -60,15 +61,16 @@
                         </div>
                     </div>
 
-                    <div class="title-right" *ngIf="!isLoadingCO2Widget else loadingSkeleton" >
+                    <div class="title-right" *ngIf="!isLoadingCO2Widget else loadingSkeleton">
                         <div class="left" *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
                             <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
                         </div>
 
-                        <div *ngIf="co2Saving else notDataTable" >
+                        <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/eletric.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br> electric car full charges.</h2>
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br>
+                                electric car full charges.</h2>
                         </div>
                     </div>
                 </div>
@@ -79,23 +81,19 @@
 
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section economic-savings flex flex-col">
-            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="isLoadingESWidget">Calculating economic savings...</h2>
+            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="isLoadingESWidget">Calculating economic
+                savings...</h2>
             <h2 class="text-er-orange text-base font-normal h-10" *ngIf="!isLoadingESWidget">Economic savings</h2>
             <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
                 <div class="graphic-performance relative h-full w-full flex items-center">
                     <canvas id="economicSavingsChart" baseChart [type]="'bar'" [data]="lineChartDataES"
                         [options]="lineChartOptionsES">
                     </canvas>
-                     <!-- Spinner -->
-                    <div
-                        *ngIf="isLoadingESWidget"
+                    <!-- Spinner -->
+                    <div *ngIf="isLoadingESWidget"
                         class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
-                        <mat-progress-spinner
-                        [color]="'primary'"
-                        [mode]="'indeterminate'"
-                        [diameter]="40"
-                        class="custom-spinner"
-                        >
+                        <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="40"
+                            class="custom-spinner">
                         </mat-progress-spinner>
                     </div>
                     <div class="absolute top-1/2 right-0 transform -translate-y-1/2 w-[200px] h-[200px] p-4">
@@ -126,11 +124,11 @@
                     matTooltip="This map is for informational purposes only and shows general data by region.">info</span>
             </div>
             <div class="flex gap-4 items-stretch">
-                <div  *ngIf="isLoadingMapa">
-                    <app-mapa   class="flex-1"></app-mapa>
+                <div *ngIf="isLoadingMapa">
+                    <app-mapa class="flex-1"></app-mapa>
                 </div>
-                <div  *ngIf="!isLoadingMapa">
-                    <app-mapa [tooltipsInfo]="tooltipsInfo" [statesColors]="statesColors"  class="flex-1"></app-mapa>
+                <div *ngIf="!isLoadingMapa">
+                    <app-mapa [tooltipsInfo]="tooltipsInfo" [statesColors]="statesColors" class="flex-1"></app-mapa>
                 </div>
                 <div class="legend-container">
                     <div class="color-bar flex flex-col justify-between h-full">
@@ -155,14 +153,14 @@
     <div class="col-span-2 md:col-span-1 pt-55">
         <div class="c-graph">
             <div class="graph">
-                <h2 class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">Getting energy consumption...</h2>
+                <h2 class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">Getting energy
+                    consumption...</h2>
 
                 <canvas baseChart [type]="'bar'" [data]="lineChartData" height="195" [options]="lineChartOptions">
                 </canvas>
             </div>
         </div>
     </div>
-
 
     <div class="col-span-2 md:col-span-2">
         <div class="c-card-section">
@@ -291,32 +289,19 @@
 
 <ng-template #loadingSkeleton>
     <div class="flex flex-col dataSC ">
-      
-      <ngx-skeleton-loader 
-        count="1" 
-        appearance="line" 
-        [theme]="{ 
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
           'border-radius': '32.5px'
         }"></ngx-skeleton-loader>
-        
-      <ngx-skeleton-loader 
-        count="1" 
-        appearance="line" 
-        [theme]="{ 
+
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
           'border-radius': '32.5px',
           'width': '70%'
         }"></ngx-skeleton-loader>
     </div>
-  </ng-template>
+</ng-template>
 
-  <ng-template #loadingSkeletonCircle>
+<ng-template #loadingSkeletonCircle>
     <div class="flex flex-col dataSC ">
-        
-      <ngx-skeleton-loader 
-        count="1" 
-        appearance="circle" 
-        ></ngx-skeleton-loader>
+        <ngx-skeleton-loader count="1" appearance="circle"></ngx-skeleton-loader>
     </div>
-  </ng-template>
-  
-
+</ng-template>

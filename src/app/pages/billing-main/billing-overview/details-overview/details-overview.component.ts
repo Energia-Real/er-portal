@@ -63,7 +63,7 @@ export class DetailsOverviewComponent {
           this.paginator.pageIndex = pageIndex;
         }
 
-        this.getBillingDetails();
+        if (this.billingData) this.getBillingDetails();
       });
   }
 

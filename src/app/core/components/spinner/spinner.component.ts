@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { LoadingService } from '@app/core/services/loading.service';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import anime from 'animejs/lib/anime.es.js';
 
 @Component({
@@ -9,24 +9,20 @@ import anime from 'animejs/lib/anime.es.js';
   styleUrls: ['./spinner.component.scss'],
 })
 export class SpinnerComponent implements OnDestroy, AfterViewInit {
-  loading = false;
-  private subscription: Subscription;
+  private onDestroy$ = new Subject<void>();
+
+  loading: boolean = false;
   pathsArray: SVGPathElement[] = [];
   intervalId: any;
   currentIndex: number = 0;
 
-
   constructor(private loadingService: LoadingService) {
-    this.subscription = this.loadingService.loading$.subscribe((status) => {
+    this.loadingService.loading$.pipe(takeUntil(this.onDestroy$)).subscribe((status) => {
       this.loading = status;
       if (this.loading) {
         setTimeout(() => this.startAnimation(), 0);
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -57,20 +53,24 @@ export class SpinnerComponent implements OnDestroy, AfterViewInit {
     }, (this.pathsArray.length-1) * 100);
   
   }  */
-    startAnimation() {
-      const paths = document.querySelectorAll('#logo path');
-      paths.forEach((path,index)=>{
-        anime({
-          targets: path,
-          strokeDashoffset: [anime.setDashoffset, 0],
-          easing: 'easeInOutSine',
-          duration: 800,
-          delay: 0,
-          direction: 'normal',
-          loop: true
-        });
-      })
-     
-    }
-     
+
+  startAnimation() {
+    const paths = document.querySelectorAll('#logo path');
+    paths.forEach((path, index) => {
+      anime({
+        targets: path,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: 'easeInOutSine',
+        duration: 800,
+        delay: 0,
+        direction: 'normal',
+        loop: true
+      });
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
 }

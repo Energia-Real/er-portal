@@ -8,7 +8,7 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { DrawerGeneral, FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
 import { debounceTime, Observable, Subject, Subscription, takeUntil } from 'rxjs';
@@ -32,7 +32,7 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -93,14 +93,14 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     public dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
 
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
       this.pageSize = size;

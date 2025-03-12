@@ -39,12 +39,10 @@ export interface UserInfo {
 }
 
 export interface GeneralFilters {
-  rpu?:any
-  idClient?:number
   clientId?:number | string
   startDate: string;
-  endDate: string | null;
-  year?: string | null;
+  endDate: string;
+  year: string;
 }
 
 export interface DataResponseArraysMapper {
@@ -75,27 +73,6 @@ export interface ConfirmationConfig
 }
 
 
-export interface FilterState {
-  filters: {
-    requestType: string;
-    months: string[];
-    states?: string[];
-  };
-  generalFilters: {
-    startDate: string;
-    endDate: string | null;
-  };
-  filtersBatu: {
-    months: string[];
-  };
-  filtersSolarCoverage: {
-    brand: string;
-    clientName: string;
-    months: string[];
-    requestType: number;
-  };
-}
-
 export interface notificationData{
   type:     string,
   typeId?:   number|undefined,
@@ -107,25 +84,11 @@ export interface notificationData{
   buttonAction?: string
 }
 
-export const initialFilterState: FilterState = {
-  filters: {
-    requestType: '',
-    months: [],
-    states:[]
-  },
-  generalFilters: {
+export const initialFilterState: GeneralFilters = {
     startDate: '',
     endDate: '',
-  },
-  filtersBatu: {
-    months: []
-  },
-  filtersSolarCoverage: {
-    brand: '',
-    clientName: '',
-    months: [],
-    requestType: 0
-  }
+    year: '',
+    clientId: '',
 };
 
 export interface NotificationServiceData {
@@ -194,4 +157,9 @@ export interface ErrorRequest {
   descripcion: string;
   warn?: string;
   title?: string;
+}
+
+export interface MonthsFilters {
+  name: string;
+  value: string;
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { DataResponseArraysMapper, FilterState } from '@app/shared/models/general-models';
+import { DataResponseArraysMapper, GeneralFilters } from '@app/shared/models/general-models';
 import { Observable, Subject, Subscription } from 'rxjs';
 import * as entity from '../../plants-model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -42,7 +42,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
-    private store: Store<{ filters: FilterState }>
+    private store: Store<{ filters: GeneralFilters }>
   ) {
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => this.drawerOpen = resp.drawerOpen);
   }

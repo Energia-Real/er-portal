@@ -7,7 +7,7 @@ import { environment } from '@environment/environment';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import CryptoJS from 'crypto-js';
 import { Module } from '@app/layout/layout/modules.interface';
-import { ApiResponse, UserAuth } from '../shared/models/general-models';
+import { UserAuth } from '../shared/models/general-models';
 
 
 @Injectable({

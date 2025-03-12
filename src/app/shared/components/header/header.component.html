@@ -27,7 +27,7 @@
               {{ currentYearComplete }}</p>
           </div>
           <div class="month-grid">
-            <button mat-menu-item *ngFor="let month of months" [disabled]="selectedEndMonth?.value <= month.value && !singleMonth" [ngClass]="{
+            <button mat-menu-item *ngFor="let month of months" [disabled]="selectedEndMonth && selectedEndMonth.value <= month.value && !singleMonth" [ngClass]="{
                 'selected-month': selectedStartMonth.value == month.value,
                 'unselected-month': selectedStartMonth.value !== month.value
               }" (click)="selectStartMonth(month, startMenuTrigger)">

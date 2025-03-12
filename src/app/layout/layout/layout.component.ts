@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, Subject } from 'rxjs';
+import { filter, Subject, takeUntil } from 'rxjs';
 import { AuthService } from '@app/auth/auth.service';
 import { UserInfo } from '@app/shared/models/general-models';
 import { NotificationService } from '@app/shared/services/notification.service';
@@ -16,8 +16,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   public routeActive: string = '';
   userInfo!: UserInfo;
-  isSidebarHovered = false;
-  keepOpen = false;
+  isSidebarHovered: boolean = false;
+  keepOpen: boolean = false;
   modules: Module[] = []; // Lista de módulos dinámicos
 
   constructor(
@@ -28,7 +28,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService
   ) {
     this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd), takeUntil(this.onDestroy$))
       .subscribe(() => (this.routeActive = this.router.url.split('?')[0]));
   }
 
@@ -45,9 +45,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       if (this.router.url === '/er') {
         switch (data.accessTo) {
           case 'BackOffice':
-            this.router.navigate(['backoffice-home'], {
-              relativeTo: this.route,
-            });
+            this.router.navigate(['backoffice-home'], { relativeTo: this.route });
             break;
           case 'Admin':
             this.router.navigate(['admin-home'], { relativeTo: this.route });
@@ -64,9 +62,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
       }
 
-
       this.authService.getModules().subscribe((modules) => {
-        this.modules = modules;
+        // this.modules = modules;
+        this.modules = modules.map((module) => {
+          return {
+            ...module,
+            routePath : module.name == 'billing-dev' ? 'billing/overview' : module.name == 'billings-home-dev' ? 'invoice' :  module.routePath
+          }
+        });
       });
 
       this.router.events
@@ -102,6 +105,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

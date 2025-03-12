@@ -6,8 +6,6 @@ import { LoadingService } from './loading.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '@environment/environment';
-import { Store } from '@ngrx/store';
-import { NotificationService } from '@app/shared/services/notification.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
@@ -17,9 +15,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     private loadingService: LoadingService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private store: Store,
-    private notificationService: NotificationService
-  ) {}
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 

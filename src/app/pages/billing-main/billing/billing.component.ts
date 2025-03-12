@@ -11,7 +11,7 @@ import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
+import { GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
@@ -32,7 +32,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -64,8 +64,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   allRowsInit: boolean = false;
 
-  formatTimer: any;
-
   selectedFile: File | null = null;
 
   searchBar = new FormControl('');
@@ -81,15 +79,14 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
-    private router: Router,
     public dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),
@@ -135,9 +132,10 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
     this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
-        this.dataSource.data = response?.data;
         console.log(response.data);
         
+
+        this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = filters.page;
@@ -207,6 +205,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

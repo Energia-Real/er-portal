@@ -1,15 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as entity from '../../plants-model';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
-import Highcharts from 'highcharts';
+import { Observable, Subject } from 'rxjs';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { ActivatedRoute } from '@angular/router';
-import { DataResponseArraysMapper, FilterState, GeneralResponse } from '@app/shared/models/general-models';
-import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
-import { GeneralFilters } from '@app/pages/homeMain/home/home-model';
+import { DataResponseArraysMapper, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Mapper } from '../../mapper';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { FormatsService } from '@app/shared/services/formats.service';
@@ -25,12 +20,12 @@ export class SavingsComponent implements OnInit, OnDestroy {
   @Input() plantData: entity.DataPlant | any;
   @Input() notData!: boolean;
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   showAlert: boolean = false;
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
   chart: any;
-  
+
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
     responsive: true,
     animation: {
@@ -110,7 +105,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   displayChart: boolean = false;
 
-
   savingDetails: DataResponseArraysMapper = {
     primaryElements: [],
     additionalItems: []
@@ -119,11 +113,11 @@ export class SavingsComponent implements OnInit, OnDestroy {
   constructor(
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private formatsService: FormatsService,
     private encryptionService: EncryptionService,
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
   }
 
   ngOnInit(): void {
@@ -137,20 +131,20 @@ export class SavingsComponent implements OnInit, OnDestroy {
       const userInfo = this.encryptionService.decryptData(encryptedData);
 
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getSavings({clientId : userInfo.clientes[0], ...generalFilters});
+        this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
       });
     }
   }
 
-  getSavings(filters:GeneralFilters) {
-    this.moduleServices.getSavingDetails(filters,this.plantData.id).subscribe({
+  getSavings(filters: GeneralFilters) {
+    this.moduleServices.getSavingDetails(filters, this.plantData.id).subscribe({
       next: (response: GeneralResponse<entity.getSavingsDetails>) => {
         this.savingDetails = Mapper.getSavingsDetailsMapper(response.response);
         const cfeSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal));
         const erSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal));
         const savingsData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings));
         const expensesWithoutEnergiaRealData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.expenditureWithoutER));
-       
+
         this.lineChartData = {
           labels: response.response.monthlyData.map((item) => {
             return item.month;
@@ -214,7 +208,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClient().subscribe({
       next: (response: entity.DataRespSavingDetailsList[]) => {
         this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-          this.getSavings({clientId : response[0].clientId, ...generalFilters});
+          this.getSavings({ clientId: response[0].clientId, ...generalFilters });
         });
       },
       error: (error) => {

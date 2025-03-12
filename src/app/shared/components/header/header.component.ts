@@ -4,7 +4,7 @@ import { filter, Observable, Subject, Subscription, switchMap, take, takeUntil }
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { EditNotificationStatus, FilterState, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { EditNotificationStatus, GeneralFilters, MonthsFilters, UserInfo } from '@app/shared/models/general-models';
 import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
@@ -39,23 +39,23 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedYearSelect: any
 
-  months = [
+  months: MonthsFilters[] = [
     { name: 'Jan', value: '01' }, { name: 'Feb', value: '02' }, { name: 'Mar', value: '03' },
     { name: 'Apr', value: '04' }, { name: 'May', value: '05' }, { name: 'Jun', value: '06' },
     { name: 'Jul', value: '07' }, { name: 'Aug', value: '08' }, { name: 'Sep', value: '09' },
     { name: 'Oct', value: '10' }, { name: 'Nov', value: '11' }, { name: 'Dec', value: '12' }
   ];
 
-  selectedStartMonth: any = this.months[5];
-  selectedEndMonth: any = this.months[6];
+  selectedStartMonth: MonthsFilters = this.months[5];
+  selectedEndMonth: MonthsFilters | null = this.months[6];
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
-  currentYear = new Date().getFullYear().toString().slice(-2);
-  currentYearComplete = new Date().getFullYear();
-  previousYearComplete = this.currentYearComplete - 1;
-  selectedYear = this.currentYearComplete;
-  selectedYearAbreviate = this.selectedYear.toString().slice(-2);
+  currentYear: string = new Date().getFullYear().toString().slice(-2);
+  currentYearComplete: number = new Date().getFullYear();
+  previousYearComplete: number = this.currentYearComplete - 1;
+  selectedYear: number = this.currentYearComplete;
+  selectedYearAbreviate: string = this.selectedYear.toString().slice(-2);
   selectedMonths: { name: string; value: string }[] = [];
 
   singleMonth = new FormControl(false);
@@ -63,23 +63,21 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedStates: string[] = [];
   notifications: Notification[] = [];
 
-  notificationSubscription!: Subscription;
-  hasNotifications = false;
+  hasNotifications: boolean = false;
 
-  menuOpen = false;
+  menuOpen: boolean = false;
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
-
   constructor(
     private router: Router,
-    private store: Store<{ filters: FilterState, notifications: NotificationsState }>,
+    private store: Store<{ filters: GeneralFilters, notifications: NotificationsState }>,
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
     private encryptionService: EncryptionService,
 
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
   }
@@ -91,14 +89,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getFilters() {
-    this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-      const startMonthValue = generalFilters.startDate.split('-')[1];
-      const endMonthValue = generalFilters.endDate!.split('-')[1];
+    this.generalFilters$.pipe(takeUntil(this.onDestroy$))
+      .subscribe((generalFilters: GeneralFilters) => {
+        const startMonthValue = generalFilters.startDate.split('-')[1];
+        const endMonthValue = generalFilters.endDate.split('-')[1];
 
-      this.selectedStartMonth = this.months.find(month => month.value === startMonthValue);
-      this.selectedEndMonth = this.months.find(month => month.value === endMonthValue);
-      this.selectedYearSelect = this.years.find(year => year.value === generalFilters.year);
-    });
+        this.selectedStartMonth = this.months.find(month => month.value == startMonthValue)!;
+        this.selectedEndMonth = this.months.find(month => month.value == endMonthValue)!;
+        this.selectedYearSelect = this.years.find(year => year.value == generalFilters.year);
+      });
   }
 
   ngAfterViewInit(): void {
@@ -110,33 +109,25 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  loadUserInfo() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      this.userInfo = this.encryptionService.decryptData(encryptedData);
-      this.updateNotificationCenter()
-    }
-  }
-
   updateNotificationCenter() {
-    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(resp => {
+    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(() => {
       this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }))
     });
   }
 
-  selectStartMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
+  selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
     if (month.value == '12') {
-      this.selectedEndMonth = null
+      this.selectedEndMonth = null;
       this.singleMonth.setValue(true);
-      
+
     } else this.singleMonth.setValue(false);
 
     this.selectedStartMonth = month;
     menuTrigger.closeMenu();
   }
 
-  selectEndMonth(month: { name: string; value: string }, menuTrigger: MatMenuTrigger): void {
-    if (month.value > this.selectedStartMonth.value && !this.singleMonth.value) {
+  selectEndMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
+    if (this.selectedStartMonth && month.value > this.selectedStartMonth.value && !this.singleMonth.value) {
       this.selectedEndMonth = month;
       menuTrigger.closeMenu();
     }
@@ -149,13 +140,13 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchWithFilters() {
-    const generalFilters: any = {
+    const generalFilters: GeneralFilters = {
       startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
-      year: this.selectedYearSelect?.value
+      year: this.selectedYearSelect?.value,
+      endDate: ''
     };
 
-    generalFilters.endDate = this.singleMonth.value ? this.getLastDayOfMonth(this.selectedStartMonth.value) : `${this.selectedYear}-${this.selectedEndMonth.value}-01`
-    console.log('generalFilters', generalFilters);
+    generalFilters.endDate = this.getLastDayOfMonth(this.selectedYear, +this.selectedEndMonth?.value!);
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
       if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
@@ -168,7 +159,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Actualiza los parámetros de la URL basándose en los filtros proporcionados.
    */
-  updateUrlWithFilters(generalFilters: { startDate: string; endDate: string | null; year: number }): void {
+  updateUrlWithFilters(generalFilters: GeneralFilters): void {
     const params = new URLSearchParams(window.location.search);
 
     if (generalFilters.startDate) params.set('startday', generalFilters.startDate);
@@ -183,7 +174,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateLocalNotifications() {
-    this.notificationSubscription = this.store.select(selectTopUnreadNotifications).subscribe((notifications) => {
+    this.store.select(selectTopUnreadNotifications).pipe(takeUntil(this.onDestroy$)).subscribe((notifications) => {
       this.notifications = notifications;
       this.hasNotifications = notifications.length > 0;
       this.cdr.detectChanges();
@@ -215,18 +206,24 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  getLastDayOfMonth(year: number, month: number): string {
+    const lastDay = new Date(year, month, 0).getDate();
+    return `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
+  }
+
+  loadUserInfo() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      this.userInfo = this.encryptionService.decryptData(encryptedData);
+      this.updateNotificationCenter()
+    }
+  }
+
   signOut() {
     localStorage.removeItem('userEnergiaReal');
     localStorage.removeItem('generalFilters');
     this.router.navigate(['']);
   }
-
-  getLastDayOfMonth = (dateStr: string): string => {
-    const date = new Date(dateStr);
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return lastDay.toISOString().split('T')[0];
-  };
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
