@@ -1,0 +1,50 @@
+<div>
+    <div class="flex justify-between">
+        <div class="flex">
+            <div class="return-bar-container">
+                <button class="button-transparent" type="button" (click)="return()">
+                    <i class="fa-solid fa-angles-left" matTooltip="Go back"></i>
+                </button>
+            </div>
+            <div class="grid content-center">
+                <a>Q&A</a>
+            </div>
+        </div> 
+        <div class="flex">
+            <button 
+            class="btn-cancel btn-corporate-name  flex mx-6" 
+            [ngClass]="{'selected': LenSel ==='ES'}" 
+            (click)="selectES()"  >
+                <span>Spanish</span>                
+            </button>
+            <button 
+            class="btn-cancel btn-corporate-name  flex mx-6" 
+            [ngClass]="{'selected': LenSel ==='EN'}" 
+            (click)="selectEN()">
+                <span>English</span>                
+            </button>
+        </div>
+    </div>
+
+    <div class="my-6">
+        <div>
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [color]="'warn'">
+                <mat-tab *ngFor="let cat of QyAsSelected" label={{cat.desc}}>
+                    <mat-expansion-panel *ngFor="let question of cat.questions">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            {{question.question}}
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                    
+                       {{question.answer}}
+                    
+                      </mat-expansion-panel>
+
+                </mat-tab>
+              
+              </mat-tab-group>
+        </div>
+          
+    </div>
+</div>

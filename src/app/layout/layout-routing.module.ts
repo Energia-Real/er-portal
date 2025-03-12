@@ -4,6 +4,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { redirectGuard } from '@app/shared/guards/redirect.guard';
 import { HomeComponent } from '@app/pages/homeMain/home/home.component';
 import { FilterGuard } from '@app/shared/guards/filter.guard';
+import { QyaComponent } from '@app/pages/legals/qya/qya.component';
+import { LegalsModule } from '@app/pages/legals/legals.module';
 
 const HomeBackOfficeModule = () => import('../pages/home-back-office/home-back-office.module').then(x => x.HomeBackOfficeModule);
 const HomeAdminModule= () => import('../pages/home-admin/home-admin.module').then(x => x.HomeAdminModule);
@@ -12,70 +14,71 @@ const clientModule = () => import('../pages/clientsMain/clients-main.module').th
 const energyProductionModule = () => import('../pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
 const billingModule = () => import('../pages/billing-main/billing-main.module').then(x => x.BillingMainModule);
 const ratesModule = () => import('../pages/rates-main/rates-main.module').then(x => x.RatesMainModule);
+const legalsModule = () => import('../pages/legals/legals.module').then(x => x.LegalsModule);
 
 
 const routes: Routes = [
   {
-    path: '',
+    path: '', 
     component: LayoutComponent,
-    children: [
+    children:[
       {
-        path: 'backoffice-home',
-        loadChildren: HomeBackOfficeModule,
+        path: 'backoffice-home', 
+        loadChildren: HomeBackOfficeModule, 
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['BackOffice']} 
       },
       {
-        path: 'admin-home',
-        loadChildren: HomeAdminModule,
+        path: 'admin-home', 
+        loadChildren: HomeAdminModule, 
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['Admin']}  
       },
       {
-        path: 'client-home',
-        component: HomeComponent,
+        path: 'client-home', 
+        component: HomeComponent,  
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['Clients'] }
       },
-
+      {
+        path: 'legals', 
+        loadChildren: legalsModule,  
+        canActivate: [redirectGuard, FilterGuard],
+        data: { roles: ['Clients','BackOffice','Admin','Plants','Billing'] }
+      },
+     
       {
         path: 'plants',
-        loadChildren: plantsModule,
+        loadChildren:plantsModule ,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['Plants']} 
       },
       {
         path: 'clients',
         loadChildren: clientModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['BackOffice', 'Admin']}
       },
       {
         path: 'energy',
         loadChildren: energyProductionModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
-      },
-      {
-        path: 'invoice',
-        loadChildren: billingModule,
-        canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['BackOffice', 'Admin']}
       },
       {
         path: 'billing',
         loadChildren: billingModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
+        data: { roles: ['Billing', 'Admin', 'Clients']}
       },
       {
         path: 'rates',
         loadChildren: ratesModule,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: [] },
-      },
-    ],
-  },
+        data: { roles: ['Billing', 'Admin']}
+      }
+    ]
+  }
 ];
 
 @NgModule({
