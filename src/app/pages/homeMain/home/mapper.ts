@@ -71,8 +71,6 @@ export class Mapper {
 	}
 
 	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse, formatsService: FormatsService): entity.SDResponse {
-		// static getDataSavingDetailsMapper(response: any, formatsService: FormatsService): any{
-		// console.log(response.response);
 		return response.response
 	}
 }
