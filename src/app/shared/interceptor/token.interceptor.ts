@@ -24,7 +24,7 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
-    if ( request.url.startsWith(environment.API_URL_PERFORMANCE)) {
+    if ( request.url.startsWith(environment.API_URL_PERFORMANCE) || request.url.startsWith("https://localhost:7188/")) {
       let notificationData:any=null;
 
       if (notificationMessages) notificationData = JSON.parse(notificationMessages);
