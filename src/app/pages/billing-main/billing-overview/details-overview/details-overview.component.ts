@@ -41,7 +41,7 @@ export class DetailsOverviewComponent {
   @Input() set billing(data: entity.DataBillingOverviewTable | null | undefined) {
     if (data) {
       this.billingData = data;
-      // this.getBillingDetails()
+      this.getBillingDetails()
     }
   }
 
@@ -63,7 +63,7 @@ export class DetailsOverviewComponent {
           this.paginator.pageIndex = pageIndex;
         }
 
-        // this.getBillingDetails();
+        if (this.billingData) this.getBillingDetails();
       });
   }
 
