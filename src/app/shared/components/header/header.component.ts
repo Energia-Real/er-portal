@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, Observable, Subject, Subscription, switchMap, take, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
@@ -97,6 +97,8 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedStartMonth = this.months.find(month => month.value == startMonthValue)!;
         this.selectedEndMonth = this.months.find(month => month.value == endMonthValue)!;
         this.selectedYearSelect = this.years.find(year => year.value == generalFilters.year);
+        this.selectedYearAbreviate = generalFilters.startDate.split("-")[0].toString().slice(-2)
+        this.selectedYear = parseFloat(generalFilters.startDate.split("-")[0])
       });
   }
 
