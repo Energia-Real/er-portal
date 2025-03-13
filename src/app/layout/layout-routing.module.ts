@@ -72,6 +72,12 @@ const routes: Routes = [
         data: { roles: ['Billing', 'Admin', 'Clients']}
       },
       {
+        path: 'invoice',
+        loadChildren: billingModule,
+        canActivate: [redirectGuard, FilterGuard],
+        data: { roles: ['Billing', 'Admin', 'Clients']}
+      },
+      {
         path: 'rates',
         loadChildren: ratesModule,
         canActivate: [redirectGuard, FilterGuard],
