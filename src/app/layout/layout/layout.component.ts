@@ -63,6 +63,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
 
       this.authService.getModules().subscribe((modules) => {
+
+        console.log(modules);
+        
         this.modules = modules;
       });
 

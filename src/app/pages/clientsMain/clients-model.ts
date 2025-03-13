@@ -57,17 +57,13 @@ export interface DataPatchClient {
   image?: any
 }
 
-// export interface DataCatalogTypeClient {
-//   id: string;
-//   description: string;
-//   tipo: string;
-// }
 
 export interface DataCatalogTypeClient {
   pageSize: number;
   page: number;
-  data: TypeClient[];
-  errors: string | null;
+  response: {
+    data: TypeClient[]
+  };  errors: string | null;
   totalItems: number;
 }
 

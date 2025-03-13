@@ -58,7 +58,7 @@ export class NotificationCardCenterComponent implements OnChanges {
         this.notificationService.loadNotificationTypes(),
         this.notificationService.loadNotificationStatuses(),
       ]).subscribe(([messagesResponse, typesResponse, statusesResponse]) => {
-        this.messages = messagesResponse.find(
+        this.messages = messagesResponse?.find(
           (centerMessage: { id: number }) => centerMessage.id === this.notification.notificationCenterTextId
         );
         this.type = typesResponse.find(
