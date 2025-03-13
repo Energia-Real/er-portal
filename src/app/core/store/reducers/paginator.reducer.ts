@@ -8,7 +8,7 @@ export interface PaginatorState {
 
 export const initialState: PaginatorState = {
   pageIndex: 0,
-  pageSize: 5,
+  pageSize: 10,
 };
 
 export const paginatorReducer = createReducer(

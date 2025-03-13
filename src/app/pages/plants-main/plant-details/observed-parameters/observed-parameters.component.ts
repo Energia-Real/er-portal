@@ -24,7 +24,7 @@ export class ObservedParametersComponent {
     },
     {
       icon : '../../../../../assets/icons/hearsink - irradiation.svg',
-      title: 'irradiation index (Degree Celsius)',
+      title: 'Irradiation index (Degree Celsius)',
       description: 'N/A',
     },
     {

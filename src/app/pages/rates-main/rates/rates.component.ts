@@ -31,7 +31,7 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
@@ -58,7 +58,7 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
 
   constructor(
     private router: Router,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     private notificationDataService: NotificationDataService,
@@ -198,6 +198,6 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }
