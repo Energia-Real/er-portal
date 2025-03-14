@@ -95,9 +95,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
-
-        console.log(pageSize);
-        
         this.generalFilters = generalFilters;
         this.pageSize = pageSize;
         this.pageIndex = pageIndex + 1;
