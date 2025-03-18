@@ -42,8 +42,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
-    'clientId',
-    'subClientId',
+    'cfcContact',
     'clientName',
     'subClient',
     'rfc',
@@ -52,7 +51,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     'billingPeriodStart',
     'billingPeriodEnd',
     'receiptGenerationDate',
-    'cfcContact',
     'rate',
     'production',
     'previousPaymentAmount',
@@ -133,7 +131,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
         console.log(response.data);
-        
+
 
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
