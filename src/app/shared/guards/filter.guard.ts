@@ -22,24 +22,24 @@ export class FilterGuard implements CanActivate {
     return this.store.select(selectFilterState).pipe(
       map((generalFilters: GeneralFilters) => {
         const { startDate, endDate } = generalFilters;
-        const startDayYear: string = startDate.split('-')[0];
-        const endDayYear: string = endDate!.split('-')[0];
+        const startDateParts = startDate.split('-');
+        const endDateParts = endDate.split('-');
+
+        let startDayYear = startDateParts[0]; 
+        let endDayYear = endDateParts[0];
+
+        // Si el año de inicio y fin no coinciden, ajustamos solo el año de endday
+        if (startDayYear !== endDayYear) endDayYear = startDayYear;
+
+        const startday = startDate;
+        const endday = `${endDayYear}-${endDateParts[1]}-${endDateParts[2]}`;
+
         const currentUrl: string = state.url.split('?')[0];
         const currentParams = new URLSearchParams(route.queryParams as any);
-        const startday: string = startDate;
-        const endday: string = endDate!;
         const newParams = new URLSearchParams(currentParams);
 
-        if ((startDayYear == '2024' || startDayYear == '2025') && (endDayYear == '2024' || endDayYear == '2025')) {
-          // Si startday ha cambiado o no está en la URL, lo actualizamos
-          if (startday !== currentParams.get('startday')) newParams.set('startday', startday);
-          // Si endday ha cambiado o no está en la URL, lo actualizamos
-          if (endday !== currentParams.get('endday')) newParams.set('endday', endday);
-
-        } else {
-          newParams.set('startday', '2024-01-01');
-          newParams.set('endday', '2024-01-31');
-        }
+        if (startday !== currentParams.get('startday')) newParams.set('startday', startday);
+        if (endday !== currentParams.get('endday')) newParams.set('endday', endday);
 
         const newUrl = `${currentUrl}?${newParams.toString()}`;
 

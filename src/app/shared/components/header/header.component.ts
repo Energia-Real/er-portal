@@ -148,7 +148,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       endDate: ''
     };
 
-    generalFilters.endDate = this.getLastDayOfMonth(this.selectedYear, +this.selectedEndMonth?.value!);
+    generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.selectedYear, +this.selectedStartMonth?.value!) : this.getLastDayOfMonth(this.selectedYear, +this.selectedEndMonth?.value!);
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
       if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
