@@ -1045,7 +1045,6 @@ input[type="number"]:focus {
 .return-bar-container {
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 32px;
   height: 31px;
 
@@ -1574,3 +1573,19 @@ input[type="number"]:focus {
   }
 }
 
+
+
+.pdfViewer {
+  width: 100%;
+  height: calc(100vh - 250px);
+  .page {
+    width: 100%!important;
+    display: flex;
+    justify-content: center;
+    background: red;
+
+    .canvas{
+      width: 100%!important;
+    }
+  }
+}
