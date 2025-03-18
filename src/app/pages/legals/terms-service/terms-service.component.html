@@ -7,7 +7,7 @@
                 </button>
             </div>
             <div class="content-header">
-                <h1 class="label-500-24">Trends</h1>
+                <h1 class="label-500-24">Terms of service</h1>
             </div>
         </div>
 
@@ -17,13 +17,13 @@
                     (selectedTabChange)="onTabChange($event)">
 
                     <mat-tab label="English">
-                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="pdfSources.english" [show-all]="true"
+                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="termsServiceSources.english" [show-all]="true"
                             style=""></pdf-viewer>
 
                     </mat-tab>
 
                     <mat-tab label="Spanish">
-                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="pdfSources.spanish" [show-all]="true"
+                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="termsServiceSources.spanish" [show-all]="true"
                             style=""></pdf-viewer>
                     </mat-tab>
 
@@ -36,7 +36,6 @@
                     <span class="material-symbols-outlined">download</span>
                     Download
                 </button>
-
             </div>
         </div>
     </div>

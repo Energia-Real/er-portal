@@ -5,16 +5,17 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-privacy-policy',
-  templateUrl: './privacy-policy.component.html',
-  styleUrl: './privacy-policy.component.scss'
+  selector: 'app-terms-service',
+  templateUrl: './terms-service.component.html',
+  styleUrl: './terms-service.component.scss'
 })
-export class PrivacyPolicyComponent implements OnDestroy {
+export class TermsServiceComponent implements OnDestroy  {
+
   private onDestroy$ = new Subject<void>();
 
-  pdfSources = {
-    english: '../../../../assets/pdfs/Aviso de privacidad - inglés.pdf',
-    spanish: '../../../../assets/pdfs/Aviso de privacidad - español.pdf'
+  termsServiceSources = {
+    english: '../../../../assets/pdfs/Términos de servicios - inglés.pdf',
+    spanish: '../../../../assets/pdfs/ter',
   };
 
   selectedLanguage: 'english' | 'spanish' = 'english';
@@ -29,15 +30,16 @@ export class PrivacyPolicyComponent implements OnDestroy {
   }
 
   downloadPDF() {
-    const pdfUrl = this.pdfSources[this.selectedLanguage];
+    const pdfUrl = this.termsServiceSources[this.selectedLanguage];
     const link = document.createElement('a');
     link.href = pdfUrl;
-    link.download = `Privacy Policy - ${this.selectedLanguage.toUpperCase()}.pdf`; 
+    link.download = `Terms Of Service - ${this.selectedLanguage.toUpperCase()}.pdf`; 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   }
 
+  
   goBack() {
     this.location.back();
   }

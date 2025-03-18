@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { LegalsRoutingModule } from './legals-routing.module';
 import { ContactComponent } from './contact/contact.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsServiceComponent } from './terms-service/terms-service.component';
 
 
 
@@ -24,7 +25,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
   declarations: [
     QyaComponent,
     ContactComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    TermsServiceComponent
   ],
   imports: [
     CommonModule,
