@@ -1574,3 +1574,19 @@ input[type="number"]:focus {
   }
 }
 
+
+
+.pdfViewer {
+  width: 100%;
+  height: calc(100vh - 250px);
+  .page {
+    width: 100%!important;
+    display: flex;
+    justify-content: center;
+    background: red;
+
+    .canvas{
+      width: 100%!important;
+    }
+  }
+}

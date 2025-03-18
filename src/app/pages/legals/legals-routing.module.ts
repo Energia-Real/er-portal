@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QyaComponent } from './qya/qya.component';
 import { ContactComponent } from './contact/contact.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,9 @@ const routes: Routes = [
   },
   { path: 'contact', 
     component: ContactComponent 
+  },
+  { path: 'privacy-policy', 
+    component: PrivacyPolicyComponent 
   },
   {
     path: '**', 

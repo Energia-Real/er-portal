@@ -364,6 +364,6 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

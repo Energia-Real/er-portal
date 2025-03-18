@@ -16,13 +16,15 @@ import { QyaComponent } from './qya/qya.component';
 import { CommonModule } from '@angular/common';
 import { LegalsRoutingModule } from './legals-routing.module';
 import { ContactComponent } from './contact/contact.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 
 
 @NgModule({
   declarations: [
     QyaComponent,
-    ContactComponent
+    ContactComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,7 @@ import { ContactComponent } from './contact/contact.component';
     NgChartsModule,
     MessageNoDataComponent,
     PdfViewerModule,
-    NgxImageZoomModule
+    NgxImageZoomModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

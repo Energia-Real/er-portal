@@ -212,6 +212,12 @@
     color: #EE5427 !important;
 }
 
+.label-500-24 {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    color: #EE5427 !important;
+}
+
 .select-years {
     width: 95px;
     height: 35px !important;
@@ -540,6 +546,10 @@ select:focus {
         height: 20px;
         color: #f56e46
     }
+}
+
+.btn-width-large {
+    width: 210px!important;
 }
 
 .btn-action-add {
