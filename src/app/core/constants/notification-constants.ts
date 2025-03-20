@@ -31,6 +31,7 @@ export const NOTIFICATION_CONSTANTS = {
   GLOBAL_EDIT_TITLE: 'Save the changes',
   GLOBAL_EDIT_CONTENT: 'Are you sure you want to save the changes? ',
   GLOBAL_EDIT_WARN: 'Once this action is performed, it cannot be undone.',
+  GLOBAL_DENIED_ACCESS: 'Access Denied',
 
   // Clients 
   ADD_CLIENT_TITLE: 'Add new client',
@@ -85,6 +86,12 @@ export const NOTIFICATION_CONSTANTS = {
   ADD_GENERAL_ERROR: 'Add_General_Error',
   EDIT_GENERAL_ERROR: 'Edit_General_Error',
 
+
+  // ALERTS  
+
+  //NO CLIENT ID
+  ALERT_NON_CLIENTID_CONTENT: 'You do not have the necessary permissions to access this section. To request access, please contact your administrator.',
+  ALERT_NON_CLIENTID_WARM: 'Without proper authorization, you cannot view or modify this content.',
 
   //MENSAJES CONSTANTES DE NOTIFICACIONES (NO SE CUIENTA CON LAS RESPUIESTAS DE ERROR YA QUE SON SERVICIOS EXTERNOS COMO TOMORROW io) 
   ERROR_TITLE_WEATHER_DATA : 'Data not foud',

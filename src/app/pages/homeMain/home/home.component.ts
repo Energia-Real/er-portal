@@ -339,14 +339,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
 
-      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
-        this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
-        this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
-      });
+      if (!userInfo.clientes[0]?.length) {
+        this.alertInformationModal()
+
+      } else {
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
+          this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
+          this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
+        });
+      }
     }
   }
 
@@ -597,8 +602,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
     }
 
-    const dialogRef = this.dialog.open(NotificationComponent, {
+    this.dialog.open(NotificationComponent, {
       width: '540px',
+      data: dataNotificationModal
+    });
+  }
+
+  alertInformationModal(){
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoClientIdAlert();
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',     
       data: dataNotificationModal
     });
   }
