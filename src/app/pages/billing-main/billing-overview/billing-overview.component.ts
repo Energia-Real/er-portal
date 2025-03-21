@@ -4,7 +4,7 @@ import * as entity from '../billing-model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { DrawerGeneral, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
@@ -13,6 +13,8 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { MatSelectChange } from '@angular/material/select';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-billing-overview',
@@ -53,6 +55,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   pageSizeSub!: Subscription;
   pageIndexSub!: Subscription;
 
+  showAlert: boolean = false;
   drawerOpen: boolean = false;
   drawerAction: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
@@ -65,6 +68,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     public dialog: MatDialog,
+    private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService
   ) {
@@ -78,23 +82,24 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
         this.generalFilters = generalFilters;
-    
+
         if (this.paginatorBilling) {
           this.pageSizeBilling = this.paginatorBilling.pageSize;
           this.pageIndexBilling = this.paginatorBilling.pageIndex + 1;
         }
-    
+
         if (this.paginatorHistory) {
           this.pageSizeHistory = this.paginatorHistory.pageSize;
           this.pageIndexHistory = this.paginatorHistory.pageIndex + 1;
         }
-    
+
         this.getServerData({ pageIndex: this.pageIndexBilling - 1, pageSize: this.pageSizeBilling }, 'billing');
         this.getServerData({ pageIndex: this.pageIndexHistory - 1, pageSize: this.pageSizeHistory }, 'history');
       });
   }
 
   ngOnInit(): void {
+    this.getUserClient();
     this.drawerOpenSubsctiption();
   }
 
@@ -115,7 +120,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       pageSize: this.pageSizeBilling,
       page: this.pageIndexBilling,
       year: this.generalFilters.year,
-      clientId: this.getUserClient.clientes[0]
+      clientId: this.userInfo.clientes[0]
     };
 
     this.moduleServices.getBillingOverview(filters).subscribe({
@@ -137,7 +142,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       pageSize: this.pageSizeHistory,
       page: this.pageIndexHistory,
       year: this.generalFilters.year,
-      clientId: this.getUserClient.clientes[0]
+      clientId: this.userInfo.clientes[0]
     };
 
     this.moduleServices.getBillingHistory(filters).subscribe({
@@ -176,12 +181,25 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
     this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: this.dataBilling, needReload: false }));
   }
 
-  get getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    return encryptedData ? this.encryptionService.decryptData(encryptedData) : null;
+  getUserClient() {
+
   }
 
   getServerData(event: PageEvent | any, type: 'billing' | 'history') {
+    const encryptedData = localStorage.getItem('userInfo');
+
+    if (!encryptedData) return;
+
+    this.userInfo = this.encryptionService.decryptData(encryptedData);
+
+    if (!this.userInfo?.clientes?.length || !this.userInfo.clientes[0]?.length) {
+      if (!this.showAlert) {
+        this.showAlert = true;
+        this.alertInformationModal();
+      }
+      return;
+    }
+
     if (type === 'billing') {
       this.pageIndexBilling = event.pageIndex + 1;
       this.pageSizeBilling = event.pageSize;
@@ -191,6 +209,15 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
       this.pageSizeHistory = event.pageSize;
       this.getHistory();
     }
+  }
+
+  alertInformationModal() {
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoClientIdAlert();
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
   }
 
   ngOnDestroy(): void {

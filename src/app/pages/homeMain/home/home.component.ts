@@ -338,26 +338,31 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
 
-      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.isLoadingSDWidget = true;  //loading saving details
+      if (!userInfo.clientes[0]?.length) {
+        this.alertInformationModal()
+      } else {
 
-        this.isLoadingSCWidget = true; //loading solar coverage
-      
-        this.isLoadingCO2Widget = true; //loading co2Widget
-      
-        this.isLoadingESWidget = true; //loading economic savings  
-      
-        this.isLoadingECWidget = true; //loading energy consumption  
-      
-        this.isLoadingMapa = true;
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.isLoadingSDWidget = true;  //loading saving details
 
-        this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
-        this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
-        this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
-      });
+          this.isLoadingSCWidget = true; //loading solar coverage
+
+          this.isLoadingCO2Widget = true; //loading co2Widget
+
+          this.isLoadingESWidget = true; //loading economic savings  
+
+          this.isLoadingECWidget = true; //loading energy consumption  
+
+          this.isLoadingMapa = true;
+
+          this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
+          this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
+          this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
+        });
+      }
     }
   }
 
@@ -428,7 +433,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getDataClients(filters: GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
-        let data =this.mappingData(response.data)
+        let data = this.mappingData(response.data)
         console.log(response)
         this.lineChartData = {
           labels: data.labels,
@@ -476,12 +481,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  
-
-  
 
 
-  mappingData(dataSelected:any[]): any {
+
+
+
+  mappingData(dataSelected: any[]): any {
     let labels = dataSelected.map(item => item.siteName);
     let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
     let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
@@ -590,7 +595,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
     }
 
-    const dialogRef = this.dialog.open(NotificationComponent, {
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
+  }
+
+  alertInformationModal() {
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoClientIdAlert();
+
+    this.dialog.open(NotificationComponent, {
       width: '540px',
       data: dataNotificationModal
     });

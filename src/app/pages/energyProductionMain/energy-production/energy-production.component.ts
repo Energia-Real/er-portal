@@ -121,10 +121,6 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     });
   }
 
-  ngOnInit(): void {
-    this.setYear()
-  };
-
   ngAfterViewInit(): void {
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
       this.getData(1, content)
@@ -137,26 +133,24 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     this.paginator._changePageSize(this.pageSize);
   }
 
-  setYear() {
+  getDataResponse(page: number, name: string) {
     this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
       this.selectedYear = generalFilters.year
-      this.getData(1, this.searchValue);
-    });
-  }
 
-  getDataResponse(page: number, name: string) {
-    this.moduleServices.getEnergyProdData(this.selectedYear, name, this.pageSize, page).subscribe({
-      next: (response: entity.DataEnergyProdTablMapper) => {
-        this.dataSource.data = response?.data;
-        this.totalItems = response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = page!
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
+      this.moduleServices.getEnergyProdData(this.selectedYear, name, this.pageSize, page).subscribe({
+        next: (response: entity.DataEnergyProdTablMapper) => {
+          this.dataSource.data = response?.data;
+          this.totalItems = response?.totalItems;
+          this.dataSource.sort = this.sort;
+          this.pageIndex = page!
+        },
+        error: error => {
+          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+          console.log(error);
+        }
+      });
     });
+
   }
 
   getConsumptionDataResponse(page: number, name: string) {
@@ -197,7 +191,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
       year: this.selectedYear,
       monthSelected: month,
       monthSelectedName: monthName,
-      energyValue: energyEdited? energyEdited : '',
+      energyValue: energyEdited ? energyEdited : '',
       isCreated: data.isCreated,
       energyType: this.selectedEnergyType
     }

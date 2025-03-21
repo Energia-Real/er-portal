@@ -37,7 +37,7 @@
   }
 
   .c-saving-details {
-    height: 173px;
+    min-height: 173px;
   }
 
   .c-card-section {
@@ -50,12 +50,6 @@
     }
 
     .div-groups-saving {
-
-      :nth-child(3) {
-        >div {
-          width: 90% !important;
-        }
-      }
 
       :nth-child(3),
       :nth-child(4) {
