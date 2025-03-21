@@ -220,7 +220,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   dayOrMount = new FormControl('month');
 
-  allRowsInit: boolean = true;
   showLoader: boolean = true;
 
   selectedMonths: any[] = [];
@@ -341,9 +340,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       if (!userInfo.clientes[0]?.length) {
         this.alertInformationModal()
-
       } else {
+
         this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.isLoadingSDWidget = true;  //loading saving details
+
+          this.isLoadingSCWidget = true; //loading solar coverage
+
+          this.isLoadingCO2Widget = true; //loading co2Widget
+
+          this.isLoadingESWidget = true; //loading economic savings  
+
+          this.isLoadingECWidget = true; //loading energy consumption  
+
+          this.isLoadingMapa = true;
+
           this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
           this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
           this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
@@ -422,12 +433,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   getDataClients(filters: GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
+        let data = this.mappingData(response.data)
+        console.log(response)
+        this.lineChartData = {
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.energyProduction,
+              label: 'Energy Production',
+              backgroundColor: 'rgba(121, 36, 48, 1)',
+            },
+            {
+              data: data.energyConsumption,
+              label: 'Energy Consumption',
+              backgroundColor: 'rgba(87, 177, 177, 1)',
+            }
+          ]
+        };
         this.isLoadingECWidget = false;
         this.dataSource.data = response.data;
         this.dataSource.sort = this.sort;
         this.selection.clear();
-        this.toggleAllRows();
-        this.allRowsInit = false;
       },
       error: (error) => {
         this.isLoadingECWidget = false;
@@ -455,41 +481,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
 
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      this.updtChart();
 
-      return;
-    }
 
-    this.selection.select(...this.dataSource.data);
-    this.updtChart();
-  }
 
-  toggleRow(row: any) {
-    this.selection.toggle(row);
-    this.updtChart();
-  }
 
-  updtChart() {
-    if (this.chart) {
-      let romevingType: any = this.selection.selected;
-      let newData = this.mappingData(romevingType);
-      this.lineChartData.labels = newData.labels
-      this.lineChartData.datasets[0].data = newData.energyProduction;
-      this.lineChartData.datasets[1].data = newData.energyConsumption;
-      this.chart.update();
-    }
-  }
-
-  mappingData(dataSelected: entity.DataRespSavingDetails[]): any {
+  mappingData(dataSelected: any[]): any {
     let labels = dataSelected.map(item => item.siteName);
     let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
     let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
@@ -506,10 +503,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     return moment(`${year}-${month}-01`).startOf('month').toISOString();
   }
 
-  checkboxLabel(row?: entity.PeriodicElement): string {
-    if (!row) return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
 
   goDetails(id: string) {
     this.router.navigateByUrl(`er/plants/details/${id}`)
@@ -608,11 +601,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  alertInformationModal(){
+  alertInformationModal() {
     const dataNotificationModal: notificationData = this.notificationDataService.showNoClientIdAlert();
 
     this.dialog.open(NotificationComponent, {
-      width: '540px',     
+      width: '540px',
       data: dataNotificationModal
     });
   }
