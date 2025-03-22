@@ -32,6 +32,7 @@ export const NOTIFICATION_CONSTANTS = {
   GLOBAL_EDIT_CONTENT: 'Are you sure you want to save the changes? ',
   GLOBAL_EDIT_WARN: 'Once this action is performed, it cannot be undone.',
   GLOBAL_DENIED_ACCESS: 'Information Cannot Be Displayed',
+  GLOBAL_UNAVAILABLE_ACCESS: 'Module Unavailable',
 
   // Clients 
   ADD_CLIENT_TITLE: 'Add new client',
@@ -88,6 +89,10 @@ export const NOTIFICATION_CONSTANTS = {
 
 
   // ALERTS  
+
+  // UNAVAILABLE
+  ALERT_UNAVAILABLE_CONTENT: 'This module is currently unavailable. Please try again later',
+  ALERT_UNAVAILABLE_WARM: 'If you believe this is an error, contact your administrator for assistance',
 
   //NO CLIENT ID
   ALERT_NON_CLIENTID_CONTENT: 'This information is unavailable because you do not have a Client ID assigned. Please contact your administrator to request one.',

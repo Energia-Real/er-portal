@@ -144,6 +144,16 @@ export class NotificationDataService {
     }
     return dataNotification;
   }
+ 
+  showNoModuleAlert () {
+    const dataNotification = {
+      type: NOTIFICATION_CONSTANTS.ERROR_TYPE,
+      title: NOTIFICATION_CONSTANTS.GLOBAL_UNAVAILABLE_ACCESS,
+      content: NOTIFICATION_CONSTANTS.ALERT_UNAVAILABLE_CONTENT,
+      warn : NOTIFICATION_CONSTANTS.ALERT_UNAVAILABLE_WARM
+    }
+    return dataNotification;
+  }
 
 
   uniqueError(): notificationData{// funcion que regresa paramertros(en este caso solo nos sirve el id) para crear una notificacion de error en sistema

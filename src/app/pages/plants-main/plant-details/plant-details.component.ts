@@ -347,7 +347,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
    alertInformationModal(){
-      const dataNotificationModal: notificationData = this.notificationDataService.showNoClientIdAlert();
+      const dataNotificationModal: notificationData = this.notificationDataService.showNoModuleAlert();
   
       this.dialog.open(NotificationComponent, {
         width: '540px',     

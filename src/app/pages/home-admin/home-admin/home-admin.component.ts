@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { notificationData } from '@app/shared/models/general-models';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Subject } from 'rxjs';
 
@@ -359,7 +362,8 @@ export class HomeAdminComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private notificationService: OpenModalsService
+    public dialog: MatDialog,
+    private notificationDataService: NotificationDataService,
 
   ) { }
 
@@ -367,7 +371,7 @@ export class HomeAdminComponent implements OnInit {
     this.dataSource.data = this.dummyTabla;
     this.dataSourcePlants.data = this.dummyTablaPlant;
 
-    this.completionMessage();
+    this.alertInformationModal();
     this.initializeHours();
     this.loadPlantData();
   }
@@ -494,13 +498,12 @@ export class HomeAdminComponent implements OnInit {
   }
 
 
-  completionMessage(edit = false) {
-    this.notificationService
-      .notificacion(
-        `¡We are working on building this module. It will be available soon.!`,
-        'alert',
-      )
-      .afterClosed()
-      .subscribe((_) => { });
+  alertInformationModal() {
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoModuleAlert();
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
   }
 }
