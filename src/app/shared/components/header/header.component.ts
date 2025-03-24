@@ -137,7 +137,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateYearSelected(year: number) {
     this.selectedYear = year;
-    this.searchWithFilters();
     this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
   }
 
