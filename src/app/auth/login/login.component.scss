@@ -4,6 +4,15 @@
   background-size: contain;
   background-position: center;
   margin-top: 19px;
+
+  .btn-action-add {
+    span {
+      width: 100%;
+      font-size: 14px;
+    }
+  }
+
+
   .login-form-container{
     text-align: center;
     width: 325px;
@@ -37,4 +46,14 @@
       text-decoration: none;
     }
   }
+
+  .button-container {
+    position: relative;
+  }
+
+ ::ng-deep.mat-mdc-progress-spinner {
+      width: 25px!important;
+      top: 0;
+      right: 0;
+    }
 }

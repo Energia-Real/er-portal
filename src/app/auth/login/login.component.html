@@ -36,17 +36,21 @@
                         ? '40px' : '0px'
         }"
           [ngClass]="{'mt-5': loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)}">
-          <span class="loader" *ngIf="loading"></span>
+          <!-- <span class="loader" *ngIf="loading"></span> -->
 
-          <button class="btn-action-add m-auto cursor-pointer" type="submit"
-            [disabled]="loginForm.invalid || buttonDisabled">
-            Enter the site
+
+          <button  [ngClass]="{'cursor-pointer': !loading}" c class="btn-action-add m-auto cursor-pointer" type="submit"
+            [disabled]="loginForm.invalid || loading">
+          <mat-spinner *ngIf="loading"></mat-spinner>
+
+            
+            <span *ngIf="!loading">Enter the site</span>
           </button>
         </div>
       </form>
     </div>
-    <div class="login-footer-container flex justify-center">
+    <!-- <div class="login-footer-container flex justify-center">
       <a routerLink="/forgotPassword">have you forgotten your password?</a>
-    </div>
+    </div> -->
   </div>
 </div>

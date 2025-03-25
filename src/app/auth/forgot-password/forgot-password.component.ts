@@ -34,6 +34,7 @@ export class ForgotPasswordComponent implements OnDestroy {
         'save',
       )
       .afterClosed()
+      
       .subscribe((_) => this.toBack());
   }
 
