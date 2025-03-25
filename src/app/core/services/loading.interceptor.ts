@@ -15,7 +15,10 @@ export class LoadingInterceptor implements HttpInterceptor {
     private loadingService: LoadingService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { }
+  ) { 
+console.log('url',this.router.url);
+    
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -33,9 +36,11 @@ export class LoadingInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           this.router.navigate(['']);
-          this.snackBar.open('Sesión expirada. Por favor, inicia sesión nuevamente.', 'Cerrar', {
-            duration: 15000,
-          });
+          if (this.router.url !== '/') {
+            this.snackBar.open('Sesión expirada. Por favor, inicia sesión nuevamente.', 'Cerrar', {
+              duration: 15000,
+            });
+          }
         }
         return throwError(error);
       }),

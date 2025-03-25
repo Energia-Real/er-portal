@@ -39,7 +39,6 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     'plantName',
     'rpu',
     'clientName',
-    'clientId',
     'commissionDate',
     'inverterQty',
     'systemSize',
@@ -87,6 +86,8 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   getPlants(page: number, name: string) {
     this.moduleServices.getPlants(name, this.pageSize, page).subscribe({
       next: (response: entity.DataManagementTableResponse) => {
+        console.log(response.data);
+        
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;

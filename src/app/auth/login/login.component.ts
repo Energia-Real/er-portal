@@ -19,7 +19,6 @@ export class LoginComponent implements OnDestroy {
   });
 
   showPassword: boolean = false;
-  buttonDisabled: boolean = false;
   loading: boolean = false;
   showRegisterButton: boolean = false;
 
@@ -32,6 +31,7 @@ export class LoginComponent implements OnDestroy {
 
   onSubmit() {
     this.loading = true;
+    this.loginForm.disable();
     this.accountService.login(this.loginForm.get('email')?.value!, this.loginForm.get('password')?.value!)
       .pipe(first())
       .subscribe({
