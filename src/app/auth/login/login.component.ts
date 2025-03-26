@@ -83,6 +83,7 @@ export class LoginComponent implements OnDestroy {
 
   alertInformationModal() {
     this.loading = false;
+    this.loginForm.enable();
     const dataNotificationModal: notificationData = this.notificationDataService.showNoLoginCredentialsAlert();
 
     this.dialog.open(NotificationComponent, {
