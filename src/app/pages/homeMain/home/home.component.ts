@@ -385,8 +385,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingMapa = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
           this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
         }
       }
@@ -401,8 +401,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingSDWidget = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
           this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
         }
       }
@@ -417,8 +417,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingCO2Widget = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
           this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
         }
       }
@@ -429,7 +429,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         let data =this.mappingData(response.data)
-        console.log(response)
         this.lineChartData = {
           labels: data.labels,
           datasets: [
@@ -452,8 +451,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingECWidget = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
           this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
         }
       }
@@ -468,8 +467,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingSCWidget = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
           this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
         }
       }
@@ -553,8 +552,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingESWidget = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
           this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
         }
       }

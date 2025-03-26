@@ -54,6 +54,14 @@ export const NOTIFICATION_CONSTANTS = {
   CANCEL_ADD_CORPORATE_NAME_CONTENT: 'Are you sure you want to cancel adding this corporate? All entered information will be lost, and no changes will be saved',
   EDIT_CORPORATE_SUCCESS: 'Edit_Corporate_Success',
 
+  //QyA
+  ADD_QYA_TITLE: 'Confirm Add Question',
+  ADD_QYA_CONTENT: 'Are you sure you want to add this question? You can always edit it later.',
+  ADD_QYA_WARN: 'Once added, you can modify it at any time',
+  ADD_QYA_COMPLETE_TITLE: 'Question added Successfully',
+  ADD_QYA_COMPLETE_CONTENT: 'Your question has been added successfully. You can edit it anytime if needed.',
+  ADD_QYA_SUCCESS: 'Add_Qya_Success',
+  ADD_QYA_ERROR: 'Add_Qya_Error',
 
   // Invoices 
   GENERATE_INVOICE_TITLE: 'Confirm Invoice Generation',
