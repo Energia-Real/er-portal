@@ -20,7 +20,7 @@ export class PrivacyPolicyComponent implements OnDestroy {
   selectedLanguage: 'english' | 'spanish' = 'english';
 
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private location: Location
   ) { }
 

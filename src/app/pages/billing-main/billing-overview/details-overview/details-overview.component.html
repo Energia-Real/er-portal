@@ -34,7 +34,7 @@
 
     <div class="col-span-1 d-flex align-center justify-end mt-4">
         <div class="c-paginator-top">
-            <strong>Items per page</strong>
+            <strong>Items</strong>
             <mat-form-field>
                 <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
