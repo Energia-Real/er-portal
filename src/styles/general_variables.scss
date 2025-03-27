@@ -588,6 +588,11 @@ select:focus {
     }
     
 }
+.btn-action-add:disabled {
+    background-color: #d1d5db !important; /* Gris claro */
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 
 .btn-upload:hover,
 .btn-action-add:hover,
