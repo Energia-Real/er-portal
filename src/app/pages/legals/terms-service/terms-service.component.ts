@@ -21,7 +21,7 @@ export class TermsServiceComponent implements OnDestroy  {
   selectedLanguage: 'english' | 'spanish' = 'english';
 
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private location: Location
   ) { }
 
@@ -38,7 +38,6 @@ export class TermsServiceComponent implements OnDestroy  {
     link.click();
     document.body.removeChild(link);
   }
-
   
   goBack() {
     this.location.back();

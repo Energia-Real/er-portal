@@ -362,7 +362,7 @@ export class HomeAdminComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
 
   ) { }

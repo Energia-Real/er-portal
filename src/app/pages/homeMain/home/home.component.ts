@@ -263,7 +263,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private store: Store<{ filters: GeneralFilters }>,
     private notificationsService: NotificationService,
     private notificationDataService: NotificationDataService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
   }

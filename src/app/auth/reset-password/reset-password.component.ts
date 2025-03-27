@@ -22,7 +22,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   code: string = ''
 
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationService: OpenModalsService,
     private formBuilder: FormBuilder,
     private router: Router,

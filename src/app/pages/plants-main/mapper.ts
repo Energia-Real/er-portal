@@ -9,7 +9,7 @@ export class Mapper {
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
 		primaryElements.push({
-			title: 'Last connection timeStamp',
+			title: 'Last connection timestamp',
 			description: formatsService.dateFormat(response.lastConnectionTimestamp)
 		});
 
@@ -277,13 +277,13 @@ export class Mapper {
 
 		additionalItems.push({
 			title: 'Exported generation',
-			description: `${response.response.exportedGeneration?? "000,000.00"} kWh`,
+			description: `${response.response.exportedGeneration?? "0.00"} kWh`,
 			extra: "+2% compared to the previous month"
 		});
 
 		additionalItems.push({
 			title: 'CFE network consumption',
-			description: `${response.response.cfeNetworkConsumption?? "000,000.00"} kWh`,
+			description: `${response.response.cfeNetworkConsumption?? "0.00"} kWh`,
 			extra:'-4% compared to the previous month'
 		});
 

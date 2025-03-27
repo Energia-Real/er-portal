@@ -81,7 +81,7 @@ export class PreviousBillingComponent implements OnDestroy, OnInit, AfterViewChe
     private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     private router: Router,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,

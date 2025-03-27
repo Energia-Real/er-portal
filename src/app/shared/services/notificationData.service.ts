@@ -145,6 +145,16 @@ export class NotificationDataService {
     return dataNotification;
   }
  
+  showNoLoginCredentialsAlert() {
+    const dataNotification = {
+      type: NOTIFICATION_CONSTANTS.ERROR_TYPE,
+      title: NOTIFICATION_CONSTANTS.ALERT_NON_LOGIN_CREDENTIALS_TITLE,
+      content: NOTIFICATION_CONSTANTS.ALERT_NON_LOGIN_CREDENTIALS_CONTENT,
+      warn : NOTIFICATION_CONSTANTS.ALERT_NON_LOGIN_CREDENTIALS_WARM
+    }
+    return dataNotification;
+  }
+ 
   showNoModuleAlert () {
     const dataNotification = {
       type: NOTIFICATION_CONSTANTS.ERROR_TYPE,
