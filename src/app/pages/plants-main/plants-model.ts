@@ -11,6 +11,12 @@ export interface DataRespSavingDetailsList {
   nombre: string;
 }
 
+export interface FiltersPlants {
+  name: string;
+  pageSize: number;
+  page: number;
+}
+
 export interface Example {
   name: string;
   position: number;

@@ -33,11 +33,11 @@ export const authGuard: CanActivateFn = (route, state) => {
           return lastDay.toISOString().split('T')[0];
         };
 
-        const endDate = endday ? getLastDayOfMonth(endday) : '2025-05-31';
+        const endDate = endday ? getLastDayOfMonth(endday) : '2025-03-31';
 
         const newFilters: GeneralFilters = {
           startDate: startday ?? '2025-01-01',
-          endDate: endDate ?? '2025-03-31',
+          endDate: endDate,
           year: year ?? '2025',
         };
 

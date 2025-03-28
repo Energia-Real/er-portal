@@ -30,6 +30,7 @@
   p {
     margin: 0;
     font-size: 14px;
+    font-weight: 500;
     color: #000000D9;
   }
 
@@ -96,8 +97,14 @@
   .mat-mdc-menu-content {
     width: 240px !important;
     height: 220px !important;
+  }
+
+  .mat-mdc-menu-item {
+    min-height: unset!important;
+    height: 35px!important;
 
   }
+
 }
 
 .month-grid button.mat-menu-item {
@@ -157,10 +164,11 @@ button.mat-menu-item.selected {
   min-height: unset !important;
   font-size: 16px;
   text-align: center;
+  min-height: unset !important;
 }
 
 .unselected-month {
-  color: #B5B5B5 !important;
+  color: #B5B5B5;
   min-height: unset !important;
   font-size: 16px;
   color: #1F1F1F;
