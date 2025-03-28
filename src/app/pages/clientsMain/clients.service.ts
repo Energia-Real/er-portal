@@ -20,17 +20,13 @@ export class ClientsService implements OnDestroy {
     public formatsService: FormatsService
   ) {}
 
-  getClientsData(
-    name: string,
-    pageSize: number,
-    page: number
-  ): Observable<entity.DataTableResponse> {
+  getClientsData(filters:entity.FiltersClients): Observable<entity.DataTableResponse> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
       .set('imageSize', 150)
-      .set('pagesize', pageSize)
-      .set('page', page)
-      .set('name', name);
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page)
+      .set('name', filters.name);
 
     return this.http
       .get<entity.DataTableResponse>(url, { params })

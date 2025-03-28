@@ -5,6 +5,11 @@ export interface DataTableResponse {
   data: DataClientsTable[]
 }
 
+export interface FiltersClients {
+  name: string;
+  pageSize: number;
+  page: number;
+}
 
 export interface DataClientsTable {
   id: string;
