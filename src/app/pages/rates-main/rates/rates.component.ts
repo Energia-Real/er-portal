@@ -164,7 +164,6 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
     this.router.navigateByUrl(link);
   }
 
-
   getServerData(event: PageEvent): void {
     if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));

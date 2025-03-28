@@ -67,7 +67,7 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService

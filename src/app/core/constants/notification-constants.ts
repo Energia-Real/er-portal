@@ -110,6 +110,11 @@ export const NOTIFICATION_CONSTANTS = {
   //NO CLIENT ID
   ALERT_NON_CLIENTID_CONTENT: 'This information is unavailable because you do not have a Client ID assigned. Please contact your administrator to request one.',
   ALERT_NON_CLIENTID_WARM: 'Without a Client ID, you cannot access or view this data.',
+  
+  //LOGIN CREDENTIALS FAILS
+  ALERT_NON_LOGIN_CREDENTIALS_TITLE: 'Error',
+  ALERT_NON_LOGIN_CREDENTIALS_CONTENT: 'The credentials entered are incorrect. Please check your username and password.',
+  ALERT_NON_LOGIN_CREDENTIALS_WARM: 'If the issue persists, try resetting your password or contact your administrator.',
 
   //MENSAJES CONSTANTES DE NOTIFICACIONES (NO SE CUIENTA CON LAS RESPUIESTAS DE ERROR YA QUE SON SERVICIOS EXTERNOS COMO TOMORROW io) 
   ERROR_TITLE_WEATHER_DATA : 'Data not foud',

@@ -1633,3 +1633,12 @@ input[type="number"]:focus {
 
 
 
+
+
+.effect-hover {
+  transition: all 0.3s ease;
+}
+.effect-hover:hover {
+  transition: all 0.3s ease;
+  color: #EE6A0A ;
+}

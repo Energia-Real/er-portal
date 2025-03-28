@@ -206,7 +206,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {

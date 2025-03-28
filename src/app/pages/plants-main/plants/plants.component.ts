@@ -2,7 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { debounceTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import * as entity from '../plants-model';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   templateUrl: './plants.component.html',
   styleUrl: './plants.component.scss'
 })
-export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
+export class PlantsComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<any>([]);
@@ -27,13 +27,6 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   pageSize: number = 5;
   pageIndex: number = 1;
   totalItems: number = 0;
-  pageSizeSub: Subscription;
-  pageIndexSub: Subscription;
-
-  ngAfterViewChecked() {
-    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
-    else console.error('Paginator no está definido');
-  }
 
   displayedColumns: string[] = [
     'plantName',
@@ -61,15 +54,24 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     private notificationService: OpenModalsService,
     private router: Router
   ) {
-    this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
-      this.pageSize = size;
-      if (this.paginator) this.paginator.pageSize = size;
-    });
 
-    this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
-      this.pageIndex = index + 1;
-      if (this.paginator) this.paginator.pageIndex = index;
-      this.getPlants(index + 1, '');
+    combineLatest([
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(([pageSize, pageIndex]) => {
+      if (this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1) {
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex + 1;
+    
+        if (this.paginator) {
+          this.paginator.pageSize = pageSize;
+          this.paginator.pageIndex = pageIndex;
+        }
+    
+        this.getPlants();
+      }
     });
   }
 
@@ -78,20 +80,27 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
   };
 
   ngAfterViewInit(): void {
+    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
+    else console.error('Paginator no está definido');
+    
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getPlants(1, content!);
+      this.getPlants(content!);
     })
   }
 
-  getPlants(page: number, name: string) {
-    this.moduleServices.getPlants(name, this.pageSize, page).subscribe({
+  getPlants(name = '') {
+    const filters: entity.FiltersPlants = {
+      pageSize: this.pageSize,
+      page: this.pageIndex,
+      name
+    };
+
+    this.moduleServices.getPlants(filters).subscribe({
       next: (response: entity.DataManagementTableResponse) => {
-        console.log(response.data);
-        
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
-        this.pageIndex = page
+        this.pageIndex = filters.page;
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
@@ -118,21 +127,26 @@ export class PlantsComponent implements OnDestroy, AfterViewChecked, AfterViewIn
     this.router.navigateByUrl(link);
   }
 
-  
   changePageSize(event: any) {
-    this.pageSize = event.value;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator._changePageSize(this.pageSize);
+    const newSize = event.value;
+    this.pageSize = newSize;
+
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+
+    this.getPlants();
   }
 
-  
   getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getPlants(event.pageIndex + 1, '');
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    }
   }
-
+  
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

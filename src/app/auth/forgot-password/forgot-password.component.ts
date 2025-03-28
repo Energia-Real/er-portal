@@ -18,7 +18,7 @@ export class ForgotPasswordComponent implements OnDestroy {
   email = new FormControl({ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]);
 
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationService: OpenModalsService,
     private router: Router
   ) { }

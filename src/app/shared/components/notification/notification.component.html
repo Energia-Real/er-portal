@@ -45,8 +45,8 @@
 
   <mat-divider></mat-divider>
   <div class="flex justify-around">
-    <button class="btn-action-back" (click)="sendEventToParent(data.type,false)">Back</button>
-    <button *ngIf="data.type != ERRORS && data.type != ERROR" class="btn-action-notification" (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
+    <button class="btn-action-back" (click)="sendEventToParent(data.type,false)">Close</button>
+    <button *ngIf="data.type != ERRORS && data.type != ERROR" class="btn-action-notification"
+      (click)="sendEventToParent(data.type,true)">{{data.buttonAction}}</button>
   </div>
-
-</div> 
+</div>

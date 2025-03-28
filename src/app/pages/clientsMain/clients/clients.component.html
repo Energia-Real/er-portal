@@ -35,7 +35,7 @@
         <div class="separator-cards mt-4 mb-4"></div>
 
         <div class="c-paginator-top mt-5">
-            <strong>items per page</strong>
+            <strong>Items</strong>
             <mat-form-field>
                 <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size

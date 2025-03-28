@@ -112,7 +112,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     private notificationService: OpenModalsService,
     private encryptionService: EncryptionService,
     private store: Store<{ filters: GeneralFilters }>,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationsService: NotificationService,
     private notificationDataService: NotificationDataService,
   ) {

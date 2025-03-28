@@ -119,11 +119,11 @@ export class PlantsService implements OnDestroy {
     });
   }
 
-  getPlants(name: string, pageSize: number, page: number): Observable<any> {
+  getPlants(filters:entity.FiltersPlants): Observable<any> {
     const params = new HttpParams()
-      .set('name', name)
-      .set('pagesize', pageSize)
-      .set('page', page);
+      .set('name', filters.name)
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page);
 
     return this.http
       .get<entity.DataManagementTableResponse>(

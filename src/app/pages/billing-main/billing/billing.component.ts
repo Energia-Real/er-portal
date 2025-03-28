@@ -6,7 +6,6 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { Router } from '@angular/router';
 import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
@@ -79,7 +78,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
@@ -130,9 +129,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
     this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
-        console.log(response.data);
-
-
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;

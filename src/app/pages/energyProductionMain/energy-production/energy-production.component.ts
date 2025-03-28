@@ -95,7 +95,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
@@ -272,28 +272,15 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   onEnergyTypeChange(event: any): void {
     const selectedValue = event.value;
     this.selectedEnergyType = selectedValue;
-    console.log(selectedValue)
-    if (selectedValue == 1) {
-      this.getDataResponse(1, "");
-    }
-    if (selectedValue == 2) {
-      this.getConsumptionDataResponse(1, "");
-    }
-    if (selectedValue == 3) {
-      this.getEstimatedDataResponse(1, "");
-    }
+    if (selectedValue == 1) this.getDataResponse(1, "");
+    if (selectedValue == 2) this.getConsumptionDataResponse(1, "");
+    if (selectedValue == 3) this.getEstimatedDataResponse(1, "");
   }
 
   getData(page: number, content?: string | null) {
-    if (this.selectedEnergyType == 1) {
-      this.getDataResponse(page, content!);
-    }
-    if (this.selectedEnergyType == 2) {
-      this.getConsumptionDataResponse(page, content!);
-    }
-    if (this.selectedEnergyType == 3) {
-      this.getEstimatedDataResponse(page, content!);
-    }
+    if (this.selectedEnergyType == 1) this.getDataResponse(page, content!);
+    if (this.selectedEnergyType == 2) this.getConsumptionDataResponse(page, content!);
+    if (this.selectedEnergyType == 3) this.getEstimatedDataResponse(page, content!);
   }
 
   modalErrors(errors: any) {
