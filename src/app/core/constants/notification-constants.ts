@@ -75,6 +75,11 @@ export const NOTIFICATION_CONSTANTS = {
   CONFIRM_INVOICE_WARN: 'Attention! This action cannot be undone',
   //Data for Center Notification Messages (Only message keys) 
 
+  //FILES
+  CONFIRM_ADD_FILE_TITLE: 'A new File has been successfully added.',
+  CONFIRM_ADD_FILE_CONTENT: 'Your file has been added successfully. You can edit it anytime if needed.',
+
+
   //Clients
   ADD_CLIENT_SUCCESS: 'Add_Client_Success',
   ADD_CLIENT_ERROR: 'Add_Client_Error',

@@ -1603,6 +1603,33 @@ input[type="number"]:focus {
 
 .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
 .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
-  stroke: #ffffff !important;
+  stroke: #262626 !important;
 
 }
+
+/* Estilo base para todas las líneas */
+.mat-stepper-horizontal-line {
+  border-top-width: 3px !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease;
+  border-top-color: #4CAF50 !important;
+}
+
+/* Línea después de paso completado con éxito */
+.mat-step-header[aria-selected="true"] ~ .mat-stepper-horizontal-line,
+.mat-step-header[aria-selected="false"][ng-reflect-completed="true"] ~ .mat-stepper-horizontal-line {
+  border-top-color: #595959 !important; /* Verde para éxito */
+}
+
+/* Línea después de paso con error */
+.mat-step-header[ng-reflect-completed="error"] ~ .mat-stepper-horizontal-line {
+  border-top-color: #F44336 !important; /* Rojo para error */
+}
+
+/* Línea para pasos no completados */
+.mat-step-header[aria-selected="false"][ng-reflect-completed="true"] ~ .mat-stepper-horizontal-line {
+  border-top-color: #595959 !important; /* Gris por defecto */
+}
+
+
+
