@@ -22,7 +22,7 @@ import { DrawerGeneral } from '@app/shared/models/general-models';
 })
 export class ClientsComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<entity.DataClientsTable>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -41,7 +41,6 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
 
   searchValue: string = '';
   drawerAction: "Create" | "Edit" = "Create";
-  drawerAction2: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
 
   showLoader: boolean = true;
@@ -64,7 +63,6 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     private notificationService: OpenModalsService,
     private router: Router,
   ) {
-
     combineLatest([
       this.store.select(selectPageSize).pipe(distinctUntilChanged()),
       this.store.select(selectPageIndex).pipe(distinctUntilChanged())
@@ -145,13 +143,13 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     this.updDraweState(!this.drawerOpen);
   }
 
-  toggleDrawerClient(data?: any) {
+  toggleClientDrawer(data?: any) {
     this.editedClient = data
     this.drawerOpenClient = !this.drawerOpenClient
     this.updDraweState(this.drawerOpenClient);
   }
 
-  toggleDrawerCorporateName(id: string, name: string) {
+  toggleCorporateNameDrawer(id: string, name: string) {
     this.updCorporateDrawer(id, name)
     this.drawerOpenCorporateName = !this.drawerOpenCorporateName
   }
@@ -189,6 +187,5 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
-    this.drawerOpenSub.unsubscribe();
   }
 }
