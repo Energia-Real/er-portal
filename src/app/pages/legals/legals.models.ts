@@ -11,8 +11,25 @@ export interface CatQyA{
     questions: Question[]
  }
 
- interface Question{ 
+ export interface Question{ 
     id:number
     question: string
     answer: string
+    cat?: string
  }
+
+ export interface CatsListResponse{
+    cats: Cat[]
+}
+
+export interface Cat{
+    catCode: string; 
+    enDesc: string;
+    esDesc: string; 
+}
+
+export interface QyADataModal{
+    lenguage: "ES"|"EN",
+    editMode: boolean,
+    question?: Question 
+}

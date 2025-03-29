@@ -15,6 +15,7 @@ const energyProductionModule = () => import('../pages/energyProductionMain/energ
 const billingModule = () => import('../pages/billing-main/billing-main.module').then(x => x.BillingMainModule);
 const ratesModule = () => import('../pages/rates-main/rates-main.module').then(x => x.RatesMainModule);
 const legalsModule = () => import('../pages/legals/legals.module').then(x => x.LegalsModule);
+const finantialModel = () => import('../pages/finantial-model/finantial-model.module').then(x => x.FinantialModelModule);
 
 
 const routes: Routes = [
@@ -82,6 +83,12 @@ const routes: Routes = [
         loadChildren: ratesModule,
         canActivate: [redirectGuard, FilterGuard],
         data: { roles: ['Billing', 'Admin']}
+      },
+      {
+        path: 'finantial-model',
+        loadChildren: finantialModel,
+        canActivate: [redirectGuard, FilterGuard],
+        data: { roles: [ 'Admin']}
       }
     ]
   }

@@ -1,0 +1,71 @@
+<input #fileInput type="file" hidden (change)="onFileSelected($event)" />
+
+<div class="c-main">
+    <div class="flex justify-between">
+        <div class="title">
+            Run Model
+        </div>
+        <div class="c-card-section c-model w-2/3">
+            <div class="grid md:grid-cols-4 gap-3 text-center div-groups-model">
+                <div class="flex flex-col justify-around px-5">
+                   <button class="flex btn-action-add" (click)="openFileSelector()">
+                    <img 
+                    src="../../../../assets/svg/upload_white.svg" 
+                    alt="Icon notification"
+                    class="notification-icon"
+                    />    
+                    <div>
+                        Upload Document
+                    </div>
+                   </button>
+                   <button class="flex btn-cancel">
+                    <div>
+                        Download template
+                    </div>
+                   </button>
+                    <div class="linea"></div>
+                </div>
+                <div >
+                    <p>Status</p>
+                    <div *ngIf="processStatus == 'Success'" class="flex justify-center">
+                        <img 
+                        src="../../../../assets/svg/success_green.svg" 
+                        alt="Icon notification"
+                        class="notification-icon"
+                        />    
+                    </div>
+                    <div *ngIf="processStatus == 'Error'" class="flex justify-center">
+                        <img 
+                        src="../../../../assets/svg/delete-circle.svg" 
+                        alt="Icon notification"
+                        class="notification-icon"
+                        />    
+                    </div>
+                    <div class="linea"></div>
+                </div>
+                <div >
+                    <div>
+                       
+                        <p>Number of <br> scenarios</p>
+                        <div *ngIf="scenarios" class="scenarios">
+                            {{scenarios}}
+                        </div>
+                        <div class="linea"></div>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-around px-5" >
+                    <button class="flex btn-action-add" [disabled]="fileId==null">
+                        <div>
+                            Download Excel
+                        </div>
+                    </button>
+                    <button class="flex btn-cancel" [disabled]="!fileId">
+                        <div>
+                            Delete
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

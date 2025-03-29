@@ -499,6 +499,10 @@ select:focus {
 
 .btn-cancel {
     // border: 1px solid #D2D2D2 !important;
+    min-width: 120px;
+    justify-content: center;
+    display: flex;
+    align-items: center   ;    
     color: #EE6A0A !important;
     border-radius: 24px;
     padding: 5px 15px !important;
@@ -588,6 +592,17 @@ select:focus {
     }
     
 }
+.btn-action-add:disabled {
+    background-color: #d1d5db !important; /* Gris claro */
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+.btn-cancel:disabled {
+    background-color: #d1d5db !important; /* Gris claro */
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 
 .btn-upload:hover,
 .btn-action-add:hover,
