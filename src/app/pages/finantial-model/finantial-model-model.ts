@@ -7,9 +7,10 @@ export interface FinantialDataModelStepper {
 }
 
 export interface WebSocketResponse{ 
-  errors: any[]
+  errors: { [key: string]: string[] } 
   process: ProcessType
   status: StatusType
-  scenario?: string
+  scenario?: number
   scenarios?: number
+  output_file_uuid?: string
 }

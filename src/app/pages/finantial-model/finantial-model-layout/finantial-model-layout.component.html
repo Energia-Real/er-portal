@@ -18,7 +18,7 @@
                         Upload Document
                     </div>
                    </button>
-                   <button class="flex btn-cancel">
+                   <button class="flex btn-cancel" (click)="donwloadTemplate()">
                     <div>
                         Download template
                     </div>
@@ -54,12 +54,12 @@
                     </div>
                 </div>
                 <div class="flex flex-col justify-around px-5" >
-                    <button class="flex btn-action-add" [disabled]="fileId==null">
+                    <button class="flex btn-action-add" [disabled]="fileId==null" (click)="getInformation()">
                         <div>
                             Download Excel
                         </div>
                     </button>
-                    <button class="flex btn-cancel" [disabled]="!fileId">
+                    <button class="flex btn-cancel" [disabled]="!fileId" (click)="createNotificationModal(DELETE)">
                         <div>
                             Delete
                         </div>

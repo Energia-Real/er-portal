@@ -113,6 +113,7 @@ export class NotificationService {
 
   getNotificationTypesByName(statusType: string): any | undefined {
     if(this.notificationTypes){
+      console.log(this.notificationTypes)
       return this.notificationTypes.find(
         (type: { nombreTipo: string }) => type.nombreTipo === statusType
       );

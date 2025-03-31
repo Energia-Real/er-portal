@@ -11,7 +11,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 export class FinantialService {
   private finantialApiUrl = environment.API_URL_FINANTIAL_MODEL
   private socket$!: WebSocketSubject<any>;
-  private socketUrl = environment.API_URL_FINANTIAL_MODEL_SOCKET+"dummy_run_scenarios"
+  private socketUrl = environment.API_URL_FINANTIAL_MODEL_SOCKET+"run_scenarios"
 
   constructor(
       private http: HttpClient,
@@ -24,7 +24,7 @@ export class FinantialService {
         data: File,
         notificationMessages: NotificationMessages
       ) {
-        const url = `${this.finantialApiUrl}csv/dummy`;
+        const url = `${this.finantialApiUrl}csv`;
         const headers = new HttpHeaders({
           NotificationMessages: JSON.stringify(notificationMessages),
         });
@@ -47,12 +47,36 @@ export class FinantialService {
   }
     
 
-  /* getTemplate(): Observable<F> {
-      const url = `${environment.API_URL_PERFORMANCE}/energy-performance/sites`;
-  
-      return this.http.post<entity.DataTablePlantsResponse>(url, filters).pipe(
-        map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
-      );
-    } */
+  downloadTemplate(): Observable<Blob> {
+    const url = `${this.finantialApiUrl}template`;
+    return this.http.get(url, {
+      responseType: 'blob',
+    });
+  }
+
+  exportInformation(
+    uuid:string,
+    notificationMessages: NotificationMessages
+  ): Observable<Blob> {
+    const url = `${this.finantialApiUrl}output/${uuid}`;
+    const headers = new HttpHeaders({
+      NotificationMessages: JSON.stringify(notificationMessages),
+    });
+    return this.http.get(url, {
+      headers: headers,
+      responseType: 'blob',
+    });
+  }
+
+  deleteFile(
+    uuid:string,
+    notificationMessages: NotificationMessages
+  ){
+    const url = `${this.finantialApiUrl}clear-scenarios/${uuid}`;
+    const headers = new HttpHeaders({
+      NotificationMessages: JSON.stringify(notificationMessages),
+    });
+    return this.http.delete<any>(url,{headers});
+  }
 
 }
