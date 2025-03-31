@@ -32,6 +32,8 @@ export class FinantialStepperComponent implements OnInit {
   executionState:StepState = "Disabled"
   resultState:StepState = "Disabled"
 
+
+
   executeMessagesCount = 0;
   executeTotalExpected = 0; 
   executeHasError = false;
@@ -39,8 +41,7 @@ export class FinantialStepperComponent implements OnInit {
   executeScenariosReceived = 0;
   loading = true;
   processStatus:StepState="Loading";
-  errors!:any[];
-  
+  errors: { [key: string]: string[] } = {};  
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FinantialDataModelStepper,
@@ -52,6 +53,10 @@ export class FinantialStepperComponent implements OnInit {
   }
   ngOnInit(): void {
 
+  }
+
+  objectKeys(obj: any): string[] {
+    return Object.keys(obj || {});
   }
 
 
@@ -67,7 +72,6 @@ export class FinantialStepperComponent implements OnInit {
                   }
     this.moduleService.postCsv(selectedFile, snackMessagesAdd).subscribe({
       next:(resp:any)=>{
-        this.fileId = resp.id
         this.uploadState="Success"
         this.siguientePaso()
         this.initValidation(resp.id)
@@ -100,7 +104,8 @@ export class FinantialStepperComponent implements OnInit {
 
   private updateStates(response: WebSocketResponse): void {
     const { process, status } = response;
-    if(response.errors.length>0){
+    if( Object.keys(response.errors).length > 0){
+      this.validationState ="Error"
       this.errors=response.errors
       this.processStatus ="Error"
     }
@@ -149,17 +154,21 @@ export class FinantialStepperComponent implements OnInit {
   
   private handleResultMessage(response: WebSocketResponse): void {
     // Cuando llega el mensaje final (result)
-    this.executeTotalScenarios = response.scenarios || 0;
+    if(response.output_file_uuid){
+      this.fileId = response.output_file_uuid
+    }
+    this.executeTotalScenarios = response.scenario || 0;
     
     // Verificar si todos los escenarios se procesaron
     if (this.executeScenariosReceived >= this.executeTotalScenarios) {
       this.executionState = this.executeHasError ? 'Error' : 'Success';
-      console.log(this.executionState)
       if(this.executionState=="Success")
         this.siguientePaso()
       else
         {
           this.processStatus = "Error";
+          this.executionState = "Error"
+
         }
 
       this.cdRef.detectChanges();
@@ -177,7 +186,6 @@ export class FinantialStepperComponent implements OnInit {
       this.cdRef.detectChanges();
 
     } else {
-      console.warn('Faltan escenarios por procesar');
       this.executionState = 'Error';
     }
   }
@@ -204,5 +212,7 @@ export class FinantialStepperComponent implements OnInit {
     this.dialogRef.close(data)
     this.moduleService.closeConnection();
   }
+
+  
 
 }

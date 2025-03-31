@@ -28,6 +28,7 @@
                             <div class="icon-container" [ngClass]="validationState">
                                 <img *ngIf="validationState=='Disabled'"  src="../../../../assets/svg/validation.png"  alt="Step Icon">
                                 <img *ngIf="validationState=='Success'" src="../../../../assets/svg/success_white.svg"  alt="Step Icon">
+                                <img *ngIf="validationState=='Error'" src="../../../../assets/svg/cancel_white.svg"  alt="Step Icon">
                             </div>
                         </div>
                         <mat-spinner *ngIf="validationState=='Loading'"  diameter="35"></mat-spinner>
@@ -44,6 +45,8 @@
                             <div class="icon-container" [ngClass]="executionState">
                                 <img *ngIf="executionState=='Disabled'"  src="../../../../assets/svg/execution.svg"  alt="Step Icon">
                                 <img *ngIf="executionState=='Success'" src="../../../../assets/svg/success_white.svg"  alt="Step Icon">
+                                <img *ngIf="executionState=='Error'" src="../../../../assets/svg/cancel_white.svg"  alt="Step Icon">
+
                             </div>
                         </div>
                         <mat-spinner *ngIf="executionState=='Loading'"  diameter="35"></mat-spinner>
@@ -71,10 +74,16 @@
             
           </mat-horizontal-stepper>
     </div>
-    <div *ngIf="errors" class="errors w-100 c-card-section mt-6">
-        <div *ngFor="let error of errors">
-            <div class="message-status mt-2">
-                error
+
+    <div *ngIf="errors">
+        <div *ngFor="let errorKey of objectKeys(errors)" class="errors w-100 c-card-section mt-6">
+            <div class="message-status">
+                Errors in scenario: {{errorKey}}
+            </div>
+            <div *ngFor="let errorMessage of errors[errorKey]">
+                <div class="message-status mt-2">
+                    {{errorMessage}}
+                </div>
             </div>
         </div>
     </div>

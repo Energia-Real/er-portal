@@ -1,7 +1,7 @@
 <div *ngIf="isRendered; else loading"     class="card-notification my-6 mx-6">
     <div [ngClass]="{
         'circle': true,
-        'add-circle-success': type.nombreTipo == ADD && stauts.nombreEstatus ==COMPLETED ,
+        'add-circle-success':( type.nombreTipo == ADD && stauts.nombreEstatus ==COMPLETED)||( type.nombreTipo == DELETE && stauts.nombreEstatus ==COMPLETED) ,
         'general-circle-failed': (type.nombreTipo == ADD || type.nombreTipo == EDIT|| type.nombreTipo == DELETE  ) && stauts.nombreEstatus ==FAILED ,
         'edit-circle-success' : type.nombreTipo == EDIT && stauts.nombreEstatus ==COMPLETED ,
         'edit-circle-error' : type.nombreTipo == EDIT && stauts.nombreEstatus ==FAILED ,
@@ -18,6 +18,9 @@
         <ng-container class="edit-circle-success" *ngIf="type.nombreTipo == EDIT && stauts.nombreEstatus ==COMPLETED">
             <img src="../../../../../assets/svg/save_success.svg" alt="Icon save">
         </ng-container>
+        <ng-container *ngIf="type.nombreTipo == DELETE && stauts.nombreEstatus ==COMPLETED ">
+            <mat-icon>delete_outlined</mat-icon>
+          </ng-container>
     </div>
 
     <div class="c-notification ml-4">

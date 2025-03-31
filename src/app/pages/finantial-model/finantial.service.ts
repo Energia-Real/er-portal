@@ -11,7 +11,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 export class FinantialService {
   private finantialApiUrl = environment.API_URL_FINANTIAL_MODEL
   private socket$!: WebSocketSubject<any>;
-  private socketUrl = environment.API_URL_FINANTIAL_MODEL_SOCKET+"dummy_run_scenarios"
+  private socketUrl = environment.API_URL_FINANTIAL_MODEL_SOCKET+"run_scenarios"
 
   constructor(
       private http: HttpClient,
@@ -54,16 +54,29 @@ export class FinantialService {
     });
   }
 
-  exportInformation(uuid:string): Observable<Blob> {
+  exportInformation(
+    uuid:string,
+    notificationMessages: NotificationMessages
+  ): Observable<Blob> {
     const url = `${this.finantialApiUrl}output/${uuid}`;
+    const headers = new HttpHeaders({
+      NotificationMessages: JSON.stringify(notificationMessages),
+    });
     return this.http.get(url, {
+      headers: headers,
       responseType: 'blob',
     });
   }
 
-  deleteFile(uuid:string){
+  deleteFile(
+    uuid:string,
+    notificationMessages: NotificationMessages
+  ){
     const url = `${this.finantialApiUrl}clear-scenarios/${uuid}`;
-    return this.http.delete<any>(url);
+    const headers = new HttpHeaders({
+      NotificationMessages: JSON.stringify(notificationMessages),
+    });
+    return this.http.delete<any>(url,{headers});
   }
 
 }
