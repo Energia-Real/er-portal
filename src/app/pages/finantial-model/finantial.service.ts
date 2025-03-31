@@ -24,7 +24,7 @@ export class FinantialService {
         data: File,
         notificationMessages: NotificationMessages
       ) {
-        const url = `${this.finantialApiUrl}csv/dummy`;
+        const url = `${this.finantialApiUrl}csv`;
         const headers = new HttpHeaders({
           NotificationMessages: JSON.stringify(notificationMessages),
         });
@@ -47,12 +47,23 @@ export class FinantialService {
   }
     
 
-  /* getTemplate(): Observable<F> {
-      const url = `${environment.API_URL_PERFORMANCE}/energy-performance/sites`;
-  
-      return this.http.post<entity.DataTablePlantsResponse>(url, filters).pipe(
-        map((response) => Mapper.getDataClientsMapper(response, this.formatsService))
-      );
-    } */
+  downloadTemplate(): Observable<Blob> {
+    const url = `${this.finantialApiUrl}template`;
+    return this.http.get(url, {
+      responseType: 'blob',
+    });
+  }
+
+  exportInformation(uuid:string): Observable<Blob> {
+    const url = `${this.finantialApiUrl}output/${uuid}`;
+    return this.http.get(url, {
+      responseType: 'blob',
+    });
+  }
+
+  deleteFile(uuid:string){
+    const url = `${this.finantialApiUrl}clear-scenarios/${uuid}`;
+    return this.http.delete<any>(url);
+  }
 
 }

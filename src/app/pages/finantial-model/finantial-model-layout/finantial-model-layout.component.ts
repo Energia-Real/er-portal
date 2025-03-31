@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FinantialStepperComponent } from '../finantial-stepper/finantial-stepper.component';
 import { FinantialDataModelStepper } from '../finantial-model-model';
+import { FinantialService } from '../finantial.service';
 
 @Component({
   selector: 'app-finantial-model-layout',
@@ -15,8 +16,8 @@ export class FinantialModelLayoutComponent  implements OnInit{
   scenarios:number|null =null;
   fileId:string | null = null;
   constructor(
-      public dialog: MatDialog
-    
+    public dialog: MatDialog,
+    private moduleService: FinantialService
   ){
 
   }
@@ -60,4 +61,50 @@ export class FinantialModelLayoutComponent  implements OnInit{
               this.selectedFile = null;  
           });
   }
+
+  donwloadTemplate(){
+    this.moduleService.downloadTemplate().subscribe({
+      next:(resp:Blob)=>{
+        const url = window.URL.createObjectURL(resp);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'FinantialModelTemplate.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      },
+      error: (err) => {
+        console.error('Error al descargar la plantilla', err);
+      }
+    })
+  }
+
+  getInformation(){
+    this.moduleService.exportInformation(this.fileId!).subscribe({
+      next:(excel:Blob) => {
+        const url = window.URL.createObjectURL(excel);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'FinantialModelTemplate.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();     
+      },
+      error: (err) => {
+        console.error('Error al descargar excel', err);
+      }
+    })
+  }
+
+  deleteScenarios(){
+    this.moduleService.deleteFile(this.fileId!).subscribe({
+      next:(resp: any) => {
+        console.log("Scenarios deleted")  
+      },
+      error: (err) => {
+        console.error('Error al borrar escenarios', err);
+      }
+    })
+  }
+
 }
