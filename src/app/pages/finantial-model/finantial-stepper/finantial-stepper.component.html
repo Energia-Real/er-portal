@@ -1,17 +1,20 @@
-<div class="m-6" >
-    <div  class="stepper-title">
+<div class="m-6">
+    <div class="stepper-title">
         {{title}}
     </div>
-    
+
     <div class="mt-3 flex justify-center">
-        <mat-horizontal-stepper linear #stepper >
-            <mat-step label="Upload" [completed]="uploadState === 'Success' ? true : uploadState === 'Error' ? 'error' : false">
+        <mat-horizontal-stepper linear #stepper>
+            <mat-step label="Upload"
+                [completed]="uploadState === 'Success' ? true : uploadState === 'Error' ? 'error' : false">
                 <ng-template matStepLabel>
-                   <div class="flex">
-                        <div  *ngIf="uploadState!='Loading'">
+                    <div class="flex">
+                        <div *ngIf="uploadState!='Loading'">
                             <div class="icon-container" [ngClass]="uploadState">
-                                <img *ngIf="uploadState=='Initial'" src="../../../../assets/svg/upload_white.svg"  alt="Step Icon">
-                                <img *ngIf="uploadState=='Success'" src="../../../../assets/svg/success_white.svg"  alt="Step Icon">
+                                <img *ngIf="uploadState=='Initial'" src="../../../../assets/svg/upload_white.svg"
+                                    alt="Step Icon">
+                                <img *ngIf="uploadState=='Success'" src="../../../../assets/svg/success_white.svg"
+                                    alt="Step Icon">
 
                             </div>
                         </div>
@@ -20,16 +23,20 @@
                             <p class="text-step ">Load</p>
                         </div>
                     </div>
-                  </ng-template>
+                </ng-template>
             </mat-step>
-            <mat-step label="Validation" [completed]="validationState === 'Success' ? true : validationState === 'Error' ? 'error' : false" >
+            <mat-step label="Validation"
+                [completed]="validationState === 'Success' ? true : validationState === 'Error' ? 'error' : false">
                 <ng-template matStepLabel>
                     <div class="flex">
                         <div *ngIf="validationState!='Loading'">
                             <div class="icon-container" [ngClass]="validationState">
-                                <img *ngIf="validationState=='Disabled'"  src="../../../../assets/svg/validation.png"  alt="Step Icon">
-                                <img *ngIf="validationState=='Success'" src="../../../../assets/svg/success_white.svg"  alt="Step Icon">
-                                <img *ngIf="validationState=='Error'" src="../../../../assets/svg/cancel_white.svg"  alt="Step Icon">
+                                <img *ngIf="validationState=='Disabled'" src="../../../../assets/svg/validation.png"
+                                    alt="Step Icon">
+                                <img *ngIf="validationState=='Success'" src="../../../../assets/svg/success_white.svg"
+                                    alt="Step Icon">
+                                <img *ngIf="validationState=='Error'" src="../../../../assets/svg/cancel_white.svg"
+                                    alt="Step Icon">
                             </div>
                         </div>
                         <mat-spinner *ngIf="validationState=='Loading'" class="mr-4" diameter="35"></mat-spinner>
@@ -37,43 +44,50 @@
                             <p class="text-step ">Validation</p>
                         </div>
                     </div>
-                  </ng-template>
+                </ng-template>
             </mat-step>
-            <mat-step label="Execution" [completed]="executionState === 'Success' ? true : executionState === 'Error' ? 'error' : false" >
+            <mat-step label="Execution"
+                [completed]="executionState === 'Success' ? true : executionState === 'Error' ? 'error' : false">
                 <ng-template matStepLabel>
                     <div class="flex">
                         <div *ngIf="executionState!='Loading'">
                             <div class="icon-container" [ngClass]="executionState">
-                                <img *ngIf="executionState=='Disabled'"  src="../../../../assets/svg/execution.svg"  alt="Step Icon">
-                                <img *ngIf="executionState=='Success'" src="../../../../assets/svg/success_white.svg"  alt="Step Icon">
-                                <img *ngIf="executionState=='Error'" src="../../../../assets/svg/cancel_white.svg"  alt="Step Icon">
+                                <img *ngIf="executionState=='Disabled'" src="../../../../assets/svg/execution.svg"
+                                    alt="Step Icon">
+                                <img *ngIf="executionState=='Success'" src="../../../../assets/svg/success_white.svg"
+                                    alt="Step Icon">
+                                <img *ngIf="executionState=='Error'" src="../../../../assets/svg/cancel_white.svg"
+                                    alt="Step Icon">
 
                             </div>
                         </div>
-                        <mat-spinner *ngIf="executionState=='Loading'"  class="mr-4" diameter="35"></mat-spinner>
+                        <mat-spinner *ngIf="executionState=='Loading'" class="mr-4" diameter="35"></mat-spinner>
                         <div class="flex items-center justify-center">
                             <p class="text-step ">Execution</p>
                         </div>
                     </div>
-                  </ng-template>
+                </ng-template>
             </mat-step>
-            <mat-step label="Result" [completed]="resultState === 'Success' ? true : resultState === 'Error' ? 'error' : false" >
+            <mat-step label="Result"
+                [completed]="resultState === 'Success' ? true : resultState === 'Error' ? 'error' : false">
                 <ng-template matStepLabel>
                     <div class="flex">
                         <div class="icon-container" [ngClass]="resultState">
-                            <img *ngIf="resultState=='Disabled'" src="../../../../assets/svg/result.svg"  alt="Step Icon">
-                            <img *ngIf="resultState=='Success'" src="../../../../assets/svg/success_white.svg"  alt="Step Icon">
+                            <img *ngIf="resultState=='Disabled'" src="../../../../assets/svg/result.svg"
+                                alt="Step Icon">
+                            <img *ngIf="resultState=='Success'" src="../../../../assets/svg/success_white.svg"
+                                alt="Step Icon">
                         </div>
                         <div class="flex items-center justify-center">
                             <p class="text-step ">Result</p>
                         </div>
                     </div>
-                    
 
-                  </ng-template>
+
+                </ng-template>
             </mat-step>
-            
-          </mat-horizontal-stepper>
+
+        </mat-horizontal-stepper>
     </div>
 
     <div *ngIf="errors">
@@ -89,17 +103,17 @@
         </div>
     </div>
 
-   <div class="flex justify-center">
+    <div class="flex justify-center">
         <div *ngIf="processStatus=='Error'" class="message-status mb-6">
             Check the errors before trying again.
         </div>
         <div *ngIf="processStatus=='Loading'" class="message-status_success mb-6">
-            Your process is in progress, and staying on this page will allow it to complete successfully. 
+            Your process is in progress, and staying on this page will allow it to complete successfully.
         </div>
         <div *ngIf="processStatus=='Success'" class="message-status_success mb-6">
             Your process has been successfully completed. You can now view your file.
         </div>
-   </div>
+    </div>
     <div>
         <mat-divider></mat-divider>
     </div>
@@ -114,6 +128,6 @@
             Back
         </button>
     </div>
-    
+
 
 </div>
