@@ -8,52 +8,46 @@
         <div class="c-card-section c-model w-2/3">
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-model">
                 <div class="flex flex-col justify-around px-5">
-                   <button class="flex btn-action-add" (click)="openFileSelector()">
-                    <img 
-                    src="../../../../assets/svg/upload_white.svg" 
-                    alt="Icon notification"
-                    class="notification-icon"
-                    />    
-                    <div>
-                        Upload Document
-                    </div>
-                   </button>
-                   <button class="flex btn-cancel" (click)="donwloadTemplate()">
-                    <div>
-                        Download template
-                    </div>
-                   </button>
+                    <button class="flex btn-action-add" (click)="openFileSelector()">
+                        <img src="../../../../assets/svg/upload_white.svg" alt="Icon notification"
+                            class="notification-icon" />
+                        <div>
+                            Upload Document
+                        </div>
+                    </button>
+                    <button class="flex btn-cancel" (click)="donwloadTemplate()">
+                        <div>
+                            Download template
+                        </div>
+                    </button>
                     <div class="linea"></div>
                 </div>
-                <div >
+                <div class="flex flex-col justify-center gap-2">
                     <p>Status</p>
-                    <div *ngIf="processStatus == 'Success'" class="flex justify-center">
-                        <img 
-                        src="../../../../assets/svg/success_green.svg" 
-                        alt="Icon notification"
-                        class="notification-icon"
-                        />    
-                    </div>
-                    <div *ngIf="processStatus == 'Error'" class="flex justify-center">
-                        <img 
-                        src="../../../../assets/svg/delete-circle.svg" 
-                        alt="Icon notification"
-                        class="notification-icon"
-                        />    
+                    <div *ngIf="processStatus!=null else notData">
+                        <div *ngIf="processStatus == 'Success'" class="flex justify-center">
+                            <img src="../../../../assets/svg/success_green.svg" alt="Icon notification"
+                                class="notification-icon" />
+                        </div>
+                        <div *ngIf="processStatus == 'Error'" class="flex justify-center">
+                            <img src="../../../../assets/svg/delete-circle.svg" alt="Icon notification"
+                                class="notification-icon" />
+                        </div>
                     </div>
                     <div class="linea"></div>
                 </div>
-                <div >
-                    <div>
-                       
-                        <p>Number of <br> scenarios</p>
+                <div class="flex flex-col justify-center gap-2">
+                    <p>Number of <br> scenarios</p>
+
+                    <div *ngIf="scenarios != null else notData">
                         <div *ngIf="scenarios" class="scenarios">
                             {{scenarios}}
                         </div>
-                        <div class="linea"></div>
                     </div>
+                    <div class="linea"></div>
+
                 </div>
-                <div class="flex flex-col justify-around px-5" >
+                <div class="flex flex-col justify-around px-5">
                     <button class="flex btn-action-add" [disabled]="fileId==null" (click)="getInformation()">
                         <div>
                             Download Excel
@@ -69,3 +63,9 @@
         </div>
     </div>
 </div>
+
+<ng-template #notData>
+    <div class="no-data-found d-flex justify-center">
+        <app-message-no-data [message]="'The information could not be loaded.'"></app-message-no-data>
+    </div>
+</ng-template>

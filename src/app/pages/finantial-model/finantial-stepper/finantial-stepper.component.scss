@@ -1,4 +1,5 @@
 .icon-container {
+    margin-right: 16px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -6,6 +7,10 @@
     align-items: center;
     justify-content: center;
     background-color: gray; // Color por defecto
+  }
+
+  button{
+    width: 194px !important;
   }
   
   .icon-container.Initial {

@@ -1613,6 +1613,7 @@ input[type="number"]:focus {
   border-radius: 10px !important;
   transition: all 0.3s ease;
   border-top-color: #4CAF50 !important;
+  max-width: 40px !important;
 }
 
 /* Línea después de paso completado con éxito */
@@ -1641,4 +1642,17 @@ input[type="number"]:focus {
 .effect-hover:hover {
   transition: all 0.3s ease;
   color: #EE6A0A ;
+}
+
+
+.mat-step-header {
+  pointer-events: none !important;
+  cursor: default !important;
+}
+
+.mat-step-header.cdk-keyboard-focused,
+.mat-step-header.cdk-program-focused,
+.mat-step-header:hover,
+.mat-step-header.mat-step-header-selected {
+  background-color: transparent !important;
 }
