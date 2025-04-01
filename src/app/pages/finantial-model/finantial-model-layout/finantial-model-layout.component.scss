@@ -37,7 +37,8 @@
         background: #CFCFCF;
         position: absolute;
         right: 0;
-        top: 16px;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }
@@ -49,10 +50,12 @@
   }
 
   .c-model {
-    min-height: 173px;
+    min-height: 138px;
   }
 
   .scenarios{
     font-size: 24px;
     font-weight: 500;
   }
+
+  

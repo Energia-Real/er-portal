@@ -44,6 +44,7 @@ export class FinantialModelLayoutComponent  implements OnInit{
     
   }
   openFileSelector() {
+    this.fileInput.nativeElement.value = '';
     this.fileInput.nativeElement.click(); 
   }
 
@@ -57,6 +58,7 @@ export class FinantialModelLayoutComponent  implements OnInit{
       this.openValidation()
 
     }
+    input.value = '';
   }
 
   openValidation(){
@@ -66,7 +68,7 @@ export class FinantialModelLayoutComponent  implements OnInit{
     this.fileId = null;
     const dialogRef = this.dialog.open(FinantialStepperComponent, {
               disableClose: true ,
-              width: '564px',
+              width: '753px',
               data: dataModal!
             });
         dialogRef.afterClosed().subscribe(result => {
@@ -89,7 +91,7 @@ export class FinantialModelLayoutComponent  implements OnInit{
         const url = window.URL.createObjectURL(resp);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'FinantialModelTemplate.xlsx';
+        a.download = 'FinantialModelTemplate.csv';
         a.click();
         window.URL.revokeObjectURL(url);
         a.remove();

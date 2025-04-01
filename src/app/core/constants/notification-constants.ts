@@ -78,7 +78,7 @@ export const NOTIFICATION_CONSTANTS = {
   DELETE_FINANTIAL_ERROR: 'Delete_Finantial_Model_Error',
   //FILES
   CONFIRM_ADD_FILE_TITLE: 'A new File has been successfully added.',
-  CONFIRM_ADD_FILE_CONTENT: 'Your file has been added successfully. You can edit it anytime if needed.',
+  CONFIRM_ADD_FILE_CONTENT: 'Your file has been added successfully.',
   
 
   // Invoices 

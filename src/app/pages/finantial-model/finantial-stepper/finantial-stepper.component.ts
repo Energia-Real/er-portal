@@ -32,6 +32,7 @@ export class FinantialStepperComponent implements OnInit {
   executionState:StepState = "Disabled"
   resultState:StepState = "Disabled"
 
+  title = 'Process Calculation...'
 
 
   executeMessagesCount = 0;
@@ -78,6 +79,7 @@ export class FinantialStepperComponent implements OnInit {
       },
       error:(errors:any) =>{
         this.processStatus = "Error";
+        this.title = 'Process Error Detected'
       }
     })
   }
@@ -90,6 +92,7 @@ export class FinantialStepperComponent implements OnInit {
       error: (err) => {
         console.error("Error en WebSocket ❌", err);
         this.processStatus = "Error";
+        this.title = 'Process Error Detected'
       }
     });
     this.startRequest(fileId);
@@ -108,6 +111,7 @@ export class FinantialStepperComponent implements OnInit {
       this.validationState ="Error"
       this.errors=response.errors
       this.processStatus ="Error"
+      this.title = 'Process Error Detected'
     }
     switch (process) {
       case 'validate':
@@ -177,6 +181,10 @@ export class FinantialStepperComponent implements OnInit {
       if(this.resultState=="Success"){
         this.siguientePaso()
         this.processStatus = "Success"
+        this.title = 'Calculation Successful'
+        console.log(this.title)
+        this.cdRef.detectChanges();
+
       }
       else {
         this.processStatus = "Error";
