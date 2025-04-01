@@ -17,36 +17,36 @@ export class EnergyProductionService implements OnDestroy {
 
   constructor(private http: HttpClient, public formatsService: FormatsService) { }
 
-  getEnergyProdData(year: string, name: string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
-    const url = `${this.API_URL}/GetEnergyProduced/${year}`;
+  getEnergyProdData(filters:entity.FiltersEnergyProd): Observable<entity.DataEnergyProdTablMapper> {
+    const url = `${this.API_URL}/GetEnergyProduced/${filters.year}`;
     const params = new HttpParams()
-      .set('pagesize', pageSize)
-      .set('page', page)
-      .set('name', name);
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page)
+      .set('name', filters.name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
       map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
-  getEnergyConsumptionData(year: string, name: string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
-    const url = `${this.API_URL}/GetEnergyConsumption/${year}`;
+  getEnergyConsumptionData(filters:entity.FiltersEnergyProd): Observable<entity.DataEnergyProdTablMapper> {
+    const url = `${this.API_URL}/GetEnergyConsumption/${filters.year}`;
     const params = new HttpParams()
-      .set('pagesize', pageSize)
-      .set('page', page)
-      .set('name', name);
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page)
+      .set('name', filters.name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
       map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))
     );
   }
 
-  getEnergyEstimatedData(year: string, name: string, pageSize: number, page: number): Observable<entity.DataEnergyProdTablMapper> {
-    const url = `${this.API_URL}/GetEnergyEstimated/${year}`;
+  getEnergyEstimatedData(filters:entity.FiltersEnergyProd): Observable<entity.DataEnergyProdTablMapper> {
+    const url = `${this.API_URL}/GetEnergyEstimated/${filters.year}`;
     const params = new HttpParams()
-      .set('pagesize', pageSize)
-      .set('page', page)
-      .set('name', name);
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page)
+      .set('name', filters.name);
 
     return this.http.get<entity.DataTableEnergyProdResponse>(url, { params }).pipe(
       map((response) => Mapper.getEnergyProdDataDataMapper(response, this.formatsService))

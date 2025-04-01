@@ -8,6 +8,13 @@ export interface DataTableEnergyProdResponse {
   errors?: ErrorRequest[];
 }
 
+export interface FiltersEnergyProd {
+  name: string;
+  pageSize: number;
+  page: number;
+  year: string;
+}
+
 export interface DataEnergyProdTable {
   id: string;
   siteName: string;

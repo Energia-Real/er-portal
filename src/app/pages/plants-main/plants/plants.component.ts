@@ -54,7 +54,6 @@ export class PlantsComponent implements OnDestroy, AfterViewInit {
     private notificationService: OpenModalsService,
     private router: Router
   ) {
-
     combineLatest([
       this.store.select(selectPageSize).pipe(distinctUntilChanged()),
       this.store.select(selectPageIndex).pipe(distinctUntilChanged())

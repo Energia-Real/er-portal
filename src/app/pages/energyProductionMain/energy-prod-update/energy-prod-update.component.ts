@@ -22,7 +22,6 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" = "Create";
   @Input() set plant(editedData: any | null | undefined) {
-    console.log(editedData);
     this.editedPlant = editedData;
 
     function limpiarNumerosConFormato(value: string): number {
@@ -66,13 +65,12 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
       ...this.editedPlant,
       ...this.formData.value
     };
-    console.log(objData)
+
     delete objData.monthSelectedName;
     delete objData.siteName;
     delete objData.yearName;
     delete objData.energyType;
     delete objData.isCreated;
-
 
     if (deleteEnergyProd) objData.deleteEnergyValue = true;
      else objData.deleteEnergyValue = false;
@@ -92,7 +90,6 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   }
 
   saveDataPatch(objData: entity.DataPatchEnergyProd) {
-
     if(this.editedPlant.energyType == 1){
       this.moduleServices.patchDataEnergyProd(objData).subscribe({
         next: () => { this.completionMessage(true) },
@@ -120,7 +117,6 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
         }
       })
     }
-    
   }
 
   cancelEdit() {
@@ -154,7 +150,6 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
-
 }

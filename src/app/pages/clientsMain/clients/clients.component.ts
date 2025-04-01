@@ -82,9 +82,7 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
         }
       });
 
-    this.drawerOpenSub = this.store.select(selectDrawer)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((resp: DrawerGeneral) => {
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
         this.drawerAction = resp.drawerAction;
         this.drawerInfo = resp.drawerInfo;
 
