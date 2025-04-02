@@ -13,4 +13,5 @@ export interface WebSocketResponse{
   scenario?: number
   scenarios?: number
   output_file_uuid?: string
+  progress?: number
 }

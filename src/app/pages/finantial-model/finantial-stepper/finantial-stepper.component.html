@@ -103,6 +103,12 @@
         </div>
     </div>
 
+    <div class="flex justify-center mb-6 message-status_success" *ngIf="processStatus=='Loading' || processStatus=='Success'">
+        <div [ngClass]="{'Success': processStatus === 'Success'}">
+            Progress: {{progress}} out of 100 completed.
+        </div>
+    </div>
+
     <div class="flex justify-center">
         <div *ngIf="processStatus=='Error'" class="message-status mb-6">
             Check the errors before trying again.
