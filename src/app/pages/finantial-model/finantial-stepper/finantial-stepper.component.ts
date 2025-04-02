@@ -43,6 +43,7 @@ export class FinantialStepperComponent implements OnInit {
   loading = true;
   processStatus: StepState = "Loading";
   errors: { [key: string]: string[] } = {};
+  progress = 1;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FinantialDataModelStepper,
@@ -137,6 +138,10 @@ export class FinantialStepperComponent implements OnInit {
 
   private handleExecuteMessages(response: WebSocketResponse): void {
     const { status, scenario } = response;
+
+    if(response.progress){
+      this.progress = response.progress
+    }
 
     // Mensaje inicial de execute
     if (status === 'start') {
