@@ -15,7 +15,7 @@ export class NotificationDataService {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
   CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
   EDIT = NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
-  DELETE = NOTIFICATION_CONSTANTS.DELETE;
+  DELETE = NOTIFICATION_CONSTANTS.DELETE_CONFIRM_TYPE;
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
   constructor(
     private notificationService: NotificationService,
@@ -98,6 +98,72 @@ export class NotificationDataService {
         return
     }
   }
+
+  qyaNotificationData(notificationType: string): notificationData | undefined{
+    var dataNotification: notificationData;
+    switch (notificationType) {
+      case this.ADD:
+        dataNotification = {
+          type: NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE,
+          typeId: this.notificationService.getNotificationTypesByName(this.ADD).id,
+          title: NOTIFICATION_CONSTANTS.ADD_QYA_TITLE,
+          content: NOTIFICATION_CONSTANTS.ADD_QYA_CONTENT,
+          warn: NOTIFICATION_CONSTANTS.ADD_QYA_WARN,
+          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+        }
+        return dataNotification;
+      case this.EDIT:
+        dataNotification = {
+          type: NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE,
+          typeId: this.notificationService.getNotificationTypesByName(this.EDIT).id,
+          title: NOTIFICATION_CONSTANTS.GLOBAL_EDIT_TITLE,
+          content: NOTIFICATION_CONSTANTS.GLOBAL_EDIT_CONTENT,
+          warn: NOTIFICATION_CONSTANTS.GLOBAL_EDIT_WARN,
+          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+        }
+        return dataNotification;
+      case this.CANCEL:
+        dataNotification = {
+          type: NOTIFICATION_CONSTANTS.CANCEL_TYPE,
+          typeId: this.notificationService.getNotificationTypesByName(this.CANCEL).id,
+          title: NOTIFICATION_CONSTANTS.CANCEL_ADD_CORPORATE_NAME_TITLE,
+          content: NOTIFICATION_CONSTANTS.CANCEL_ADD_CORPORATE_NAME_CONTENT,
+          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+        }
+        return dataNotification;
+      default:
+        return
+    }
+  }
+
+  finantialNotificationData(notificationType: string): notificationData | undefined{
+    var dataNotification: notificationData;
+    switch (notificationType) {
+      case this.CANCEL:
+        dataNotification = {
+          type: NOTIFICATION_CONSTANTS.CANCEL_TYPE,
+          typeId: this.notificationService.getNotificationTypesByName(this.CANCEL).id,
+          title: NOTIFICATION_CONSTANTS.CANCEL_ADD_CORPORATE_NAME_TITLE,
+          content: NOTIFICATION_CONSTANTS.CANCEL_ADD_CORPORATE_NAME_CONTENT,
+          buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+        }
+        return dataNotification;
+      case this.DELETE:
+        dataNotification = {
+          type: NOTIFICATION_CONSTANTS.DELETE_CONFIRM_TYPE,
+          typeId: this.notificationService.getNotificationTypesByName(this.DELETE).id,
+          title: NOTIFICATION_CONSTANTS.DELETE_FINANTIAL_MODEL_TITLE,
+          content: NOTIFICATION_CONSTANTS.DELETE_FINANTIAL_MODEL_CONTENT,
+          warn: NOTIFICATION_CONSTANTS.DELETE_FINANTIAL_MODEL_WARN,
+          buttonAction: NOTIFICATION_CONSTANTS.DELETE_BUTTON
+        }
+        return dataNotification;
+      default:
+        return
+    }
+
+  }
+
 
   invoicesNotificationData(notificationType: boolean, data?: GeneralFilters): notificationData | undefined {
     var dataNotification: notificationData;

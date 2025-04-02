@@ -14,7 +14,7 @@ export class NotificationComponent implements OnDestroy {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
   CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
   EDIT = NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
-  DELETE = NOTIFICATION_CONSTANTS.DELETE;
+  DELETE = NOTIFICATION_CONSTANTS.DELETE_CONFIRM_TYPE;
   ERRORS = NOTIFICATION_CONSTANTS.ERRORS; // DEBE VERIFICARSE LA IMPLEMENTACVION DE MULTIPLES ERRORES Y LAS CONSTANTES
   //EN VEZ DE LLAMARSE ERRORS PODRIA SER MULTIPLE_ERRORS_TYPE, UN POCO MAS DESCRIPTIVO 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE; 
@@ -23,7 +23,7 @@ export class NotificationComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: notificationData,
     private cdr: ChangeDetectorRef,
   ) {
-    console.log(data)
+
     setTimeout(() => {
       this.cdr.detectChanges(); // Fuerza la actualización del HTML
     }, 0); 

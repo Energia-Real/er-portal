@@ -25,6 +25,8 @@ export const NOTIFICATION_CONSTANTS = {
 
   //Data for notifications
   ACTION_BUTTON: 'Confirm',
+  DELETE_BUTTON: 'Delete',
+
   GLOBAL_DELETE_TITLE: 'Delete Confirmation',
   GLOBAL_DELETE_CONTENT: 'Are you sure you want to delete this (item)? This action is irreversible and will remove all related information, including plants and records. Please confirm before proceeding.',
   GLOBAL_DELETE_WARN: '',
@@ -56,6 +58,28 @@ export const NOTIFICATION_CONSTANTS = {
   CANCEL_ADD_CORPORATE_NAME_CONTENT: 'Are you sure you want to cancel adding this corporate? All entered information will be lost, and no changes will be saved',
   EDIT_CORPORATE_SUCCESS: 'Edit_Corporate_Success',
 
+  //QyA
+  ADD_QYA_TITLE: 'Confirm Add Question',
+  ADD_QYA_CONTENT: 'Are you sure you want to add this question? You can always edit it later.',
+  ADD_QYA_WARN: 'Once added, you can modify it at any time',
+  ADD_QYA_COMPLETE_TITLE: 'Question added Successfully',
+  ADD_QYA_COMPLETE_CONTENT: 'Your question has been added successfully. You can edit it anytime if needed.',
+  ADD_QYA_SUCCESS: 'Add_Qya_Success',
+  ADD_QYA_ERROR: 'Add_Qya_Error',
+
+  //Data for finantial Model 
+  DELETE_FINANTIAL_MODEL_TITLE: 'Confirm Deletion',
+  DELETE_FINANTIAL_MODEL_CONTENT: 'This will erase all processed data, and you will need to start the process again from the beginning. ',
+  DELETE_FINANTIAL_MODEL_WARN: 'This action cannot be undone. Make sure you are ready to reset the process.',
+
+  CONFIRM_DELETE_FINANTIAL_TITLE: 'Scenario deleted',
+  CONFIRM_DELETE_FINANTIAL_CONTENT: 'The selected scenario has been successfully deleted.',
+  DELETE_FINANTIAL_SUCCESS:'Delete_Finantial_Model_Success',
+  DELETE_FINANTIAL_ERROR: 'Delete_Finantial_Model_Error',
+  //FILES
+  CONFIRM_ADD_FILE_TITLE: 'A new File has been successfully added.',
+  CONFIRM_ADD_FILE_CONTENT: 'Your file has been added successfully.',
+  
 
   // Invoices 
   GENERATE_INVOICE_TITLE: 'Confirm Invoice Generation',
@@ -67,6 +91,9 @@ export const NOTIFICATION_CONSTANTS = {
   CONFIRM_INVOICE_WARN: 'Attention! This action cannot be undone',
   //Data for Center Notification Messages (Only message keys) 
 
+
+  CONFIRM_DOWNLOAD_FILE_TITLE: "Download successful",
+  CONFIRM_DOWNLOAD_FILE_CONTENT:"Your file has been downloaded successfully. Please review the data before using it.",
   //Clients
   ADD_CLIENT_SUCCESS: 'Add_Client_Success',
   ADD_CLIENT_ERROR: 'Add_Client_Error',

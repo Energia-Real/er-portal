@@ -95,40 +95,54 @@ export class NotificationService {
   }
 
   getNotificationStatusByName(statusName: string): any | undefined {
+   if(this.notificationStatuses){
     return this.notificationStatuses.find(
       (status: { nombreEstatus: string }) => status.nombreEstatus === statusName
     );
+   }
   }
 
   getNotificationStatusById(statusNameId: number): any | undefined {
-    return this.notificationStatuses.find(
-      (status: { id: number }) => status.id === statusNameId
-    );
+    if (this.notificationStatuses){
+      return this.notificationStatuses.find(
+        (status: { id: number }) => status.id === statusNameId
+      );
+    }
+    
   }
 
   getNotificationTypesByName(statusType: string): any | undefined {
-    console.log(this.notificationTypes);
-    return this.notificationTypes.find(
-      (type: { nombreTipo: string }) => type.nombreTipo === statusType
-    );
+    if(this.notificationTypes){
+      console.log(this.notificationTypes)
+      return this.notificationTypes.find(
+        (type: { nombreTipo: string }) => type.nombreTipo === statusType
+      );
+    }
+    
   }
 
   getNotificationTypesById(statusTypeId: number): any | undefined {
-    return this.notificationTypes.find(
-      (type: { id: number }) => type.id === statusTypeId
-    );
+    if(this.notificationTypes){
+      return this.notificationTypes.find(
+        (type: { id: number }) => type.id === statusTypeId
+      );
+    }
   }
 
   getNotificationCenterMessageByCode(code: string): any | undefined {
+   if(this.notificationCenterMessages){
     return this.notificationCenterMessages.find(
       (centerMessage: { textKey: string }) => centerMessage.textKey === code
     );
+   }
   }
 
   getNotificationCenterMessageById(id: number): any | undefined {
-    return this.notificationCenterMessages.find(
-      (centerMessage: { id: number }) => centerMessage.id === id
-    );
+    if(this.notificationCenterMessages){
+      return this.notificationCenterMessages.find(
+        (centerMessage: { id: number }) => centerMessage.id === id
+      );
+    }
   }
 
   getNotifications(): any | undefined {

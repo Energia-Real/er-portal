@@ -7,6 +7,10 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { Module } from '@app/layout/layout/modules.interface';
 
+
+declare const pendo: any;
+
+
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -39,6 +43,17 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
     this.authService.getInfoUser().subscribe((data) => {
       this.userInfo = data;
+      if (typeof pendo !== 'undefined') {
+        pendo.initialize({
+          visitor: {
+            id: this.userInfo.email,
+            //firstName: this.userInfo.persona.nombres,
+            //lastName: this.userInfo.persona.apellidos
+          }
+        });
+      } else {
+        console.error('Pendo no está definido. Asegúrate de que el script está cargado en index.html.');
+      }
       const encryptedData = this.encryptionService.encryptData(data);
       localStorage.setItem('userInfo', encryptedData);
 
