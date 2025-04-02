@@ -126,9 +126,6 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.alertInformationModal()
-
-
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
     else console.error('Paginator no está definido');
 
