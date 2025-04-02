@@ -11,7 +11,7 @@ import { RatesService } from '../rates.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
+import { GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
@@ -25,13 +25,13 @@ import { MatDialog } from '@angular/material/dialog';
 export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
-  pageSize: number = 5;
+  pageSize: number = 10;
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
@@ -58,13 +58,13 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
 
   constructor(
     private router: Router,
-    public dialog: MatDialog,
-    private store: Store<{ filters: FilterState }>,
+    private dialog: MatDialog,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
     private notificationDataService: NotificationDataService,
     private moduleServices: RatesService
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),
@@ -164,7 +164,6 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
     this.router.navigateByUrl(link);
   }
 
-
   getServerData(event: PageEvent): void {
     if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
       this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
@@ -198,6 +197,6 @@ export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewIni
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

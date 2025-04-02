@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, ActivatedRoute } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { selectFilterState } from '@app/core/store/selectors/filters.selector';
+import { GeneralFilters } from '../models/general-models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,6 @@ export class FilterGuard implements CanActivate {
   constructor(
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute
   ) { }
 
   canActivate(
@@ -20,19 +20,25 @@ export class FilterGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this.store.select(selectFilterState).pipe(
-      map((generalFilters: any) => {
-        let currentParams: any
-        const currentUrl = state.url.split('?')[0];
-        currentParams = new URLSearchParams(window.location.search);
-        if (!currentParams) currentParams = new URLSearchParams(generalFilters.generalFilters);
+      map((generalFilters: GeneralFilters) => {
+        const { startDate, endDate } = generalFilters;
+        const startDateParts = startDate.split('-');
+        const endDateParts = endDate.split('-');
 
-        const startday = generalFilters.generalFilters.startDate;
-        const endday = generalFilters.generalFilters.endDate;
+        let startDayYear = startDateParts[0]; 
+        let endDayYear = endDateParts[0];
+
+        // Si el año de inicio y fin no coinciden, ajustamos solo el año de endday
+        if (startDayYear !== endDayYear) endDayYear = startDayYear;
+
+        const startday = startDate;
+        const endday = `${endDayYear}-${endDateParts[1]}-${endDateParts[2]}`;
+
+        const currentUrl: string = state.url.split('?')[0];
+        const currentParams = new URLSearchParams(route.queryParams as any);
         const newParams = new URLSearchParams(currentParams);
 
-        // Si startday ha cambiado o no está en la URL, lo actualizamos
         if (startday !== currentParams.get('startday')) newParams.set('startday', startday);
-        // Si endday ha cambiado o no está en la URL, lo actualizamos
         if (endday !== currentParams.get('endday')) newParams.set('endday', endday);
 
         const newUrl = `${currentUrl}?${newParams.toString()}`;

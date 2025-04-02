@@ -1,0 +1,75 @@
+.icon-container {
+    margin-right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: gray; // Color por defecto
+  }
+
+  button{
+    width: 194px !important;
+  }
+  
+  .icon-container.Initial {
+    background-color: #FF4713;
+  }
+  
+  .icon-container.Disabled {
+    background-color: rgba(89, 89, 89, .1);
+  }
+  .icon-container.Success {
+    background-color: #79C1C1;
+  }
+  .icon-container.Error {
+    background-color: #dc0000;
+  }
+  
+  .svg-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  ::ng-deep .mat-step-icon {
+    display: none !important;  // Oculta el número predeterminado de los pasos
+  }
+
+  .text-step{
+    margin-bottom: 0px !important;
+  }
+
+  .mat-stepper-horizontal-line{
+    border-top-color: #595959 !important;
+    border-top-width:3px !important;
+    border-bottom: 10px !important;
+  }
+
+  .stepper-title{
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .text-step{
+    font-size: 11px;
+  }
+
+
+  .message-status{
+    color: red;
+    font-size: 14px;
+  }
+  .message-status_success{
+    color: black;
+    font-size: 14px;
+  }
+
+  .errors{
+    height: 130px;
+    overflow-y: auto;
+  }
+
+  .Success{
+    color:#57B1B1 !important
+  }

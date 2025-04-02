@@ -59,7 +59,7 @@
                 padding: 4px 8px;
                 border-radius: 8px;
                 border: 1px solid #EDEDED !important;
-                font-size: 10px;
+                font-size: 12px!important;
                 line-height: 13px;
             }
         }
@@ -305,7 +305,7 @@ tr {
 }
 
 .c-scroll-table {
-    height: calc(100vh - 400px);
+    height: calc(100vh - 315px);
     overflow: scroll;
 }
 
@@ -340,7 +340,7 @@ tr {
                 padding: 4px 8px;
                 border-radius: 8px;
                 border: 1px solid #EDEDED !important;
-                font-size: 10px;
+                font-size: 12px!important;
                 line-height: 13px;
             }
         }

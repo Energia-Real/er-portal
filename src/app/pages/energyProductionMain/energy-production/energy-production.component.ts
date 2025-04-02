@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,13 +8,12 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { DrawerGeneral, FilterState, GeneralFilters, notificationData } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, notificationData } from '@app/shared/models/general-models';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
-import { debounceTime, Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { EnergyProductionService } from '../energy-production.service';
 import * as entity from '../energy-production-model';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -25,14 +24,11 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
   selector: 'app-energy-production',
   templateUrl: './energy-production.component.html',
   styleUrl: './energy-production.component.scss',
-  providers: [
-    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() }
-  ]
 })
-export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
+export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -57,14 +53,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     'energyMonth12',
   ];
 
-  pageSizeSub: Subscription;
-  pageIndexSub: Subscription;
   drawerOpenSub: Subscription;
-
-  ngAfterViewChecked() {
-    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
-    else console.error('Paginator no está definido');
-  }
 
   years: { value: number }[] = [
     { value: 2024 },
@@ -89,100 +78,99 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
 
   selectedFile: File | null = null;
 
+  newEnergyType: number = 0;
   selectedEnergyType: number = 1;
+  generalFilters!: GeneralFilters
 
+  isLoading: boolean = false;
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private router: Router,
     private moduleServices: EnergyProductionService) {
+    this.generalFilters$ = this.store.select(state => state.filters);
 
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    combineLatest([
+      this.generalFilters$.pipe(distinctUntilChanged()),
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([generalFilters, pageSize, pageIndex]) => {
+        const hasYearChanged = this.generalFilters?.year !== generalFilters.year;
+        const hasPaginationChanged = this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1;
 
-    this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
-      this.pageSize = size;
-      if (this.paginator) this.paginator.pageSize = size;
-    });
+        if (hasYearChanged || hasPaginationChanged) {
+          this.generalFilters = generalFilters;
+          this.pageSize = pageSize;
+          this.pageIndex = pageIndex + 1;
 
-    this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
-      this.pageIndex = index + 1;
-      if (this.paginator) this.paginator.pageIndex = index;
-      this.getData(index + 1, this.searchValue);
-    });
+          if (this.paginator) {
+            this.paginator.pageSize = pageSize;
+            this.paginator.pageIndex = pageIndex;
+          }
 
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
+          if (!this.isLoading || hasYearChanged) this.getData();
+        }
+      });
+
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
       this.drawerOpenPlant = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
       this.drawerInfo = resp.drawerInfo;
-      if (resp.needReload) this.getData(1, this.searchValue);
+      if (resp.needReload) this.getData(this.searchValue);
     });
   }
 
-  ngOnInit(): void {
-    this.setYear()
-  };
-
   ngAfterViewInit(): void {
+    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
+    else console.error('Paginator no está definido');
+
     this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getData(1, content)
+      this.getData(content!);
     })
   }
 
-  changePageSize(event: any) {
-    this.pageSize = event.value;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator._changePageSize(this.pageSize);
+  getData(name = '', event?: any) {
+    this.isLoading = true;
+    this.newEnergyType = event?.value || 0;
+
+    if (this.newEnergyType) {
+      this.store.dispatch(updatePagination({ pageIndex: 0, pageSize: this.pageSize }));
+      this.selectedEnergyType = this.newEnergyType;
+    }
+
+    let filters: entity.FiltersEnergyProd = {
+      pageSize: this.pageSize,
+      page: this.newEnergyType ? 1 : this.pageIndex,
+      year: this.generalFilters.year,
+      name: name || this.searchBar.value!
+    };
+
+    this.getEnergyData(filters, this.selectedEnergyType);
   }
 
-  setYear() {
-    this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-      this.selectedYear = generalFilters.year
-      this.getData(1, this.searchValue);
-    });
-  }
+  getEnergyData(filters: entity.FiltersEnergyProd, energyType: number) {
+    const services: any = {
+      1: this.moduleServices.getEnergyProdData.bind(this.moduleServices),
+      2: this.moduleServices.getEnergyConsumptionData.bind(this.moduleServices),
+      3: this.moduleServices.getEnergyEstimatedData.bind(this.moduleServices)
+    };
 
-  getDataResponse(page: number, name: string) {
-    this.moduleServices.getEnergyProdData(this.selectedYear, name, this.pageSize, page).subscribe({
+    const service = services[energyType] || services[1];
+
+    service(filters).subscribe({
       next: (response: entity.DataEnergyProdTablMapper) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
-        this.pageIndex = page!
+        this.pageIndex = filters?.page;
+        this.isLoading = false;
       },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
-
-  getConsumptionDataResponse(page: number, name: string) {
-    this.moduleServices.getEnergyConsumptionData(this.selectedYear, name, this.pageSize, page).subscribe({
-      next: (response: entity.DataEnergyProdTablMapper) => {
-        this.dataSource.data = response?.data;
-        this.totalItems = response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = page!
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
-
-  getEstimatedDataResponse(page: number, name: string) {
-    this.moduleServices.getEnergyEstimatedData(this.selectedYear, name, this.pageSize, page).subscribe({
-      next: (response: entity.DataEnergyProdTablMapper) => {
-        this.dataSource.data = response?.data;
-        this.totalItems = response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = page!
-      },
-      error: error => {
+      error: (error: any) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
@@ -190,34 +178,32 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
   }
 
   editClient(data: entity.DataEnergyProdTable, month: number, monthName: string, energyEdited: number) {
-    console.log(energyEdited)
     let objData: any = {
       id: data.id,
       siteName: data?.siteName,
       year: this.selectedYear,
       monthSelected: month,
       monthSelectedName: monthName,
-      energyValue: energyEdited? energyEdited : '',
+      energyValue: energyEdited ? energyEdited : '',
       isCreated: data.isCreated,
       energyType: this.selectedEnergyType
     }
-    console.log(objData)
     this.editedClient = objData
     this.updDraweStateEdit(true);
   }
 
-  updDraweStateEdit(estado: boolean): void {
-    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.editedClient, needReload: false }));
-  }
-
-  toggleDrawer() {
-    this.updDraweState(!this.drawerOpenPlant);
-  }
-
-  toggleDrawerClient(data?: any) {
-    this.editedClient = data
-    this.drawerOpenPlant = !this.drawerOpenPlant
-    this.updDraweState(this.drawerOpenPlant);
+  uploadExcel() {
+    if (this.selectedFile) {
+      this.moduleServices.uploadExcel(this.selectedFile).subscribe({
+        next: (response) => {
+          this.alertInformationModal();
+        },
+        error: (error: HttpErrorResponse) => {
+          const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
+          this.modalErrors(errorMessages);
+        }
+      });
+    }
   }
 
   downloadExcel() {
@@ -243,63 +229,34 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     this.uploadExcel();
   }
 
-  uploadExcel() {
-    if (this.selectedFile) {
-      this.moduleServices.uploadExcel(this.selectedFile).subscribe({
-        next: (response) => {
-          this.completionMessage(true);
-        },
-        error: (error: HttpErrorResponse) => {
-          const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
-          this.modalErrors(errorMessages);
-        }
-      });
-    }
+  updDraweStateEdit(estado: boolean): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.editedClient, needReload: false }));
   }
 
   updDraweState(estado: boolean): void {
     this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
   }
 
+  changePageSize(event: any) {
+    const newSize = event.value;
+    this.pageSize = newSize;
+
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+
+    this.getData();
+  }
+
   getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getData(event.pageIndex + 1, this.searchValue);
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    }
   }
 
   navigate(link: string) {
     this.router.navigateByUrl(link);
-  }
-
-  completionMessage(load: boolean) {
-    this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
-    this.getDataResponse(1, this.searchBar?.value || '');
-  }
-
-  onEnergyTypeChange(event: any): void {
-    const selectedValue = event.value;
-    this.selectedEnergyType = selectedValue;
-    console.log(selectedValue)
-    if (selectedValue == 1) {
-      this.getDataResponse(1, "");
-    }
-    if (selectedValue == 2) {
-      this.getConsumptionDataResponse(1, "");
-    }
-    if (selectedValue == 3) {
-      this.getEstimatedDataResponse(1, "");
-    }
-  }
-
-  getData(page: number, content?: string | null) {
-    if (this.selectedEnergyType == 1) {
-      this.getDataResponse(page, content!);
-    }
-    if (this.selectedEnergyType == 2) {
-      this.getConsumptionDataResponse(page, content!);
-    }
-    if (this.selectedEnergyType == 3) {
-      this.getEstimatedDataResponse(page, content!);
-    }
   }
 
   modalErrors(errors: any) {
@@ -310,19 +267,17 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewChecked, A
     })
   }
 
+  alertInformationModal() {
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoExcelUpload();
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
+  }
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
-}
-
-export function getPaginatorIntl() {
-  const paginatorIntl = new MatPaginatorIntl();
-
-  paginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number) => {
-    const totalPages = Math.ceil(length / pageSize);
-    return `${page + 1} of ${totalPages}`;
-  };
-
-  return paginatorIntl;
 }

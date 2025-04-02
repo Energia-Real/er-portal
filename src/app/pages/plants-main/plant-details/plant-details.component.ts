@@ -14,7 +14,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { UserInfo } from '@app/shared/models/general-models';
-import { OwlOptions } from 'ngx-owl-carousel-o';
 import { FormBuilder } from '@angular/forms';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
 
@@ -207,7 +206,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -313,8 +312,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) this.userInfo = this.encryptionService.decryptData(encryptedData);
-    if (!this.userInfo.clientes.length) this.completionMessage();
-    
+    if (!this.userInfo.clientes.length) this.alertInformationModal();
     this.route.paramMap.subscribe(params => {
       params.get('id') && this.getPlantDetailsById(params.get('id')!);
     });
@@ -342,28 +340,23 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     }
 
-
-
-    const dialogRef = this.dialog.open(NotificationComponent, {
+    this.dialog.open(NotificationComponent, {
       width: '540px',
       data: dataNotificationModal
     });
-
   }
 
-
-  completionMessage(edit = false) {
-    this.notificationService
-      .notificacion(
-        `¡We are working on building this module. It will be available soon.!`,
-        'alert',
-      )
-      .afterClosed()
-      .subscribe((_) => { });
-  }
+   alertInformationModal(){
+      const dataNotificationModal: notificationData = this.notificationDataService.showNoModuleAlert();
+  
+      this.dialog.open(NotificationComponent, {
+        width: '540px',     
+        data: dataNotificationModal
+      });
+    }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

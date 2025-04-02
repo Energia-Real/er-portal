@@ -8,12 +8,14 @@ import { Observable, take, map } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  const store = inject(Store);
+  const store = inject(Store<{ filters: GeneralFilters }>);
+
   const authService = inject(AuthService);
   const user = authService.userValue;
 
   // Seleccionar el estado de los filtros
-  const generalFilters$: Observable<GeneralFilters> = store.select(state => state.filters.generalFilters);
+  const generalFilters$: Observable<GeneralFilters> = store.select(state => state.filters);
+
 
   return generalFilters$.pipe(
     take(1),
@@ -24,28 +26,28 @@ export const authGuard: CanActivateFn = (route, state) => {
         const startday = url.searchParams.get('startday');
         const endday = url.searchParams.get('endday');
         const year = url.searchParams.get('year');
-  
+
         const getLastDayOfMonth = (dateStr: string): string => {
           const date = new Date(dateStr);
-          const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0); 
+          const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
           return lastDay.toISOString().split('T')[0];
         };
-  
-        const endDate = endday ? getLastDayOfMonth(endday) : '2025-05-31'; 
-  
+
+        const endDate = endday ? getLastDayOfMonth(endday) : '2025-03-31';
+
         const newFilters: GeneralFilters = {
           startDate: startday ?? '2025-01-01',
-          endDate,
-          year: year ?? '2024',
+          endDate: endDate,
+          year: year ?? '2025',
         };
-  
+
         // Despachar los nuevos filtros al store
         store.dispatch(setGeneralFilters({ generalFilters: newFilters }));
       }
-  
+
       // Validar si el usuario está autenticado
       if (user) return true;
-  
+
       router.navigate(['']);
       return false;
     })

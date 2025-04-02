@@ -91,11 +91,12 @@ export interface DataBillingOverviewTableMapper {
 }
 
 export interface DataBillingOverviewTable {
-  invoiceNumber: string;
-  date: string;
+  month: string;
+  year: string;
   amount: string;
-  currency: string;
-  status: string;
+  monthFormatter: string;
+  rfc: string;
+  razonSocial: string;
 }
 export interface DataBillingTableMapper {
   pageSize: number,
@@ -104,6 +105,45 @@ export interface DataBillingTableMapper {
   totalItems: number
 }
 
+export interface DataHistoryOverviewTableMapper {
+  pageSize: number,
+  page: number,
+  data: DataHistoryOverviewTable[],
+  totalItems: number
+}
+
+export interface DataHistoryOverviewTable {
+  month: string;
+  year: string;
+  amount: string;
+  monthFormatter: string;
+  rfc: string;
+  razonSocial: string;
+}
+
+export interface DataDetailsOverviewTableMapper {
+  pageSize: number;
+  page: number;
+  data: DataDetailsOverviewTable[];
+  dataPlants?: DataDetailsOverviewTable[];
+  totalItems: number;
+}
+
+export interface DataDetailsOverviewTable {
+  razonSocial: string;
+  rfc: string;
+  startPeriod: string;
+  endPeriod: string;
+  plants: PlantData[]
+}
+
+export interface PlantData {
+  subclient: string;
+  rate: number;
+  productionKwh: number;
+  previousPayment: number;
+  totalAmount: number;
+}
 export interface ErrorRequest {
   message: string;
   code: string;

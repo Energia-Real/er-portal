@@ -6,12 +6,11 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { Router } from '@angular/router';
 import { BillingService } from '../billing.service';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { FormControl } from '@angular/forms';
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
-import { FilterState, GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
+import { GeneralFilters, notificationData, UserInfo } from '@app/shared/models/general-models';
 import { PeriodicElement } from '@app/pages/plants-main/plants-model';
 import { SelectionModel } from '@angular/cdk/collections';
 import { EncryptionService } from '@app/shared/services/encryption.service';
@@ -32,7 +31,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -42,8 +41,7 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   pageIndex: number = 1;
   totalItems: number = 0;
   displayedColumns: string[] = [
-    'clientId',
-    'subClientId',
+    'cfcContact',
     'clientName',
     'subClient',
     'rfc',
@@ -52,7 +50,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     'billingPeriodStart',
     'billingPeriodEnd',
     'receiptGenerationDate',
-    'cfcContact',
     'rate',
     'production',
     'previousPaymentAmount',
@@ -63,8 +60,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   selection = new SelectionModel<PeriodicElement>(true, []);
 
   allRowsInit: boolean = false;
-
-  formatTimer: any;
 
   selectedFile: File | null = null;
 
@@ -81,15 +76,14 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
   }
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private notificationService: OpenModalsService,
-    private router: Router,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
 
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),
@@ -136,8 +130,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
     this.moduleServices.getBilling(filters).subscribe({
       next: (response: entity.DataBillingTableMapper) => {
         this.dataSource.data = response?.data;
-        console.log(response.data);
-        
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
         this.pageIndex = filters.page;
@@ -207,6 +199,6 @@ export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, Af
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

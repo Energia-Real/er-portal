@@ -1,4 +1,4 @@
-<div class="c-main px-16 c-billing">
+<div class="c-main  c-billing">
     <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1">
             <div class="btns-excel">
@@ -45,7 +45,7 @@
         </div>
 
         <div class="c-paginator-top">
-            <strong>Items per page</strong>
+            <strong>Items</strong>
             <mat-form-field>
                 <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
@@ -196,7 +196,8 @@
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="updateModifiedElements(element)">Apply Changes</button>
                         <button mat-menu-item>Generate Invoice</button>
-                        <button mat-menu-item (click)="confirmInvoiceAction(element)" *ngIf="element.status != 2" >Confirm Invoice</button>
+                        <button mat-menu-item (click)="confirmInvoiceAction(element)"
+                            *ngIf="element.status != 2">Confirm Invoice</button>
                     </mat-menu>
                 </td>
             </ng-container>

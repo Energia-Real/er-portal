@@ -24,7 +24,7 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
-    if ( request.url.startsWith(environment.API_URL_PERFORMANCE)) {
+    if ( request.url.startsWith(environment.API_URL_FINANTIAL_MODEL) ||request.url.startsWith(environment.API_URL_PERFORMANCE) || request.url.startsWith("https://localhost:7188/")) {
       let notificationData:any=null;
 
       if (notificationMessages) notificationData = JSON.parse(notificationMessages);
@@ -41,30 +41,58 @@ export class TokenInterceptor implements HttpInterceptor {
       : request;
 
       return next.handle(clonedRequest).pipe(
-      tap((event) => {
-        if (event instanceof HttpResponse && (event.status === 200 || event.status === 201) && notificationMessages) {
-          const editStatusData:EditNotificationStatus={
-            externalId: notificationData.notificationId,
-            status: this.notificationService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id,
-            centerTextId:this.notificationService.getNotificationCenterMessageByCode(notificationData.successCenterMessage).id
+        tap((event) => {
+          if (event instanceof HttpResponse && (event.status === 200 || event.status === 201) && notificationMessages) {
+            
+            // Mostrar solo el snackbar si solo contiene las propiedades del snackbar
+            if (
+              notificationData.completedTitleSnack &&
+              notificationData.completedContentSnack &&
+              !notificationData.notificationId &&
+              !notificationData.successCenterMessage &&
+              !notificationData.userId
+            ) {
+              let snackData: SnackData = {
+                type: "COMPLETE",
+                title: notificationData.completedTitleSnack,
+                subtitle: notificationData.completedContentSnack
+              };
+              this.openCustomComponentSnackBar(snackData);
+              return; // Salir de la función y no ejecutar el resto del código
+            }
+      
+            // Si tiene todas las propiedades necesarias, continuar con la actualización
+            if (
+              notificationData.notificationId &&
+              notificationData.successCenterMessage &&
+              notificationData.userId
+            ) {
+              const editStatusData: EditNotificationStatus = {
+                externalId: notificationData.notificationId,
+                status: this.notificationService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id,
+                centerTextId: this.notificationService.getNotificationCenterMessageByCode(notificationData.successCenterMessage).id
+              };
+      
+              let snackData: SnackData = {
+                type: "COMPLETE",
+                title: notificationData.completedTitleSnack,
+                subtitle: notificationData.completedContentSnack
+              };
+      
+              this.openCustomComponentSnackBar(snackData);
+      
+              this.notificationService.updateNotification(editStatusData)
+                .pipe(
+                  switchMap(() =>
+                    this.notificationService.updateNotificationsCenter(notificationData.userId)
+                  )
+                )
+                .subscribe(notifications => {
+                  this.store.dispatch(updateNotifications({ notifications }));
+                });
+            }
           }
-          let snackData:SnackData={
-            type:"COMPLETE",
-            title:notificationData.completedTitleSnack,
-            subtitle:notificationData.completedContentSnack
-          }
-          this.openCustomComponentSnackBar(snackData);
-          this.notificationService.updateNotification(editStatusData)
-          .pipe(
-            switchMap(() =>
-              this.notificationService.updateNotificationsCenter(notificationData.userId)
-            )
-          )
-          .subscribe(notifications => {
-            this.store.dispatch(updateNotifications({ notifications }));
-          });
-        }
-      }),
+        }),
 
       catchError((error: HttpErrorResponse) => {
         if (notificationData && notificationData.notificationId) {

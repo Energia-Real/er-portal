@@ -8,42 +8,47 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="c-input">
           <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-            <input formControlName="email" placeholder="Correo" matInput>
-            <mat-error
-              *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">Mail invalid.</mat-error>
+            <input formControlName="email" placeholder="Email" matInput>
+            
+            <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.value">
+              <span *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format.</span>
+            </mat-error>
           </mat-form-field>
         </div>
-
+      
         <div class="c-input">
           <div class="password-input-container">
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
-              <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="password" placeholder="Contraseña"
-                matInput>
-              <mat-error
-                *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">The
-                Password must have at least one uppercase letter, one lowercase letter, one number, and one special character, with a
-                minimum length of 8 characters.</mat-error>
+              <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password" matInput>
+              
+              <mat-error *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.value">
+                <span *ngIf="loginForm.get('password')?.hasError('invalidPassword')">
+                  If you believe this is an error, contact the administrator.
+                </span>
+              </mat-error>
             </mat-form-field>
+            
             <span class="eye-icon" (click)="togglePasswordVisibility()">
               <img *ngIf="showPassword" src="../../../assets/svg/open-eye.svg" alt="Eye Open">
               <img *ngIf="!showPassword" src="../../../assets/svg/closed-eye.svg" alt="Eye Closed">
             </span>
           </div>
         </div>
-
-        <div class="button-container"
-          [ngClass]="{'mt-5': loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)}">
-          <span class="loader" *ngIf="loading"></span>
-
+      
+        <div class="button-container" [ngStyle]="{
+          'margin-top': loginForm.get('password')?.hasError('invalidPassword') && loginForm.get('password')?.value ? '40px' : '0px'
+        }">
           <button class="btn-action-add m-auto cursor-pointer" type="submit"
-            [disabled]="loginForm.invalid || buttonDisabled">
-            Enter the site
+            [disabled]="loginForm.invalid || loading">
+            <mat-spinner *ngIf="loading"></mat-spinner>
+            <span *ngIf="!loading">Enter the site</span>
           </button>
         </div>
       </form>
+      
     </div>
-    <div class="login-footer-container flex justify-center">
+    <!-- <div class="login-footer-container flex justify-center">
       <a routerLink="/forgotPassword">have you forgotten your password?</a>
-    </div>
+    </div> -->
   </div>
 </div>

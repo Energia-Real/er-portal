@@ -1,0 +1,100 @@
+<div class="py-6  mx-6" >
+    <div *ngIf="data?.razonSocial">
+        <span class="title" >Corporate Name Edit</span>
+        <div class="my-6">
+            You are editing the Corporate Name {{data?.razonSocial?.corporateName}} to add or remove associated plants. Make sure the changes are correct before proceeding.
+        </div>
+        <div class="corp-title">
+            {{data?.razonSocial?.corporateName}}
+        </div>
+        <div class="corp-rfc my-2">
+            {{data?.razonSocial?.rfc}}
+        </div>
+        <div class="mt-5 mb-2 associated">
+            Associated plants
+        </div>
+        <mat-divider ></mat-divider>
+    
+        <div class="mt-2 plants mr-4"  >
+            <div *ngIf="data.razonSocial?.plants.length>0">
+                <div *ngFor="let plant of data.razonSocial?.plants" class="mx-7 mt-3 flex justify-between">
+                    <div class="plant-title">
+                        {{plant.plantName}}
+                    </div>
+                    <button   (click)="removePlant(plant)" >
+                        <img 
+                        src="../../../../assets/svg/delete-circle.svg" 
+                        alt="Icon notification"
+                        class="notification-icon"
+                        />    
+                    </button>        
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+
+    <div *ngIf="data?.razonSocial == null">
+        <span class="title" >Add corporate name</span>
+        <div class="my-6">
+            Add a new corporate name, associate plants with it, and enter the RFC.        
+        </div>
+        <div >
+            <form class="relative w-80  c-search" [formGroup]="formData"  >
+                <input class="block w-full rounded-full  h-7 mb-3" type="text" placeholder="Corporate Name"
+                formControlName="inputCorporateName">
+                
+                <input class="block w-full rounded-full  h-7" type="text" placeholder="RFC"
+                    formControlName="rfc">
+            </form>
+        </div>
+        <div class="mt-5 mb-2 associated">
+            Associated plants
+        </div>
+        <mat-divider ></mat-divider>
+    
+        <div class="mt-2 plants mr-4"  >
+            <div *ngIf="selectedPlants.length>0">
+                <div *ngFor="let plant of selectedPlants" class="mx-7 mt-3 flex justify-between">
+                    <div class="plant-title">
+                        {{plant.plantName}}
+                    </div>
+                    <button   (click)="removePlant(plant)" >
+                        <img 
+                        src="../../../../assets/svg/delete-circle.svg" 
+                        alt="Icon notification"
+                        class="notification-icon"
+                        />    
+                    </button>        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+   
+    <div class="flex justify-end mt-2 mb-6 ">
+        <button mat-button [matMenuTriggerFor]="menuPlants" class=" btn-cancel btn-corporate-name  flex" > 
+        <mat-icon  fontIcon="add"></mat-icon>                    
+        Add Plant</button>
+        <mat-menu #menuPlants="matMenu" class="z-40" [overlayPanelClass]="'custom-menu'"    >
+            <button mat-menu-item *ngFor="let pl of plants" (click)="addPlant(pl)">{{pl.siteName}}</button>
+
+            <button mat-menu-item *ngIf="plants.length==0||plants==null" >~</button>
+        </mat-menu>
+    </div>
+    <mat-divider ></mat-divider>
+    <div class=" flex justify-around mt-6">
+        <button class="btn-action-back" (click)="createNotificationModal(CANCEL)">
+            Back
+        </button>
+        <button class="btn-action-add" (click)="actionSave()">
+            Apply
+        </button>
+    </div>
+
+
+</div>

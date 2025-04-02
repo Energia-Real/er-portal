@@ -5,6 +5,11 @@ export interface DataTableResponse {
   data: DataClientsTable[]
 }
 
+export interface FiltersClients {
+  name: string;
+  pageSize: number;
+  page: number;
+}
 
 export interface DataClientsTable {
   id: string;
@@ -57,12 +62,20 @@ export interface DataPatchClient {
   image?: any
 }
 
+
 export interface DataCatalogTypeClient {
-  id: string;
-  description: string;
-  tipo: string;
+  pageSize: number;
+  page: number;
+  response: {
+    data: TypeClient[]
+  };  errors: string | null;
+  totalItems: number;
 }
 
+export interface TypeClient {
+  id: string;
+  tipo: string;
+}
 export interface DataCientList {
   id: string;
   clientId: number;

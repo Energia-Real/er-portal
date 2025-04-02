@@ -1,0 +1,154 @@
+<div class="c-main">
+    <div class="flex justify-between">
+        <p>Q&A CRUD</p> 
+        <button class=" btn-action-add  flex" (click)="actionButton('add')"> 
+            <mat-icon fontIcon="add"></mat-icon>
+            Add Question
+        </button>
+    </div>
+    
+    <div class=" flex align-center justify-end mt-5">
+        <div class="flex     w-100 c-select">
+            <div class=" align-center">
+                <span >Categories</span>
+            </div>
+            <mat-form-field class="select-years select-type w-full ml-6" appearance="outline">
+                <mat-select [disabled]="false" [(value)]="selectedCat"
+                    (selectionChange)="onCategoryChange($event)">
+                    <mat-option *ngFor="let cat of cats" [value]="cat.catCode">
+                        {{ cat.enDesc }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="c-paginator-top">
+                <strong>Items per page</strong>
+                <mat-form-field>
+                    <mat-select [(value)]="pageSize" (selectionChange)="changePageSize($event)">
+                        <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+                            <strong>{{ size }}</strong>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>   
+
+    <div class="">
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [(selectedIndex)]="activeTabIndex">
+            <mat-tab label="Spanish" >
+                <div class="c-scroll-table">
+                    <div class="table-container-scroll">
+                        <table mat-table [dataSource]="dataSourceES" matSort class="table-content guion-click">
+                            
+            
+                            <ng-container matColumnDef="question">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    <div class="target w-20">Pregunta</div>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div >
+                                        <div *ngIf="element?.question notDataTable"> {{ element.question }} </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="category">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    <div class="target w-20">Categoria</div>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div >
+                                        <div *ngIf="element?.cat else notDataTable"> {{ element.cat }} </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    <div class="target w-20">Acción</div>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="flex">
+                                        <div class="mx-6" >
+                                             <img class="animate-durations" src="../../../../assets/img/eye-open-orange.png" alt="Open Question">
+                                        </div>
+                                        <div class="mx-6">
+                                            <img class="animate-durations" src="../../../../assets/svg/edit.svg" alt="Open Question">
+                                       </div>
+                                       <div class="mx-6">
+                                            <img class="animate-durations" src="../../../../assets/svg/delete.svg" alt="Open Question">
+                                       </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+   
+                            <tr *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                    <h5 class="text-center my-5">No results found.</h5>
+                                </td>
+                            </tr>
+            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
+                        </table>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="English">
+                <div class="c-scroll-table">
+                    <div class="table-container-scroll">
+                        <table mat-table [dataSource]="dataSourceEN" matSort class="table-content guion-click">
+                            
+            
+                            <ng-container matColumnDef="question">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    <div class="target w-20">Question</div>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div >
+                                        <div *ngIf="element?.question notDataTable"> {{ element.question }} </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="category">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    <div class="target w-20">Category</div>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div >
+                                        <div *ngIf="element?.cat else notDataTable"> {{ element.cat }} </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    <div class="target w-20">Action</div>
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div >
+                                        <div > // </div>
+                                    </div>
+                                </td>
+                            </ng-container>
+   
+                            <tr *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                    <h5 class="text-center my-5">No results found.</h5>
+                                </td>
+                            </tr>
+            
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="tr-table"></tr>
+                        </table>
+                    </div>
+                </div>
+            </mat-tab>
+          </mat-tab-group>
+    </div>
+</div>
+
+<ng-template #notDataTable>
+    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>

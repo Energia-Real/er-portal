@@ -20,27 +20,23 @@ export class ClientsService implements OnDestroy {
     public formatsService: FormatsService
   ) {}
 
-  getClientsData(
-    name: string,
-    pageSize: number,
-    page: number
-  ): Observable<entity.DataTableResponse> {
+  getClientsData(filters:entity.FiltersClients): Observable<entity.DataTableResponse> {
     const url = `${this.API_URL}/clients`;
     const params = new HttpParams()
       .set('imageSize', 150)
-      .set('pagesize', pageSize)
-      .set('page', page)
-      .set('name', name);
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page)
+      .set('name', filters.name);
 
     return this.http
       .get<entity.DataTableResponse>(url, { params })
       .pipe(map((response) => Mapper.getClientsDataMapper(response)));
   }
 
-  getTypeClientsData(): Observable<entity.DataCatalogTypeClient[]> {
+  getTypeClientsData(): Observable<entity.DataCatalogTypeClient> {
     const url = `${this.API_URL}/tipodecliente`;
 
-    return this.http.get<entity.DataCatalogTypeClient[]>(url);
+    return this.http.get<entity.DataCatalogTypeClient>(url);
   }
 
   postDataTypeClient(data: entity.DataPostTypeClient) {
@@ -115,7 +111,7 @@ export class ClientsService implements OnDestroy {
 
   postRazonSocial(
     data: entity.DataPostRazonSocial[],
-    clientId:string,
+    clientId:any,
     notificationMessages: NotificationMessages
   ) {
     const url = `${this.API_URL}/clients/${clientId}/razon-social`;

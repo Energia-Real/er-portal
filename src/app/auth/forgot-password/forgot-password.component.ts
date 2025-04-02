@@ -1,39 +1,30 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ModalConfirmationComponent } from '@app/shared/components/modal-confirmation/modal-confirmation.component';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Subject } from 'rxjs';
-import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
 })
-export class ForgotPasswordComponent implements OnInit, OnDestroy {
+export class ForgotPasswordComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  actionComplete : boolean = false;
+  actionComplete: boolean = false;
 
-  public email = new FormControl({ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]);
+  email = new FormControl({ value: '', disabled: false }, [Validators.required, Validators.pattern(/^\S+@\S+\.\S+$/)]);
 
   constructor(
-    public dialog: MatDialog,
-    private authService: AuthService,
+    private dialog: MatDialog,
     private notificationService: OpenModalsService,
-    private formBuilder: FormBuilder,
     private router: Router
   ) { }
 
-  ngOnInit(): void {
-  }
-
   actionSave() {
     this.actionComplete = true;
-
-
   }
 
   completionMessage(edit = false) {
@@ -43,6 +34,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
         'save',
       )
       .afterClosed()
+      
       .subscribe((_) => this.toBack());
   }
 
@@ -72,6 +64,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

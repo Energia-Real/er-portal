@@ -1,0 +1,53 @@
+<div class="m-6">
+    <div *ngIf="data.editMode">
+        <p>Edit Question</p>
+    </div>
+    <div *ngIf="!data.editMode">
+        <p>Add Question</p>
+        <p>Add your new question with its respective answer, both in English and Spanish. Remember to assign it to a category in order to save it.</p>
+    </div>
+    <div *ngIf="data.lenguage=='ES'">
+        <p>Spanish</p>
+    </div>
+    <div *ngIf="data.lenguage=='EN'">
+        <p>English</p>
+    </div>
+    <mat-divider></mat-divider>
+    <form [formGroup]="formData" >
+        <div class="c-input mb-0 mt-3">
+            <mat-form-field appearance="outline" class="w-full input-ER">
+                <input formControlName="question" placeholder="Question" matInput>
+                <mat-error *ngIf="formData.get('question')?.hasError('required')">You must add the question.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="c-input mb-3">
+            <mat-form-field appearance="outline" class="w-full input-ER">
+                <textarea matInput formControlName="answer" placeholder="Answer"></textarea>
+                <mat-error *ngIf="formData.get('answer')?.hasError('required')">You must add the answer.</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mt-3">
+            <p>Select a category</p>
+        </div>
+        <mat-form-field class="w-full input-ER mb-9" appearance="outline">
+            <mat-select [disabled]="false" formControlName="catCode">
+                <mat-option *ngFor="let cat of categories" [value]="cat.catCode">
+                    {{ cat.enDesc }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <div class="flex justify-around mt-6">
+            <button class="btn-action-back">
+                <div class="px-10">
+                    Back
+                </div>
+            </button>
+            <button class="btn-action-add"   [disabled]="formData.invalid" (click)="actionButton()"><div class="px-10">
+                {{data.editMode? 'Apply': 'Add'}}
+            </div></button>
+        </div>
+    </form>
+    
+</div>

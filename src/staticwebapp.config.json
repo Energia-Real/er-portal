@@ -1,6 +1,17 @@
+
 {
-    "globalHeaders": {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*"
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [ "/api/*"]
+  },
+  "globalHeaders": {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "*"
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
     }
   }
+}

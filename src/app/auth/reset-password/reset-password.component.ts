@@ -2,10 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalConfirmationComponent } from '@app/shared/components/modal-confirmation/modal-confirmation.component';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -13,19 +11,18 @@ import { AuthService } from '../auth.service';
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  actionComplete : boolean = false;
+  actionComplete: boolean = false;
 
   formData = this.formBuilder.group({
     password: [{ value: '', disabled: false }, Validators.required],
     confirmPassword: [{ value: '', disabled: false }, Validators.required],
   });
 
-  email:string = ''
-  code:string = ''
+  email: string = ''
+  code: string = ''
 
   constructor(
-    public dialog: MatDialog,
-    private authService: AuthService,
+    private dialog: MatDialog,
     private notificationService: OpenModalsService,
     private formBuilder: FormBuilder,
     private router: Router,
@@ -41,13 +38,11 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   actionSave() {
     this.actionComplete = true;
-    let objData :any = {
+    let objData: any = {
       ...this.formData.value,
-      code : this.code,
+      code: this.code,
       email: this.email
     }
-
-
   }
 
   completionMessage(edit = false) {

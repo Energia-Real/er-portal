@@ -19,7 +19,7 @@ export class PlantsService implements OnDestroy {
   constructor(
     private http: HttpClient,
     private formatsService: FormatsService
-  ) {}
+  ) { }
 
   getDataById(id: string | null): Observable<entity.DataPlant> {
     const url = `${this.API_URL_PROYECTS}/projects/${id}`;
@@ -81,21 +81,6 @@ export class PlantsService implements OnDestroy {
       .pipe(map((response) => Mapper.getSitePerformanceMapper(response)));
   }
 
-  getSitePerformanceSummary(
-    filters: GeneralFilters
-  ): Observable<DataResponseArraysMapper> {
-    const url = `${this.API_URL_PERFORMANCE}/energy/summary`;
-    let params = new HttpParams()
-      .set('rpu', filters.rpu)
-      .set('startDate', filters.startDate)
-      .set('endDate', filters.endDate!);
-    return this.http
-      .get<entity.BatuSummary>(url, { params })
-      .pipe(
-        map((response) => Mapper.getSitePerformanceSummaryMapper(response))
-      );
-  }
-
   getSitePerformanceDetails(
     plantId: string,
     filters: GeneralFilters
@@ -134,20 +119,15 @@ export class PlantsService implements OnDestroy {
     });
   }
 
-  getPlants(name: string, pageSize: number, page: number): Observable<any> {
+  getPlants(filters: entity.FiltersPlants): Observable<any> {
     const params = new HttpParams()
-      .set('name', name)
-      .set('pagesize', pageSize)
-      .set('page', page);
+      .set('name', filters.name)
+      .set('pagesize', filters.pageSize)
+      .set('page', filters.page);
 
     return this.http
-      .get<entity.DataManagementTableResponse>(
-        `${this.API_URL_PROYECTS}/projects`,
-        { params }
-      )
-      .pipe(
-        map((response) => Mapper.getPlantsMapper(response, this.formatsService))
-      );
+      .get<entity.DataManagementTableResponse>(`${this.API_URL_PROYECTS}/projects`, { params })
+      .pipe(map((response) => Mapper.getPlantsMapper(response, this.formatsService)));
   }
 
   getSummaryProjects(): Observable<entity.DataSummaryProjectsMapper> {
@@ -155,11 +135,7 @@ export class PlantsService implements OnDestroy {
 
     return this.http
       .get<entity.DataSummaryProjectsMapper>(url)
-      .pipe(
-        map((response) =>
-          Mapper.getSummaryProjects(response, this.formatsService)
-        )
-      );
+      .pipe(map((response) => Mapper.getSummaryProjects(response, this.formatsService)));
   }
 
   getDataClient(): Observable<entity.DataRespSavingDetailsList[]> {

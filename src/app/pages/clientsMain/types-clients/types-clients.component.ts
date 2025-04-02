@@ -8,7 +8,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { DataCatalogs } from '@app/shared/models/catalogs-models';
 
 @Component({
   selector: 'app-types-clients',
@@ -21,7 +20,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<any>([]);
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   displayedColumns: string[] = [
-    'description',
+    'tipo',
     'actions'
   ];
 
@@ -62,8 +61,8 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   getDataTable() {
     this.moduleServices.getTypeClientsData().subscribe({
-      next: (response: DataCatalogs[]) => {
-        this.dataSource.data = response;
+      next: (response: entity.DataCatalogTypeClient) => {
+        this.dataSource.data = response.response.data;
         this.dataSource.sort = this.sort;
       },
       error: error => {
@@ -121,7 +120,7 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   completionMessage(edit = false) {
     this.notificationService
-      .notificacion(`Record ${ edit ? 'editado' : 'guardado' }.`, 'save')
+      .notificacion(`Record ${edit ? 'editado' : 'guardado'}.`, 'save')
       .afterClosed()
       .subscribe((_ => {
         this.cancelEdit();
@@ -131,6 +130,6 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

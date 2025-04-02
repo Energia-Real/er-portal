@@ -1,13 +1,11 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import * as entity from '../../plants-model';
-import * as Highcharts from 'highcharts';
 import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
 import { OpenModalsService } from '@app/shared/services/openModals.service';
-import { FormatsService } from '@app/shared/services/formats.service';
 import { PlantsService } from '../../plants.service';
-import { FilterState, GeneralFilters, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
+import { GeneralFilters, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +24,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   @Input() plantData!: entity.DataPlant;
   @Input() notData!: boolean;
 
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
 
   chart: any;
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
@@ -60,7 +58,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           usePointStyle: true,
         },
         position: "bottom",
-        
+
       }
     },
 
@@ -108,22 +106,17 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
     private encryptionService: EncryptionService,
-    private formatsService: FormatsService,
-    private store: Store<{ filters: FilterState }>,
-    public dialog: MatDialog,
+    private store: Store<{ filters: GeneralFilters }>,
+    private dialog: MatDialog,
     private notificationsService: NotificationService,
     private notificationDataService: NotificationDataService,
-
-
-
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
+    this.generalFilters$ = this.store.select(state => state.filters);
   }
 
   ngOnInit(): void {
@@ -140,7 +133,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getSitePerformance({ idClient: userInfo.clientes[0], ...generalFilters });
+        this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
       });
     }
   }
@@ -152,12 +145,10 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           this.sitePerformance.primaryElements = response.primaryElements;
           this.sitePerformance.additionalItems = response.additionalItems;
           this.fullLoad = true;
-          const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption?? 0);
-          const consumption = response.monthlyData?.map(item => item.consumption?? 0);
-          const generation = response.monthlyData?.map(item => item.generation?? 0);
-          const exportedSolarGeneration = response.monthlyData?.map(item => item.exportedGeneration?? 0);
-
-
+          const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption ?? 0);
+          const consumption = response.monthlyData?.map(item => item.consumption ?? 0);
+          const generation = response.monthlyData?.map(item => item.generation ?? 0);
+          const exportedSolarGeneration = response.monthlyData?.map(item => item.exportedGeneration ?? 0);
 
           this.lineChartData = {
             labels: response.monthlyData?.map((item) => {
@@ -166,28 +157,28 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
             datasets: [
               {
                 type: 'bar',
-                data: cfeConsumption?? [],
+                data: cfeConsumption ?? [],
                 label: 'CFE network consumption (kWh)',
                 backgroundColor: 'rgba(121, 36, 48, 1)',
                 order: 1
               },
               {
                 type: 'bar',
-                data: exportedSolarGeneration?? [],
+                data: exportedSolarGeneration ?? [],
                 label: 'Exported solar generation (kWh)',
                 backgroundColor: 'rgba(255, 71, 19, 1)',
                 order: 1
               },
               {
                 type: 'bar',
-                data: generation?? [],
+                data: generation ?? [],
                 label: 'Generation (kWh)',
                 backgroundColor: 'rgba(87, 177, 177, 1)',
                 order: 1
               },
               {
                 type: 'line',
-                data: consumption?? [],
+                data: consumption ?? [],
                 borderColor: 'rgba(239, 68, 68, 1)',
                 backgroundColor: 'rgba(239, 68, 68, 1)',
                 pointBackgroundColor: 'rgba(239, 68, 68, 1)',
@@ -199,22 +190,18 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
           };
 
           this.displayChart = true;
-         this.initChart();
+          this.initChart();
         }
       },
       error: (error) => {
         let errorArray = error.error.errors.errors;
-        if(errorArray.length == 1){
-          this.createNotificationError(this.ERROR, errorArray[0].title,errorArray[0].descripcion,errorArray[0].warn)
-          }
+        if (errorArray.length == 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        }
         console.error(error)
       }
     })
   }
-
-
-
-
 
   getStatus() {
     this.moduleServices.getDataRespStatus().subscribe({
@@ -242,32 +229,28 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
-
-  createNotificationError(notificationType:string, title?:string, description?: string, warn?:string ){
-    const dataNotificationModal:notificationData|undefined = this.notificationDataService.uniqueError();
-    dataNotificationModal!.title= title;
+  createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
+    const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title = title;
     dataNotificationModal!.content = description;
     dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
-      let dataNotificationService:NotificationServiceData= { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
-        userId:userInfo.id,
-        descripcion:description,
-        notificationTypeId:dataNotificationModal?.typeId,
-        notificationStatusId:this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
-      } 
-      this.notificationsService.createNotification(dataNotificationService).subscribe(res=>{
+      let dataNotificationService: NotificationServiceData = { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId: userInfo.id,
+        descripcion: description,
+        notificationTypeId: dataNotificationModal?.typeId,
+        notificationStatusId: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      }
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res => {
       })
     }
 
-    
-
     const dialogRef = this.dialog.open(NotificationComponent, {
-      width: '540px',     
+      width: '540px',
       data: dataNotificationModal
     });
-
   }
 
   ngOnDestroy(): void {

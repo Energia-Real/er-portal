@@ -18,11 +18,12 @@ export interface User {
 }
 
 export interface UserAuth {
-  success: true,
+  success: true;
   response: {
-      token: string;
-      accessTo: string
-  }
+    userId: string;
+    token: string;
+    accessTo: string;
+  };
 }
 
 export interface UserInfo {
@@ -38,12 +39,10 @@ export interface UserInfo {
 }
 
 export interface GeneralFilters {
-  rpu?:any
-  idClient?:number
   clientId?:number | string
   startDate: string;
-  endDate: string | null;
-  year?: string | null;
+  endDate: string;
+  year: string;
 }
 
 export interface DataResponseArraysMapper {
@@ -74,57 +73,22 @@ export interface ConfirmationConfig
 }
 
 
-export interface FilterState {
-  filters: {
-    requestType: string;
-    months: string[];
-    states?: string[];
-  };
-  generalFilters: {
-    startDate: string;
-    endDate: string | null;
-  };
-  filtersBatu: {
-    months: string[];
-  };
-  filtersSolarCoverage: {
-    brand: string;
-    clientName: string;
-    months: string[];
-    requestType: number;
-  };
-}
-
 export interface notificationData{
   type:     string,
   typeId?:   number|undefined,
   title?:    string,
   subtitle?:    string,
   content?:  string,
-  warn?:     string, 
-  errors?:     string, 
+  warn?:     string,
+  errors?:     string,
   buttonAction?: string
 }
 
-export const initialFilterState: FilterState = {
-  filters: {
-    requestType: '',
-    months: [],
-    states:[]
-  },
-  generalFilters: {
+export const initialFilterState: GeneralFilters = {
     startDate: '',
     endDate: '',
-  },
-  filtersBatu: {
-    months: []
-  },
-  filtersSolarCoverage: {
-    brand: '',
-    clientName: '',
-    months: [],
-    requestType: 0
-  }
+    year: '',
+    clientId: '',
 };
 
 export interface NotificationServiceData {
@@ -177,6 +141,12 @@ export interface GeneralResponse<T> {
   }
 }
 
+export interface ApiResponse<T> {
+  success: boolean;
+  response: T;
+  errors?: any[];
+}
+
 export interface NotificationsResponse {
   notificationsResponse: Notification[];
 }
@@ -187,4 +157,9 @@ export interface ErrorRequest {
   descripcion: string;
   warn?: string;
   title?: string;
+}
+
+export interface MonthsFilters {
+  name: string;
+  value: string;
 }

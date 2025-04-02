@@ -4,6 +4,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { redirectGuard } from '@app/shared/guards/redirect.guard';
 import { HomeComponent } from '@app/pages/homeMain/home/home.component';
 import { FilterGuard } from '@app/shared/guards/filter.guard';
+import { QyaComponent } from '@app/pages/legals/qya/qya.component';
+import { LegalsModule } from '@app/pages/legals/legals.module';
 
 const HomeBackOfficeModule = () => import('../pages/home-back-office/home-back-office.module').then(x => x.HomeBackOfficeModule);
 const HomeAdminModule= () => import('../pages/home-admin/home-admin.module').then(x => x.HomeAdminModule);
@@ -12,6 +14,8 @@ const clientModule = () => import('../pages/clientsMain/clients-main.module').th
 const energyProductionModule = () => import('../pages/energyProductionMain/energy-production-main.module').then(x => x.EnergyProductionMainModule);
 const billingModule = () => import('../pages/billing-main/billing-main.module').then(x => x.BillingMainModule);
 const ratesModule = () => import('../pages/rates-main/rates-main.module').then(x => x.RatesMainModule);
+const legalsModule = () => import('../pages/legals/legals.module').then(x => x.LegalsModule);
+const finantialModel = () => import('../pages/finantial-model/finantial-model.module').then(x => x.FinantialModelModule);
 
 
 const routes: Routes = [
@@ -37,12 +41,18 @@ const routes: Routes = [
         canActivate: [redirectGuard, FilterGuard],
         data: { roles: ['Clients'] }
       },
+      {
+        path: 'legals', 
+        loadChildren: legalsModule,  
+        canActivate: [redirectGuard, FilterGuard],
+        data: { roles: ['Clients','BackOffice','Admin','Plants','Billing'] }
+      },
      
       {
         path: 'plants',
         loadChildren:plantsModule ,
         canActivate: [redirectGuard, FilterGuard],
-        data: { roles: ['BackOffice', 'Admin', 'Clients']} 
+        data: { roles: ['Plants']} 
       },
       {
         path: 'clients',
@@ -63,10 +73,22 @@ const routes: Routes = [
         data: { roles: ['Billing', 'Admin', 'Clients']}
       },
       {
+        path: 'invoice',
+        loadChildren: billingModule,
+        canActivate: [redirectGuard, FilterGuard],
+        data: { roles: ['Billing', 'Admin', 'Clients']}
+      },
+      {
         path: 'rates',
         loadChildren: ratesModule,
         canActivate: [redirectGuard, FilterGuard],
         data: { roles: ['Billing', 'Admin']}
+      },
+      {
+        path: 'finantial-model',
+        loadChildren: finantialModel,
+        canActivate: [redirectGuard, FilterGuard],
+        data: { roles: [ 'Admin']}
       }
     ]
   }

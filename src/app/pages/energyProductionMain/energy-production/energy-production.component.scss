@@ -1,17 +1,9 @@
-.select-type {
-    width: 100% !important; 
-  }
-
-  .mat-mdc-select {
-    font-size: 12px !important;
-  }
-  
-  
-  .mat-mdc-option {
-    font-size: 12px !important; 
-  }
-
+.c-energy-prod {
   ::ng-deep .mat-pseudo-checkbox.mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal {
     display: none !important;
   }
-  
+
+  .c-scroll-table {
+    height: calc(100vh - 383px);
+  }
+}

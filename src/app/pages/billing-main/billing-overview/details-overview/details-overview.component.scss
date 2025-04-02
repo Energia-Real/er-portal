@@ -1,0 +1,19 @@
+.c-overview-details {
+    .header-content {
+        height: 140px;
+        h1 {
+           color: #999999;
+           font-size: 12px; 
+           font-weight: 500;
+           line-height: 14px;
+           margin-bottom: 12px;
+           span {
+            color: #231F20;
+           }
+        }
+    }
+
+    .c-scroll-table {
+        height: calc(100vh - 450px);
+    }
+}

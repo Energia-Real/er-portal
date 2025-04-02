@@ -33,7 +33,7 @@ export class NotificationCardCenterComponent implements OnChanges {
 
   ADD=NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
   EDIT=NOTIFICATION_CONSTANTS.EDIT_CONFIRM_TYPE;
-  DELETE=NOTIFICATION_CONSTANTS.DELETE;
+  DELETE=NOTIFICATION_CONSTANTS.DELETE_CONFIRM_TYPE;
 
 
   COMPLETED= NOTIFICATION_CONSTANTS.COMPLETED_STATUS; 
@@ -58,7 +58,7 @@ export class NotificationCardCenterComponent implements OnChanges {
         this.notificationService.loadNotificationTypes(),
         this.notificationService.loadNotificationStatuses(),
       ]).subscribe(([messagesResponse, typesResponse, statusesResponse]) => {
-        this.messages = messagesResponse.find(
+        this.messages = messagesResponse?.find(
           (centerMessage: { id: number }) => centerMessage.id === this.notification.notificationCenterTextId
         );
         this.type = typesResponse.find(

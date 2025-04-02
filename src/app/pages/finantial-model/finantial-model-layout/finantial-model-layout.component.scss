@@ -1,0 +1,61 @@
+.div-groups-model {
+    height: 100%;
+    :nth-child(3),
+    :nth-child(4) {
+      h2 {
+        margin-bottom: 32px !important;
+      }
+    }
+
+   
+
+    >div {
+      border-right-width: none !important;
+      position: relative;
+
+      h2 {
+        font-size: 16px !important;
+        font-weight: 500;
+        margin-bottom: 10px !important;
+
+        span {
+          font-size: 12px;
+          font-weight: 500;
+        }
+      }
+
+      p {
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 14px;
+      }
+
+      .linea {
+        width: 1px;
+        height: 34px;
+        background: #CFCFCF;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  .title{
+    font-size: 24px;
+    color: #EE5427;
+    font-weight: 600;
+  }
+
+  .c-model {
+    min-height: 138px;
+  }
+
+  .scenarios{
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  

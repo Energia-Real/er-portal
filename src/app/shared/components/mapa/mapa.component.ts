@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnInit, ViewContainerRef } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
-import { setFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
-import { FilterState, GeneralResponse, UserInfo } from '@app/shared/models/general-models';
+import { GeneralFilters, UserInfo } from '@app/shared/models/general-models';
 import { Observable } from 'rxjs';
 import tippy, { Instance } from 'tippy.js';
 import { TooltipComponent } from '../tooltip/tooltip.component';
@@ -17,20 +16,16 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
   styleUrls: ['./mapa.component.scss']
 })
 
-
-
 export class MapaComponent implements AfterViewInit {
   @Input()   tooltipsInfo: entity.statesResumeTooltip[] = [];
   @Input() statesColors:any ={};
   private tippyInstance!: Instance | null;
   selectedStates: string[] = [];
-  filters$!: Observable<FilterState['filters']>;
-  filters!: FilterState['filters'];
-  generalFilters$!: Observable<FilterState['generalFilters']>;
+  generalFilters$!: Observable<GeneralFilters>;
   userInfo!: UserInfo;
 
   constructor(
-    private store: Store<{ filters: FilterState }>,
+    private store: Store<{ filters: GeneralFilters }>,
     private el: ElementRef,
     private viewContainerRef: ViewContainerRef,
     private injector: Injector,
@@ -40,10 +35,7 @@ export class MapaComponent implements AfterViewInit {
 
   ) {
     this.createTooltips();
-    this.generalFilters$ = this.store.select(state => state.filters.generalFilters);
-    this.generalFilters$.subscribe(generalFilters=>{
-/*       this.getTooltipInfo(generalFilters);
- */    })
+    this.generalFilters$ = this.store.select(state => state.filters);
   }
 
   ngAfterViewInit() {
