@@ -80,7 +80,6 @@ export class LoginComponent implements OnDestroy {
     return isValid ? null : { invalidPassword: true };
   }
 
-
   alertInformationModal() {
     this.loading = false;
     this.loginForm.enable();
@@ -91,7 +90,6 @@ export class LoginComponent implements OnDestroy {
       data: dataNotificationModal
     });
   }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

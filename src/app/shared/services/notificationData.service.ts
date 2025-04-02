@@ -165,6 +165,18 @@ export class NotificationDataService {
     return dataNotification;
   }
 
+  showNoExcelUpload() {
+    const dataNotification = {
+      type: NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE,
+      title: NOTIFICATION_CONSTANTS.EXCEL_UPLOAD_TITLE,
+      content: NOTIFICATION_CONSTANTS.EXCEL_UPLOAD_CONTENT,
+      warn : NOTIFICATION_CONSTANTS.EXCEL_UPLOAD_WARM,
+      buttonAction: NOTIFICATION_CONSTANTS.ACTION_BUTTON
+
+    }
+    return dataNotification;
+  }
+
 
   uniqueError(): notificationData{// funcion que regresa paramertros(en este caso solo nos sirve el id) para crear una notificacion de error en sistema
     const dataNotification = {

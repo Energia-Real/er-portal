@@ -120,8 +120,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
-    console.log(month);
-    
     if (month.value == '12') {
       this.selectedEndMonth = null;
       this.singleMonth.setValue(true);
@@ -138,79 +136,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       menuTrigger.closeMenu();
     }
   }
-
-  // updateYearSelected(year: number) {
-  //   this.selectedYear = year;
-  //   this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
-  // }
-
-  // updateYearSelected(year: number): void {
-  //   this.selectedYear = year;
-  //   this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
-  //   console.log('currentMonth', this.currentMonth);
-    
-  
-  //   // Si se cambia al año actual después de haber seleccionado diciembre en otro año
-  //   if (year == this.currentYearFull && this.selectedStartMonth?.value == 12) {
-  //     this.selectedStartMonth = this.months.find((m:any) => m.value == 1) || null; // Enero
-  //     this.selectedEndMonth = this.months.find(m => m.value == this.currentMonth) || null; // Mes actual
-  //     this.singleMonth.setValue(false); // Desactivar modo de un solo mes
-  //   }
-  // }
-  
-  // updateYearSelected(year: number) {
-  //   const prevStartMonth = this.selectedStartMonth;
-  //   console.log('prevStartMonth', prevStartMonth);
-  
-  //   const prevEndMonth: any = this.selectedEndMonth;
-  //   console.log('prevEndMonth', prevEndMonth);
-  
-  //   // Actualizamos el año seleccionado
-  //   this.selectedYear = year;
-  //   this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
-  
-  //   // Si el año seleccionado es el actual
-  //   if (year == this.currentYearFull) {
-  //     // Si los meses seleccionados están dentro del rango disponible (1 - mes actual)
-  //     if (
-  //       prevStartMonth &&
-  //       prevStartMonth.value >= '01' &&
-  //       prevStartMonth.value <= String(this.currentMonth).padStart(2, '0') &&
-  //       prevEndMonth &&
-  //       prevEndMonth.value >= '01' &&
-  //       prevEndMonth.value <= String(this.currentMonth).padStart(2, '0')
-  //     ) {
-  //       // Mantener los meses previos seleccionados si están dentro del rango
-  //       this.selectedStartMonth = prevStartMonth;
-  //       this.selectedEndMonth = prevEndMonth;
-  //     } else {
-  //       // Si no están en el rango, asignar enero y el mes actual
-  //       this.selectedStartMonth = this.months.find((m) => m.value == '01') || null; // Enero
-  //       this.selectedEndMonth = this.months.find((m) => m.value == String(this.currentMonth).padStart(2, '0')) || null; // Mes actual
-  //       this.singleMonth.setValue(false); // Desactivar modo de un solo mes
-  //     }
-  //   } else {
-  //     // Si el año seleccionado es distinto al actual
-  //     // Si los meses seleccionados son válidos en el nuevo año
-  //     if (
-  //       prevStartMonth &&
-  //       prevStartMonth.value >= '01' &&
-  //       prevStartMonth.value <= '12' &&
-  //       prevEndMonth &&
-  //       prevEndMonth.value >= '01' &&
-  //       prevEndMonth.value <= '12'
-  //     ) {
-  //       // Mantener los meses previos seleccionados si están dentro del rango
-  //       this.selectedStartMonth = prevStartMonth;
-  //       this.selectedEndMonth = prevEndMonth;
-  //     } else {
-  //       // Si los meses no son válidos, asignar enero como inicio y mes actual como fin
-  //       this.selectedStartMonth = this.months.find((m) => m.value === '01') || null; // Enero
-  //       this.selectedEndMonth = this.months.find((m) => m.value === String(this.currentMonth).padStart(2, '0')) || null; // Mes actual
-  //       this.singleMonth.setValue(false); // Desactivar modo de un solo mes
-  //     }
-  //   }
-  // }
 
   updateYearSelected(year: number) {
     const prevStartMonth = this.selectedStartMonth;
@@ -263,8 +188,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       endDate: ''
     };
 
-    console.log(generalFilters);
-    
     generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.selectedYear, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.selectedYear, +this.selectedEndMonth.value);
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {

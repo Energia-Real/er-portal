@@ -100,9 +100,11 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([generalFilters, pageSize, pageIndex]) => {
-        this.generalFilters = generalFilters;
+        const hasYearChanged = this.generalFilters?.year !== generalFilters.year;
+        const hasPaginationChanged = this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1;
 
-        if (this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1) {
+        if (hasYearChanged || hasPaginationChanged) {
+          this.generalFilters = generalFilters;
           this.pageSize = pageSize;
           this.pageIndex = pageIndex + 1;
 
@@ -111,7 +113,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
             this.paginator.pageIndex = pageIndex;
           }
 
-          if (!this.isLoading) this.getData();
+          if (!this.isLoading || hasYearChanged) this.getData();
         }
       });
 
@@ -124,6 +126,9 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.alertInformationModal()
+
+
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
     else console.error('Paginator no está definido');
 
@@ -136,34 +141,31 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
     this.isLoading = true;
     this.newEnergyType = event?.value || 0;
 
-    if (this.newEnergyType) this.store.dispatch(updatePagination({ pageIndex: 0, pageSize: this.pageSize }));
-
-    this.selectedEnergyType = this.newEnergyType || this.selectedEnergyType;
+    if (this.newEnergyType) {
+      this.store.dispatch(updatePagination({ pageIndex: 0, pageSize: this.pageSize }));
+      this.selectedEnergyType = this.newEnergyType;
+    }
 
     let filters: entity.FiltersEnergyProd = {
       pageSize: this.pageSize,
       page: this.newEnergyType ? 1 : this.pageIndex,
       year: this.generalFilters.year,
       name: name || this.searchBar.value!
-    }
+    };
 
-    switch (this.selectedEnergyType) {
-      case 1:
-        this.getDataResponse(filters);
-        break;
-      case 2:
-        this.getConsumptionDataResponse(filters);
-        break;
-      case 3:
-        this.getEstimatedDataResponse(filters);
-        break;
-      default:
-        this.getDataResponse(filters);
-    }
+    this.getEnergyData(filters, this.selectedEnergyType);
   }
 
-  getDataResponse(filters: entity.FiltersEnergyProd) {
-    this.moduleServices.getEnergyProdData(filters).subscribe({
+  getEnergyData(filters: entity.FiltersEnergyProd, energyType: number) {
+    const services: any = {
+      1: this.moduleServices.getEnergyProdData.bind(this.moduleServices),
+      2: this.moduleServices.getEnergyConsumptionData.bind(this.moduleServices),
+      3: this.moduleServices.getEnergyEstimatedData.bind(this.moduleServices)
+    };
+
+    const service = services[energyType] || services[1];
+
+    service(filters).subscribe({
       next: (response: entity.DataEnergyProdTablMapper) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
@@ -171,39 +173,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
         this.pageIndex = filters?.page;
         this.isLoading = false;
       },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
-
-  getConsumptionDataResponse(filters: entity.FiltersEnergyProd) {
-    this.moduleServices.getEnergyConsumptionData(filters).subscribe({
-      next: (response: entity.DataEnergyProdTablMapper) => {
-        this.dataSource.data = response?.data;
-        this.totalItems = response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = filters?.page;
-        this.isLoading = false;
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
-  }
-
-  getEstimatedDataResponse(filters: entity.FiltersEnergyProd) {
-    this.moduleServices.getEnergyEstimatedData(filters).subscribe({
-      next: (response: entity.DataEnergyProdTablMapper) => {
-        this.dataSource.data = response?.data;
-        this.totalItems = response?.totalItems;
-        this.dataSource.sort = this.sort;
-        this.pageIndex = filters?.page;
-        this.isLoading = false;
-      },
-      error: error => {
+      error: (error: any) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
@@ -229,7 +199,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
     if (this.selectedFile) {
       this.moduleServices.uploadExcel(this.selectedFile).subscribe({
         next: (response) => {
-          this.completionMessage(true);
+          this.alertInformationModal();
         },
         error: (error: HttpErrorResponse) => {
           const errorMessages = error?.error?.errors?.errors.map((e: any) => e.descripcion)
@@ -300,9 +270,13 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
     })
   }
 
-  completionMessage(load: boolean) {
-    this.notificationService.notificacion(`Excel ${load ? 'Loaded' : 'Downloaded'}.`, 'save')
-    this.getData();
+  alertInformationModal() {
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoExcelUpload();
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
   }
 
   ngOnDestroy(): void {
