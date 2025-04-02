@@ -69,7 +69,9 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([pageSize, pageIndex]) => {
-        if (this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1) {
+        const hasPaginationChanged = this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1;
+
+        if (hasPaginationChanged) {
           this.pageSize = pageSize;
           this.pageIndex = pageIndex + 1;
 
@@ -83,16 +85,16 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
       });
 
     this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
-        this.drawerAction = resp.drawerAction;
-        this.drawerInfo = resp.drawerInfo;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
 
-        if (!this.drawerOpenClient && !this.editedClient) this.drawerOpen = resp.drawerOpen;
+      if (!this.drawerOpenClient && !this.editedClient) this.drawerOpen = resp.drawerOpen;
 
-        if (this.drawerOpenClient || this.editedClient?.id) {
-          this.drawerOpenClient = resp.drawerOpen;
-          if (resp.needReload) this.getClients();
-        }
-      });
+      if (this.drawerOpenClient || this.editedClient?.id) {
+        this.drawerOpenClient = resp.drawerOpen;
+        if (resp.needReload) this.getClients();
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -133,27 +135,29 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.editedClient, needReload: false }));
   }
 
+  toggleDrawer(drawerType: "client" | "corporate" | "general" | "typeClients", data?: any) {
+    if (drawerType === "client") {
+      this.editedClient = data;
+      this.drawerOpenClient = !this.drawerOpenClient;
+      this.updDraweState(this.drawerOpenClient, "Create", this.editedClient);
+    } else if (drawerType === "corporate") {
+      this.updCorporateDrawer(data.id, data.name);
+      this.drawerOpenCorporateName = !this.drawerOpenCorporateName;
+    } else if (drawerType === "typeClients") {
+      this.drawerOpen = !this.drawerOpen;
+      this.updDraweState(this.drawerOpen, "Create", null);
+    } else {
+      this.drawerOpen = !this.drawerOpen;
+      this.updDraweState(this.drawerOpen, "Create", null);
+    }
+  }
+
+  updDraweState(estado: boolean, drawerAction: "Create" | "Edit", drawerInfo: any | null): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction, drawerInfo, needReload: false }));
+  }
+
   updCorporateDrawer(id: string, name: string) {
     this.store.dispatch(corporateDrawer({ drawerOpen: true, clientId: id, clientName: name }));
-  }
-
-  toggleDrawer() {
-    this.updDraweState(!this.drawerOpen);
-  }
-
-  toggleClientDrawer(data?: any) {
-    this.editedClient = data
-    this.drawerOpenClient = !this.drawerOpenClient
-    this.updDraweState(this.drawerOpenClient);
-  }
-
-  toggleCorporateNameDrawer(id: string, name: string) {
-    this.updCorporateDrawer(id, name)
-    this.drawerOpenCorporateName = !this.drawerOpenCorporateName
-  }
-
-  updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
   }
 
   navigate(link: string) {
@@ -178,7 +182,7 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     }
   }
 
-  corporateEmitter(emit: boolean){
+  corporateEmitter(emit: boolean) {
     this.drawerOpenCorporateName = false;
   }
 
