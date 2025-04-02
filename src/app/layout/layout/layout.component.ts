@@ -77,11 +77,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
         }
       }
 
-      this.authService.getModules().subscribe((modules) => {
-
-        
-        this.modules = modules;
-      });
+      this.authService.getModules().subscribe((modules) => this.modules = modules);
 
       this.router.events
         .pipe(filter((event) => event instanceof NavigationEnd))

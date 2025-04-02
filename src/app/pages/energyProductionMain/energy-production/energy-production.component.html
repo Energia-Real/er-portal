@@ -2,9 +2,9 @@
     <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-2 md:col-span-1 flex align-center gap-2">
             <div class="relative w-52 c-select">
-                <mat-form-field class="select-years select-type" appearance="outline">
+                <mat-form-field class="select-years width-100" appearance="outline">
                     <mat-select [disabled]="false" [(value)]="selectedEnergyType"
-                        (selectionChange)="onEnergyTypeChange($event)">
+                        (selectionChange)="getData('', $event)">
                         <mat-option *ngFor="let type of energyTypes" [value]="type.value">
                             {{ type.description }}
                         </mat-option>
@@ -215,7 +215,7 @@
     </div>
 
 
-    <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+    <mat-paginator [disabled]="isLoading" #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
         [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
         aria-label="Select page of periodic elements">
     </mat-paginator>

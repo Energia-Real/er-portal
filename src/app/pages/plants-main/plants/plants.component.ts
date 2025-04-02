@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -54,7 +54,6 @@ export class PlantsComponent implements OnDestroy, AfterViewInit {
     private notificationService: OpenModalsService,
     private router: Router
   ) {
-
     combineLatest([
       this.store.select(selectPageSize).pipe(distinctUntilChanged()),
       this.store.select(selectPageIndex).pipe(distinctUntilChanged())
@@ -82,10 +81,9 @@ export class PlantsComponent implements OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
     else console.error('Paginator no está definido');
-    
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getPlants(content!);
-    })
+
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$))
+      .subscribe(content => this.getPlants(content!))
   }
 
   getPlants(name = '') {

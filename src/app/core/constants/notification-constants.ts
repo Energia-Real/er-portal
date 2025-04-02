@@ -130,6 +130,11 @@ export const NOTIFICATION_CONSTANTS = {
   ALERT_NON_LOGIN_CREDENTIALS_CONTENT: 'The credentials entered are incorrect. Please check your username and password.',
   ALERT_NON_LOGIN_CREDENTIALS_WARM: 'If the issue persists, try resetting your password or contact your administrator.',
 
+  // EXCELUPLOAD 
+  EXCEL_UPLOAD_TITLE: 'Document uploaded successfully',
+  EXCEL_UPLOAD_CONTENT: 'The document has been uploaded successfully. Please verify that the results are correct.',
+  EXCEL_UPLOAD_WARM: 'If you notice any discrepancies, check the source file before proceeding.',
+
   //MENSAJES CONSTANTES DE NOTIFICACIONES (NO SE CUIENTA CON LAS RESPUIESTAS DE ERROR YA QUE SON SERVICIOS EXTERNOS COMO TOMORROW io) 
   ERROR_TITLE_WEATHER_DATA : 'Data not foud',
   ERROR_CONTENT_WEATHER_DATA : 'Error loading Weather data',

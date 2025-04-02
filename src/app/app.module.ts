@@ -18,6 +18,8 @@ import { corporateDrawerReducer, drawerReducer } from './core/store/reducers/dra
 import { filterReducer } from './core/store/reducers/filters.reducer';
 import { notificationsReducer } from './core/store/reducers/notifications.reducer';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getPaginatorIntl } from './shared/material/paginator-intl';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -42,7 +44,11 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
       useClass: LoadingInterceptor,
       multi: true
     },
-    provideAnimationsAsync()
+    { 
+      provide: MatPaginatorIntl, 
+      useValue: getPaginatorIntl() 
+    },
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent]
 })

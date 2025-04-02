@@ -1,9 +1,9 @@
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ClientsService } from '../clients.service';
-import { Subject, Subscription, debounceTime, takeUntil } from 'rxjs';
+import { Subject, Subscription, combineLatest, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import * as entity from '../clients-model';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Store } from '@ngrx/store';
@@ -20,20 +20,15 @@ import { DrawerGeneral } from '@app/shared/models/general-models';
   templateUrl: './clients.component.html',
   styleUrl: './clients.component.scss'
 })
-export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
+export class ClientsComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<entity.DataClientsTable>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 5;
   pageIndex: number = 1;
   totalItems: number = 0;
-
-  ngAfterViewChecked() {
-    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
-    else console.error('Paginator no está definido');
-  }
 
   displayedColumns: string[] = [
     'image',
@@ -44,12 +39,8 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     'actions',
   ];
 
-
-  totalPlants: any;
-
   searchValue: string = '';
   drawerAction: "Create" | "Edit" = "Create";
-  drawerAction2: "Create" | "Edit" = "Create";
   drawerInfo: any | null | undefined = null;
 
   showLoader: boolean = true;
@@ -61,67 +52,76 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
 
   loadingtotalPlants: boolean = true;
 
-  pageSizeSub: Subscription;
-  pageIndexSub: Subscription;
-
   searchBar = new FormControl('');
-  drawerOpenSub: Subscription;
-  drawerOpenSubClient: Subscription;
+  drawerOpenSub!: Subscription;
 
   editedClient: any;
 
   constructor(
-    private store: Store, 
-    private moduleServices: ClientsService, 
-    private notificationService: OpenModalsService, 
+    private store: Store,
+    private moduleServices: ClientsService,
+    private notificationService: OpenModalsService,
     private router: Router,
   ) {
-    this.pageSizeSub = this.store.select(selectPageSize).subscribe(size => {
-      this.pageSize = size;
-      if (this.paginator) this.paginator.pageSize = size;
-    });
+    combineLatest([
+      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
+      this.store.select(selectPageIndex).pipe(distinctUntilChanged())
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([pageSize, pageIndex]) => {
+        const hasPaginationChanged = this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1;
 
-    this.pageIndexSub = this.store.select(selectPageIndex).subscribe(index => {
-      this.pageIndex = index + 1;
-      if (this.paginator) this.paginator.pageIndex = index;
-      this.getDataTable(index + 1, this.searchValue);
-    });
+        if (hasPaginationChanged) {
+          this.pageSize = pageSize;
+          this.pageIndex = pageIndex + 1;
 
-    this.drawerOpenSub = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
-      if (!this.drawerOpenClient && !this.editedClient) {
-        this.drawerOpen = resp.drawerOpen;
-        this.drawerAction = resp.drawerAction;
-        this.drawerInfo = resp.drawerInfo;
-      }
-    });
+          if (this.paginator) {
+            this.paginator.pageSize = pageSize;
+            this.paginator.pageIndex = pageIndex;
+          }
 
-    this.drawerOpenSubClient = this.store.select(selectDrawer).subscribe((resp: DrawerGeneral) => {
+          this.getClients();
+        }
+      });
+
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+
+      if (!this.drawerOpenClient && !this.editedClient) this.drawerOpen = resp.drawerOpen;
 
       if (this.drawerOpenClient || this.editedClient?.id) {
         this.drawerOpenClient = resp.drawerOpen;
-        this.drawerAction = resp.drawerAction;
-        this.drawerInfo = resp.drawerInfo;
-        if (resp.needReload) this.getDataTable(1, '');
+        if (resp.needReload) this.getClients();
       }
     });
   }
 
   ngAfterViewInit(): void {
-    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$)).subscribe(content => {
-      this.getDataTable(1, content!);
-    })
+    if (this.paginator) this.paginator.pageIndex = this.pageIndex - 1;
+    else console.error('Paginator no está definido');
+
+    this.searchBar.valueChanges.pipe(debounceTime(500), takeUntil(this.onDestroy$))
+      .subscribe(content => this.getClients(content!));
   }
 
-  getDataTable(page: number, name: string) {
-    this.moduleServices.getClientsData(name, this.pageSize, page).subscribe({
+  getClients(name = '') {
+    const filters: entity.FiltersClients = {
+      pageSize: this.pageSize,
+      page: this.pageIndex,
+      name
+    };
+
+    this.moduleServices.getClientsData(filters).subscribe({
       next: (response: entity.DataTableResponse) => {
         this.dataSource.data = response?.data;
         this.totalItems = response?.totalItems;
         this.dataSource.sort = this.sort;
-        this.pageIndex = page;
+        this.pageIndex = filters.page;
       },
       error: error => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
       }
     });
   }
@@ -135,33 +135,29 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
     this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Edit", drawerInfo: this.editedClient, needReload: false }));
   }
 
-  updCorporateDrawer(id:string, name: string){
-    this.store.dispatch(corporateDrawer({ drawerOpen: true, clientId: id, clientName: name}));
-
+  toggleDrawer(drawerType: "client" | "corporate" | "general" | "typeClients", data?: any) {
+    if (drawerType === "client") {
+      this.editedClient = data;
+      this.drawerOpenClient = !this.drawerOpenClient;
+      this.updDraweState(this.drawerOpenClient, "Create", this.editedClient);
+    } else if (drawerType === "corporate") {
+      this.updCorporateDrawer(data.id, data.name);
+      this.drawerOpenCorporateName = !this.drawerOpenCorporateName;
+    } else if (drawerType === "typeClients") {
+      this.drawerOpen = !this.drawerOpen;
+      this.updDraweState(this.drawerOpen, "Create", null);
+    } else {
+      this.drawerOpen = !this.drawerOpen;
+      this.updDraweState(this.drawerOpen, "Create", null);
+    }
   }
 
-  toggleDrawer() {
-    this.updDraweState(!this.drawerOpen);
+  updDraweState(estado: boolean, drawerAction: "Create" | "Edit", drawerInfo: any | null): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction, drawerInfo, needReload: false }));
   }
 
-  toggleDrawerClient(data?: any) {
-    this.editedClient = data
-    this.drawerOpenClient = !this.drawerOpenClient
-    this.updDraweState(this.drawerOpenClient);
-  }
-
-  toggleDrawerCorporateName( id: string, name:string) {
-    this.updCorporateDrawer(id,name)
-    this.drawerOpenCorporateName = !this.drawerOpenCorporateName
-  }
-
-  updDraweState(estado: boolean): void {
-    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "Create", drawerInfo: null, needReload: false }));
-  }
-
-  getServerData(event: PageEvent): void {
-    this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
-    this.getDataTable(event.pageIndex + 1, this.searchValue);
+  updCorporateDrawer(id: string, name: string) {
+    this.store.dispatch(corporateDrawer({ drawerOpen: true, clientId: id, clientName: name }));
   }
 
   navigate(link: string) {
@@ -169,17 +165,29 @@ export class ClientsComponent implements OnDestroy, AfterViewChecked, AfterViewI
   }
 
   changePageSize(event: any) {
-    this.pageSize = event.value;
-    this.paginator.pageSize = this.pageSize;
-    this.paginator._changePageSize(this.pageSize);
+    const newSize = event.value;
+    this.pageSize = newSize;
+
+    if (this.paginator) {
+      this.paginator.pageSize = newSize;
+      this.paginator._changePageSize(newSize);
+    }
+
+    this.getClients();
   }
 
-  corporateEmitter(emit: boolean){
+  getServerData(event: PageEvent): void {
+    if (event.pageSize !== this.pageSize || event.pageIndex !== this.pageIndex - 1) {
+      this.store.dispatch(updatePagination({ pageIndex: event.pageIndex, pageSize: event.pageSize }));
+    }
+  }
+
+  corporateEmitter(emit: boolean) {
     this.drawerOpenCorporateName = false;
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

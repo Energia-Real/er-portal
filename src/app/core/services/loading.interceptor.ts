@@ -15,10 +15,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     private loadingService: LoadingService,
     private router: Router,
     private snackBar: MatSnackBar,
-  ) { 
-console.log('url',this.router.url);
-    
-  }
+  ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
