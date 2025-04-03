@@ -1,7 +1,7 @@
 <div class="c-main c-plant-details">
   <div class="plant-header grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 appreturn">
-      <app-return-bar class="app-return" [route]="'/er/plants'"></app-return-bar>
+      <app-return-bar class="app-return"></app-return-bar>
 
       <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
         <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>

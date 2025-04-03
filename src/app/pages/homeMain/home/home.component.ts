@@ -480,11 +480,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-
-
-
-
-
   mappingData(dataSelected: any[]): any {
     let labels = dataSelected.map(item => item.siteName);
     let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
