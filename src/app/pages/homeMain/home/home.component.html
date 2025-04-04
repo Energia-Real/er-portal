@@ -1,20 +1,20 @@
 <main class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5 c-home c-main">
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section c-saving-details">
-            <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSDWidget">Savings Details</h2>
-            <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSDWidget">Fetching client details...</h2>
+            <h2 i18n='@@savingsDetailsTitle' class="text-er-orange text-base font-normal" *ngIf="!isLoadingSDWidget">Savings Details</h2>
+            <h2 i18n='@@fetchingClientDetails' class="text-er-orange text-base font-normal" *ngIf="isLoadingSDWidget">Fetching client details...</h2>
 
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
                 <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
                         savingsDetails.totalEnergyConsumption }} <br> <span>kWh</span> </h2>
-                    <p>Total Energy <br> Consumption</p>
+                    <p i18n='@@totalEnergyConsumption'>Total Energy <br> Consumption</p>
                     <div class="linea"></div>
                 </div>
                 <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
                         savingsDetails.totalEnergyProduction }} <br> <span>kWh</span></h2>
-                    <p>Total Energy <br> Production</p>
+                    <p i18n='@@totalEnergyProduction'>Total Energy <br> Production</p>
                     <div class="linea"></div>
                 </div>
                 <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
@@ -22,7 +22,7 @@
                         <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithoutSolar else notDataTable">
                             ${{ savingsDetails.cfeCostWithoutSolar }} <br>
                         </h2>
-                        <p>CFE Cost without Solar</p>
+                        <p i18n='@@cfeCostWithoutSolar'>CFE Cost without Solar</p>
                         <div class="linea"></div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
                         ${{ savingsDetails.totalSavings }} <br>
                     </h2>
-                    <p>Total Savings </p>
+                    <p i18n='@@totalSavingsLabel'>Total Savings </p>
                 </div>
             </div>
         </div>
@@ -39,8 +39,8 @@
             <div class="c-card-section solar-coverage">
                 <div>
                     <img src="../../../../assets/icons/solar-coverage.png" alt="">
-                    <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSCWidget">Solar Coverage</h2>
-                    <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSCWidget">Calculating solar
+                    <h2 i18n='@@solarCoverageTitle' class="text-er-orange text-base font-normal" *ngIf="!isLoadingSCWidget">Solar Coverage</h2>
+                    <h2 i18n='@@calculatingSolarCoverage' class="text-er-orange text-base font-normal" *ngIf="isLoadingSCWidget">Calculating solar
                         coverage...</h2>
                     <div *ngIf="!isLoadingSCWidget else loadingSkeleton" class="dataSC">
                         <p *ngIf="solarCoverage else notDataTable">
@@ -52,8 +52,8 @@
             <div class="c-card-section co2">
                 <div>
                     <div class="title-left">
-                        <h1 *ngIf="!isLoadingCO2Widget">CO2 Saving</h1>
-                        <h1 *ngIf="isLoadingCO2Widget">Calculating saved CO2 emissions...</h1>
+                        <h1 i18n='@@co2SavingTitle' *ngIf="!isLoadingCO2Widget">CO2 Saving</h1>
+                        <h1  i18n='@@calculatingCO2Emissions'*ngIf="isLoadingCO2Widget">Calculating saved CO2 emissions...</h1>
 
                         <div *ngIf="!isLoadingCO2Widget else loadingSkeleton">
                             <h2 *ngIf="co2Saving else notDataTable">{{co2Saving?.co2_saving_tCO2}}</h2>
@@ -64,12 +64,12 @@
                     <div class="title-right" *ngIf="!isLoadingCO2Widget else loadingSkeleton">
                         <div class="left" *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
+                            <h2 i18n='@@equivalentTrees' class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
                         </div>
 
                         <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/eletric.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br>
+                            <h2 i18n='@@equivalentCharges' class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br>
                                 electric car full charges.</h2>
                         </div>
                     </div>
@@ -81,9 +81,9 @@
 
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section economic-savings flex flex-col">
-            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="isLoadingESWidget">Calculating economic
+            <h2 i18n='@@calculatingEconomicSavings' class="text-er-orange text-base font-normal h-10" *ngIf="isLoadingESWidget">Calculating economic
                 savings...</h2>
-            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="!isLoadingESWidget">Economic savings</h2>
+            <h2 i18n='@@economicSavingsTitle' class="text-er-orange text-base font-normal h-10" *ngIf="!isLoadingESWidget">Economic savings</h2>
             <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
                 <div class="graphic-performance relative h-full w-full flex items-center">
                     <canvas id="economicSavingsChart" baseChart [type]="'bar'" [data]="lineChartDataES"
@@ -118,9 +118,10 @@
     <div class="col-span-2 md:col-span-1">
         <div class="c-card-section c-plants">
             <div class="c-section-plant">
-                <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingMapa">Retrieving plant data...</h2>
-                <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">Plants</h2>
+                <h2 i18n='@@retrievingPlantData' class="text-er-orange text-base font-normal" *ngIf="isLoadingMapa">Retrieving plant data...</h2>
+                <h2 i18n='@@plantsTitle' class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">Plants</h2>
                 <span class="color-57B1B1 material-symbols-outlined"
+                    i18n-matTooltip="@@mapInfoTooltip"
                     matTooltip="This map is for informational purposes only and shows general data by region.">info</span>
             </div>
             <div class="flex gap-4 items-stretch">
@@ -161,7 +162,7 @@
             </div>
         
             <div class="graph">
-                <h2 class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">Getting energy consumption...</h2>
+                <h2 i18n='@@gettingEnergyConsumption' class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">Getting energy consumption...</h2>
                 
                 <canvas baseChart [type]="'bar'" [data]="lineChartData" height="195" [options]="lineChartOptions">
                 </canvas>
@@ -179,7 +180,7 @@
                         <ng-container matColumnDef="siteName">
                             <th mat-header-cell *matHeaderCellDef class="ps-0">
                                 <div class="column-check-content">
-                                    <p class="target" mat-sort-header>Site name</p>
+                                    <p i18n='@@columnSiteName' class="target" mat-sort-header>Site name</p>
                                 </div>
                             </th>
 
@@ -193,7 +194,7 @@
 
                         <ng-container matColumnDef="energyProduction">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                <p class="target">Energy Production</p>
+                                <p i18n='@@columnEnergyProduction' class="target">Energy Production</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
                                 <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }}
@@ -204,7 +205,7 @@
 
                         <ng-container matColumnDef="energyConsumption">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                <p class="target">Energy Consumption</p>
+                                <p i18n='@@columnEnergyConsumption' class="target">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
                                 <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
@@ -215,7 +216,7 @@
 
                         <ng-container matColumnDef="solarCoverage">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                <p class="target">% Solar Coverage</p>
+                                <p i18n='@@columnSolarCoverage' class="target">% Solar Coverage</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
                                 <div *ngIf="element?.solarCoverage else notDataTable"> {{ element.solarCoverage }}%
@@ -225,7 +226,7 @@
 
                         <ng-container matColumnDef="co2Saving">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                <p class="target">tCO2 Savings</p>
+                                <p i18n='@@columnCO2Savings' class="target">tCO2 Savings</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
                                 <div *ngIf="element?.co2Saving else notDataTable"> {{ element.co2Saving }} </div>
@@ -234,25 +235,25 @@
 
                         <ng-container matColumnDef="siteStatus">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                <p class="target">Site Status</p>
+                                <p i18n='@@columnSiteStatus' class="target">Site Status</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
                                 <div class="table-icon" *ngIf="element.siteStatus=='Active'">
-                                    <mat-icon matTooltip="Active" class="table-check">radio_button_checked</mat-icon>
+                                    <mat-icon i18n-matTooltip="@@statusActiveTooltip" matTooltip="Active" class="table-check">radio_button_checked</mat-icon>
                                 </div>
                                 <div class="table-icon" *ngIf="element.siteStatus=='Defaulter'">
-                                    <mat-icon matTooltip="Defaulter" class="table-alert">warning</mat-icon>
+                                    <mat-icon i18n-matTooltip="@@statusDefaulterTooltip" matTooltip="Defaulter" class="table-alert">warning</mat-icon>
                                 </div>
                                 <div class="table-icon" *ngIf="element.siteStatus=='Under Construction'">
-                                    <mat-icon matTooltip="Under Construction"
+                                    <mat-icon i18n-matTooltip="@@statusConstructionTooltip" matTooltip="Under Construction"
                                         class="table-builder">engineering</mat-icon>
                                 </div>
                                 <div class="table-icon" *ngIf="element.siteStatus=='Under Permitting Process'">
-                                    <mat-icon matTooltip="Under Permitting Process"
+                                    <mat-icon i18n-matTooltip="@@statusPermittingTooltip" matTooltip="Under Permitting Process"
                                         class="table-under-construction">assignment</mat-icon>
                                 </div>
                                 <div class="table-icon" *ngIf="element.siteStatus=='Without Off-Taker'">
-                                    <mat-icon matTooltip="Without Off-Taker"
+                                    <mat-icon i18n-matTooltip="@@statusNoOffTakerTooltip" matTooltip="Without Off-Taker"
                                         class="table-whitout-off-tacker">person_off</mat-icon>
                                 </div>
                                 <div class="table-icon" *ngIf="element.siteStatus==null">
@@ -263,7 +264,7 @@
 
                         <tr *matNoDataRow>
                             <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                                <h5 class="text-center my-5">No results found.</h5>
+                                <h5 i18n='@@noResultsFound' class="text-center my-5">No results found.</h5>
                             </td>
                         </tr>
 

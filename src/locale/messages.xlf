@@ -1,98 +1,659 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en-US" datatype="plaintext" original="ng2.template">
-    <body>
-      <trans-unit id="5843792601150942349" datatype="html">
-        <source>Plantas totales</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">6,7</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8746516477406827472" datatype="html">
-        <source># de sitios</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">10,11</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6148785385716425288" datatype="html">
-        <source># de inversores</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">14,15</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8309776195419145470" datatype="html">
-        <source>MW instalados</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">18,19</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8459533404022994182" datatype="html">
-        <source>Co2 T</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">22,23</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="574207328016014209" datatype="html">
-        <source>Buscar por nombre de sitio</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">31,32</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8935958191734783544" datatype="html">
-        <source> Nombre del sitio </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">42,43</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="9100784883236557142" datatype="html">
-        <source> Fecha de comisión </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">52,53</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="7568179184632491298" datatype="html">
-        <source> # de inversores </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">57,58</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="21181715306413526" datatype="html">
-        <source> Tamaño de sistema </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">62,63</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="1379356035188373214" datatype="html">
-        <source> Dirección </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">67,68</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="2153980152639237955" datatype="html">
-        <source>Editar</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">80,81</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="7341573395859226797" datatype="html">
-        <source>Detalle</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/assets/management/management.component.html</context>
-          <context context-type="linenumber">81,82</context>
-        </context-group>
-      </trans-unit>
-    </body>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US">
+  <file id="ngi18n" original="ng.template">
+    <unit id="LoginTitle">
+      <notes>
+        <note category="location">src/app/auth/login/login.component.html:5,8</note>
+      </notes>
+      <segment>
+        <source>Enter your details to access the site</source>
+      </segment>
+    </unit>
+    <unit id="LoginError">
+      <notes>
+        <note category="location">src/app/auth/login/login.component.html:14,18</note>
+      </notes>
+      <segment>
+        <source>Invalid email format.</source>
+      </segment>
+    </unit>
+    <unit id="LoginButton">
+      <notes>
+        <note category="location">src/app/auth/login/login.component.html:44,50</note>
+      </notes>
+      <segment>
+        <source>Enter the site</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioTitle">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:4,8</note>
+      </notes>
+      <segment>
+        <source>Portafolio map</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioExcelentLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:17,20</note>
+      </notes>
+      <segment>
+        <source>Excelent</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioGoodLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:21,24</note>
+      </notes>
+      <segment>
+        <source>Good</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioAverageLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:25,28</note>
+      </notes>
+      <segment>
+        <source>Avarage</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioWorstLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:29,32</note>
+      </notes>
+      <segment>
+        <source>Worst</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioErrorLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:33,36</note>
+      </notes>
+      <segment>
+        <source>Error</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioDesconectedLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:37,41</note>
+      </notes>
+      <segment>
+        <source>Desconectad</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioSearch">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:43,47</note>
+      </notes>
+      <segment>
+        <source>Search</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioColumnState">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:52,54</note>
+      </notes>
+      <segment>
+        <source>State</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioColumnSiteName">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:61,63</note>
+      </notes>
+      <segment>
+        <source>Site name</source>
+      </segment>
+    </unit>
+    <unit id="PortafolioColumnCustomer">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:69,71</note>
+      </notes>
+      <segment>
+        <source>Customer</source>
+      </segment>
+    </unit>
+    <unit id="noResultsText">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:79,81</note>
+      </notes>
+      <segment>
+        <source>No results found.</source>
+      </segment>
+    </unit>
+    <unit id="assetMonitoringTitle">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:98,101</note>
+      </notes>
+      <segment>
+        <source>Asset monitoring parameter</source>
+      </segment>
+    </unit>
+    <unit id="tabObserved">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:105,106</note>
+      </notes>
+      <segment>
+        <source>Observed Parameters</source>
+      </segment>
+    </unit>
+    <unit id="tabLiveKPI">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:109,110</note>
+      </notes>
+      <segment>
+        <source>Live KPI</source>
+      </segment>
+    </unit>
+    <unit id="tabCumulativeKPI">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:112,113</note>
+      </notes>
+      <segment>
+        <source>Cumulative KPI</source>
+      </segment>
+    </unit>
+    <unit id="trendsTitle">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:124,128</note>
+      </notes>
+      <segment>
+        <source>Trends</source>
+      </segment>
+    </unit>
+    <unit id="tabActivePower">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:130,132</note>
+      </notes>
+      <segment>
+        <source>Active power</source>
+      </segment>
+    </unit>
+    <unit id="timeDay">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:133,135</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:169,171</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:205,207</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:241,243</note>
+      </notes>
+      <segment>
+        <source>Day</source>
+      </segment>
+    </unit>
+    <unit id="timeWeek">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:134,136</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:170,172</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:206,208</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:242,244</note>
+      </notes>
+      <segment>
+        <source>Week</source>
+      </segment>
+    </unit>
+    <unit id="timeMonth">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:135,138</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:171,174</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:207,210</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:243,246</note>
+      </notes>
+      <segment>
+        <source>Month</source>
+      </segment>
+    </unit>
+    <unit id="tabSpecificPower">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:166,168</note>
+      </notes>
+      <segment>
+        <source>Specific Power</source>
+      </segment>
+    </unit>
+    <unit id="tabSpecificYield">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:202,204</note>
+      </notes>
+      <segment>
+        <source>Specific Yield</source>
+      </segment>
+    </unit>
+    <unit id="tabPerformanceRatio">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:238,240</note>
+      </notes>
+      <segment>
+        <source>Perfomance ratio</source>
+      </segment>
+    </unit>
+    <unit id="searchPlaceholder">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:280,284</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:544,548</note>
+      </notes>
+      <segment>
+        <source>Search</source>
+      </segment>
+    </unit>
+    <unit id="downloadTemplate">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:286,287</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:550,551</note>
+      </notes>
+      <segment>
+        <source><pc id="0" equivStart="START_TAG_SPAN" equivEnd="CLOSE_TAG_SPAN" type="other" dispStart="&lt;span class=&quot;material-symbols-outlined&quot;&gt;" dispEnd="&lt;/span&gt;">download</pc> Download Template </source>
+      </segment>
+    </unit>
+    <unit id="eventsTitle">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:298,300</note>
+      </notes>
+      <segment>
+        <source>Plants event summary</source>
+      </segment>
+    </unit>
+    <unit id="filterTitle">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:307,308</note>
+      </notes>
+      <segment>
+        <source>Filter</source>
+      </segment>
+    </unit>
+    <unit id="severityLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:316,317</note>
+      </notes>
+      <segment>
+        <source>Severity:</source>
+      </segment>
+    </unit>
+    <unit id="optionAll">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:319,320</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:331,332</note>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:343,344</note>
+      </notes>
+      <segment>
+        <source>All</source>
+      </segment>
+    </unit>
+    <unit id="groupLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:328,329</note>
+      </notes>
+      <segment>
+        <source>Group:</source>
+      </segment>
+    </unit>
+    <unit id="orderLabel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:340,341</note>
+      </notes>
+      <segment>
+        <source>Order:</source>
+      </segment>
+    </unit>
+    <unit id="applyFilter">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:354,355</note>
+      </notes>
+      <segment>
+        <source><pc id="0" equivStart="START_TAG_SPAN" equivEnd="CLOSE_TAG_SPAN" type="other" dispStart="&lt;span  class=&quot;material-symbols-outlined&quot;&gt;" dispEnd="&lt;/span&gt;">filter_list</pc> Apply </source>
+      </segment>
+    </unit>
+    <unit id="clearFilter">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:359,360</note>
+      </notes>
+      <segment>
+        <source><pc id="0" equivStart="START_TAG_SPAN" equivEnd="CLOSE_TAG_SPAN" type="other" dispStart="&lt;span class=&quot;material-symbols-outlined&quot;&gt;" dispEnd="&lt;/span&gt;">delete</pc> Clear </source>
+      </segment>
+    </unit>
+    <unit id="tooltipEventSummaryCarrousel">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:371,373</note>
+      </notes>
+      <segment>
+        <source>Hold down and drag left or right to see more items.</source>
+      </segment>
+    </unit>
+    <unit id="plantStatusTitle">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:538,541</note>
+      </notes>
+      <segment>
+        <source>Plant status</source>
+      </segment>
+    </unit>
+    <unit id="bulkUpload">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:556,557</note>
+      </notes>
+      <segment>
+        <source><ph id="0" equiv="TAG_IMG" type="image" disp="&lt;img src=&quot;../../../../../assets/svg/upload_orange.svg&quot; alt=&quot;Icon Search&quot;&gt;"/> Bulk upload </source>
+      </segment>
+    </unit>
+    <unit id="columnPlantName">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:570,572</note>
+      </notes>
+      <segment>
+        <source>Plant name</source>
+      </segment>
+    </unit>
+    <unit id="columnComm">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:578,580</note>
+      </notes>
+      <segment>
+        <source>Comm.</source>
+      </segment>
+    </unit>
+    <unit id="columnAlarms">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:591,593</note>
+      </notes>
+      <segment>
+        <source>Alarms</source>
+      </segment>
+    </unit>
+    <unit id="columnInverterAvailability">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:601,603</note>
+      </notes>
+      <segment>
+        <source>Inverter asset availability (%)</source>
+      </segment>
+    </unit>
+    <unit id="columnPlantAvailability">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:621,623</note>
+      </notes>
+      <segment>
+        <source>Plant availability (Energy based %)</source>
+      </segment>
+    </unit>
+    <unit id="columnGridAvailability">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:633,635</note>
+      </notes>
+      <segment>
+        <source>Grid availability (Energy based %)</source>
+      </segment>
+    </unit>
+    <unit id="columnPerformanceRatio">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:645,647</note>
+      </notes>
+      <segment>
+        <source>Performance ratio (%)</source>
+      </segment>
+    </unit>
+    <unit id="columnActivePower">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:655,657</note>
+      </notes>
+      <segment>
+        <source>Active Power (MW)</source>
+      </segment>
+    </unit>
+    <unit id="columnIrradiation">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:665,667</note>
+      </notes>
+      <segment>
+        <source>Irradiation (kWh/m²)</source>
+      </segment>
+    </unit>
+    <unit id="columnSpecificPower">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:675,677</note>
+      </notes>
+      <segment>
+        <source>Specific power (kW/kWp)</source>
+      </segment>
+    </unit>
+    <unit id="noResultsFound">
+      <notes>
+        <note category="location">src/app/pages/home-admin/home-admin/home-admin.component.html:685,689</note>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:267,271</note>
+      </notes>
+      <segment>
+        <source>No results found.</source>
+      </segment>
+    </unit>
+    <unit id="savingsDetailsTitle">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:4,5</note>
+      </notes>
+      <segment>
+        <source>Savings Details</source>
+      </segment>
+    </unit>
+    <unit id="fetchingClientDetails">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:5,8</note>
+      </notes>
+      <segment>
+        <source>Fetching client details...</source>
+      </segment>
+    </unit>
+    <unit id="totalEnergyConsumption">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:11,12</note>
+      </notes>
+      <segment>
+        <source>Total Energy <ph id="0" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/> Consumption</source>
+      </segment>
+    </unit>
+    <unit id="totalEnergyProduction">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:17,18</note>
+      </notes>
+      <segment>
+        <source>Total Energy <ph id="0" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/> Production</source>
+      </segment>
+    </unit>
+    <unit id="cfeCostWithoutSolar">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:25,28</note>
+      </notes>
+      <segment>
+        <source>CFE Cost without Solar</source>
+      </segment>
+    </unit>
+    <unit id="totalSavingsLabel">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:33,38</note>
+      </notes>
+      <segment>
+        <source>Total Savings </source>
+      </segment>
+    </unit>
+    <unit id="solarCoverageTitle">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:42,43</note>
+      </notes>
+      <segment>
+        <source>Solar Coverage</source>
+      </segment>
+    </unit>
+    <unit id="calculatingSolarCoverage">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:43,45</note>
+      </notes>
+      <segment>
+        <source>Calculating solar coverage...</source>
+      </segment>
+    </unit>
+    <unit id="co2SavingTitle">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:55,56</note>
+      </notes>
+      <segment>
+        <source>CO2 Saving</source>
+      </segment>
+    </unit>
+    <unit id="calculatingCO2Emissions">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:56,59</note>
+      </notes>
+      <segment>
+        <source>Calculating saved CO2 emissions...</source>
+      </segment>
+    </unit>
+    <unit id="equivalentTrees">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:67,68</note>
+      </notes>
+      <segment>
+        <source>Equivalent to <ph id="0" equiv="INTERPOLATION" disp="{{co2Saving?.tree_equivalent}}"/> trees</source>
+      </segment>
+    </unit>
+    <unit id="equivalentCharges">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:72,73</note>
+      </notes>
+      <segment>
+        <source>Equivalent to <ph id="0" equiv="INTERPOLATION" disp="{{co2Saving?.ev_charges_equivalent}}"/> <ph id="1" equiv="LINE_BREAK" type="fmt" disp="&lt;br&gt;"/> electric car full charges.</source>
+      </segment>
+    </unit>
+    <unit id="calculatingEconomicSavings">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:84,86</note>
+      </notes>
+      <segment>
+        <source>Calculating economic savings...</source>
+      </segment>
+    </unit>
+    <unit id="economicSavingsTitle">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:86,87</note>
+      </notes>
+      <segment>
+        <source>Economic savings</source>
+      </segment>
+    </unit>
+    <unit id="retrievingPlantData">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:121,122</note>
+      </notes>
+      <segment>
+        <source>Retrieving plant data...</source>
+      </segment>
+    </unit>
+    <unit id="plantsTitle">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:122,124</note>
+      </notes>
+      <segment>
+        <source>Plants</source>
+      </segment>
+    </unit>
+    <unit id="mapInfoTooltip">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:125,128</note>
+      </notes>
+      <segment>
+        <source>This map is for informational purposes only and shows general data by region.</source>
+      </segment>
+    </unit>
+    <unit id="gettingEnergyConsumption">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:165,167</note>
+      </notes>
+      <segment>
+        <source>Getting energy consumption...</source>
+      </segment>
+    </unit>
+    <unit id="columnSiteName">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:183,187</note>
+      </notes>
+      <segment>
+        <source>Site name</source>
+      </segment>
+    </unit>
+    <unit id="columnEnergyProduction">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:197,199</note>
+      </notes>
+      <segment>
+        <source>Energy Production</source>
+      </segment>
+    </unit>
+    <unit id="columnEnergyConsumption">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:208,210</note>
+      </notes>
+      <segment>
+        <source>Energy Consumption</source>
+      </segment>
+    </unit>
+    <unit id="columnSolarCoverage">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:219,221</note>
+      </notes>
+      <segment>
+        <source>% Solar Coverage</source>
+      </segment>
+    </unit>
+    <unit id="columnCO2Savings">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:229,231</note>
+      </notes>
+      <segment>
+        <source>tCO2 Savings</source>
+      </segment>
+    </unit>
+    <unit id="columnSiteStatus">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:238,240</note>
+      </notes>
+      <segment>
+        <source>Site Status</source>
+      </segment>
+    </unit>
+    <unit id="statusActiveTooltip">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:242,244</note>
+      </notes>
+      <segment>
+        <source>Active</source>
+      </segment>
+    </unit>
+    <unit id="statusDefaulterTooltip">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:245,247</note>
+      </notes>
+      <segment>
+        <source>Defaulter</source>
+      </segment>
+    </unit>
+    <unit id="statusConstructionTooltip">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:248,250</note>
+      </notes>
+      <segment>
+        <source>Under Construction</source>
+      </segment>
+    </unit>
+    <unit id="statusPermittingTooltip">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:252,254</note>
+      </notes>
+      <segment>
+        <source>Under Permitting Process</source>
+      </segment>
+    </unit>
+    <unit id="statusNoOffTakerTooltip">
+      <notes>
+        <note category="location">src/app/pages/homeMain/home/home.component.html:256,258</note>
+      </notes>
+      <segment>
+        <source>Without Off-Taker</source>
+      </segment>
+    </unit>
   </file>
 </xliff>

@@ -17,6 +17,15 @@
           "standalone": false
         }
       },
+      "i18n": {
+        "sourceLocale": "en-US",  
+        "locales": {
+          "es-MX": {
+            "translation": "src/locale/es-MX.xlf",
+            "baseHref": ""
+          }
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -24,6 +33,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "localize": false,
             "outputPath": "dist/er-portal/browser",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -50,6 +60,7 @@
           },
           "configurations": {
             "production": {
+              "localize": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -92,7 +103,11 @@
                 }
               ],
               "outputHashing": "all"
-            }
+            },
+            "es": {
+              "localize": ["es-MX"],  
+              "outputPath": "dist/er-portal/es-MX"
+          }
           },
           "defaultConfiguration": "production"
         },
@@ -107,6 +122,9 @@
             },
             "staging": {
               "buildTarget": "er-portal:build:staging"
+            },
+            "es": {
+              "buildTarget": "er-portal:build:es"  
             }
           },
           "options": {
@@ -141,6 +159,15 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+       "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "er-portal:build",
+            "outputPath": "src/locale",
+            "outFile": "es-MX.xlf",
+            "format": "xlf2"
           }
         }
       }

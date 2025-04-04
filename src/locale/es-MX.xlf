@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US" trgLang="es-MX">
+  <file id="ngi18n" original="ng.template" source-language="en-US" target-language="es-MX">
+    <!-- Login Section -->
+    <unit id="LoginTitle">
+      <segment>
+        <source>Enter your details to access the site</source>
+        <target>Ingresa tus datos para acceder al sitio</target>
+      </segment>
+    </unit>
+    
+    <unit id="LoginError">
+      <segment>
+        <source>Invalid email format.</source>
+        <target>Formato de correo inválido</target>
+      </segment>
+    </unit>
+    
+    <unit id="LoginButton">
+      <segment>
+        <source>Enter the site</source>
+        <target>Ingresar al sitio</target>
+      </segment>
+    </unit>
+
+    <!-- Portfolio Section -->
+    <unit id="PortafolioTitle">
+      <segment>
+        <source>Portafolio map</source>
+        <target>Mapa de portafolio</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioExcelentLabel">
+      <segment>
+        <source>Excelent</source>
+        <target>Excelente</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioGoodLabel">
+      <segment>
+        <source>Good</source>
+        <target>Bueno</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioAverageLabel">
+      <segment>
+        <source>Avarage</source>
+        <target>Promedio</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioWorstLabel">
+      <segment>
+        <source>Worst</source>
+        <target>Deficiente</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioErrorLabel">
+      <segment>
+        <source>Error</source>
+        <target>Error</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioDesconectedLabel">
+      <segment>
+        <source>Desconectad</source>
+        <target>Desconectado</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioSearch">
+      <segment>
+        <source>Search</source>
+        <target>Buscar</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioColumnState">
+      <segment>
+        <source>State</source>
+        <target>Estado</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioColumnSiteName">
+      <segment>
+        <source>Site name</source>
+        <target>Nombre del sitio</target>
+      </segment>
+    </unit>
+    
+    <unit id="PortafolioColumnCustomer">
+      <segment>
+        <source>Customer</source>
+        <target>Cliente</target>
+      </segment>
+    </unit>
+    
+    <unit id="noResultsText">
+      <segment>
+        <source>No results found.</source>
+        <target>No se encontraron resultados.</target>
+      </segment>
+    </unit>
+
+    <!-- Asset Monitoring -->
+    <unit id="assetMonitoringTitle">
+      <segment>
+        <source>Asset monitoring parameter</source>
+        <target>Parámetros de monitoreo</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabObserved">
+      <segment>
+        <source>Observed Parameters</source>
+        <target>Parámetros observados</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabLiveKPI">
+      <segment>
+        <source>Live KPI</source>
+        <target>KPI en tiempo real</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabCumulativeKPI">
+      <segment>
+        <source>Cumulative KPI</source>
+        <target>KPI acumulados</target>
+      </segment>
+    </unit>
+
+    <!-- Trends Section -->
+    <unit id="trendsTitle">
+      <segment>
+        <source>Trends</source>
+        <target>Tendencias</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabActivePower">
+      <segment>
+        <source>Active power</source>
+        <target>Potencia activa</target>
+      </segment>
+    </unit>
+    
+    <unit id="timeDay">
+      <segment>
+        <source>Day</source>
+        <target>Día</target>
+      </segment>
+    </unit>
+    
+    <unit id="timeWeek">
+      <segment>
+        <source>Week</source>
+        <target>Semana</target>
+      </segment>
+    </unit>
+    
+    <unit id="timeMonth">
+      <segment>
+        <source>Month</source>
+        <target>Mes</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabSpecificPower">
+      <segment>
+        <source>Specific Power</source>
+        <target>Potencia específica</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabSpecificYield">
+      <segment>
+        <source>Specific Yield</source>
+        <target>Rendimiento específico</target>
+      </segment>
+    </unit>
+    
+    <unit id="tabPerformanceRatio">
+      <segment>
+        <source>Perfomance ratio</source>
+        <target>Ratio de desempeño</target>
+      </segment>
+    </unit>
+
+    <!-- Common UI Elements -->
+    <unit id="searchPlaceholder">
+      <segment>
+        <source>Search</source>
+        <target>Buscar</target>
+      </segment>
+    </unit>
+    
+    <unit id="downloadTemplate">
+      <segment>
+        <source>Download Template</source>
+        <target>Descargar plantilla</target>
+      </segment>
+    </unit>
+
+    <!-- Events Section -->
+    <unit id="eventsTitle">
+      <segment>
+        <source>Plants event summary</source>
+        <target>Resumen de eventos</target>
+      </segment>
+    </unit>
+    
+    <unit id="filterTitle">
+      <segment>
+        <source>Filter</source>
+        <target>Filtrar</target>
+      </segment>
+    </unit>
+    
+    <unit id="severityLabel">
+      <segment>
+        <source>Severity:</source>
+        <target>Severidad:</target>
+      </segment>
+    </unit>
+    
+    <unit id="optionAll">
+      <segment>
+        <source>All</source>
+        <target>Todos</target>
+      </segment>
+    </unit>
+    
+    <unit id="groupLabel">
+      <segment>
+        <source>Group:</source>
+        <target>Grupo:</target>
+      </segment>
+    </unit>
+    
+    <unit id="orderLabel">
+      <segment>
+        <source>Order:</source>
+        <target>Orden:</target>
+      </segment>
+    </unit>
+    
+    <unit id="applyFilter">
+      <segment>
+        <source>Apply</source>
+        <target>Aplicar</target>
+      </segment>
+    </unit>
+    
+    <unit id="clearFilter">
+      <segment>
+        <source>Clear</source>
+        <target>Limpiar</target>
+      </segment>
+    </unit>
+    
+    <unit id="tooltipEventSummaryCarrousel">
+      <segment>
+        <source>Hold down and drag left or right to see more items.</source>
+        <target>Mantén presionado y arrastra para ver más elementos.</target>
+      </segment>
+    </unit>
+
+    <!-- Plant Status Section -->
+    <unit id="plantStatusTitle">
+      <segment>
+        <source>Plant status</source>
+        <target>Estado de plantas</target>
+      </segment>
+    </unit>
+    
+    <unit id="bulkUpload">
+      <segment>
+        <source>Bulk upload</source>
+        <target>Carga masiva</target>
+      </segment>
+    </unit>
+
+    <!-- Table Columns -->
+    <unit id="columnPlantName">
+      <segment>
+        <source>Plant name</source>
+        <target>Nombre de planta</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnComm">
+      <segment>
+        <source>Comm.</source>
+        <target>Com.</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnAlarms">
+      <segment>
+        <source>Alarms</source>
+        <target>Alarmas</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnInverterAvailability">
+      <segment>
+        <source>Inverter asset availability (%)</source>
+        <target>Disponibilidad de inversores (%)</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnPlantAvailability">
+      <segment>
+        <source>Plant availability (Energy based %)</source>
+        <target>Disponibilidad de planta (%)</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnGridAvailability">
+      <segment>
+        <source>Grid availability (Energy based %)</source>
+        <target>Disponibilidad de red (%)</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnPerformanceRatio">
+      <segment>
+        <source>Performance ratio (%)</source>
+        <target>Ratio de desempeño (%)</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnActivePower">
+      <segment>
+        <source>Active Power (MW)</source>
+        <target>Potencia activa (MW)</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnIrradiation">
+      <segment>
+        <source>Irradiation (kWh/m²)</source>
+        <target>Irradiación (kWh/m²)</target>
+      </segment>
+    </unit>
+    
+    <unit id="columnSpecificPower">
+      <segment>
+        <source>Specific power (kW/kWp)</source>
+        <target>Potencia específica (kW/kWp)</target>
+      </segment>
+    </unit>
+    
+    <unit id="noResultsFound">
+      <segment>
+        <source>No results found.</source>
+        <target>No se encontraron resultados.</target>
+      </segment>
+    </unit>
+</file>
+</xliff>

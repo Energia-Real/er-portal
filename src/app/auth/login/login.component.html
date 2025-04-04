@@ -2,7 +2,7 @@
   <div class="login-form-container">
     <div class="login-header-container">
       <img src="../../../assets/svg/logo.svg" alt="logo energia real">
-      <p>Enter your details to access the site</p>
+      <p i18n='@@LoginTitle'>Enter your details to access the site</p>
     </div>
     <div class="login-inputs-container">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -11,11 +11,11 @@
             <input formControlName="email" placeholder="Email" matInput>
             
             <mat-error *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.value">
-              <span *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format.</span>
+              <span i18n='@@LoginError' *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format.</span>
             </mat-error>
           </mat-form-field>
         </div>
-      
+        
         <div class="c-input">
           <div class="password-input-container">
             <mat-form-field appearance="outline" class="flex-auto gt-xs:pr-3 input-ER">
@@ -41,7 +41,7 @@
           <button class="btn-action-add m-auto cursor-pointer" type="submit"
             [disabled]="loginForm.invalid || loading">
             <mat-spinner *ngIf="loading"></mat-spinner>
-            <span *ngIf="!loading">Enter the site</span>
+            <span i18n='@@LoginButton' *ngIf="!loading">Enter the site</span>
           </button>
         </div>
       </form>
