@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FinantialStepperComponent } from '../finantial-stepper/finantial-stepper.component';
 import { FinantialDataModelStepper } from '../finantial-model-model';
@@ -10,13 +10,56 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { Subject } from 'rxjs';
+import { Tabulator } from 'tabulator-tables';
+
+
+const persons = [
+  {
+    id: '1',
+    firstName: 'John',
+    lastName: 'Smith',
+    state: 'Ohio',
+  },
+  {
+    id: '2',
+    firstName: 'Jane',
+    lastName: 'Doe',
+    state: 'Iowa',
+  },
+  {
+    id: '3',
+    firstName: 'Bill',
+    lastName: 'Great',
+    state: 'Hawaii',
+  },
+  {
+    id: '4',
+    firstName: 'Ted',
+    lastName: 'Adventure',
+    state: 'Arizona',
+  },
+];
 
 @Component({
   selector: 'app-finantial-model-layout',
   templateUrl: './finantial-model-layout.component.html',
   styleUrl: './finantial-model-layout.component.scss'
 })
-export class FinantialModelLayoutComponent implements OnInit, OnDestroy {
+export class FinantialModelLayoutComponent implements OnInit, OnDestroy,AfterViewInit {
+
+  exTable: any;
+  filterParam: string = '';
+
+  tab = document.createElement('div');
+
+  table_def = [
+    { title: 'Id', field: 'id' },
+    { title: 'First Name', field: 'firstName' },
+    { title: 'Last Name', field: 'lastName' },
+    { title: 'Location', field: 'state' },
+  ];
+
+
   private onDestroy$ = new Subject<void>();
   @ViewChild('fileInput') fileInput!: ElementRef;
   selectedFile: File | null = null;
@@ -44,7 +87,21 @@ export class FinantialModelLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.exTable = new Tabulator(this.tab, {
+      height: 140,
+      layout: 'fitColumns',
+      columns: this.table_def,
+      movableColumns: true,
+      data: persons,
+    });
+    //    this.exTable.setData(persons);
+    document.getElementById('ex-table-div')!.appendChild(this.tab);
+
   }
+  ngAfterViewInit() {
+    this.exTable?.setData(persons);
+  }
+
   openFileSelector() {
     this.fileInput.nativeElement.value = '';
     this.fileInput.nativeElement.click();
