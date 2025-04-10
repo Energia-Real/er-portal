@@ -69,9 +69,7 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([pageSize, pageIndex]) => {
-        const hasPaginationChanged = this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1;
-
-        if (hasPaginationChanged) {
+        if (this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1) {
           this.pageSize = pageSize;
           this.pageIndex = pageIndex + 1;
 
@@ -170,7 +168,6 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
 
     if (this.paginator) {
       this.paginator.pageSize = newSize;
-      this.paginator._changePageSize(newSize);
     }
 
     this.getClients();

@@ -13,7 +13,7 @@
       <div class="c-information">
         <div *ngIf="!isLoadingWD else loadingSkeletonTwo">
           <div class="content" *ngIf="weatherData else notDataTable">
-            <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
+            <p>{{weatherData?.temperature | number:'1.1-1'}}° </p>
             <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
           </div>
           <div class="linea"></div>
@@ -31,7 +31,7 @@
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>System size</p>
-            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData?.systemSize }} kW</span>
+            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData?.systemSize }} KWp</span>
           </div>
           <div class="linea"></div>
         </div>

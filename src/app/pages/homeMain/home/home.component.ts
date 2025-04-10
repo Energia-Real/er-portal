@@ -137,8 +137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     animation: {
-      onComplete: () => {
-      },
+      onComplete: () => {},
       delay: (context) => {
         let delay = 0;
         if (context.type === 'data' && context.mode === 'default') {
@@ -154,40 +153,36 @@ export class HomeComponent implements OnInit, OnDestroy {
           label: function (context) {
             const value = Math.abs(context.raw as number).toLocaleString('en-US');
             return `${context.dataset.label}: ${value}`;
-          }
-        }
+          },
+        },
       },
       legend: {
         labels: {
           usePointStyle: true,
         },
-        position: "bottom",
+        position: 'bottom',
         onHover: (event, legendItem, legend) => {
           const index = legendItem.datasetIndex;
           const chart = legend.chart;
-
+  
           chart.data.datasets.forEach((dataset, i) => {
             dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
           });
-
+  
           chart.update();
         },
         onLeave: (event, legendItem, legend) => {
           const chart = legend.chart;
-
+  
           chart.data.datasets.forEach((dataset, i) => {
-            if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
-            } else {
-              dataset.backgroundColor = 'rgba(87, 177, 177, 1)';
-            }
+            dataset.backgroundColor = i === 0 ? 'rgba(121, 36, 48, 1)' : 'rgba(87, 177, 177, 1)';
           });
-
+  
           chart.update();
-        }
-      }
+        },
+      },
     },
-
+  
     scales: {
       x: {
         stacked: false,
@@ -198,7 +193,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       y: {
         ticks: {
           callback: function (value, index, values) {
-            return `${Number(value).toLocaleString('en-US')} kWh`;
+            
+            const numericValue = typeof value === 'number' ? value : parseFloat(value as string);
+  
+            if (!isNaN(numericValue)) {
+              const gwhValue = numericValue / 1_000_000; 
+              return `${gwhValue.toLocaleString('en-US')} GWh`;
+            }
+            return '';
           },
         },
         stacked: false,
@@ -209,7 +211,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
-
+  
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
 
   currentYear = new Date().getFullYear();
@@ -434,6 +436,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         let data =this.mappingData(response.data)
+        
         this.lineChartData = {
           labels: data.labels,
           datasets: [
@@ -496,7 +499,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     const year = new Date().getFullYear();
     return moment(`${year}-${month}-01`).startOf('month').toISOString();
   }
-
 
   goDetails(id: string) {
     this.router.navigateByUrl(`er/plants/details/${id}`)
