@@ -9,15 +9,12 @@ import { Location } from '@angular/common';
 })
 export class ReturnBarComponent {
   @Input() title: string = "";
-  @Input() route: string = "";
 
   constructor(
-    private router: Router,
     private location: Location
   ) { }
 
   returnTo() {
-    if (this.route) this.router.navigate([this.route])
-     else this.location.back();
+     this.location.back();
   }
 }
