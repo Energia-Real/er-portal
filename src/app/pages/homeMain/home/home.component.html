@@ -191,25 +191,24 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="energyProduction">
+                        <ng-container matColumnDef="energyProductionGWh">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="target">Energy Production</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }}
+                                <div *ngIf="element?.energyProductionGWh else notDataTable"> {{ element.energyProductionGWh }}
                                     <!-- kWh -->
                                 </div>
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="energyConsumption">
+                        <ng-container matColumnDef="energyConsumptionGWh">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="target">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
+                                <div *ngIf="element?.energyConsumptionGWh else notDataTable"> {{ element.energyConsumptionGWh
                                     }} 
-                                    <!-- kWh -->
                                 </div>
                             </td>
                         </ng-container>

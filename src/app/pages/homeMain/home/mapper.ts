@@ -19,8 +19,10 @@ export class Mapper {
 				siteName: data?.siteName || '',
 				solarCoverage: data?.solarCoverage|| '0',
 				co2Saving: formatsService.energyFormat(data?.co2Saving),
-				energyConsumption: formatsService.energyFormatMWh(data?.energyConsumption),
-				energyProduction: formatsService.energyFormatMWh(data?.energyProduction),
+				energyConsumption: formatsService.energyFormat(data?.energyConsumption),
+				energyProduction: formatsService.energyFormat(data?.energyProduction),
+				energyConsumptionGWh: formatsService.energyFormatMWh(data?.energyConsumption),
+				energyProductionGWh: formatsService.energyFormatMWh(data?.energyProduction),
 				siteStatus: data?.siteStatus
 			});
 		});
