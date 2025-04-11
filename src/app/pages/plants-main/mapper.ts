@@ -14,16 +14,6 @@ export class Mapper {
 		});
 
 		primaryElements.push({
-			title: 'System size',
-			description: formatsService.energyFormat(response.systemSize) + ' kWh'
-		});
-
-		primaryElements.push({
-			title: 'Panels',
-			description: formatsService.energyFormat(response.panels)
-		});
-
-		primaryElements.push({
 			title: 'PPA Duration',
 			description: formatsService.formatContractDuration(response.contractDuration)
 		});
@@ -34,23 +24,18 @@ export class Mapper {
 		});
 
 		additionalItems.push({
-			title: 'Age of the site',
+			title: 'Asset age (years)',
 			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
 		});
 
 		additionalItems.push({
-			title: 'Install date',
+			title: 'Instalation date',
 			description: formatsService.dateFormat(response.installDate)
 		});
 
 		additionalItems.push({
-			title: 'COD',
+			title: 'Commercial Operation Date (COD)',
 			description: formatsService.dateFormat(response.cod)
-		});
-
-		additionalItems.push({
-			title: 'Commission date',
-			description: formatsService.dateFormat(response.commissionDate)
 		});
 
 		return {
@@ -256,7 +241,7 @@ export class Mapper {
 		}
 	}
 
-	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>): entity.DataResponseArraysMapper | null {
+	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>, formatsService: FormatsService): entity.DataResponseArraysMapper | null {
 		if (!response.success) return null
 
 		const primaryElements: entity.DataResponseDetailsCard[] = []
@@ -267,12 +252,15 @@ export class Mapper {
 
 		primaryElements.push({
 			title: 'System generation',
-			description: `${response.response.systemGeneration} kWh`,
+			// description: `${response.response.systemGeneration} GWh`,
+			description: formatsService.energyFormatGWh(response.response.systemGeneration ?? "0.00")
 		});
 
 		primaryElements.push({
 			title: 'Total consumption',
-			description: `${response.response.totalConsumption} kWh`,
+			// description: `${response.response.totalConsumption} GWh`,
+			description: formatsService.energyFormatGWh(response.response.totalConsumption ?? "0.00")
+
 		});
 
 		additionalItems.push({
@@ -283,7 +271,9 @@ export class Mapper {
 
 		additionalItems.push({
 			title: 'CFE network consumption',
-			description: `${response.response.cfeNetworkConsumption?? "0.00"} kWh`,
+			// description: `${response.response.cfeNetworkConsumption?? "0.00"} GWh`,
+			description: formatsService.energyFormatGWh(response.response.cfeNetworkConsumption?? "0.00"),
+
 			extra:'-4% compared to the previous month'
 		});
 
