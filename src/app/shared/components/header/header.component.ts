@@ -50,26 +50,33 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedEndMonth: MonthsFilters | null = this.months[6];
 
   generalFilters$!: Observable<GeneralFilters>;
-  currentMonth: any = new Date().getMonth() + 1; // Mes actual (Enero = 1, Diciembre = 12)
+  currentMonth: any = new Date().getMonth() + 1;
 
   currentYearFull: any = new Date().getFullYear().toString()
   currentYear: string = new Date().getFullYear().toString().slice(-2);
   currentYearComplete: number = new Date().getFullYear();
-  previousYearComplete: number = this.currentYearComplete - 1;
+  previousYear: number = this.currentYearComplete - 1;
   selectedYear: number = this.currentYearComplete;
   selectedYearAbreviate: string = this.selectedYear.toString().slice(-2);
   selectedMonths: { name: string; value: string }[] = [];
-
+  
   singleMonth = new FormControl(false);
-
+  
   selectedStates: string[] = [];
   notifications: Notification[] = [];
-
+  
   hasNotifications: boolean = false;
-
+  
   menuOpen: boolean = false;
-
+  
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+  
+  currentYearStart: number = new Date().getFullYear();
+  currentYearEnd: number = new Date().getFullYear();
+  
+  yearStartSelected:number = 2024
+  yearEndSelected:number = 2025
+  
 
   constructor(
     private router: Router,
@@ -93,14 +100,14 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   getFilters() {
     this.generalFilters$.pipe(takeUntil(this.onDestroy$))
       .subscribe((generalFilters: GeneralFilters) => {
-        const startMonthValue = generalFilters.startDate.split('-')[1];
-        const endMonthValue = generalFilters.endDate.split('-')[1];
+        // const startMonthValue = generalFilters.startDate.split('-')[1];
+        // const endMonthValue = generalFilters.endDate.split('-')[1];
 
-        this.selectedStartMonth = this.months.find(month => month.value == startMonthValue)!;
-        this.selectedEndMonth = this.months.find(month => month.value == endMonthValue)!;
+        // this.selectedStartMonth = this.months.find(month => month.value == startMonthValue)!;
+        // this.selectedEndMonth = this.months.find(month => month.value == endMonthValue)!;
         this.selectedYearSelect = this.years.find(year => year.value == generalFilters.year);
-        this.selectedYearAbreviate = generalFilters.startDate.split("-")[0].toString().slice(-2)
-        this.selectedYear = parseFloat(generalFilters.startDate.split("-")[0])
+        // this.selectedYearAbreviate = generalFilters.startDate.split("-")[0].toString().slice(-2)
+        // this.selectedYear = parseFloat(generalFilters.startDate.split("-")[0])
       });
   }
 
@@ -112,96 +119,47 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-
-  updateNotificationCenter() {
-    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(() => {
-      this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }))
-    });
-  }
+  // *********************************************
 
   selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
-    if (month.value == '12') {
-      this.selectedEndMonth = null;
-      this.singleMonth.setValue(true);
-
-    } else this.singleMonth.setValue(false);
-
     this.selectedStartMonth = month;
     menuTrigger.closeMenu();
   }
 
   selectEndMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
-    if (this.selectedStartMonth && month.value > this.selectedStartMonth.value && !this.singleMonth.value) {
-      this.selectedEndMonth = month;
-      menuTrigger.closeMenu();
-    }
+    this.selectedEndMonth = month;
+    menuTrigger.closeMenu();
   }
 
-  updateYearSelected(year: number) {
-    const prevStartMonth = this.selectedStartMonth;
-    const prevEndMonth = this.selectedEndMonth;
-    
-    // Actualiza el año seleccionado
-    this.selectedYear = year;
-    this.selectedYearAbreviate = this.selectedYear.toString().slice(-2);
-  
-    // Asigna enero y el mes actual si al cambiar de un año distinto al actual los meses no estan disponibles entonces pone enero en fecha inicio y mes actual en fecha fin
-    const assignDefaultMonths = () => {
-      this.selectedStartMonth = this.months.find((m) => m.value == '01');
-      this.selectedEndMonth = this.months.find((m) => m.value == String(this.currentMonth).padStart(2, '0'))!
-      this.singleMonth.setValue(false);
-    };
-  
-    // Valida si los meses seleccionados estan dentro del rango permitido
-    const areMonthsValid = (start: any, end: any, currentYear: boolean) => {
-      const startMonthValue = start.value;
-      const endMonthValue = end.value;
-      const maxMonth = currentYear ? String(this.currentMonth).padStart(2, '0') : '12';
-      return startMonthValue >= '01' && startMonthValue <= maxMonth && endMonthValue >= '01' && endMonthValue <= maxMonth;
-    };
-  
-    // Si el año seleccionado es el actual
-    if (year == this.currentYearFull) {
-      if (areMonthsValid(prevStartMonth, prevEndMonth, true)) {
-        // Mantener los meses previos seleccionados si estan dentro del rango
-        this.selectedStartMonth = prevStartMonth;
-        this.selectedEndMonth = prevEndMonth;
-      } else {
-        // Asignar meses predeterminados enero y mes actual
-        assignDefaultMonths();
-      }
-    } else {
-      // Si el año seleccionado es distinto al actual
-      if (areMonthsValid(prevStartMonth, prevEndMonth, false)) {
-        this.selectedStartMonth = prevStartMonth;
-        this.selectedEndMonth = prevEndMonth;
-      } else {
-        assignDefaultMonths();
-      }
-    }
+  updateYearSelected(year: number, period:string) {
+    if (period == 'start') this.yearStartSelected = year
+     else this.yearEndSelected = year
   }
 
   searchWithFilters() {
     const generalFilters: GeneralFilters = {
-      startDate: `${this.selectedYear}-${this.selectedStartMonth.value}-01`,
+      startDate: `${this.yearStartSelected}-${this.selectedStartMonth.value}-01`,
       year: this.selectedYearSelect?.value,
       endDate: ''
     };
 
-    generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.selectedYear, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.selectedYear, +this.selectedEndMonth.value);
+    console.log('generalFilters', generalFilters);
+    
 
-    this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
-      if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
-        this.store.dispatch(setGeneralFilters({ generalFilters }));
-        this.updateUrlWithFilters(generalFilters);
-      }
-    });
+    generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.yearEndSelected, +this.selectedEndMonth.value);
+
+    // this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
+    //   if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
+    //     this.store.dispatch(setGeneralFilters({ generalFilters }));
+    //     this.updateUrlWithFilters(generalFilters);
+    //   }
+    // });
   }
 
-  /**
-   * Actualiza los parámetros de la URL basándose en los filtros proporcionados.
-   */
+
   updateUrlWithFilters(generalFilters: GeneralFilters): void {
+    console.log(generalFilters);
+    
     const params = new URLSearchParams(window.location.search);
 
     if (generalFilters.startDate) params.set('startday', generalFilters.startDate);
@@ -215,6 +173,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.router.url !== newUrl) this.router.navigateByUrl(newUrl);
   }
 
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
   updateLocalNotifications() {
     this.store.select(selectTopUnreadNotifications).pipe(takeUntil(this.onDestroy$)).subscribe((notifications) => {
       this.notifications = notifications;
@@ -225,6 +188,11 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   trackByNotificationId(index: number, notification: Notification): string {
     return notification.externalId;
+  }
+
+  getLastDayOfMonth(year: number, month: number): string {
+    const lastDay = new Date(year, month, 0).getDate();
+    return `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
   }
 
   removeNotification(notificationToRemove: Notification): void {
@@ -248,10 +216,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  getLastDayOfMonth(year: number, month: number): string {
-    const lastDay = new Date(year, month, 0).getDate();
-    return `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
-  }
 
   loadUserInfo() {
     const encryptedData = localStorage.getItem('userInfo');
@@ -260,15 +224,15 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateNotificationCenter()
     }
   }
-
   signOut() {
     localStorage.removeItem('userEnergiaReal');
     localStorage.removeItem('generalFilters');
     this.router.navigate(['']);
   }
 
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
+  updateNotificationCenter() {
+    this.notificationService.updateNotificationsCenter(this.userInfo.id).subscribe(() => {
+      this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }))
+    });
   }
 }
