@@ -248,19 +248,14 @@ export class Mapper {
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 		const monthlyData: entity.MonthlyDataPerformance[] = response.response.monthlyDataResponse;
 
-		
-
 		primaryElements.push({
 			title: 'System generation',
-			// description: `${response.response.systemGeneration} GWh`,
 			description: formatsService.energyFormatGWh(response.response.systemGeneration ?? "0.00")
 		});
 
 		primaryElements.push({
 			title: 'Total consumption',
-			// description: `${response.response.totalConsumption} GWh`,
 			description: formatsService.energyFormatGWh(response.response.totalConsumption ?? "0.00")
-
 		});
 
 		additionalItems.push({
@@ -271,9 +266,7 @@ export class Mapper {
 
 		additionalItems.push({
 			title: 'CFE network consumption',
-			// description: `${response.response.cfeNetworkConsumption?? "0.00"} GWh`,
 			description: formatsService.energyFormatGWh(response.response.cfeNetworkConsumption?? "0.00"),
-
 			extra:'-4% compared to the previous month'
 		});
 

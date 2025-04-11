@@ -193,11 +193,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       y: {
         ticks: {
           callback: function (value, index, values) {
-            // Asegurarse de que 'value' sea un número
+            
             const numericValue = typeof value === 'number' ? value : parseFloat(value as string);
   
             if (!isNaN(numericValue)) {
-              const gwhValue = numericValue / 1_000_000; // Conversión de kWh a GWh
+              const gwhValue = numericValue / 1_000_000; 
               return `${gwhValue.toLocaleString('en-US')} GWh`;
             }
             return '';
@@ -436,7 +436,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         let data =this.mappingData(response.data)
-        console.log(data);
         
         this.lineChartData = {
           labels: data.labels,
@@ -566,9 +565,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   initChartES(): void {
     const ctx = document.getElementById('economicSavingsChart') as HTMLCanvasElement;
     if (ctx) {
-      console.log(this,this.lineChartData);
-      console.log(this,this.lineChartOptionsES);
-      
       this.chartES = new Chart(ctx, {
         type: 'bar',
         data: this.lineChartDataES,
