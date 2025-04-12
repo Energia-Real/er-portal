@@ -34,7 +34,7 @@
     color: #000000D9;
   }
 
-  h2 {
+  h2, .apply {
     color: #EE6A0A;
     margin: 0;
     font-size: 14px;
@@ -100,8 +100,8 @@
   }
 
   .mat-mdc-menu-item {
-    min-height: unset!important;
-    height: 35px!important;
+    min-height: unset !important;
+    height: 35px !important;
 
   }
 

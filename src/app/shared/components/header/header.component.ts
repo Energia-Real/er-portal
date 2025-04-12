@@ -2,10 +2,8 @@ import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDes
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Observable, Subject, switchMap, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { Store } from '@ngrx/store';
 import { EditNotificationStatus, GeneralFilters, MonthsFilters, UserInfo } from '@app/shared/models/general-models';
-import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FormControl } from '@angular/forms';
 import { NotificationService } from '@app/shared/services/notification.service';
@@ -15,6 +13,8 @@ import { updateNotifications } from '@app/core/store/actions/notifications.actio
 import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifications.selector';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
+import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 
 
 @Component({
@@ -50,33 +50,28 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedEndMonth: MonthsFilters | null = this.months[6];
 
   generalFilters$!: Observable<GeneralFilters>;
-  currentMonth: any = new Date().getMonth() + 1;
 
-  currentYearFull: any = new Date().getFullYear().toString()
-  currentYear: string = new Date().getFullYear().toString().slice(-2);
-  currentYearComplete: number = new Date().getFullYear();
-  previousYear: number = this.currentYearComplete - 1;
-  selectedYear: number = this.currentYearComplete;
-  selectedYearAbreviate: string = this.selectedYear.toString().slice(-2);
   selectedMonths: { name: string; value: string }[] = [];
-  
+
   singleMonth = new FormControl(false);
-  
+
   selectedStates: string[] = [];
   notifications: Notification[] = [];
-  
+
   hasNotifications: boolean = false;
-  
+
   menuOpen: boolean = false;
-  
+
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
-  
+
   currentYearStart: number = new Date().getFullYear();
   currentYearEnd: number = new Date().getFullYear();
-  
-  yearStartSelected:number = 2024
-  yearEndSelected:number = 2025
-  
+
+  yearStartSelected: number = 2024
+  yearEndSelected: number = 2025
+
+  currentYear = new Date().getFullYear();
+  currentMonth = new Date().getMonth() + 1; 
 
   constructor(
     private router: Router,
@@ -119,7 +114,28 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
-  // *********************************************
+
+  isMonthDisabledForStart(month: MonthsFilters): boolean {
+    const monthNum = +month.value;
+    return this.yearStartSelected === this.currentYear && monthNum > this.currentMonth;
+  }
+
+  isMonthDisabledForEnd(month: MonthsFilters): boolean {
+    const monthNum = +month.value;
+    return this.yearEndSelected === this.currentYear && monthNum > this.currentMonth;
+  }
+
+  isSameMonthAndYear(month: MonthsFilters): boolean {
+    return this.yearStartSelected === this.yearEndSelected &&
+      this.selectedStartMonth?.value === month.value;
+  }
+
+  isBeforeStartMonth(month: MonthsFilters): boolean {
+    if (this.yearStartSelected !== this.yearEndSelected || !this.selectedStartMonth) return false;
+    const monthNum = +month.value;
+    const startMonthNum = +this.selectedStartMonth.value;
+    return monthNum < startMonthNum;
+  }
 
   selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
     this.selectedStartMonth = month;
@@ -131,9 +147,9 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
     menuTrigger.closeMenu();
   }
 
-  updateYearSelected(year: number, period:string) {
+  updateYearSelected(year: number, period: string) {
     if (period == 'start') this.yearStartSelected = year
-     else this.yearEndSelected = year
+    else this.yearEndSelected = year
   }
 
   searchWithFilters() {
@@ -143,23 +159,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       endDate: ''
     };
 
-    console.log('generalFilters', generalFilters);
-    
-
     generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.yearEndSelected, +this.selectedEndMonth.value);
 
-    // this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
-    //   if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
-    //     this.store.dispatch(setGeneralFilters({ generalFilters }));
-    //     this.updateUrlWithFilters(generalFilters);
-    //   }
-    // });
+    this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
+      if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
+        this.store.dispatch(setGeneralFilters({ generalFilters }));
+        this.updateUrlWithFilters(generalFilters);
+      }
+    });
   }
 
-
   updateUrlWithFilters(generalFilters: GeneralFilters): void {
-    console.log(generalFilters);
-    
     const params = new URLSearchParams(window.location.search);
 
     if (generalFilters.startDate) params.set('startday', generalFilters.startDate);
@@ -171,11 +181,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Actualizar la URL solo si ha cambiado
     if (this.router.url !== newUrl) this.router.navigateByUrl(newUrl);
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 
   updateLocalNotifications() {
@@ -235,4 +240,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.store.dispatch(updateNotifications({ notifications: this.notificationService.getNotifications() }))
     });
   }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
 }
