@@ -272,12 +272,12 @@ export class Mapper {
 
 		additionalItems.push({
 			title: 'Solar coverage',
-			description: `${response.response.solarCoverage} kWh`,
+			description: `${response.response.solarCoverage}%`,
 		});
 
 		additionalItems.push({
 			title: 'Performance',
-			description: `${response.response.performance} kWh`,
+			description: `${response.response.performance}%`,
 		});
 
 		return {

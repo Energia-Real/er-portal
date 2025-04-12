@@ -68,6 +68,8 @@ export interface PlantData {
   solarCoverage: string;
   co2Saving: any;
   siteStatus: string;
+  energyConsumptionGWh: string;
+  energyProductionGWh: string;
 }
 
 export interface DataRespSavingDetails {
