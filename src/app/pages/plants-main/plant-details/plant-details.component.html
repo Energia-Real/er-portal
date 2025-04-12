@@ -13,7 +13,7 @@
       <div class="c-information">
         <div *ngIf="!isLoadingWD else loadingSkeletonTwo">
           <div class="content" *ngIf="weatherData else notDataTable">
-            <p>{{weatherData?.temperature | number:'1.1-1'}}° </p>
+            <p>{{weatherData?.temperature | number:'1.1-1'}}°C </p>
             <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
           </div>
           <div class="linea"></div>
