@@ -18,13 +18,13 @@
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
           <div class="years">
             <p class="cursor-pointer"
-              [ngClass]="{ 'selected-year': 2024 == yearStartSelected, 'default-year': 2024 !== yearStartSelected }"
+              [ngClass]="{ 'selected-year': 2024 == yearStartSelected, 'default-year': 2024 != yearStartSelected }"
               (click)="updateYearSelected(2024, 'start'); $event.stopPropagation()">
               2024
             </p>
 
             <p class="cursor-pointer"
-              [ngClass]="{ 'selected-year': 2025 == yearStartSelected, 'default-year': 2025 !== yearStartSelected }"
+              [ngClass]="{ 'selected-year': 2025 == yearStartSelected, 'default-year': 2025 != yearStartSelected }"
               (click)="updateYearSelected(2025, 'start'); $event.stopPropagation()">
               2025
             </p>
@@ -33,7 +33,7 @@
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [ngClass]="{ 
               'selected-month': selectedStartMonth?.value == month.value, 
-              'unselected-month': selectedStartMonth?.value !== month.value }"
+              'unselected-month': selectedStartMonth?.value != month.value }"
               [disabled]="isMonthDisabledForStart(month)" (click)="selectStartMonth(month, startMenuTrigger)">
               {{ month.name }}
             </button>
@@ -52,7 +52,7 @@
           <div class="years">
             <p [ngClass]="{ 
               'selected-year': 2024 == yearEndSelected && !singleMonth.value, 
-              'default-year': 2024 !== yearEndSelected || singleMonth.value,
+              'default-year': 2024 != yearEndSelected || singleMonth.value,
               'cursor-pointer' : !singleMonth.value }"
               (click)="updateYearSelected(2024, 'end'); $event.stopPropagation()">
               2024
@@ -60,7 +60,7 @@
 
             <p [ngClass]="{ 
               'selected-year': 2025 == yearEndSelected && !singleMonth.value, 
-              'default-year': 2025 !== yearEndSelected || singleMonth.value,
+              'default-year': 2025 != yearEndSelected || singleMonth.value,
               'cursor-pointer' : !singleMonth.value }"
               (click)="updateYearSelected(2025, 'end'); $event.stopPropagation()">
               2025
@@ -70,7 +70,7 @@
           <div class="month-grid">
             <button mat-menu-item *ngFor="let month of months" [ngClass]="{ 
               'selected-month': selectedEndMonth?.value == month.value, 
-              'unselected-month': selectedEndMonth?.value !== month.value 
+              'unselected-month': selectedEndMonth?.value != month.value 
               }" [disabled]="
                   singleMonth.value || 
                   isSameMonthAndYear(month) || 
@@ -86,7 +86,12 @@
           </div>
         </mat-menu>
 
-        <button class="apply" [ngClass]="{'color-disabled': yearStartSelected < yearEndSelected}"
+        <button class="apply" 
+        [ngClass]="{
+          'color-disabled': yearStartSelected < yearEndSelected,
+          'cursor-pointer': yearStartSelected > yearEndSelected ,
+          
+          }"
           [disabled]="yearStartSelected < yearEndSelected"
           [matTooltip]="yearStartSelected < yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
           (click)="searchWithFilters()">Apply
