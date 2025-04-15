@@ -88,12 +88,11 @@
 
         <button class="apply" 
         [ngClass]="{
-          'color-disabled': yearStartSelected < yearEndSelected,
-          'cursor-pointer': yearStartSelected > yearEndSelected ,
-          
+          'color-disabled': yearStartSelected > yearEndSelected,
+          'cursor-pointer': yearStartSelected < yearEndSelected ,
           }"
-          [disabled]="yearStartSelected < yearEndSelected"
-          [matTooltip]="yearStartSelected < yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
+          [disabled]="yearStartSelected > yearEndSelected"
+          [matTooltip]="yearStartSelected > yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
           (click)="searchWithFilters()">Apply
         </button>
       </div>
