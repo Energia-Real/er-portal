@@ -196,8 +196,7 @@
                                 <p class="target">Energy Production</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }}
-                                    <!-- kWh -->
+                                <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProductionFormat }}
                                 </div>
                             </td>
                         </ng-container>
@@ -207,7 +206,7 @@
                                 <p class="target">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
+                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumptionFormat
                                     }} 
                                 </div>
                             </td>
