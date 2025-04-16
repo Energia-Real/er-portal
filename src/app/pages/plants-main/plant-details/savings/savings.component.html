@@ -15,10 +15,10 @@
 
                 <div class="separator-cards"></div>
 
-                <div *ngFor="let data of savingDetails?.additionalItems;let isLast = last" class="c-card-33">
+                <div *ngFor="let data of savingDetails?.additionalItems; let isLast = last" class="c-card-33">
                     <div class="card-info">
                         <div>
-                            <h1 [ngStyle]="{ 'color': isLast ? '#57B1B1' : '#EE5427'}">{{ data.title }}</h1>
+                            <h1>{{ data.title }}</h1>
                             <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
                         </div>
                     </div>

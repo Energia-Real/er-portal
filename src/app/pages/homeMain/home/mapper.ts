@@ -17,12 +17,10 @@ export class Mapper {
 			dataList.push({
 				plantId: data?.plantId || '',
 				siteName: data?.siteName || '',
-				solarCoverage: data?.solarCoverage|| '0',
-				co2Saving: formatsService.energyFormat(data?.co2Saving),
-				energyConsumption: formatsService.energyFormat(data?.energyConsumption),
-				energyProduction: formatsService.energyFormat(data?.energyProduction),
-				energyConsumptionGWh: formatsService.energyFormatMWh(data?.energyConsumption),
-				energyProductionGWh: formatsService.energyFormatMWh(data?.energyProduction),
+				solarCoverage: data?.solarCoverage,
+				energyConsumption : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
+				energyProduction : `${data.energyProduction} ${data.energyProductionMeasure}`,
+				co2Saving : data.co2Saving,
 				siteStatus: data?.siteStatus
 			});
 		});
@@ -74,8 +72,8 @@ export class Mapper {
 	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse, formatsService: FormatsService): entity.SDResponse {
 		return {
 			...response.response,
-			totalEnergyConsumption: formatsService.energyFormatGWh(response?.response?.totalEnergyConsumption),
-			totalEnergyProduction: formatsService.energyFormatGWh(response?.response?.totalEnergyProduction),
+			totalEnergyConsumption: `${response?.response?.totalEnergyConsumption} ${response?.response?.energyConsumptionMeasure}`,
+			totalEnergyProduction: `${response?.response?.totalEnergyProduction} ${response?.response?.energyProductionMeasure}`,
 		}
 	}
 }

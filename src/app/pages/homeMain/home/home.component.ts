@@ -126,8 +126,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   data: number[] = [5, 4, 3]
   displayedColumns: string[] = [
     'siteName',
-    'energyConsumptionGWh',
-    'energyProductionGWh',
+    'energyConsumption',
+    'energyProduction',
     'solarCoverage',
     'co2Saving',
     'siteStatus'
