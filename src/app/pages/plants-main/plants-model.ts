@@ -43,6 +43,7 @@ export interface getSavingsDetails {
     erCfeSubtotal:string;
     expenditureWithoutER: string;
     savings: string;
+    savingsPercentage: string;
     monthlyData: monthlyData[]
 }
 
@@ -398,6 +399,9 @@ export interface SitePerformanceResponse {
     solarCoverage: number;
     performance: number; 
     cfeNetworkConsumption: number; 
+    cfeNetworkConsumptionMeasure: string; 
+    systemGenerationMeasure: string; 
+    totalConsumptionMeasure: string; 
     exportedGeneration?: number;
     monthlyDataResponse:MonthlyDataPerformance[]
 

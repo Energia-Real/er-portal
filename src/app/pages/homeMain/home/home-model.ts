@@ -29,6 +29,8 @@ export interface SDResponse {
   totalEnergyConsumption: string;
   totalEnergyProduction: string;
   cfeCostWithoutSolar: string;
+  energyConsumptionMeasure: string;
+  energyProductionMeasure:string;
   totalSavings: string;
 }
 
@@ -65,11 +67,11 @@ export interface PlantData {
   siteName: string;
   energyProduction: any;
   energyConsumption: any;
-  solarCoverage: string;
+  energyConsumptionMeasure?: string;
+  energyProductionMeasure?: string;
+  solarCoverage: number;
   co2Saving: any;
   siteStatus: string;
-  energyConsumptionGWh: string;
-  energyProductionGWh: string;
 }
 
 export interface DataRespSavingDetails {

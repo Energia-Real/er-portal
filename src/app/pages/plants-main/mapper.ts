@@ -234,6 +234,12 @@ export class Mapper {
 			description: `$${response.savings}`,
 			icon: '../../../../../assets/icons/saving.png'
 		});
+	
+		additionalItems.push({
+			title: 'Savings percentage',
+			description: `${response.savingsPercentage}%`,
+			icon: '../../../../../assets/icons/saving.png'
+		});
 
 		return {
 			primaryElements,
@@ -250,12 +256,12 @@ export class Mapper {
 
 		primaryElements.push({
 			title: 'System generation',
-			description: formatsService.energyFormatGWh(response.response.systemGeneration ?? "0.00")
+			description : `${response.response.systemGeneration ?? "0.00"} ${response.response?.systemGenerationMeasure}`,
 		});
 
 		primaryElements.push({
 			title: 'Total consumption',
-			description: formatsService.energyFormatGWh(response.response.totalConsumption ?? "0.00")
+			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
 		additionalItems.push({
@@ -266,7 +272,7 @@ export class Mapper {
 
 		additionalItems.push({
 			title: 'CFE network consumption',
-			description: formatsService.energyFormatGWh(response.response.cfeNetworkConsumption?? "0.00"),
+			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
 			extra:'-4% compared to the previous month'
 		});
 

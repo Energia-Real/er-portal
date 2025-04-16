@@ -1,4 +1,4 @@
-<div class="c-clients c-main  c-management" [class.sombreado]="drawerOpen">
+<div class="c-clients c-main" [class.sombreado]="drawerOpen">
     <div>
         <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
             <div class=" col-span-1 md:col-span-1">
@@ -88,11 +88,11 @@
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.razonSocialCount!=0 else notCorporateName">
-                                <div *ngIf="element?.razonSocialCount==1" class="check-razon-social"
+                                <div *ngIf="element?.razonSocialCount==1" class="check-razon-social cursor-pointer"
                                     (click)="toggleDrawer ('corporate', element)">
                                     {{element?.razonesSociales[0].razonSocialName}}
                                 </div>
-                                <div *ngIf="element?.razonSocialCount>1" class="check-razon-social"
+                                <div *ngIf="element?.razonSocialCount>1" class="check-razon-social cursor-pointer"
                                     (click)="toggleDrawer ('corporate', element)">
                                     Multiple Corporate Names
                                 </div>
