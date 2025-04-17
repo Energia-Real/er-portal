@@ -18,12 +18,17 @@ export class Mapper {
 				plantId: data?.plantId || '',
 				siteName: data?.siteName || '',
 				solarCoverage: data?.solarCoverage,
-				energyConsumption : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
-				energyProduction : `${data.energyProduction} ${data.energyProductionMeasure}`,
+				energyConsumption : data.energyConsumption.toString(),
+				energyProduction : data.energyProduction.toString(),
+				energyConsumptionFormat : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
+				energyProductionFormat : `${data.energyProduction} ${data.energyProductionMeasure}`,
 				co2Saving : data.co2Saving,
 				siteStatus: data?.siteStatus
 			});
 		});
+
+		console.log(dataList);
+		
 
 		return {
 			data: dataList,

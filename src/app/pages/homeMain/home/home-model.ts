@@ -69,6 +69,8 @@ export interface PlantData {
   energyConsumption: any;
   energyConsumptionMeasure?: string;
   energyProductionMeasure?: string;
+  energyConsumptionFormat: string;
+  energyProductionFormat: string;
   solarCoverage: number;
   co2Saving: any;
   siteStatus: string;
