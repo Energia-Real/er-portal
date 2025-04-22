@@ -16,7 +16,6 @@ import { DetailsOverviewComponent } from './previous-billing-v2/details-overview
 import { PreviousBillingV2Component } from './previous-billing-v2/previous-billing-v2.component';
 import { CurrentBillingComponent } from './billing-overview/current-billing/current-billing.component';
 import { BillingDetailsComponent } from './billing-overview/billing-details/billing-details.component';
-import { BillingAdjustmentsComponent } from './billing-overview/billing-adjustments/billing-adjustments.component';
 import { OverviewComponent } from './billing-overview/billing-details/overview/overview.component';
 import { BillingHistoryComponent } from './billing-overview/billing-details/billing-history/billing-history.component';
 import { SitesComponent } from './billing-overview/billing-details/sites/sites.component';
@@ -33,7 +32,6 @@ import { BillingInformationComponent } from './billing-overview/billing-details/
     PreviousBillingV2Component,
     CurrentBillingComponent,
     BillingDetailsComponent,
-    BillingAdjustmentsComponent,
     OverviewComponent,
     BillingHistoryComponent,
     SitesComponent,
