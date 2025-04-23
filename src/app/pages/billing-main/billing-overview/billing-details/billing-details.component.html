@@ -1,1 +1,38 @@
-<p>billing-details works!</p>
+<div class="c-billing-details">
+    <div class="flex justify-between items-center">
+        <div class="title-icon-info">
+            <h1 class="label-700-24">Billing Details</h1>
+            <span class="color-57B1B1 material-symbols-outlined"
+                matTooltip="This chart displays the total billing for all customer names. To view a specific one, filter by costomer name.">info
+            </span>
+        </div>
+    
+        <div class="c-filters-header">
+            Filtros...
+        </div>
+    </div>
+
+    <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
+        <div class="col-span-1 position-relative">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+
+                <mat-tab label="Overview">
+                    <app-overview></app-overview>
+                </mat-tab>
+
+                <mat-tab label="Billing History">
+                    <app-billing-history></app-billing-history>
+                </mat-tab>
+
+                <mat-tab label="Sites">
+                    <app-sites></app-sites>
+                </mat-tab>
+            
+                <mat-tab label="Billing information">
+                    <app-billing-information></app-billing-information>
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

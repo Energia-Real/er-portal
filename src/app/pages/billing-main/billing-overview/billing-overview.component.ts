@@ -29,7 +29,6 @@ export class BillingOverviewComponent implements OnInit, OnDestroy {
   generalFilters!: GeneralFilters
   userInfo!: UserInfo;
 
-
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private dialog: MatDialog,

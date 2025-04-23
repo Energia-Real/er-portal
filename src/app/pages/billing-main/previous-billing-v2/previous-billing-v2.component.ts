@@ -21,7 +21,7 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
   templateUrl: './previous-billing-v2.component.html',
   styleUrl: './previous-billing-v2.component.scss'
 })
-export class PreviousBillingV2Component  implements OnInit, OnDestroy {
+export class PreviousBillingV2Component implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   generalFilters$!: Observable<GeneralFilters>;
