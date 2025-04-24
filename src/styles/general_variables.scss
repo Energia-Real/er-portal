@@ -131,10 +131,49 @@
 .select-ER {
     width: 100% !important;
 
+    ::ng-deep {
+        .mat-form-field-label {
+            color: black !important;
+        }
+    }
+
     .mat-mdc-text-field-wrapper {
         padding: 0 !important;
         border: none !important;
     }
+
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+        border-radius: 24px;
+        border: 1px solid #9E9E9E;
+        height: 38px;
+        margin-left: 16px;
+        font-weight: bold;
+        color: black;
+
+        span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    .mat-mdc-select-trigger {
+        justify-content: center;
+    }
+
+    .mat-mdc-select-value {
+        width: auto;
+        margin-right: 11px;
+    }
+
+    mat-icon {
+        z-index: 1;
+        margin-left: 0 !important;
+    }
+
 }
 
 
@@ -1065,6 +1104,7 @@ select:focus {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         >h1 {
             color: #EE5427;
             font-size: 24px !important;
@@ -1083,7 +1123,7 @@ select:focus {
     }
 
     .section-untitled {
-        justify-content: end!important;
+        justify-content: end !important;
     }
 }
 

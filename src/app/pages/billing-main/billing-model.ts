@@ -11,6 +11,14 @@ export interface BillingResponse {
   errors?: any | null;
 }
 
+export interface FilterBillingDetails {
+  client: string;
+  legal: string;
+  site: string;
+  solar: string;
+}
+
+
 export interface BillingData {
   externalId: string;
   plant: PlantInfo;
