@@ -2,7 +2,6 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Chart, registerables } from 'chart.js';
 import { Subject } from 'rxjs';
 
-// Es importante registrar los componentes si no estás usando Chart.js/auto
 Chart.register(...registerables);
 
 @Component({
@@ -21,56 +20,79 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   renderChart(): void {
-    const context = this.barChartCanvas.nativeElement.getContext('2d');
+    const ctx = this.barChartCanvas.nativeElement.getContext('2d');
 
-    if (context) {
-      this.chart = new Chart(context, {
-        type: 'bar',
-        data: {
-          labels: [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-          ],
-          datasets: [
-            {
-              label: 'Generated Energy (kWh)',
-              data: [420, 380, 500, 450, 600, 700, 800, 750, 680, 620, 580, 490],
-              backgroundColor: '#34D399', // tailwind: emerald-400
-              borderRadius: 8,
-              barThickness: 20,
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: (value) => `${value} kWh`
+    this.chart = new Chart(ctx!, {
+      type: 'bar',
+      data: {
+        labels: [
+          'Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'May 25', 'Jun 25',
+          'Jul 25', 'Aug 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dec 25'
+        ],
+        datasets: [
+          {
+            label: 'Billed energy produced',
+            backgroundColor: '#F97316',
+            data: [120000, 110000, 115000, 100000, 130000, 125000, 135000, 140000, 125000, 130000, 110000, 120000],
+            barThickness: 20,
+            
+          },
+          {
+            label: 'Energy billed kWh',
+            backgroundColor: '#57B1B1',
+            data: [100000, 105000, 110000, 95000, 120000, 115000, 125000, 130000, 120000, 125000, 105000, 115000],
+            barThickness: 20,
+             
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            stacked: false,
+            ticks: {
+              color: '#000',
+              font: {
+                size: 12
               }
             }
           },
-          plugins: {
-            legend: {
-              display: false
-            },
-            tooltip: {
-              callbacks: {
-                label: (context) => `${context.raw} kWh`
+          y: {
+            beginAtZero: true,
+            max: 250000,
+            ticks: {
+              stepSize: 25000,
+              color: '#000',
+              callback: function (value:any) {
+                return value >= 1000 ? value / 1000 + 'k' : value;
               }
+            },
+            grid: {
+              drawBorder: false
             }
           }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              color: '#000'
+            }
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
         }
-      });
-    }
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    this.chart?.destroy();
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }
