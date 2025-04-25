@@ -6,9 +6,61 @@
                 matTooltip="This chart displays the total billing for all customer names. To view a specific one, filter by costomer name.">info
             </span>
         </div>
-    
+
         <div class="c-filters-header">
-            Filtros...
+            <form class="flex align-center gap-3 flex-wrap" [formGroup]="filtersForm">
+
+                <div class="c-input">
+                    <mat-form-field class="select-ER" appearance="outline">
+                        <mat-select formControlName="client" placeholder="Client">
+                            <!-- <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
+                      }}</mat-option> -->
+                            <mat-option value="all">All</mat-option>
+                            <mat-option value="client-1">Client 1</mat-option>
+                            <mat-option value="client-2">Client 2</mat-option>
+                            <mat-option value="client-3">Client 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="c-input">
+                    <mat-form-field class="select-ER" appearance="outline">
+                        <mat-select formControlName="legal" placeholder="Legal name">
+                            <mat-option value="razon-social-1">All</mat-option>
+                            <mat-option value="razon-social-1">Razon social 1</mat-option>
+                            <mat-option value="razon-social-2">Razon social 2</mat-option>
+                            <mat-option value="razon-social-3">Razon social 3</mat-option>
+                        </mat-select>
+
+                        <!-- <mat-icon *ngIf="filtersForm.get('legal')?.value" matSuffix (click)="filtersForm.get('legal')?.reset()">close</mat-icon> -->
+                    </mat-form-field>
+                </div>
+
+                <div class="c-input">
+                    <mat-form-field class="select-ER" appearance="outline">
+                        <mat-select formControlName="site" placeholder="Site">
+                            <mat-option value="all">All</mat-option>
+                            <mat-option value="site-1">Plant name 1</mat-option>
+                            <mat-option value="site-2">Plant name 2</mat-option>
+                            <mat-option value="site-3">Plant name 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="c-input">
+                    <mat-form-field class="select-ER" appearance="outline">
+                        <mat-select formControlName="solar" placeholder="Solar">
+                            <!-- <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
+                      }}</mat-option> -->
+                            <mat-option value="all">All</mat-option>
+                            <mat-option value="solar-1">Solar 1</mat-option>
+                            <mat-option value="solar-2">Solar 2</mat-option>
+                            <mat-option value="solar-3">Solar 3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </form>
+
         </div>
     </div>
 
@@ -17,19 +69,19 @@
             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
 
                 <mat-tab label="Overview">
-                    <app-overview></app-overview>
+                    <app-overview [filterData]="filterData"></app-overview>
                 </mat-tab>
 
                 <mat-tab label="Billing History">
-                    <app-billing-history></app-billing-history>
+                    <app-billing-history [filterData]="filterData"></app-billing-history>
                 </mat-tab>
 
                 <mat-tab label="Sites">
-                    <app-sites></app-sites>
+                    <app-sites [filterData]="filterData"></app-sites>
                 </mat-tab>
-            
+
                 <mat-tab label="Billing information">
-                    <app-billing-information></app-billing-information>
+                    <app-billing-information [filterData]="filterData"></app-billing-information>
                 </mat-tab>
 
             </mat-tab-group>

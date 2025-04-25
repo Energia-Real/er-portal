@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
+import * as entity from '../../../billing-model';
 
 @Component({
   selector: 'app-billing-information',
@@ -9,8 +10,10 @@ import { Subject } from 'rxjs';
 export class BillingInformationComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  ngOnInit(): void {
+  @Input() filterData!: entity.FilterBillingDetails
 
+  ngOnInit(): void {
+    console.log('Billing information : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {

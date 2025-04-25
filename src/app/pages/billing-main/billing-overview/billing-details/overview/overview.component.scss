@@ -1,7 +1,70 @@
 .c-overview {
-    margin-top: 30px;
+  margin-top: 30px;
 
+  .btn-show-all-gray {
+    width: 235px;
+    margin-top: 50px;
+  }
+
+  .c-labels-overview {
     >div {
-        height: 350px;
+      width: 235px;
+
+      background: #F8F8F8;
+      padding: 10px 12px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+
+      span {
+        display: block;
+        margin-right: 12px;
+      }
+
+      h1 {
+        line-height: 20px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #404040;
+        margin: 0;
+      }
     }
+
+    >div:nth-child(1) {
+      margin: 50px 0;
+
+      span {
+        background: #F97316;
+        border-radius: 100%;
+        width: 12px;
+        height: 12px;
+      }
+    }
+
+    >div:nth-child(2) {
+      span {
+        background: #57B1B1;
+        color: rgb(255, 255, 255);
+        border-radius: 100%;
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .c-graph {
+    margin-top: 16px;
+    padding-bottom: 50px;
+
+    .graph {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    highcharts-chart {
+      height: 340px!important;
+    }
+  }
 }

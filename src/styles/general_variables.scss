@@ -131,10 +131,49 @@
 .select-ER {
     width: 100% !important;
 
+    ::ng-deep {
+        .mat-form-field-label {
+            color: black !important;
+        }
+    }
+
     .mat-mdc-text-field-wrapper {
         padding: 0 !important;
         border: none !important;
     }
+
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+        border-radius: 24px;
+        border: 1px solid #9E9E9E;
+        height: 38px;
+        margin-left: 16px;
+        font-weight: bold;
+        color: black;
+
+        span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    .mat-mdc-select-trigger {
+        justify-content: center;
+    }
+
+    .mat-mdc-select-value {
+        width: auto;
+        margin-right: 11px;
+    }
+
+    mat-icon {
+        z-index: 1;
+        margin-left: 0 !important;
+    }
+
 }
 
 
@@ -646,6 +685,26 @@ select:focus {
     }
 }
 
+.btn-show-all-gray {
+    height: 44px;
+    width: 130px;
+    border-radius: 24px;
+    color: #D1D1D1;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FCFCFC;
+
+    span,
+    i {
+        margin-right: 10px;
+        font-size: 24px;
+        color: #D1D1D1;
+    }
+}
+
 
 .filter-selected {
     border: 1px solid #EE6A0A;
@@ -826,6 +885,30 @@ select:focus {
     //     background-color: #FCFCFC !important;
     //     border: none !important;
     // }
+}
+
+.card-balance {
+    width: 235px;
+    height: 85px;
+    border-radius: 24px;
+     border: 1px solid #D2D2D2;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     h1 {
+        font-weight: 500;
+        font-size: 12px;
+        margin-bottom: 8px;
+        line-height: 15px;
+     }
+
+     h2 {
+        font-weight: 500;
+        font-size: 24px;
+        margin-bottom: 0px;
+     }
+
 }
 
 .c-card-info-main {
@@ -1065,6 +1148,7 @@ select:focus {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         >h1 {
             color: #EE5427;
             font-size: 24px !important;
@@ -1083,7 +1167,7 @@ select:focus {
     }
 
     .section-untitled {
-        justify-content: end!important;
+        justify-content: end !important;
     }
 }
 
