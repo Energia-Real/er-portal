@@ -20,6 +20,7 @@ import { OverviewComponent } from './billing-overview/billing-details/overview/o
 import { BillingHistoryComponent } from './billing-overview/billing-details/billing-history/billing-history.component';
 import { SitesComponent } from './billing-overview/billing-details/sites/sites.component';
 import { BillingInformationComponent } from './billing-overview/billing-details/billing-information/billing-information.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { BillingInformationComponent } from './billing-overview/billing-details/
     MaterialModule,
     InfoCardComponent,
     MessageNoDataComponent,
+    NgChartsModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
