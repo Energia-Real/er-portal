@@ -11,9 +11,10 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 
 @Component({
-  selector: 'app-inverter-detail',
-  templateUrl: './inverter-detail.component.html',
-  styleUrl: './inverter-detail.component.scss'
+    selector: 'app-inverter-detail',
+    templateUrl: './inverter-detail.component.html',
+    styleUrl: './inverter-detail.component.scss',
+    standalone: false
 })
 export class InverterDetailComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

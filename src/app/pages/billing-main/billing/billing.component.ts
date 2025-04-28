@@ -21,9 +21,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
-  selector: 'app-billing',
-  templateUrl: './billing.component.html',
-  styleUrl: './billing.component.scss'
+    selector: 'app-billing',
+    templateUrl: './billing.component.html',
+    styleUrl: './billing.component.scss',
+    standalone: false
 })
 export class BillingComponent implements OnDestroy, OnInit, AfterViewChecked, AfterViewInit {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;

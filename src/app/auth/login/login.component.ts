@@ -9,9 +9,10 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss',
+    standalone: false
 })
 export class LoginComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();

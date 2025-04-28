@@ -11,9 +11,10 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-home-admin',
-  templateUrl: './home-admin.component.html',
-  styleUrl: './home-admin.component.scss'
+    selector: 'app-home-admin',
+    templateUrl: './home-admin.component.html',
+    styleUrl: './home-admin.component.scss',
+    standalone: false
 })
 export class HomeAdminComponent implements OnInit {
   private onDestroy$ = new Subject<void>();

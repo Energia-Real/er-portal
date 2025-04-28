@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-info-providers-devices',
-  templateUrl: './info-providers-devices.component.html',
-  styleUrl: './info-providers-devices.component.scss'
+    selector: 'app-info-providers-devices',
+    templateUrl: './info-providers-devices.component.html',
+    styleUrl: './info-providers-devices.component.scss',
+    standalone: false
 })
 export class InfoProvidersDevicesComponent {
   private onDestroy$ = new Subject<void>();

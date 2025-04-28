@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-comulative-kpi',
-  templateUrl: './comulative-kpi.component.html',
-  styleUrl: './comulative-kpi.component.scss'
+    selector: 'app-comulative-kpi',
+    templateUrl: './comulative-kpi.component.html',
+    styleUrl: './comulative-kpi.component.scss',
+    standalone: false
 })
 export class ComulativeKpiComponent {
 private onDestroy$ = new Subject<void>();

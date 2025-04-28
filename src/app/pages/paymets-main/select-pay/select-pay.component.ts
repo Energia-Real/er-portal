@@ -15,9 +15,10 @@ import * as entity from '../payments-model';
 import { ModalPayComponent } from '../modal-pay/modal-pay.component';
 
 @Component({
-  selector: 'app-select-pay',
-  templateUrl: './select-pay.component.html',
-  styleUrl: './select-pay.component.scss'
+    selector: 'app-select-pay',
+    templateUrl: './select-pay.component.html',
+    styleUrl: './select-pay.component.scss',
+    standalone: false
 })
 export class SelectPayComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();

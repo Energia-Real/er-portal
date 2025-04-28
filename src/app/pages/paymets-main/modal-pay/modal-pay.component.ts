@@ -3,9 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-modal-pay',
-  templateUrl: './modal-pay.component.html',
-  styleUrl: './modal-pay.component.scss'
+    selector: 'app-modal-pay',
+    templateUrl: './modal-pay.component.html',
+    styleUrl: './modal-pay.component.scss',
+    standalone: false
 })
 export class ModalPayComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

@@ -16,9 +16,10 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { DrawerGeneral } from '@app/shared/models/general-models';
 
 @Component({
-  selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  styleUrl: './clients.component.scss'
+    selector: 'app-clients',
+    templateUrl: './clients.component.html',
+    styleUrl: './clients.component.scss',
+    standalone: false
 })
 export class ClientsComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();

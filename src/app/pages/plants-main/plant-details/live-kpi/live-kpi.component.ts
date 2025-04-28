@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-live-kpi',
-  templateUrl: './live-kpi.component.html',
-  styleUrl: './live-kpi.component.scss'
+    selector: 'app-live-kpi',
+    templateUrl: './live-kpi.component.html',
+    styleUrl: './live-kpi.component.scss',
+    standalone: false
 })
 export class LiveKpiComponent {
   private onDestroy$ = new Subject<void>();

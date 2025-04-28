@@ -11,9 +11,10 @@ import { FormatsService } from '@app/shared/services/formats.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
-  selector: 'app-savings',
-  templateUrl: './savings.component.html',
-  styleUrl: './savings.component.scss'
+    selector: 'app-savings',
+    templateUrl: './savings.component.html',
+    styleUrl: './savings.component.scss',
+    standalone: false
 })
 export class SavingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

@@ -15,11 +15,11 @@ import { Location } from '@angular/common';
 
 
 @Component({
-  selector: 'app-qya',
-  templateUrl: './qya.component.html',
-  styleUrl: './qya.component.scss',
-  encapsulation: ViewEncapsulation.None
-
+    selector: 'app-qya',
+    templateUrl: './qya.component.html',
+    styleUrl: './qya.component.scss',
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class QyaComponent implements OnInit {
 

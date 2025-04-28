@@ -6,9 +6,10 @@ import { AuthService } from '../auth.service';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss',
+    standalone: false
 })
 export class RegisterComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
