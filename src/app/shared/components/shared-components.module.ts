@@ -11,6 +11,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { ConfirmationSnackbarComponent } from './confirmation-snackbar/confirmation-snackbar.component';
 import { NotificationCardCenterComponent } from './notification-card-center/notification-card-center.component';
 import { TimeAgoPipe } from '../pipes/time-ago.pipe';
+import { TabulatorTableComponent } from './tabulator-table/tabulator-table.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TimeAgoPipe } from '../pipes/time-ago.pipe';
     NotificationComponent,
     ConfirmationSnackbarComponent,
     NotificationCardCenterComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    TabulatorTableComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,8 @@ import { TimeAgoPipe } from '../pipes/time-ago.pipe';
     MapaComponent,
     TooltipComponent,
     NotificationComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    TabulatorTableComponent
   ]
 })
 export class SharedComponensModule { }

@@ -13,32 +13,7 @@ import { Subject } from 'rxjs';
 import { Tabulator } from 'tabulator-tables';
 
 
-const persons = [
-  {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Smith',
-    state: 'Ohio',
-  },
-  {
-    id: '2',
-    firstName: 'Jane',
-    lastName: 'Doe',
-    state: 'Iowa',
-  },
-  {
-    id: '3',
-    firstName: 'Bill',
-    lastName: 'Great',
-    state: 'Hawaii',
-  },
-  {
-    id: '4',
-    firstName: 'Ted',
-    lastName: 'Adventure',
-    state: 'Arizona',
-  },
-];
+
 
 @Component({
   selector: 'app-finantial-model-layout',
@@ -51,6 +26,33 @@ export class FinantialModelLayoutComponent implements OnInit, OnDestroy,AfterVie
   filterParam: string = '';
 
   tab = document.createElement('div');
+
+   persons = [
+    {
+      id: '1',
+      firstName: 'John',
+      lastName: 'Smith',
+      state: 'Ohio',
+    },
+    {
+      id: '2',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      state: 'Iowa',
+    },
+    {
+      id: '3',
+      firstName: 'Bill',
+      lastName: 'Great',
+      state: 'Hawaii',
+    },
+    {
+      id: '4',
+      firstName: 'Ted',
+      lastName: 'Adventure',
+      state: 'Arizona',
+    },
+  ];
 
   table_def = [
     { title: 'Id', field: 'id' },
@@ -87,19 +89,19 @@ export class FinantialModelLayoutComponent implements OnInit, OnDestroy,AfterVie
 
   ngOnInit(): void {
 
-    this.exTable = new Tabulator(this.tab, {
+    /* this.exTable = new Tabulator(this.tab, {
       height: 140,
       layout: 'fitColumns',
       columns: this.table_def,
       movableColumns: true,
       data: persons,
-    });
+    }); */
     //    this.exTable.setData(persons);
-    document.getElementById('ex-table-div')!.appendChild(this.tab);
+    //document.getElementById('ex-table-div')!.appendChild(this.tab);
 
   }
   ngAfterViewInit() {
-    this.exTable?.setData(persons);
+    //this.exTable?.setData(persons);
   }
 
   openFileSelector() {
