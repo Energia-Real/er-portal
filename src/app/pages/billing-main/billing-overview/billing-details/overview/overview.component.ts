@@ -13,18 +13,13 @@ Chart.register(...registerables);
 export class OverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  lineChartData!: ChartConfiguration<'bar'>['data'];
-  lineChartOptions: ChartOptions<'bar'> = {
+  lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
+
+  lineChartOptions: ChartOptions<'bar' | 'line'> = {
     responsive: true,
-    animation: {
-      onComplete: () => { },
-      delay: (context) => {
-        let delay = 0;
-        if (context.type === 'data' && context.mode === 'default') {
-          delay = context.dataIndex * 300 + context.datasetIndex * 100;
-        }
-        return delay;
-      },
+    interaction: {
+      mode: 'index',
+      intersect: false,
     },
     plugins: {
       tooltip: {
@@ -37,60 +32,31 @@ export class OverviewComponent implements OnInit, OnDestroy {
         },
       },
       legend: {
-        display: false,
+        display: true,
         labels: {
           usePointStyle: true,
-        },
-        position: 'right',
-        onHover: (event, legendItem, legend) => {
-          const index = legendItem.datasetIndex;
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
-          });
-
-          chart.update();
-        },
-        onLeave: (event, legendItem, legend) => {
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === 0 ? '#F97316' : '#57B1B1';
-          });
-
-          chart.update();
         },
       },
     },
     scales: {
       x: {
+        grid: { display: false },
         stacked: false,
-        grid: {
-          display: false,
-        },
       },
       y: {
-        ticks: {
-          callback: function (value, index, values) {
-            const numericValue = typeof value == 'number' ? value : parseFloat(value as string);
-
-            if (!isNaN(numericValue)) {
-              return `${numericValue} kWh`;
-            }
-            return '';
-          },
-          stepSize: 25,
-        },
-        min: 0, 
-        max: 250, 
         stacked: false,
         grid: {
-          color: '#E5E7EB', 
+          color: '#E5E7EB',
         },
+        ticks: {
+          callback: function (value) {
+            return `${value} kWh`;
+          },
+        },
+        min: 0,
+        max: 250,
       },
     },
-    backgroundColor: 'rgba(242, 46, 46, 1)', 
   };
 
   ngOnInit(): void {
@@ -102,14 +68,34 @@ export class OverviewComponent implements OnInit, OnDestroy {
       labels: ['Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'May 25', 'Jun 25', 'Jul 25', 'Aug 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dec 25'],
       datasets: [
         {
-          data: [100, 125, 150, 175, 135, 120, 150, 120, 150, 175, 150, 125], 
-          label: 'Energy Production',
-          backgroundColor: '#F97316', 
+          type: 'bar',
+          label: 'Energy Produced (kWh)',
+          data: [250, 80, 200, 140, 150, 130, 160, 120, 80, 70, 220, 40],
+          backgroundColor: '#F97316',
+          barPercentage: 0.8,
+          categoryPercentage: 0.9,
+          order: 1
         },
         {
-          data: [90, 115, 140, 165, 190, 120, 120, 150, 120, 165, 140, 115],
-          label: 'Energy Consumption',
+          type: 'bar',
+          label: 'Energy Billed (kWh)',
+          data: [150, 180, 50, 120, 130, 110, 190, 100, 150, 170, 180, 70],
           backgroundColor: '#57B1B1',
+          barPercentage: 0.8,
+          categoryPercentage: 0.9,
+          order: 1
+        },
+        {
+          type: 'line',
+          label: 'Trend',
+          data: [140, 110, 90, 60, 90, 110, 110, 90, 150, 200, 130, 140],
+          borderColor: '#6B021A',
+          backgroundColor: '#6B021A',
+          tension: 0.4,
+          pointRadius: 4,
+          pointBackgroundColor: '#6B021A',
+          borderWidth: 2,
+          order: 3
         }
       ]
     };
