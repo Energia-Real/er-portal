@@ -436,9 +436,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         let data =this.mappingData(response.data)
-
-        console.log(data);
-        
         
         this.lineChartData = {
           labels: data.labels,
