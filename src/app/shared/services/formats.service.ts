@@ -28,6 +28,22 @@ export class FormatsService {
     } else return '';
   }
 
+  normalizeToMWh(value: number, unit: string): number {
+    if (!value || !unit) return 0;
+  
+    switch (unit) {
+      case 'kWh':
+        return value / 1000;
+      case 'MWh':
+        return value;
+      case 'GWh':
+        return value * 1000;
+      default:
+        return value;
+    }
+  }
+  
+
   energyFormatGWh(content: string | number): string {
     if (!content) return ''
   

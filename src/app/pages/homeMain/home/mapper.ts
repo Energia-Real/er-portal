@@ -3,6 +3,9 @@ import * as entity from './home-model';
 
 export class Mapper {
 	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): any {
+		console.log(response.response.consolidatedData);
+
+
 		let totalEnergyConsumption: number = 0;
 		let totalEnergyProduction: number = 0;
 
@@ -18,17 +21,24 @@ export class Mapper {
 				plantId: data?.plantId || '',
 				siteName: data?.siteName || '',
 				solarCoverage: data?.solarCoverage,
-				energyConsumption : data.energyConsumption.toString(),
-				energyProduction : data.energyProduction.toString(),
-				energyConsumptionFormat : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
-				energyProductionFormat : `${data.energyProduction} ${data.energyProductionMeasure}`,
-				co2Saving : data.co2Saving,
+				energyConsumption: formatsService.normalizeToMWh(
+					data?.energyConsumption,
+					data?.energyConsumptionMeasure!
+				).toString(),
+
+				energyProduction: formatsService.normalizeToMWh(
+					data?.energyProduction,
+					data?.energyProductionMeasure!
+				).toString(),
+				energyConsumptionFormat: `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
+				energyProductionFormat: `${data.energyProduction} ${data.energyProductionMeasure}`,
+				co2Saving: data.co2Saving,
 				siteStatus: data?.siteStatus
 			});
 		});
 
 		console.log(dataList);
-		
+
 
 		return {
 			data: dataList,

@@ -193,16 +193,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       y: {
         ticks: {
           callback: function (value, index, values) {
-            
             const numericValue = typeof value === 'number' ? value : parseFloat(value as string);
-  
+        
             if (!isNaN(numericValue)) {
-              const gwhValue = numericValue / 1_000_000; 
-              return `${gwhValue.toLocaleString('en-US')} GWh`;
+              const mwhValue = numericValue / 1_000; // Cambio a 1,000 para MWh
+              return `${mwhValue.toLocaleString('en-US')} MWh`;
             }
             return '';
           },
         },
+        
         stacked: false,
         grid: {
           display: false,
@@ -436,6 +436,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
         let data =this.mappingData(response.data)
+
+        console.log(data);
+        
         
         this.lineChartData = {
           labels: data.labels,
