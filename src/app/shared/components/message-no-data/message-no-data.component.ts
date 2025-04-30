@@ -1,4 +1,4 @@
-import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
     templateUrl: './message-no-data.component.html',
     styleUrl: './message-no-data.component.scss',
     encapsulation: ViewEncapsulation.None,
-    imports: [CommonModule, NgIf, MaterialModule, NgClass]
+    imports: [CommonModule, NgIf, MaterialModule]
 })
 export class MessageNoDataComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
