@@ -31,7 +31,7 @@
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>System size</p>
-            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData?.systemSize }} KWp</span>
+            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData.systemSize }} KWp</span>
           </div>
           <div class="linea"></div>
         </div>
@@ -39,7 +39,7 @@
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>AC capacity</p>
-            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData?.nominalPowerAC }} kW</span>
+            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData.nominalPowerAC }} kW</span> 
           </div>
           <div class="linea"></div>
         </div>
@@ -48,7 +48,7 @@
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>Status</p>
             <mat-icon *ngIf="plantData?.assetStatusIcon else notDataTable" [matTooltip]="plantData.descriptionStatus">{{
-              plantData?.assetStatusIcon }} </mat-icon>
+              plantData.assetStatusIcon }} </mat-icon>
           </div>
           <div class="linea"></div>
         </div>

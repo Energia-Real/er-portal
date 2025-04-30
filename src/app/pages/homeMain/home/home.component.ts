@@ -37,7 +37,6 @@ Chart.register(...registerables);
         CommonModule,
         SharedComponensModule,
         MaterialModule,
-        MessageNoDataComponent,
         ReactiveFormsModule,
         NgChartsModule,
         NgxSkeletonLoaderModule

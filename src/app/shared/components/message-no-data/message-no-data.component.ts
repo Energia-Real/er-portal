@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
     templateUrl: './message-no-data.component.html',
     styleUrl: './message-no-data.component.scss',
     encapsulation: ViewEncapsulation.None,
-    imports: [CommonModule, NgIf, MaterialModule]
+    imports: [CommonModule, MaterialModule]
 })
 export class MessageNoDataComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
