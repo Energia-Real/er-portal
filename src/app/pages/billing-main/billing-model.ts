@@ -225,6 +225,22 @@ export interface InvoiceResponse {
   errors: string[];
 }
 
+
+export interface CurrentBillResponse {
+  currentBillResponse: Bill[]
+}
+
+
+export interface Bill{
+  amount:     number; 
+  billingId:  string; 
+  legalName:  string; 
+  month:      number; 
+  product:    string; 
+  status:     string; 
+  year:       number;
+}
+
 interface InvoiceDetails {
   externalId: string;
   plant: PlantDetails;

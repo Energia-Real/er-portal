@@ -6,6 +6,7 @@ import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 import { DataRespSavingDetailsList } from '../plants-main/plants-model';
+import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +77,14 @@ export class BillingService implements OnDestroy {
         )
       );
   }
- 
+
+  getCurrentInvoices(    filters: GeneralFilters ): Observable<GeneralResponse<entity.CurrentBillResponse>> {
+    const url = `${this.performanceApiUrl}/Billing/Current`;
+    const params = {"startDate": filters.startDate, "endDate":filters.endDate}
+    return this.http.post<any>(url,   params );
+  }
+
+
   getBillingDetails(
     filters: any
   ): Observable<entity.DataDetailsOverviewTableMapper> {
