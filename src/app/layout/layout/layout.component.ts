@@ -12,9 +12,10 @@ declare const pendo: any;
 
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss',
+    standalone: false
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

@@ -9,9 +9,10 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { EnergyProductionService } from '../energy-production.service';
 
 @Component({
-  selector: 'app-energy-prod-update',
-  templateUrl: './energy-prod-update.component.html',
-  styleUrl: './energy-prod-update.component.scss'
+    selector: 'app-energy-prod-update',
+    templateUrl: './energy-prod-update.component.html',
+    styleUrl: './energy-prod-update.component.scss',
+    standalone: false
 })
 export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

@@ -4,9 +4,10 @@ import { Subject, takeUntil } from 'rxjs';
 import anime from 'animejs/lib/anime.es.js';
 
 @Component({
-  selector: 'app-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss'],
+    selector: 'app-spinner',
+    templateUrl: './spinner.component.html',
+    styleUrls: ['./spinner.component.scss'],
+    standalone: false
 })
 export class SpinnerComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();

@@ -31,21 +31,19 @@ import { MatDialog } from '@angular/material/dialog';
 
 Chart.register(...registerables);
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  templateUrl: './home.component.html',
-  imports: [
-    CommonModule,
-    SharedComponensModule,
-    MaterialModule,
-    MessageNoDataComponent,
-    ReactiveFormsModule,
-    NgChartsModule,
-    NgxSkeletonLoaderModule
-  ],
-  styleUrl: './home.component.scss',
-  providers: [provideNativeDateAdapter()],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    imports: [
+        CommonModule,
+        SharedComponensModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        NgChartsModule,
+        NgxSkeletonLoaderModule
+    ],
+    styleUrl: './home.component.scss',
+    providers: [provideNativeDateAdapter()],
+    encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;

@@ -15,9 +15,10 @@ import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constan
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
-  selector: 'app-site-performance',
-  templateUrl: './site-performance.component.html',
-  styleUrls: ['./site-performance.component.scss']
+    selector: 'app-site-performance',
+    templateUrl: './site-performance.component.html',
+    styleUrls: ['./site-performance.component.scss'],
+    standalone: false
 })
 export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

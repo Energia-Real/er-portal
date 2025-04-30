@@ -7,20 +7,21 @@ import { combineLatest, Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-notification-card-center',
-  templateUrl: './notification-card-center.component.html',
-  styleUrl: './notification-card-center.component.scss',
-  animations: [
-    trigger('fadeOut', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'scale(0.9)' }),
-        animate('300ms ease-in', style({ opacity: 1, transform: 'scale(1)' }))
-      ]),
-      transition(':leave', [
-        animate('300ms ease-out', style({ opacity: 0, transform: 'scale(0.9)' }))
-      ])
-    ])
-  ]
+    selector: 'app-notification-card-center',
+    templateUrl: './notification-card-center.component.html',
+    styleUrl: './notification-card-center.component.scss',
+    animations: [
+        trigger('fadeOut', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'scale(0.9)' }),
+                animate('300ms ease-in', style({ opacity: 1, transform: 'scale(1)' }))
+            ]),
+            transition(':leave', [
+                animate('300ms ease-out', style({ opacity: 0, transform: 'scale(0.9)' }))
+            ])
+        ])
+    ],
+    standalone: false
 })
 export class NotificationCardCenterComponent implements OnChanges {
   @Input() notification!:Notification;

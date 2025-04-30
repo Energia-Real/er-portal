@@ -6,11 +6,10 @@ import { MaterialModule } from '@app/shared/material/material.module';
 
 
 @Component({
-  selector: 'app-overview',
-  standalone: true,
-  imports: [CommonModule, SharedComponensModule, MaterialModule],
-  templateUrl: './overview.component.html',
-  styleUrl: './overview.component.scss'
+    selector: 'app-overview',
+    imports: [CommonModule, SharedComponensModule, MaterialModule],
+    templateUrl: './overview.component.html',
+    styleUrl: './overview.component.scss'
 })
 export class OverviewComponent {
  

@@ -13,9 +13,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-edit-corporate-name',
-  templateUrl: './edit-corporate-name.component.html',
-  styleUrl: './edit-corporate-name.component.scss'
+    selector: 'app-edit-corporate-name',
+    templateUrl: './edit-corporate-name.component.html',
+    styleUrl: './edit-corporate-name.component.scss',
+    standalone: false
 })
 export class EditCorporateNameComponent implements OnInit{
 

@@ -18,9 +18,10 @@ import { FormBuilder } from '@angular/forms';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
 
 @Component({
-  selector: 'app-plant-detail',
-  templateUrl: './plant-details.component.html',
-  styleUrl: './plant-details.component.scss'
+    selector: 'app-plant-detail',
+    templateUrl: './plant-details.component.html',
+    styleUrl: './plant-details.component.scss',
+    standalone: false
 })
 export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();

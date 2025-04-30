@@ -12,9 +12,10 @@ import { environment } from '@environment/environment';
 
 
 @Component({
-  selector: 'app-site-details',
-  templateUrl: './site-details.component.html',
-  styleUrl: './site-details.component.scss'
+    selector: 'app-site-details',
+    templateUrl: './site-details.component.html',
+    styleUrl: './site-details.component.scss',
+    standalone: false
 })
 export class SiteDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

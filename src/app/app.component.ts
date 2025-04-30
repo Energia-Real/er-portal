@@ -3,8 +3,9 @@ import { NotificationService } from './shared/services/notification.service';
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    standalone: false
 })
 export class AppComponent implements OnInit {
   constructor(){

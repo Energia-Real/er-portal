@@ -5,9 +5,10 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-privacy-policy',
-  templateUrl: './privacy-policy.component.html',
-  styleUrl: './privacy-policy.component.scss'
+    selector: 'app-privacy-policy',
+    templateUrl: './privacy-policy.component.html',
+    styleUrl: './privacy-policy.component.scss',
+    standalone: false
 })
 export class PrivacyPolicyComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();

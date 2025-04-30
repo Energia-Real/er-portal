@@ -21,9 +21,10 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 
 
 @Component({
-  selector: 'app-energy-production',
-  templateUrl: './energy-production.component.html',
-  styleUrl: './energy-production.component.scss',
+    selector: 'app-energy-production',
+    templateUrl: './energy-production.component.html',
+    styleUrl: './energy-production.component.scss',
+    standalone: false
 })
 export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();

@@ -17,9 +17,10 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
-  selector: 'app-billing-overview',
-  templateUrl: './billing-overview.component.html',
-  styleUrl: './billing-overview.component.scss'
+    selector: 'app-billing-overview',
+    templateUrl: './billing-overview.component.html',
+    styleUrl: './billing-overview.component.scss',
+    standalone: false
 })
 export class BillingOverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

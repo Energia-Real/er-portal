@@ -17,9 +17,10 @@ export interface EquipmentForm {
   orientation: FormControl<number | null>;
 }
 @Component({
-  selector: 'app-new-equipment',
-  templateUrl: './new-equipment.component.html',
-  styleUrl: './new-equipment.component.scss'
+    selector: 'app-new-equipment',
+    templateUrl: './new-equipment.component.html',
+    styleUrl: './new-equipment.component.scss',
+    standalone: false
 })
 export class NewEquipmentComponent {
   @Input() isOpen = false;

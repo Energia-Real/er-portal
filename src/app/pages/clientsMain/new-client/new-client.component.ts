@@ -17,9 +17,10 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
-  selector: 'app-new-client',
-  templateUrl: './new-client.component.html',
-  styleUrl: './new-client.component.scss'
+    selector: 'app-new-client',
+    templateUrl: './new-client.component.html',
+    styleUrl: './new-client.component.scss',
+    standalone: false
 })
 export class NewClientComponent implements OnInit, OnDestroy {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
