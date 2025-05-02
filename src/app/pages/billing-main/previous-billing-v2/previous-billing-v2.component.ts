@@ -145,7 +145,7 @@ export class PreviousBillingV2Component implements OnInit, OnDestroy {
       clientId: this.userInfo.clientes[0]
     };
 
-    this.moduleServices.getBillingHistory(filters).subscribe({
+    this.moduleServices.getPreviousBillingHistory(filters).subscribe({
       next: (response: entity.DataHistoryOverviewTableMapper) => {
         this.dataSourceHistory.data = response?.data;
         this.totalItemsHistory = response?.totalItems;

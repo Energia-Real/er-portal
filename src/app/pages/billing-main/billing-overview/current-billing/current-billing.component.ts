@@ -46,23 +46,19 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     },
     { 
       title: "Status", 
-      field: "status.description", 
+      field: "status", 
       formatter: (cell: CellComponent) => {
-        const row = cell.getRow().getData();
-        const statusId = row['status']?.id;
-        const statusDescription = row['status']?.description || 'Unknown';
-        
+        const value = cell.getValue();  
         // Define colors for different status IDs
         const statusColors: {[key: string]: {bg: string, text: string}} = {
-          "PYD": { bg: "#33A02C", text: "white" },      // Green - Paid in full
-          //"UKWN": { bg: "#2196F3", text: "white" },     // Blue - Pagado/Abierta
-          "OVD": { bg: "#E31A1C", text: "white" },      // Orange - Pendiente/Partially paid
-          "PDG": { bg: "#E5B83E", text: "white" }       // Red - Open
+          "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
+          "Overdue": { bg: "#E31A1C", text: "white" },      // Orange - Pendiente/Partially paid
+          "Pending": { bg: "#E5B83E", text: "white" }       // Red - Open
         };
         
         // Get colors for this status ID (or use defaults)    
-        const colors = (statusId && statusColors[statusId]) 
-          ? statusColors[statusId] 
+        const colors = (value && statusColors[value]) 
+          ? statusColors[value] 
           : { bg: "#E0E0E0", text: "black" };
         
         // Create a span with the specified styling
@@ -77,9 +73,9 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
           justify-content:center;
           width: 95px;
           height: 35px
-        ">${statusDescription}</span>`;
+        ">${value}</span>`;
       },
-      hozAlign: "center",
+      hozAlign: "left",
       headerSort: false,
       vertAlign: "middle"
     },
@@ -87,41 +83,28 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
       title: "Product", 
       field: "product", 
       formatter: (cell: CellComponent) => {
-        const row = cell.getRow().getData();
-        // Currently product is a string, but prepare for future structure
-        let productId = '';
-        let productDescription = '';
-        
-        // Check if product is already an object with id and description
-        if (row['product'] && typeof row['product'] === 'object' && row['product'].id) {
-          productId = row['product'].id;
-          productDescription = row['product'].description || '';
-        } else {
-          // Current structure: product is just a string
-          productDescription = cell.getValue() || '';
-        }
-        
+        const value = cell.getValue();       
         // Default styling (for current string-based product)
         let icon = '';
         let bgColor = '#E0E0E0';
         let textColor = 'black';
         
         // Prepare for future structure with IDs
-        if (productId) {
+        if (value) {
           // Future structure: validate by ID
-          switch (productId) {
-            case 'P1': // Solar
-              icon = '<i class="fas fa-sun" style="margin-right: 5px;"></i>';
+          switch (value) {
+            case 'SOLAR': // Solar
+              icon = '<img src="assets/svg/sun.svg" style=" margin-right:18px; " title="Solar">';
               bgColor = '#EE5427';
               textColor = 'white';
               break;
-            case 'P2': // BESS
-              icon = '<i class="fas fa-battery-full" style="margin-right: 5px;"></i>';
+            case 'BESS': // BESS
+              icon = '<img src="assets/svg/battery.svg" style=" margin-right:18px; " title="BESS">';
               bgColor = '#57B1B1';
               textColor = 'white';
               break;
-            case 'P3': // MEM
-              icon = '<i class="fas fa-calendar-alt" style="margin-right: 5px;"></i>';
+            case 'MEM': // MEM
+              icon = '<img src="assets/svg/mem.svg" style=" margin-right:18px; " title="MEM">';
               bgColor = '#792430';
               textColor = 'white';
               break;
@@ -133,15 +116,15 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
           color: ${textColor}; 
           background-color: ${bgColor}; 
           border-radius: 16px; 
-          padding: 4px 12px; 
+          padding: 4px 18px; 
           font-weight: 500;
           display: flex;
           align-items:center;
           justify-content:center;
           width: 133px;
-          height: 35px        ">${icon}${productDescription}</span>`;
+          height: 35px        ">${icon}${value}</span>`;
       },
-      hozAlign: "center",
+      hozAlign: "left",
       headerSort: false,
       vertAlign: "middle"
     },
@@ -249,10 +232,38 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   // Action methods for the icons
   downloadPdf(row: any): void {
     console.log('Download PDF clicked for:', row);
+    this.moduleServices.downloadBilling(["pdf"],["336aa6a5-798c-4e26-957c-54129fb01b99"]).subscribe({
+      next:(doc: Blob)=>{
+        console.log(doc)
+        const url = window.URL.createObjectURL(doc);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'billing.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      },
+      error:(err)=>{
+        console.log(err)
+      }
+    })
   }
 
   downloadXml(row: any): void {
     console.log('Download XML clicked for:', row);
+    this.moduleServices.downloadBilling(["xml"],["336aa6a5-798c-4e26-957c-54129fb01b99"]).subscribe({
+      next:(doc: Blob)=>{
+        const url = window.URL.createObjectURL(doc);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'billing.xml';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      },
+      error:(err)=>{
+      }
+    })
   }
 
   viewDetails(row: any): void {

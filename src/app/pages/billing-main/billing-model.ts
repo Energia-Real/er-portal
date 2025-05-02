@@ -12,10 +12,13 @@ export interface BillingResponse {
 }
 
 export interface FilterBillingDetails {
-  client: string;
-  legal: string;
-  site: string;
-  solar: string;
+  year:number; 
+  customerName: string;
+  legalName?: string;
+  siteName?: string;
+  productType?: string;
+  page?: number;
+  pageSize?:number;
 }
 
 
@@ -228,6 +231,10 @@ export interface InvoiceResponse {
 
 export interface CurrentBillResponse {
   currentBillResponse: Bill[]
+}
+
+export interface HistoryBillResponse {
+  historyBillResponse: Bill[]
 }
 
 

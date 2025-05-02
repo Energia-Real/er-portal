@@ -6,7 +6,7 @@ import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 import { DataRespSavingDetailsList } from '../plants-main/plants-model';
-import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { GeneralFilters, GeneralPaginatedResponse, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +59,7 @@ export class BillingService implements OnDestroy {
       );
   }
 
-  getBillingHistory(
+  getPreviousBillingHistory(
     filters: any
   ): Observable<entity.DataHistoryOverviewTableMapper> {
     const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
@@ -76,6 +76,11 @@ export class BillingService implements OnDestroy {
           Mapper.getBillingHistoryMapper(response, this.formatsService)
         )
       );
+  }
+
+  getBillingHistory(filters: entity.FilterBillingDetails): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
+    const url = `${this.performanceApiUrl}/Billing/History`;
+    return this.http.post<any>(url,   filters );
   }
 
   getCurrentInvoices(    filters: GeneralFilters ): Observable<GeneralResponse<entity.CurrentBillResponse>> {
@@ -110,6 +115,15 @@ export class BillingService implements OnDestroy {
 
     return this.http.get(url, {
       params,
+      responseType: 'blob',
+    });
+  }
+
+  downloadBilling(typeFile:string[], billings:string[]): Observable<Blob> {
+    const url = `${this.performanceApiUrl}/Billing/Files`;
+    const params = {typeFile,billings}
+
+    return this.http.post(url,params, {
       responseType: 'blob',
     });
   }
