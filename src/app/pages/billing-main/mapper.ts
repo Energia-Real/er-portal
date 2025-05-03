@@ -1,5 +1,6 @@
 import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './billing-model';
+import { ChartConfiguration } from 'chart.js';
 export class Mapper {
 	static getBillingDataMapper(response: entity.DataBillingTableMapper, formatsService: FormatsService): entity.DataBillingTableMapper {
 		let dataList: entity.DataBillingTable[] = [];
@@ -77,4 +78,61 @@ export class Mapper {
 			dataPlants : dataList
 		}
 	}
+
+	static getEnergysummaryMapper(response: entity.EnergyBillingSummary, formatsService: FormatsService): ChartConfiguration<'bar' | 'line'>['data'] | any {
+
+		console.log(response);
+		
+		const monthsMap = [
+		  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+		  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+		];
+	  
+		const fullMonths = Array.from({ length: 12 }, (_, i) => {
+		  const found = response.response.energySummaryResponse.months.find(m => m.month === i + 1);
+		  return {
+			label: `${monthsMap[i]} 25`,
+			billedEnergyProduced: found ? found.billedEnergyProduced : 0,
+			billedEnergy: found ? found.billedEnergy : 0,
+		  };
+		});
+	  
+		return {
+		  labels: fullMonths.map(m => m.label),
+		  datasets: [
+			{
+			  type: 'bar',
+			  label: 'Energy Produced (kWh)',
+			  data: fullMonths.map(m => +m.billedEnergyProduced.toFixed(2)),
+			  backgroundColor: '#F97316',
+			  barPercentage: 0.8,
+			  categoryPercentage: 0.9,
+			  order: 1,
+			},
+			{
+			  type: 'bar',
+			  label: 'Energy Billed (kWh)',
+			  data: fullMonths.map(m => +m.billedEnergy.toFixed(2)),
+			  backgroundColor: '#57B1B1',
+			  barPercentage: 0.8,
+			  categoryPercentage: 0.9,
+			  order: 1,
+			},
+			{
+			  type: 'line',
+			  label: 'Trend',
+			  data: fullMonths.map(m => +((m.billedEnergyProduced + m.billedEnergy) / 2).toFixed(2)),
+			  borderColor: '#6B021A',
+			  backgroundColor: '#6B021A',
+			  tension: 0.4,
+			  pointRadius: 4,
+			  pointBackgroundColor: '#6B021A',
+			  borderWidth: 2,
+			  order: 3,
+			}
+		  ],
+		  balance: formatsService.moneyFormat(response.response.energySummaryResponse.balance),
+		};
+	  }
+	  
 }

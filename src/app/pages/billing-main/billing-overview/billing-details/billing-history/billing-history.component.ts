@@ -5,7 +5,8 @@ import * as entity from '../../../billing-model';
 @Component({
   selector: 'app-billing-history',
   templateUrl: './billing-history.component.html',
-  styleUrl: './billing-history.component.scss'
+  styleUrl: './billing-history.component.scss',
+  standalone: false
 })
 export class BillingHistoryComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -13,7 +14,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy {
   @Input() filterData!: entity.FilterBillingDetails
 
   ngOnInit(): void {
-    console.log('Billing history : filterData', this.filterData);
+    // console.log('Billing history : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {

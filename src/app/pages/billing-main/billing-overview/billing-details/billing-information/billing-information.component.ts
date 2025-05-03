@@ -5,7 +5,8 @@ import * as entity from '../../../billing-model';
 @Component({
   selector: 'app-billing-information',
   templateUrl: './billing-information.component.html',
-  styleUrl: './billing-information.component.scss'
+  styleUrl: './billing-information.component.scss',
+  standalone: false
 })
 export class BillingInformationComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -13,7 +14,7 @@ export class BillingInformationComponent implements OnInit, OnDestroy {
   @Input() filterData!: entity.FilterBillingDetails
 
   ngOnInit(): void {
-    console.log('Billing information : filterData', this.filterData);
+    // console.log('Billing information : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {

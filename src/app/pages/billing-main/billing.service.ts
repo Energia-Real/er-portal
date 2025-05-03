@@ -6,6 +6,7 @@ import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 import { DataRespSavingDetailsList } from '../plants-main/plants-model';
+import { ChartConfiguration } from 'chart.js';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private performanceApiUrl = environment.API_URL_PERFORMANCE;
+  private domainApiUrl = environment.API_URL_DOMAIN;
 
   constructor(
     private http: HttpClient,
@@ -76,7 +78,7 @@ export class BillingService implements OnDestroy {
         )
       );
   }
- 
+
   getBillingDetails(
     filters: any
   ): Observable<entity.DataDetailsOverviewTableMapper> {
@@ -143,6 +145,15 @@ export class BillingService implements OnDestroy {
       url,
       data
     );
+  }
+
+  getEnergysummaryOverview(filters:entity.FilterBillingEnergysummary): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
+    const url = `${this.domainApiUrl}/Billing/Energy/Summary`;
+
+    return this.http.post<entity.EnergyBillingSummary>(url, filters).pipe(
+      map((response) =>
+        Mapper.getEnergysummaryMapper(response, this.formatsService )
+      ));
   }
 
   uploadExcel(file: File): Observable<any> {

@@ -1,7 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
 import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js";
+import { Store } from '@ngrx/store';
+import { BillingService } from '@app/pages/billing-main/billing.service';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { Router } from '@angular/router';
+import { GeneralFilters } from '@app/shared/models/general-models';
+import * as entity from '../../../billing-model';
+import { start } from '@popperjs/core';
 
 Chart.register(...registerables);
 
@@ -9,9 +16,15 @@ Chart.register(...registerables);
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
+  standalone: false
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<GeneralFilters>;
+
+  @Input() filterData!: entity.FilterBillingDetails
+
 
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
 
@@ -54,13 +67,35 @@ export class OverviewComponent implements OnInit, OnDestroy {
           },
         },
         min: 0,
-        max: 250,
       },
     },
   };
 
+  generalFilters!: GeneralFilters
+  balance:string = '0.00'
+
+   constructor(
+    private store: Store<{ filters: GeneralFilters }>,
+      private moduleServices: BillingService,
+      private notificationService: OpenModalsService,
+    ) { this.generalFilters$ = this.store.select(state => state.filters)}
+
+
   ngOnInit(): void {
-    this.initiLineChartData();
+    // this.initiLineChartData();
+    this.getFilters();
+  }
+
+  getFilters() {
+    this.generalFilters$.pipe(takeUntil(this.onDestroy$)).subscribe((GeneralFilters) => {
+      const filters = {
+        startDate: GeneralFilters.startDate,
+        endDate: GeneralFilters.endDate,
+        ...this.filterData
+      };
+  
+      this.getEnergysummary(filters);
+    })
   }
 
   initiLineChartData() {
@@ -99,6 +134,23 @@ export class OverviewComponent implements OnInit, OnDestroy {
         }
       ]
     };
+  }
+
+  getEnergysummary(filters: entity.FilterBillingEnergysummary) {
+    console.log(filters);
+    
+      this.moduleServices.getEnergysummaryOverview(filters).subscribe({
+        next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
+          console.log('OVERVIEW:', response);
+          this.lineChartData = response
+          this.balance = response.balance
+          
+        },
+        error: error => {
+          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+          console.log(error);
+        }
+      });
   }
 
   ngOnDestroy(): void {

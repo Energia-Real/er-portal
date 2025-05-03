@@ -19,7 +19,8 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
 @Component({
   selector: 'app-previous-billing-v2',
   templateUrl: './previous-billing-v2.component.html',
-  styleUrl: './previous-billing-v2.component.scss'
+  styleUrl: './previous-billing-v2.component.scss',
+  standalone : false
 })
 export class PreviousBillingV2Component implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

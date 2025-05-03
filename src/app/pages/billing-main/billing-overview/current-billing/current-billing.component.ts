@@ -4,7 +4,8 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-current-billing',
   templateUrl: './current-billing.component.html',
-  styleUrl: './current-billing.component.scss'
+  styleUrl: './current-billing.component.scss',
+  standalone: false
 })
 export class CurrentBillingComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

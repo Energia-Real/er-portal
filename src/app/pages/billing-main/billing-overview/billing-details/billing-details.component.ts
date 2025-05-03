@@ -8,16 +8,17 @@ import { FilterBillingDetails } from '../../billing-model';
 @Component({
   selector: 'app-billing-details',
   templateUrl: './billing-details.component.html',
-  styleUrl: './billing-details.component.scss'
+  styleUrl: './billing-details.component.scss',
+  standalone: false
 })
 export class BillingDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   filtersForm = this.fb.group({
-    client: [''],
-    legal: [''],
-    site: [''],
-    solar: [''],
+    customerName: [''],
+    legalName: [''],
+    siteName: [''],
+    productType: [''],
   });
 
   constructor(

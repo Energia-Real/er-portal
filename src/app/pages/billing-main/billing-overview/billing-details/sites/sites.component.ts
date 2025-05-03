@@ -5,7 +5,8 @@ import * as entity from '../../../billing-model';
 @Component({
   selector: 'app-sites',
   templateUrl: './sites.component.html',
-  styleUrl: './sites.component.scss'
+  styleUrl: './sites.component.scss',
+  standalone: false
 })
 export class SitesComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -13,7 +14,7 @@ export class SitesComponent implements OnInit, OnDestroy {
   @Input() filterData!: entity.FilterBillingDetails
 
   ngOnInit(): void {
-    console.log('Sites : filterData', this.filterData);
+    // console.log('Sites : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {
