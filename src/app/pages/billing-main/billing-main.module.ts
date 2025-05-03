@@ -12,7 +12,15 @@ import { BillingRoutingModule } from './billing-routing.module';
 import { NumberFormatInputPipe } from '@app/shared/pipes/numberFormatInput.pipe';
 import { PreviousBillingComponent } from './previous-billing/previous-billing.component';
 import { BillingOverviewComponent } from './billing-overview/billing-overview.component';
-import { DetailsOverviewComponent } from './billing-overview/details-overview/details-overview.component';
+import { DetailsOverviewComponent } from './previous-billing-v2/details-overview/details-overview.component';
+import { PreviousBillingV2Component } from './previous-billing-v2/previous-billing-v2.component';
+import { CurrentBillingComponent } from './billing-overview/current-billing/current-billing.component';
+import { BillingDetailsComponent } from './billing-overview/billing-details/billing-details.component';
+import { OverviewComponent } from './billing-overview/billing-details/overview/overview.component';
+import { BillingHistoryComponent } from './billing-overview/billing-details/billing-history/billing-history.component';
+import { SitesComponent } from './billing-overview/billing-details/sites/sites.component';
+import { BillingInformationComponent } from './billing-overview/billing-details/billing-information/billing-information.component';
+import { NgChartsModule } from 'ng2-charts';
 
 
 @NgModule({
@@ -21,7 +29,14 @@ import { DetailsOverviewComponent } from './billing-overview/details-overview/de
     NumberFormatInputPipe,
     PreviousBillingComponent,
     BillingOverviewComponent,
-    DetailsOverviewComponent
+    DetailsOverviewComponent,
+    PreviousBillingV2Component,
+    CurrentBillingComponent,
+    BillingDetailsComponent,
+    OverviewComponent,
+    BillingHistoryComponent,
+    SitesComponent,
+    BillingInformationComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +48,7 @@ import { DetailsOverviewComponent } from './billing-overview/details-overview/de
     MaterialModule,
     InfoCardComponent,
     MessageNoDataComponent,
+    NgChartsModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
