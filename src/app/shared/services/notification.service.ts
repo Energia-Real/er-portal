@@ -8,7 +8,7 @@ import { map, Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class NotificationService {
-  private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
+  private API_URL_DOMAIN_BACKEND = environment.API_URL_DOMAIN_BACKEND;
   private notificationStatuses: any;
   private notificationTypes: any;
   private notificationCenterMessages: any;
@@ -21,12 +21,12 @@ export class NotificationService {
   constructor(private http: HttpClient) {}
 
   createNotification(data: NotificationServiceData): Observable<any> {
-    const url = `${this.API_URL_PERFORMANCE}/notification`;
+    const url = `${this.API_URL_DOMAIN_BACKEND}/v1/notification`;
     return this.http.post<any>(url, data);
   }
 
   updateNotification(data: EditNotificationStatus): Observable<any> {
-    const url = `${this.API_URL_PERFORMANCE}/notification`;
+    const url = `${this.API_URL_DOMAIN_BACKEND}/v1/notification`;
     return this.http.put<any>(url, data);
   }
 
@@ -37,7 +37,7 @@ export class NotificationService {
         observer.complete();
       });
     } else {
-      const url = `${this.API_URL_PERFORMANCE}/notification/status`;
+      const url = `${this.API_URL_DOMAIN_BACKEND}/v1/notification/status`;
       return this.http.get<any>(url).pipe(
         tap((data) => {
           this.notificationStatuses = data.response.notificationStatusResponse;
@@ -54,7 +54,7 @@ export class NotificationService {
         observer.complete();
       });
     } else {
-      const url = `${this.API_URL_PERFORMANCE}/notification/types`;
+      const url = `${this.API_URL_DOMAIN_BACKEND}/v1/notification/types`;
       return this.http.get<any>(url).pipe(
         tap((data) => {
           this.notificationTypes = data.response.notificationTypesResponse;
@@ -71,7 +71,7 @@ export class NotificationService {
         observer.complete();
       });
     } else {
-      const url = `${this.API_URL_PERFORMANCE}/notification/centerTexts`;
+      const url = `${this.API_URL_DOMAIN_BACKEND}/v1/notification/centerTexts`;
       return this.http.get<any>(url).pipe(
         tap((data) => {
           this.notificationCenterMessages =
@@ -83,7 +83,7 @@ export class NotificationService {
   }
 
   updateNotificationsCenter(userId: string): Observable<Notification[]> {
-    const url = `${this.API_URL_PERFORMANCE}/notification/${userId}/historial`;
+    const url = `${this.API_URL_DOMAIN_BACKEND}/v1/notification/${userId}/historial`;
     return this.http
       .get<{ response: { notificationsResponse: Notification[] } }>(url)
       .pipe(
