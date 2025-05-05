@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  API_URL_DOMAIN_BACKEND: 'er-domain-backend.azurewebsites.net/api/v1',
+  API_URL_DOMAIN_BACKEND: 'https://er-domain-backend-dev.azurewebsites.net/api',
   API_URL_PERFORMANCE: 'https://er-portal-gateway.azurewebsites.net/dev/api/v1',
   API_URL_DOMAIN: 'https://er-domain-backend-dev.azurewebsites.net/api/v1/',
   API_URL_FINANTIAL_MODEL:

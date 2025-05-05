@@ -41,6 +41,7 @@ Chart.register(...registerables);
         NgChartsModule,
         NgxSkeletonLoaderModule
     ],
+    standalone:true,
     styleUrl: './home.component.scss',
     providers: [provideNativeDateAdapter()],
     encapsulation: ViewEncapsulation.None

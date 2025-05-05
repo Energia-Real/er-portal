@@ -141,6 +141,16 @@ export interface GeneralResponse<T> {
   }
 }
 
+export interface GeneralPaginatedResponse<T> {
+  pageSize: number,
+  page: number,
+  totalItems: number, 
+  data:[T]
+  errors: {
+    errors: ErrorRequest[]
+  }
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   response: T;

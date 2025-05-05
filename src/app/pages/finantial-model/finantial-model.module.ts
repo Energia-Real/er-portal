@@ -6,7 +6,7 @@ import { FinantialModelLayoutComponent } from './finantial-model-layout/finantia
 import { FinantialStepperComponent } from './finantial-stepper/finantial-stepper.component';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { MessageNoDataComponent } from "../../shared/components/message-no-data/message-no-data.component";
-
+import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { MessageNoDataComponent } from "../../shared/components/message-no-data/
     CommonModule,
     FinantialModelRoutingModule,
     MaterialModule,
-    MessageNoDataComponent
+    MessageNoDataComponent,
+    SharedComponensModule
 ]
 })
 export class FinantialModelModule { }

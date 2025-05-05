@@ -48,8 +48,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
         pendo.initialize({
           visitor: {
             id: this.userInfo.email,
-            //firstName: this.userInfo.persona.nombres,
-            //lastName: this.userInfo.persona.apellidos
+            firstName: this.userInfo.persona.nombres,
+            lastName: this.userInfo.persona.apellidos
           }
         });
       } else {

@@ -1,3 +1,5 @@
+import { DataCatalogs } from "@app/shared/models/catalogs-models";
+
 export interface DataTableBillingResponse {
   response: BillingResponse;
   errors: any[];
@@ -12,10 +14,13 @@ export interface BillingResponse {
 }
 
 export interface FilterBillingDetails {
-  client: string;
-  legal: string;
-  site: string;
-  solar: string;
+  year:number; 
+  customerName: string;
+  legalName?: string;
+  siteName?: string;
+  productType?: string;
+  page?: number;
+  pageSize?:number;
 }
 
 export interface FilterBillingEnergysummary {
@@ -248,6 +253,33 @@ export interface InvoiceResponse {
   success: boolean;
   response: InvoiceDetails;
   errors: string[];
+}
+
+
+export interface CurrentBillResponse {
+  currentBillResponse: Bill[]
+}
+
+export interface HistoryBillResponse {
+  historyBillResponse: Bill[]
+}
+
+export interface catalogResponseList {
+  catalogResponseList: DataCatalogs[]
+}
+
+
+
+
+
+export interface Bill{
+  amount:     number; 
+  billingId:  string; 
+  legalName:  string; 
+  month:      number; 
+  product:    string; 
+  status:     string; 
+  year:       number;
 }
 
 interface InvoiceDetails {
