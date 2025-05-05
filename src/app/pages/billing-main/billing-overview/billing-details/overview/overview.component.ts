@@ -9,6 +9,7 @@ Chart.register(...registerables);
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
+  standalone: false
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -82,15 +83,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
           },
           stepSize: 25,
         },
-        min: 0, 
-        max: 250, 
+        min: 0,
+        max: 250,
         stacked: false,
         grid: {
-          color: '#E5E7EB', 
+          color: '#E5E7EB',
         },
       },
     },
-    backgroundColor: 'rgba(242, 46, 46, 1)', 
+    backgroundColor: 'rgba(242, 46, 46, 1)',
   };
 
   ngOnInit(): void {
@@ -102,9 +103,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
       labels: ['Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'May 25', 'Jun 25', 'Jul 25', 'Aug 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dec 25'],
       datasets: [
         {
-          data: [100, 125, 150, 175, 135, 120, 150, 120, 150, 175, 150, 125], 
+          data: [100, 125, 150, 175, 135, 120, 150, 120, 150, 175, 150, 125],
           label: 'Energy Production',
-          backgroundColor: '#F97316', 
+          backgroundColor: '#F97316',
         },
         {
           data: [90, 115, 140, 165, 190, 120, 120, 150, 120, 165, 140, 115],
