@@ -1,7 +1,7 @@
 <div class="c-main c-plant-details">
   <div class="plant-header grid grid-cols-3 gap-x-6 gap-y-4 md:gap-5">
     <div class="col-span-1 appreturn">
-      <app-return-bar class="app-return" [route]="'/er/plants'"></app-return-bar>
+      <app-return-bar class="app-return"></app-return-bar>
 
       <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
         <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>
@@ -13,7 +13,7 @@
       <div class="c-information">
         <div *ngIf="!isLoadingWD else loadingSkeletonTwo">
           <div class="content" *ngIf="weatherData else notDataTable">
-            <p>{{weatherData?.temperature | number:'1.1-1'}}</p>
+            <p>{{weatherData?.temperature | number:'1.1-1'}}°C </p>
             <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
           </div>
           <div class="linea"></div>
@@ -31,7 +31,7 @@
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>System size</p>
-            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData?.systemSize }} kW</span>
+            <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData.systemSize }} KWp</span>
           </div>
           <div class="linea"></div>
         </div>
@@ -39,7 +39,7 @@
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>AC capacity</p>
-            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData?.nominalPowerAC }} kW</span>
+            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData.nominalPowerAC }} kW</span> 
           </div>
           <div class="linea"></div>
         </div>
@@ -48,7 +48,7 @@
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>Status</p>
             <mat-icon *ngIf="plantData?.assetStatusIcon else notDataTable" [matTooltip]="plantData.descriptionStatus">{{
-              plantData?.assetStatusIcon }} </mat-icon>
+              plantData.assetStatusIcon }} </mat-icon>
           </div>
           <div class="linea"></div>
         </div>

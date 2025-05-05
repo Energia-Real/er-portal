@@ -28,6 +28,35 @@ export class FormatsService {
     } else return '';
   }
 
+  energyFormatGWh(content: string | number): string {
+    if (!content) return ''
+  
+    let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
+    if (!isNaN(numberValue)) {
+      const gwhValue = numberValue / 1_000_000;
+  
+      return gwhValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' GWh';
+    } else return '';
+  }
+  
+  energyFormatMWh(content: string | number): string {
+    if (!content) return '';
+  
+    let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
+    if (!isNaN(numberValue)) {
+      const mwhValue = numberValue / 1_000; 
+  
+      return mwhValue.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }) + ' MWh';
+    } else return '';
+  }
+  
+
   energyWithDecimals(content: string | number, formattedKwh?: boolean): string {
     let numberValue = typeof content == 'string' ? parseFloat(content.replace(/,/g, '')) : content;
 

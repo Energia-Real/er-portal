@@ -9,16 +9,17 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { PlantsService } from '@app/pages/plants-main/plants.service';
 
 @Component({
-  selector: 'app-info-card',
-  templateUrl: './info-card.component.html',
-  styleUrls: ['./info-card.component.scss'],
-  standalone: true,
-  imports: [
-    MaterialModule,
-    CommonModule,
-    FormsModule,
-    MessageNoDataComponent,
-  ]
+    selector: 'app-info-card',
+    templateUrl: './info-card.component.html',
+    styleUrls: ['./info-card.component.scss'],
+    imports: [
+        MaterialModule,
+        CommonModule,
+        FormsModule,
+        MessageNoDataComponent,
+    ],
+    standalone: true
+
 })
 export class InfoCardComponent {
   @Input() tapName: string = '';

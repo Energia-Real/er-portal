@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ResetPasswordComponent } from './reset-password.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
@@ -8,9 +9,10 @@ describe('ResetPasswordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ResetPasswordComponent],
-      imports:[HttpClientTestingModule]
-    })
+    declarations: [ResetPasswordComponent],
+    imports: [],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
     .compileComponents();
     
     fixture = TestBed.createComponent(ResetPasswordComponent);

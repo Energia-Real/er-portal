@@ -22,9 +22,10 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-previous-billing',
-  templateUrl: './previous-billing.component.html',
-  styleUrl: './previous-billing.component.scss'
+    selector: 'app-previous-billing',
+    templateUrl: './previous-billing.component.html',
+    styleUrl: './previous-billing.component.scss',
+    standalone: false
 })
 export class PreviousBillingComponent implements OnDestroy, OnInit, AfterViewChecked, AfterViewInit {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;

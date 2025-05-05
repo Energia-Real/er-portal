@@ -34,12 +34,12 @@
     color: #000000D9;
   }
 
-  h2 {
+  h2, .apply {
     color: #EE6A0A;
     margin: 0;
     font-size: 14px;
     font-weight: 500;
-    cursor: pointer;
+    // cursor: pointer;
     margin-right: 25px;
   }
 }
@@ -100,8 +100,8 @@
   }
 
   .mat-mdc-menu-item {
-    min-height: unset!important;
-    height: 35px!important;
+    min-height: unset !important;
+    height: 35px !important;
 
   }
 
@@ -144,7 +144,6 @@ button.mat-menu-item.selected {
 
     p {
       margin-bottom: 0;
-      cursor: pointer;
     }
 
     .default-year {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,35 +21,29 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from './shared/material/paginator-intl';
 
-@NgModule({
-  declarations: [ AppComponent ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    GoogleMapsModule,
-    CoreModule,
-    CarouselModule,
-    StoreModule.forRoot({ paginator: paginatorReducer , drawer: drawerReducer, filters:filterReducer, notifications:notificationsReducer,  corporateDrawer: corporateDrawerReducer}),
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoadingInterceptor,
-      multi: true
-    },
-    { 
-      provide: MatPaginatorIntl, 
-      useValue: getPaginatorIntl() 
-    },
-    provideAnimationsAsync(),
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [AppComponent],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        GoogleMapsModule,
+        CoreModule,
+        CarouselModule,
+        StoreModule.forRoot({ paginator: paginatorReducer, drawer: drawerReducer, filters: filterReducer, notifications: notificationsReducer, corporateDrawer: corporateDrawerReducer }),
+        !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : []], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoadingInterceptor,
+            multi: true
+        },
+        {
+            provide: MatPaginatorIntl,
+            useValue: getPaginatorIntl()
+        },
+        provideAnimationsAsync(),
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }

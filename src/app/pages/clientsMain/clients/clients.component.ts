@@ -16,9 +16,10 @@ import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { DrawerGeneral } from '@app/shared/models/general-models';
 
 @Component({
-  selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  styleUrl: './clients.component.scss'
+    selector: 'app-clients',
+    templateUrl: './clients.component.html',
+    styleUrl: './clients.component.scss',
+    standalone: false
 })
 export class ClientsComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
@@ -69,9 +70,7 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     ])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(([pageSize, pageIndex]) => {
-        const hasPaginationChanged = this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1;
-
-        if (hasPaginationChanged) {
+        if (this.pageSize !== pageSize || this.pageIndex !== pageIndex + 1) {
           this.pageSize = pageSize;
           this.pageIndex = pageIndex + 1;
 
@@ -170,7 +169,6 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
 
     if (this.paginator) {
       this.paginator.pageSize = newSize;
-      this.paginator._changePageSize(newSize);
     }
 
     this.getClients();

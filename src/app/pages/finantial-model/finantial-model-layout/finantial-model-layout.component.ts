@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FinantialStepperComponent } from '../finantial-stepper/finantial-stepper.component';
 import { FinantialDataModelStepper } from '../finantial-model-model';
@@ -10,13 +10,23 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { Subject } from 'rxjs';
+import { Tabulator } from 'tabulator-tables';
+
+
+
 
 @Component({
-  selector: 'app-finantial-model-layout',
-  templateUrl: './finantial-model-layout.component.html',
-  styleUrl: './finantial-model-layout.component.scss'
+    selector: 'app-finantial-model-layout',
+    templateUrl: './finantial-model-layout.component.html',
+    styleUrl: './finantial-model-layout.component.scss',
+    standalone: false
 })
-export class FinantialModelLayoutComponent implements OnInit, OnDestroy {
+export class FinantialModelLayoutComponent implements OnInit, OnDestroy,AfterViewInit {
+
+  exTable: any;
+  filterParam: string = '';
+
+
   private onDestroy$ = new Subject<void>();
   @ViewChild('fileInput') fileInput!: ElementRef;
   selectedFile: File | null = null;
@@ -44,7 +54,12 @@ export class FinantialModelLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+   
+
   }
+  ngAfterViewInit() {
+  }
+
   openFileSelector() {
     this.fileInput.nativeElement.value = '';
     this.fileInput.nativeElement.click();

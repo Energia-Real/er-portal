@@ -17,13 +17,18 @@ export class Mapper {
 			dataList.push({
 				plantId: data?.plantId || '',
 				siteName: data?.siteName || '',
-				solarCoverage: data?.solarCoverage || 0,
-				co2Saving: formatsService.energyFormat(data?.co2Saving),
-				energyConsumption: formatsService.energyFormat(data?.energyConsumption),
-				energyProduction: formatsService.energyFormat(data?.energyProduction),
+				solarCoverage: data?.solarCoverage,
+				energyConsumption : data.energyConsumption.toString(),
+				energyProduction : data.energyProduction.toString(),
+				energyConsumptionFormat : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
+				energyProductionFormat : `${data.energyProduction} ${data.energyProductionMeasure}`,
+				co2Saving : data.co2Saving,
 				siteStatus: data?.siteStatus
 			});
 		});
+
+		console.log(dataList);
+		
 
 		return {
 			data: dataList,
@@ -62,7 +67,6 @@ export class Mapper {
 	}
 
 	static getCo2SavingMapper(response: entity.Co2Saving, formatsService: FormatsService): entity.Co2SavingResponse {
-
 		return {
 			co2_saving_tCO2: formatsService.energyFormat(response?.response?.co2_saving_tCO2),
 			tree_equivalent: formatsService.energyFormat(response?.response?.tree_equivalent),
@@ -71,6 +75,10 @@ export class Mapper {
 	}
 
 	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse, formatsService: FormatsService): entity.SDResponse {
-		return response.response
+		return {
+			...response.response,
+			totalEnergyConsumption: `${response?.response?.totalEnergyConsumption} ${response?.response?.energyConsumptionMeasure}`,
+			totalEnergyProduction: `${response?.response?.totalEnergyProduction} ${response?.response?.energyProductionMeasure}`,
+		}
 	}
 }

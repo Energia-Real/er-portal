@@ -5,9 +5,10 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-terms-service',
-  templateUrl: './terms-service.component.html',
-  styleUrl: './terms-service.component.scss'
+    selector: 'app-terms-service',
+    templateUrl: './terms-service.component.html',
+    styleUrl: './terms-service.component.scss',
+    standalone: false
 })
 export class TermsServiceComponent implements OnDestroy  {
 

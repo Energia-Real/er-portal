@@ -78,7 +78,7 @@ export class PlantsService implements OnDestroy {
 
     return this.http
       .post<any>(url, filters)
-      .pipe(map((response) => Mapper.getSitePerformanceMapper(response)));
+      .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService)));
   }
 
   getSitePerformanceDetails(
@@ -91,7 +91,7 @@ export class PlantsService implements OnDestroy {
       .set('endDate', filters.endDate!);
     return this.http
       .get<any>(url, { params })
-      .pipe(map((response) => Mapper.getSitePerformanceMapper(response)));
+      .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService)));
   }
 
   /* getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {

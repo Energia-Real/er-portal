@@ -12,9 +12,10 @@ declare const pendo: any;
 
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss',
+    standalone: false
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -47,8 +48,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
         pendo.initialize({
           visitor: {
             id: this.userInfo.email,
-            //firstName: this.userInfo.persona.nombres,
-            //lastName: this.userInfo.persona.apellidos
+            firstName: this.userInfo.persona.nombres,
+            lastName: this.userInfo.persona.apellidos
           }
         });
       } else {

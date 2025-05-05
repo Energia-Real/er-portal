@@ -1,56 +1,55 @@
-<div class="c-clients fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-2/6 
-  c-modal-lateral create-asset-main-container flex flex-col " [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
+<div class="c-clients c-modal-lateral fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
+  c-modal-lateral-padd" [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
     <div class="flex justify-between">
-        <div class=" w-auto client-title   ">
+        <div class=" w-auto client-title">
             CUSTOMER NAME: {{clientName}}
-            
-         </div>
-         
-         <button>
-            <mat-icon  (click)="closeDrawer()" fontIcon="close"></mat-icon>
-         </button>
+
+        </div>
+
+        <button>
+            <mat-icon (click)="closeDrawer()" fontIcon="close"></mat-icon>
+        </button>
     </div>
     <div class="header-message mt-6">
         Below are the plants related to each corporate name. Select one to view more details.
     </div>
 
+    <div class="main-container-corp mt-6  overflow-auto " *ngIf="corporateData!=null">
+        <div *ngFor="let corporate of corporateData.data">
+            <div class="w-100">
+                <mat-divider></mat-divider>
+            </div>
 
-    <div class="main-container-corp mt-6  overflow-auto "  *ngIf="corporateData!=null">
-      <div *ngFor="let corporate of corporateData.data" >
-        <div class="w-100">
-            <mat-divider></mat-divider>
-        </div>
-
-       <div class="px-5">
-        <div class="flex justify-between">
-            <h2 class="corporate-title "> {{corporate.corporateName}}</h2>
-            <button class=" w-auto ">
-                <mat-icon  (click)="changeEditMode(corporate)" fontIcon="edit"></mat-icon>
-             </button>
-        </div>
+            <div class="px-5">
+                <div class="flex justify-between">
+                    <h2 class="corporate-title "> {{corporate.corporateName}}</h2>
+                    <button class=" w-auto ">
+                        <mat-icon (click)="changeEditMode(corporate)" fontIcon="edit"></mat-icon>
+                    </button>
+                </div>
 
 
-        <p>Associated plants</p>
+                <p>Associated plants</p>
 
-        <div class="w-90">
-            <mat-divider></mat-divider>
-        </div>
+                <div class="w-90">
+                    <mat-divider></mat-divider>
+                </div>
 
-        <div *ngIf="corporate.plants.length>0">
-            <div *ngFor="let plant of corporate.plants" class="mx-7 flex">
-                <div class="plant-title">
-                    {{plant.plantName}}
+                <div *ngIf="corporate.plants.length>0">
+                    <div *ngFor="let plant of corporate.plants" class="mx-7 flex">
+                        <div class="plant-title">
+                            {{plant.plantName}}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-       </div>
 
-      </div>
-      
+        </div>
+
     </div>
 
     <div class="flex justify-end">
-        <button class="btn-cancel btn-corporate-name  flex" (click)="changeEditMode(null)" >
+        <button class="btn-cancel btn-corporate-name  flex" (click)="changeEditMode(null)">
             <mat-icon fontIcon="add"></mat-icon>
             Add Corporate Name
         </button>

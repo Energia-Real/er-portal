@@ -14,16 +14,6 @@ export class Mapper {
 		});
 
 		primaryElements.push({
-			title: 'System size',
-			description: formatsService.energyFormat(response.systemSize) + ' kWh'
-		});
-
-		primaryElements.push({
-			title: 'Panels',
-			description: formatsService.energyFormat(response.panels)
-		});
-
-		primaryElements.push({
 			title: 'PPA Duration',
 			description: formatsService.formatContractDuration(response.contractDuration)
 		});
@@ -34,23 +24,18 @@ export class Mapper {
 		});
 
 		additionalItems.push({
-			title: 'Age of the site',
+			title: 'Asset age (years)',
 			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
 		});
 
 		additionalItems.push({
-			title: 'Install date',
+			title: 'Instalation date',
 			description: formatsService.dateFormat(response.installDate)
 		});
 
 		additionalItems.push({
-			title: 'COD',
+			title: 'Commercial Operation Date (COD)',
 			description: formatsService.dateFormat(response.cod)
-		});
-
-		additionalItems.push({
-			title: 'Commission date',
-			description: formatsService.dateFormat(response.commissionDate)
 		});
 
 		return {
@@ -249,6 +234,12 @@ export class Mapper {
 			description: `$${response.savings}`,
 			icon: '../../../../../assets/icons/saving.png'
 		});
+	
+		additionalItems.push({
+			title: 'Savings percentage',
+			description: `${response.savingsPercentage}%`,
+			icon: '../../../../../assets/icons/saving.png'
+		});
 
 		return {
 			primaryElements,
@@ -256,23 +247,21 @@ export class Mapper {
 		}
 	}
 
-	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>): entity.DataResponseArraysMapper | null {
+	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>, formatsService: FormatsService): entity.DataResponseArraysMapper | null {
 		if (!response.success) return null
 
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 		const monthlyData: entity.MonthlyDataPerformance[] = response.response.monthlyDataResponse;
 
-		
-
 		primaryElements.push({
 			title: 'System generation',
-			description: `${response.response.systemGeneration} kWh`,
+			description : `${response.response.systemGeneration ?? "0.00"} ${response.response?.systemGenerationMeasure}`,
 		});
 
 		primaryElements.push({
 			title: 'Total consumption',
-			description: `${response.response.totalConsumption} kWh`,
+			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
 		additionalItems.push({
@@ -283,18 +272,18 @@ export class Mapper {
 
 		additionalItems.push({
 			title: 'CFE network consumption',
-			description: `${response.response.cfeNetworkConsumption?? "0.00"} kWh`,
+			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
 			extra:'-4% compared to the previous month'
 		});
 
 		additionalItems.push({
 			title: 'Solar coverage',
-			description: `${response.response.solarCoverage} kWh`,
+			description: `${response.response.solarCoverage}%`,
 		});
 
 		additionalItems.push({
 			title: 'Performance',
-			description: `${response.response.performance} kWh`,
+			description: `${response.response.performance}%`,
 		});
 
 		return {

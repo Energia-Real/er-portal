@@ -7,28 +7,28 @@
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-saving">
                 <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalEnergyConsumption else notDataTable"> {{
-                        savingsDetails.totalEnergyConsumption }} <br> <span>kWh</span> </h2>
+                        savingsDetails.totalEnergyConsumption }} <br> </h2>
                     <p>Total Energy <br> Consumption</p>
                     <div class="linea"></div>
                 </div>
                 <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalEnergyProduction else notDataTable"> {{
-                        savingsDetails.totalEnergyProduction }} <br> <span>kWh</span></h2>
+                        savingsDetails.totalEnergyProduction }} <br></h2>
                     <p>Total Energy <br> Production</p>
                     <div class="linea"></div>
                 </div>
                 <div *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <div>
                         <h2 class="mb-2" *ngIf="savingsDetails?.cfeCostWithoutSolar else notDataTable">
-                            ${{ savingsDetails.cfeCostWithoutSolar }} <br>
+                            ${{ savingsDetails.cfeCostWithoutSolar }} 
                         </h2>
-                        <p>CFE Cost without Solar</p>
+                        <p>CFE Cost <br> without  Solar</p>
                         <div class="linea"></div>
                     </div>
                 </div>
                 <div class="total-saving" *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
-                        ${{ savingsDetails.totalSavings }} <br>
+                        ${{ savingsDetails.totalSavings }} 
                     </h2>
                     <p>Total Savings </p>
                 </div>
@@ -56,7 +56,7 @@
                         <h1 *ngIf="isLoadingCO2Widget">Calculating saved CO2 emissions...</h1>
 
                         <div *ngIf="!isLoadingCO2Widget else loadingSkeleton">
-                            <h2 *ngIf="co2Saving else notDataTable">{{co2Saving?.co2_saving_tCO2}}</h2>
+                            <h2 *ngIf="co2Saving else notDataTable">{{co2Saving.co2_saving_tCO2 || ''}}</h2>
                             <h3 *ngIf="co2Saving"> tCO2</h3>
                         </div>
                     </div>
@@ -64,12 +64,13 @@
                     <div class="title-right" *ngIf="!isLoadingCO2Widget else loadingSkeleton">
                         <div class="left" *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving.tree_equivalent || ''}} trees</h2>
                         </div>
 
                         <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/eletric.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br>
+                            <h2 class="text-base font-normal">Equivalent to {{ co2Saving.ev_charges_equivalent || '' }}
+                                <br>
                                 electric car full charges.</h2>
                         </div>
                     </div>
@@ -138,11 +139,11 @@
                         </div>
                     </div>
                     <div class="labels">
-                        <div>+6000 kW</div>
-                        <div>4500 kW</div>
-                        <div>3000 kW</div>
-                        <div>1500 kW</div>
-                        <div>0 kW</div>
+                        <div>6 MWp</div>
+                        <div>4.5 MWp</div>
+                        <div>3 MWp</div>
+                        <div>1.5 MWp</div>
+                        <div>0 MWp</div>
                     </div>
                 </div>
             </div>
@@ -196,8 +197,7 @@
                                 <p class="target">Energy Production</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProduction }}
-                                    kWh
+                                <div *ngIf="element?.energyProduction else notDataTable"> {{ element.energyProductionFormat }}
                                 </div>
                             </td>
                         </ng-container>
@@ -207,8 +207,8 @@
                                 <p class="target">Energy Consumption</p>
                             </th>
                             <td mat-cell *matCellDef="let element">
-                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumption
-                                    }} kWh
+                                <div *ngIf="element?.energyConsumption else notDataTable"> {{ element.energyConsumptionFormat
+                                    }} 
                                 </div>
                             </td>
                         </ng-container>

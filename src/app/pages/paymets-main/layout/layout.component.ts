@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 
 @Component({
-  templateUrl: './layout.component.html'
+    templateUrl: './layout.component.html',
+    standalone: false
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

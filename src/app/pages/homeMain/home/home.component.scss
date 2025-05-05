@@ -54,16 +54,11 @@
       :nth-child(3),
       :nth-child(4) {
         h2 {
-          margin-bottom: 32px !important;
+          // margin-bottom: 32px !important;
         }
       }
 
       .total-saving {
-
-        h1,
-        p {
-          color: #57B1B1 !important;
-        }
       }
 
       >div {
@@ -76,14 +71,14 @@
           margin-bottom: 10px !important;
 
           span {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
           }
         }
 
         p {
           margin-top: 8px;
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 500;
           line-height: 14px;
         }

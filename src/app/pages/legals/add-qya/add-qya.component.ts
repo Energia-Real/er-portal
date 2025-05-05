@@ -11,9 +11,10 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
-  selector: 'app-add-qya',
-  templateUrl: './add-qya.component.html',
-  styleUrl: './add-qya.component.scss'
+    selector: 'app-add-qya',
+    templateUrl: './add-qya.component.html',
+    styleUrl: './add-qya.component.scss',
+    standalone: false
 })
 export class AddQyaComponent implements OnInit {
 

@@ -11,9 +11,10 @@ import * as entity from '../../billing-model';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 
 @Component({
-  selector: 'app-details-overview',
-  templateUrl: './details-overview.component.html',
-  styleUrl: './details-overview.component.scss'
+    selector: 'app-details-overview',
+    templateUrl: './details-overview.component.html',
+    styleUrl: './details-overview.component.scss',
+    standalone: false
 })
 export class DetailsOverviewComponent {
   private onDestroy$ = new Subject<void>();

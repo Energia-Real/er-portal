@@ -19,6 +19,10 @@
     color: #57B1B1;
 }
 
+.color-disabled {
+    color: #BDBDBD !important;
+}
+
 // INPUTS 
 .input-search {
     position: absolute;
@@ -32,7 +36,7 @@
 
 .mat-cell {
     h5 {
-        margin-top: 20px!important;
+        margin-top: 20px !important;
     }
 }
 
@@ -127,10 +131,49 @@
 .select-ER {
     width: 100% !important;
 
+    ::ng-deep {
+        .mat-form-field-label {
+            color: black !important;
+        }
+    }
+
     .mat-mdc-text-field-wrapper {
         padding: 0 !important;
         border: none !important;
     }
+
+    .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+    }
+
+    .mat-mdc-text-field-wrapper {
+        border-radius: 24px;
+        border: 1px solid #9E9E9E;
+        height: 38px;
+        margin-left: 16px;
+        font-weight: bold;
+        color: black;
+
+        span {
+            font-size: 12px;
+            font-weight: bold;
+        }
+    }
+
+    .mat-mdc-select-trigger {
+        justify-content: center;
+    }
+
+    .mat-mdc-select-value {
+        width: auto;
+        margin-right: 11px;
+    }
+
+    mat-icon {
+        z-index: 1;
+        margin-left: 0 !important;
+    }
+
 }
 
 
@@ -210,12 +253,20 @@
     font-size: 24px !important;
     font-weight: 700 !important;
     color: #EE5427 !important;
+    margin: 0 !important;
 }
 
 .label-500-24 {
     font-size: 24px !important;
     font-weight: 500 !important;
     color: #EE5427 !important;
+    margin: 0 !important
+}
+
+.title-icon-info {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
 .select-years {
@@ -502,7 +553,7 @@ select:focus {
     min-width: 120px;
     justify-content: center;
     display: flex;
-    align-items: center   ;    
+    align-items: center;
     color: #EE6A0A !important;
     border-radius: 24px;
     padding: 5px 15px !important;
@@ -553,7 +604,7 @@ select:focus {
 }
 
 .btn-width-large {
-    width: 210px!important;
+    width: 210px !important;
 }
 
 .btn-action-add {
@@ -590,19 +641,22 @@ select:focus {
         width: 20px;
         height: 20px;
     }
-    
+
 }
+
 .btn-action-add:disabled {
-    background-color: #d1d5db !important; /* Gris claro */
+    background-color: #d1d5db !important;
+    /* Gris claro */
     cursor: not-allowed;
     opacity: 0.6;
-  }
+}
 
 .btn-cancel:disabled {
-    background-color: #d1d5db !important; /* Gris claro */
+    background-color: #d1d5db !important;
+    /* Gris claro */
     cursor: not-allowed;
     opacity: 0.6;
-  }
+}
 
 .btn-upload:hover,
 .btn-action-add:hover,
@@ -622,20 +676,40 @@ select:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-  
+
     span,
     i {
         margin-right: 10px;
         font-size: 24px;
         color: #EE6A0A;
     }
-  }
+}
 
-  
+.btn-show-all-gray {
+    height: 44px;
+    width: 130px;
+    border-radius: 24px;
+    color: #D1D1D1;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FCFCFC;
+
+    span,
+    i {
+        margin-right: 10px;
+        font-size: 24px;
+        color: #D1D1D1;
+    }
+}
+
+
 .filter-selected {
     border: 1px solid #EE6A0A;
-  }
-  
+}
+
 .btn-action-cancel {
     background: #a7a7a7 !important;
     color: white !important;
@@ -781,6 +855,7 @@ select:focus {
         i {
             color: #f56e46 !important;
         }
+
         span {
             font-size: 24px;
             margin-bottom: 5px;
@@ -790,13 +865,13 @@ select:focus {
     .btn-action-clean {
         background: none;
         border: none;
-        color: #EE6A0A!important;
+        color: #EE6A0A !important;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
         height: 42.6px;
-    } 
+    }
 
 
     // .primary-button {
@@ -810,6 +885,30 @@ select:focus {
     //     background-color: #FCFCFC !important;
     //     border: none !important;
     // }
+}
+
+.card-balance {
+    width: 235px;
+    height: 85px;
+    border-radius: 24px;
+     border: 1px solid #D2D2D2;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     h1 {
+        font-weight: 500;
+        font-size: 12px;
+        margin-bottom: 8px;
+        line-height: 15px;
+     }
+
+     h2 {
+        font-weight: 500;
+        font-size: 24px;
+        margin-bottom: 0px;
+     }
+
 }
 
 .c-card-info-main {
@@ -929,8 +1028,8 @@ select:focus {
     border-radius: 12px;
 }
 
- .mat-mdc-menu-content{
-    overflow: hidden!important;
+.mat-mdc-menu-content {
+    overflow: hidden !important;
 }
 
 .content-elements {
@@ -940,8 +1039,9 @@ select:focus {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px ;
-        h1{
+        margin-bottom: 15px;
+
+        h1 {
             margin: 0;
         }
 
@@ -1039,6 +1139,38 @@ select:focus {
     }
 }
 
+.card-content-section {
+    border: 2px solid #E5E7EB;
+    border-radius: 20px;
+    padding: 20px 24px 20px 24px !important;
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        >h1 {
+            color: #EE5427;
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            line-height: 24px !important;
+            margin: 0;
+        }
+
+        >span {
+            color: #EE6A0A;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 16px;
+            float: right;
+        }
+    }
+
+    .section-untitled {
+        justify-content: end !important;
+    }
+}
+
 .c-solar-co2 {
     display: flex;
     gap: 24px;
@@ -1083,9 +1215,11 @@ select:focus {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding-top: 35px;
 
             .title-left {
                 margin-right: 10px;
+                margin-bottom: 15px;
 
                 h1 {
                     font-size: 16px;
@@ -1141,4 +1275,11 @@ select:focus {
 
         }
     }
+}
+
+.section-title {
+    color: #EE5427;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    line-height: 24px !important;
 }

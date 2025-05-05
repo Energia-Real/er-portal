@@ -6,9 +6,10 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-forgot-password',
-  templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.scss'
+    selector: 'app-forgot-password',
+    templateUrl: './forgot-password.component.html',
+    styleUrl: './forgot-password.component.scss',
+    standalone: false
 })
 export class ForgotPasswordComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();

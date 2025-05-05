@@ -1,0 +1,15 @@
+<div class="c-billing-overview card-content-section">
+    <div class="section-header">
+        <h1>Current Billing</h1>
+        <div class="section-header section-untitled" (click)="descargarTabla('csv')">
+            <span>
+                Download all CSV
+            </span> 
+        </div>
+    </div>
+   
+    
+    <div class="table-container" *ngIf="bills">
+        <app-tabulator-table [data]="bills" [columns]="columns" [height]="280"></app-tabulator-table>
+    </div>
+</div>

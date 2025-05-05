@@ -22,15 +22,15 @@
         <img class="animate-durations"
           [ngClass]="{'animate__animated animate__fadeInBottomLeft': isSidebarHovered && !keepOpen}"
           src="../../../../assets/icons/user-profile-icon.svg" alt="User">
-        <p class="animate-durations"
+        <p class="animate-durations" 
           [ngClass]="{'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen}"
           *ngIf="isSidebarHovered || keepOpen">
-          <span> {{ userInfo?.persona?.nombres || 'USER' }} {{ userInfo?.persona?.apellidos || '' }}</span>
+          <span *ngIf="userInfo?.persona"> {{ userInfo.persona.nombres || 'USER' }} {{ userInfo.persona.apellidos || '' }}</span>
         </p>
       </div>
 
       <div class="linea"></div>
-
+ 
       <ul class="flex flex-col titles-header">
         <li *ngFor="let module of modules" class="animate-durations"
           [ngClass]="{'p-0': isSidebarHovered || keepOpen, 'menu-selected': routeActive.includes(module.routePath), 'ps-2': isSidebarHovered || keepOpen}">

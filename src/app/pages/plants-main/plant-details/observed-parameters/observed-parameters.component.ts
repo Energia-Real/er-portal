@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-observed-parameters',
-  templateUrl: './observed-parameters.component.html',
-  styleUrl: './observed-parameters.component.scss'
+    selector: 'app-observed-parameters',
+    templateUrl: './observed-parameters.component.html',
+    styleUrl: './observed-parameters.component.scss',
+    standalone: false
 })
 export class ObservedParametersComponent {
   private onDestroy$ = new Subject<void>();

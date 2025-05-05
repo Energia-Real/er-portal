@@ -3,9 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-modal-export-data',
-  templateUrl: './modal-export-data.component.html',
-  styleUrl: './modal-export-data.component.scss'
+    selector: 'app-modal-export-data',
+    templateUrl: './modal-export-data.component.html',
+    styleUrl: './modal-export-data.component.scss',
+    standalone: false
 })
 export class ModalExportDataComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();

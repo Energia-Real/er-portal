@@ -14,9 +14,10 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
 import { EditCorporateNameComponent } from '../edit-corporate-name/edit-corporate-name.component';
 
 @Component({
-  selector: 'app-corporate-names',
-  templateUrl: './corporate-names.component.html',
-  styleUrl: './corporate-names.component.scss'
+    selector: 'app-corporate-names',
+    templateUrl: './corporate-names.component.html',
+    styleUrl: './corporate-names.component.scss',
+    standalone: false
 })
 export class CorporateNamesComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;

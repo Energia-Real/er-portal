@@ -13,9 +13,10 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-plants',
-  templateUrl: './plants.component.html',
-  styleUrl: './plants.component.scss'
+    selector: 'app-plants',
+    templateUrl: './plants.component.html',
+    styleUrl: './plants.component.scss',
+    standalone: false
 })
 export class PlantsComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
