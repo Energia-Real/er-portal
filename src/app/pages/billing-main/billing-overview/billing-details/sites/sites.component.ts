@@ -5,7 +5,8 @@ import * as entity from '../../../billing-model';
 @Component({
   selector: 'app-sites',
   templateUrl: './sites.component.html',
-  styleUrl: './sites.component.scss'
+  styleUrl: './sites.component.scss',
+  standalone: false
 })
 export class SitesComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

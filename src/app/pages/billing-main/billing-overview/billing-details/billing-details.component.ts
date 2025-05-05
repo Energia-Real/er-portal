@@ -11,7 +11,8 @@ import { DataCatalogs } from '@app/shared/models/catalogs-models';
 @Component({
   selector: 'app-billing-details',
   templateUrl: './billing-details.component.html',
-  styleUrl: './billing-details.component.scss'
+  styleUrl: './billing-details.component.scss',
+  standalone: false
 })
 export class BillingDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -51,7 +52,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.getClients();
     this.getProducts();
 
@@ -67,7 +68,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       this.getSites(valor!)
     });
 
-   
+
 
   }
 
