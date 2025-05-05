@@ -3,9 +3,10 @@ import { FormBuilder } from '@angular/forms';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
-  selector: 'app-plants-evenet-summary',
-  templateUrl: './plants-evenet-summary.component.html',
-  styleUrl: './plants-evenet-summary.component.scss'
+    selector: 'app-plants-evenet-summary',
+    templateUrl: './plants-evenet-summary.component.html',
+    styleUrl: './plants-evenet-summary.component.scss',
+    standalone: false
 })
 export class PlantsEvenetSummaryComponent {
 

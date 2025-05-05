@@ -56,7 +56,7 @@
                         <h1 *ngIf="isLoadingCO2Widget">Calculating saved CO2 emissions...</h1>
 
                         <div *ngIf="!isLoadingCO2Widget else loadingSkeleton">
-                            <h2 *ngIf="co2Saving else notDataTable">{{co2Saving?.co2_saving_tCO2}}</h2>
+                            <h2 *ngIf="co2Saving else notDataTable">{{co2Saving.co2_saving_tCO2 || ''}}</h2>
                             <h3 *ngIf="co2Saving"> tCO2</h3>
                         </div>
                     </div>
@@ -64,12 +64,13 @@
                     <div class="title-right" *ngIf="!isLoadingCO2Widget else loadingSkeleton">
                         <div class="left" *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.tree_equivalent}} trees</h2>
+                            <h2 class="text-base font-normal">Equivalent to {{co2Saving.tree_equivalent || ''}} trees</h2>
                         </div>
 
                         <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/eletric.svg" alt="">
-                            <h2 class="text-base font-normal">Equivalent to {{co2Saving?.ev_charges_equivalent}} <br>
+                            <h2 class="text-base font-normal">Equivalent to {{ co2Saving.ev_charges_equivalent || '' }}
+                                <br>
                                 electric car full charges.</h2>
                         </div>
                     </div>

@@ -29,8 +29,7 @@
       "@shared/*": ["./src/app/_shared/*"],
       "@helpers/*": ["./src/_helpers/*"]
     },
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

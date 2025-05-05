@@ -18,9 +18,10 @@ import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

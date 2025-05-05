@@ -10,9 +10,10 @@ import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 
 @Component({
-  selector: 'app-types-clients',
-  templateUrl: './types-clients.component.html',
-  styleUrl: './types-clients.component.scss'
+    selector: 'app-types-clients',
+    templateUrl: './types-clients.component.html',
+    styleUrl: './types-clients.component.scss',
+    standalone: false
 })
 export class TypesClientsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

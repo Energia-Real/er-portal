@@ -16,9 +16,10 @@ import { Tabulator } from 'tabulator-tables';
 
 
 @Component({
-  selector: 'app-finantial-model-layout',
-  templateUrl: './finantial-model-layout.component.html',
-  styleUrl: './finantial-model-layout.component.scss'
+    selector: 'app-finantial-model-layout',
+    templateUrl: './finantial-model-layout.component.html',
+    styleUrl: './finantial-model-layout.component.scss',
+    standalone: false
 })
 export class FinantialModelLayoutComponent implements OnInit, OnDestroy,AfterViewInit {
 

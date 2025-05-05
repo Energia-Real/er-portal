@@ -15,7 +15,7 @@ export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private performanceApiUrl = environment.API_URL_PERFORMANCE;
-
+  private domainApiUrl = environment.API_URL_DOMAIN_BACKEND;
   constructor(
     private http: HttpClient,
     private formatsService: FormatsService
@@ -79,8 +79,28 @@ export class BillingService implements OnDestroy {
   }
 
   getBillingHistory(filters: entity.FilterBillingDetails): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
-    const url = `${this.performanceApiUrl}/Billing/History`;
+    const url = `${this.domainApiUrl}/v1/Billing/History`;
     return this.http.post<any>(url,   filters );
+  }
+
+  getClientCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/Clients`;
+    return this.http.get<any>(url );
+  }
+
+  getLegalNameCatalog(clientId:string): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/LegalNames/${clientId}`;
+    return this.http.get<any>(url );
+  }
+
+  getSitesCatalog(legalName:string): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/Sites/${legalName}`;
+    return this.http.get<any>(url );
+  }
+
+  getProductTypesCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/ProductTypes`;
+    return this.http.get<any>(url );
   }
 
   getCurrentInvoices(    filters: GeneralFilters ): Observable<GeneralResponse<entity.CurrentBillResponse>> {

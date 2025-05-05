@@ -11,9 +11,10 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
-  selector: 'app-mapa',
-  templateUrl: './mapa.component.html',
-  styleUrls: ['./mapa.component.scss']
+    selector: 'app-mapa',
+    templateUrl: './mapa.component.html',
+    styleUrls: ['./mapa.component.scss'],
+    standalone: false
 })
 
 export class MapaComponent implements AfterViewInit {

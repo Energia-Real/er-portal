@@ -1,3 +1,5 @@
+import { DataCatalogs } from "@app/shared/models/catalogs-models";
+
 export interface DataTableBillingResponse {
   response: BillingResponse;
   errors: any[];
@@ -236,6 +238,13 @@ export interface CurrentBillResponse {
 export interface HistoryBillResponse {
   historyBillResponse: Bill[]
 }
+
+export interface catalogResponseList {
+  catalogResponseList: DataCatalogs[]
+}
+
+
+
 
 
 export interface Bill{

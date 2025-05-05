@@ -9,9 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddQyaComponent } from '../add-qya/add-qya.component';
 
 @Component({
-  selector: 'app-admin-qya',
-  templateUrl: './admin-qya.component.html',
-  styleUrl: './admin-qya.component.scss'
+    selector: 'app-admin-qya',
+    templateUrl: './admin-qya.component.html',
+    styleUrl: './admin-qya.component.scss',
+    standalone: false
 })
 export class AdminQyaComponent implements OnInit{
 

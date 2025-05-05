@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
@@ -6,6 +6,7 @@ import { ColumnDefinition, CellComponent } from 'tabulator-tables';
 import { BillingService } from '../../billing.service';
 import { Bill, CurrentBillResponse } from '../../billing-model';
 import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
+import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
 
 @Component({
   selector: 'app-current-billing',
@@ -17,6 +18,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   generalFilters!: GeneralFilters
   generalFilters$!: Observable<GeneralFilters>;
 
+  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
 
   bills!: Bill[] ;
   private monthAbbrPipe = new MonthAbbreviationPipe();
@@ -232,7 +234,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   // Action methods for the icons
   downloadPdf(row: any): void {
     console.log('Download PDF clicked for:', row);
-    this.moduleServices.downloadBilling(["pdf"],["336aa6a5-798c-4e26-957c-54129fb01b99"]).subscribe({
+    this.moduleServices.downloadBilling(["pdf"],[row.billingId.toString()]).subscribe({
       next:(doc: Blob)=>{
         console.log(doc)
         const url = window.URL.createObjectURL(doc);
@@ -251,7 +253,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   downloadXml(row: any): void {
     console.log('Download XML clicked for:', row);
-    this.moduleServices.downloadBilling(["xml"],["336aa6a5-798c-4e26-957c-54129fb01b99"]).subscribe({
+    this.moduleServices.downloadBilling(["xml"],[row.billingId.toString()]).subscribe({
       next:(doc: Blob)=>{
         const url = window.URL.createObjectURL(doc);
         const a = document.createElement('a');
@@ -268,5 +270,9 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   viewDetails(row: any): void {
     console.log('View Details clicked for:', row);
+  }
+
+  descargarTabla(tipo: string) {
+    this.tabulatorTable.download(tipo);
   }
 }

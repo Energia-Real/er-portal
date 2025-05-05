@@ -5,9 +5,10 @@ import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constan
 import { notificationData } from '@app/shared/models/general-models';
 
 @Component({
-  selector: 'app-notification',
-  templateUrl: './notification.component.html',
-  styleUrl: './notification.component.scss'
+    selector: 'app-notification',
+    templateUrl: './notification.component.html',
+    styleUrl: './notification.component.scss',
+    standalone: false
 })
 export class NotificationComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();

@@ -12,9 +12,10 @@ type StepState = "Initial" | "Disabled" | "Loading" | "Success" | "Error";
 
 
 @Component({
-  selector: 'app-finantial-stepper',
-  templateUrl: './finantial-stepper.component.html',
-  styleUrls: ['./finantial-stepper.component.scss']
+    selector: 'app-finantial-stepper',
+    templateUrl: './finantial-stepper.component.html',
+    styleUrls: ['./finantial-stepper.component.scss'],
+    standalone: false
 })
 export class FinantialStepperComponent implements OnInit {
 

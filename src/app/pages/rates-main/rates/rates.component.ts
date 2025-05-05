@@ -18,9 +18,10 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-rates',
-  templateUrl: './rates.component.html',
-  styleUrl: './rates.component.scss'
+    selector: 'app-rates',
+    templateUrl: './rates.component.html',
+    styleUrl: './rates.component.scss',
+    standalone: false
 })
 export class RatesComponent implements OnDestroy, AfterViewChecked, AfterViewInit {
   private onDestroy$ = new Subject<void>();

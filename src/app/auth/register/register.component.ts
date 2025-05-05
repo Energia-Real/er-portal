@@ -1,14 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { AuthService } from '../auth.service';
 import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss',
+    standalone: false
 })
 export class RegisterComponent implements OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -56,7 +56,6 @@ export class RegisterComponent implements OnDestroy {
       },
       error: err => {
         console.log(err.error.errors);
-        Swal.fire('Error', err.error.errors[0].descripcion, 'error');
         this.errorCreate = true;
         this.successfulCreate = false;
         this.loading = false;

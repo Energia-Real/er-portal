@@ -18,9 +18,10 @@ import { ClientsService } from '@app/pages/clientsMain/clients.service';
 import { DataCientList } from '@app/pages/clientsMain/clients-model';
 
 @Component({
-  selector: 'app-new-plant',
-  templateUrl: './new-plant.component.html',
-  styleUrl: './new-plant.component.scss'
+    selector: 'app-new-plant',
+    templateUrl: './new-plant.component.html',
+    styleUrl: './new-plant.component.scss',
+    standalone: false
 })
 export class NewPlantComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
