@@ -17,7 +17,9 @@ import { PlantsService } from '@app/pages/plants-main/plants.service';
         CommonModule,
         FormsModule,
         MessageNoDataComponent,
-    ]
+    ],
+    standalone: true
+
 })
 export class InfoCardComponent {
   @Input() tapName: string = '';

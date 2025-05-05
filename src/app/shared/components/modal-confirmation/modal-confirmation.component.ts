@@ -9,7 +9,8 @@ import { ConfirmationConfig } from '@app/shared/models/general-models';
     templateUrl: './modal-confirmation.component.html',
     styleUrl: './modal-confirmation.component.scss',
     encapsulation: ViewEncapsulation.None,
-    imports: [NgIf, MaterialModule, NgClass]
+    imports: [NgIf, MaterialModule, NgClass],
+    standalone: true
 })
 export class ModalConfirmationComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationConfig) {

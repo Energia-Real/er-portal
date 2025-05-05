@@ -2,9 +2,9 @@
 
 <div class="c-main">
     <div class="flex justify-between">
-        <div class="title">
+        <h1 class="label-700-24">
             Run Model
-        </div>
+        </h1>
         <div class="c-card-section c-model w-2/3">
             <div class="grid md:grid-cols-4 gap-3 text-center div-groups-model">
                 <div class="flex flex-col justify-around px-5">
@@ -62,10 +62,12 @@
             </div>
         </div>
     </div>
+  
 </div>
 
 <ng-template #notData>
     <div class="no-data-found d-flex justify-center">
-        <app-message-no-data [message]="'The information could not be loaded.'"></app-message-no-data>
+        <app-message-no-data [message]="
+            'The information could not be loaded.'"></app-message-no-data>
     </div>
 </ng-template>

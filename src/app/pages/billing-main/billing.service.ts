@@ -6,6 +6,7 @@ import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 import { DataRespSavingDetailsList } from '../plants-main/plants-model';
+import { GeneralFilters, GeneralPaginatedResponse, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class BillingService implements OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   private performanceApiUrl = environment.API_URL_PERFORMANCE;
-
+  private domainApiUrl = environment.API_URL_DOMAIN_BACKEND;
   constructor(
     private http: HttpClient,
     private formatsService: FormatsService
@@ -58,7 +59,7 @@ export class BillingService implements OnDestroy {
       );
   }
 
-  getBillingHistory(
+  getPreviousBillingHistory(
     filters: any
   ): Observable<entity.DataHistoryOverviewTableMapper> {
     const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
@@ -76,7 +77,39 @@ export class BillingService implements OnDestroy {
         )
       );
   }
- 
+
+  getBillingHistory(filters: entity.FilterBillingDetails): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
+    const url = `${this.domainApiUrl}/v1/Billing/History`;
+    return this.http.post<any>(url,   filters );
+  }
+
+  getClientCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/Clients`;
+    return this.http.get<any>(url );
+  }
+
+  getLegalNameCatalog(clientId:string): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/LegalNames/${clientId}`;
+    return this.http.get<any>(url );
+  }
+
+  getSitesCatalog(legalName:string): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/Sites/${legalName}`;
+    return this.http.get<any>(url );
+  }
+
+  getProductTypesCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Catalog/ProductTypes`;
+    return this.http.get<any>(url );
+  }
+
+  getCurrentInvoices(    filters: GeneralFilters ): Observable<GeneralResponse<entity.CurrentBillResponse>> {
+    const url = `${this.performanceApiUrl}/Billing/Current`;
+    const params = {"startDate": filters.startDate, "endDate":filters.endDate}
+    return this.http.post<any>(url,   params );
+  }
+
+
   getBillingDetails(
     filters: any
   ): Observable<entity.DataDetailsOverviewTableMapper> {
@@ -102,6 +135,15 @@ export class BillingService implements OnDestroy {
 
     return this.http.get(url, {
       params,
+      responseType: 'blob',
+    });
+  }
+
+  downloadBilling(typeFile:string[], billings:string[]): Observable<Blob> {
+    const url = `${this.performanceApiUrl}/Billing/Files`;
+    const params = {typeFile,billings}
+
+    return this.http.post(url,params, {
       responseType: 'blob',
     });
   }
