@@ -189,7 +189,7 @@ export class BillingService implements OnDestroy {
   }
 
   getEnergysummaryOverview(filters:entity.FilterBillingEnergysummary): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
-    const url = `${this.domainApiUrl}/Billing/Energy/Summary`;
+    const url = `${this.domainApiUrl}/v1/Billing/Energy/Summary`;
 
     return this.http.post<entity.EnergyBillingSummary>(url, filters).pipe(
       map((response) =>
