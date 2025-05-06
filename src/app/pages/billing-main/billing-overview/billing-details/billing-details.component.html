@@ -13,19 +13,10 @@
                 <div class="c-input">
                     <mat-form-field class="select-ER" appearance="outline">
                         <mat-select formControlName="customerName" placeholder="Client">
-<<<<<<< HEAD
-                            <!-- <mat-option [value]="cat.id" *ngFor="let cat of catContractType">{{ cat?.description || '-'
-                      }}</mat-option> -->
-                            <mat-option value="all">All</mat-option>
-                            <mat-option value="client-1">Client 1</mat-option>
-                            <mat-option value="client-2">Client 2</mat-option>
-                            <mat-option value="client-3">Client 3</mat-option>
-=======
                             <mat-option value=" ">All</mat-option>
                             <div *ngIf="clientsCatalog">
                                 <mat-option *ngFor=" let client of clientsCatalog" value={{client.id}}>{{client.description}}</mat-option>
                             </div>
->>>>>>> origin/ER---billing-overview-v3
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -73,7 +64,7 @@
 
     <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1 position-relative">
-            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="1">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
 
                 <mat-tab label="Overview">
                     <app-overview [filterData]="filterData"></app-overview>

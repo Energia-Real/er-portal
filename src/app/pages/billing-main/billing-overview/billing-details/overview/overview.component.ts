@@ -39,15 +39,27 @@ export class OverviewComponent implements OnInit, OnDestroy {
         usePointStyle: true,
         callbacks: {
           label: function (context) {
-            const value = Math.abs(context.raw as number).toLocaleString('en-US');
-            return `${context.dataset.label}: ${value} kWh`;
-          },
+            const value = context.raw as number;
+            const label = context.dataset.label || '';
+
+            if (label.includes('Amount')) {
+              return `${label}: $${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            return `${label}: ${value.toLocaleString('en-US')} kWh`;
+          }
         },
       },
       legend: {
         display: true,
+        position: 'top', 
         labels: {
           usePointStyle: true,
+          color: '#333',
+          font: {
+            family: 'Arial',
+            size: 14,
+          },
         },
       },
     },
@@ -57,6 +69,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
         stacked: false,
       },
       y: {
+        type: 'linear',
+        position: 'left',
         stacked: false,
         grid: {
           color: '#E5E7EB',
@@ -66,23 +80,32 @@ export class OverviewComponent implements OnInit, OnDestroy {
             return `${value} kWh`;
           },
         },
-        min: 0,
       },
-    },
+      y1: {
+        type: 'linear',
+        position: 'right',
+        grid: {
+          drawOnChartArea: false,
+        },
+        ticks: {
+          callback: function (value) {
+            return `$${(+value).toLocaleString()}`;
+          },
+        },
+      },
+    }
   };
 
   generalFilters!: GeneralFilters
-  balance:string = '0.00'
+  balance: string = '0.00'
 
-   constructor(
+  constructor(
     private store: Store<{ filters: GeneralFilters }>,
-      private moduleServices: BillingService,
-      private notificationService: OpenModalsService,
-    ) { this.generalFilters$ = this.store.select(state => state.filters)}
-
+    private moduleServices: BillingService,
+    private notificationService: OpenModalsService,
+  ) { this.generalFilters$ = this.store.select(state => state.filters) }
 
   ngOnInit(): void {
-    // this.initiLineChartData();
     this.getFilters();
   }
 
@@ -91,66 +114,30 @@ export class OverviewComponent implements OnInit, OnDestroy {
       const filters = {
         startDate: GeneralFilters.startDate,
         endDate: GeneralFilters.endDate,
-        ...this.filterData
+        customerName: this.filterData.customerName,
+        legalName: this.filterData.legalName,
+        siteName: this.filterData.siteName,
+        productType: this.filterData.productType,
       };
-  
+
       this.getEnergysummary(filters);
     })
   }
 
-  initiLineChartData() {
-    this.lineChartData = {
-      labels: ['Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'May 25', 'Jun 25', 'Jul 25', 'Aug 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dec 25'],
-      datasets: [
-        {
-          type: 'bar',
-          label: 'Energy Produced (kWh)',
-          data: [250, 80, 200, 140, 150, 130, 160, 120, 80, 70, 220, 40],
-          backgroundColor: '#F97316',
-          barPercentage: 0.8,
-          categoryPercentage: 0.9,
-          order: 1
-        },
-        {
-          type: 'bar',
-          label: 'Energy Billed (kWh)',
-          data: [150, 180, 50, 120, 130, 110, 190, 100, 150, 170, 180, 70],
-          backgroundColor: '#57B1B1',
-          barPercentage: 0.8,
-          categoryPercentage: 0.9,
-          order: 1
-        },
-        {
-          type: 'line',
-          label: 'Trend',
-          data: [140, 110, 90, 60, 90, 110, 110, 90, 150, 200, 130, 140],
-          borderColor: '#6B021A',
-          backgroundColor: '#6B021A',
-          tension: 0.4,
-          pointRadius: 4,
-          pointBackgroundColor: '#6B021A',
-          borderWidth: 2,
-          order: 3
-        }
-      ]
-    };
-  }
-
   getEnergysummary(filters: entity.FilterBillingEnergysummary) {
     console.log(filters);
-    
-      this.moduleServices.getEnergysummaryOverview(filters).subscribe({
-        next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
-          console.log('OVERVIEW:', response);
-          this.lineChartData = response
-          this.balance = response.balance
-          
-        },
-        error: error => {
-          this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-          console.log(error);
-        }
-      });
+
+    this.moduleServices.getEnergysummaryOverview(filters).subscribe({
+      next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
+        console.log('OVERVIEW:', response);
+        this.lineChartData = response
+        this.balance = response.balance
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
   }
 
   ngOnDestroy(): void {

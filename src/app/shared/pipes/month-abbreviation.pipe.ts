@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'monthAbbr'
+  name: 'monthAbbr',
+  standalone : false
 })
 export class MonthAbbreviationPipe implements PipeTransform {
   transform(value: number | string): string {

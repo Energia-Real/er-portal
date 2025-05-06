@@ -23,11 +23,6 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
   sitesCatalog!:DataCatalogs[];
   productsCatalog!:DataCatalogs[];
 
-
-
-
-
-
   filtersForm = this.fb.group({
     customerName: [''],
     legalName: [''],
@@ -46,10 +41,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       this.generalFilters$.pipe(distinctUntilChanged()),
     ])
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([generalFilters]) => {
-        this.generalFilters = generalFilters;
-        //this.getBilling();
-      });
+      .subscribe(([generalFilters]) => this.generalFilters = generalFilters);
   }
 
   ngOnInit(): void { 
@@ -67,9 +59,6 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
     .subscribe(valor => {
       this.getSites(valor!)
     });
-
-   
-
   }
 
   get filterData(): FilterBillingDetails {
@@ -96,6 +85,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       }
     })
   }
+
   getSites(legalName:string){
     this.moduleServices.getSitesCatalog(legalName).subscribe({
       next:(resp: GeneralResponse<catalogResponseList>) => {
@@ -112,7 +102,6 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       }
     })
   }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

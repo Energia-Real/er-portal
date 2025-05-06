@@ -80,9 +80,7 @@ export class Mapper {
 	}
 
 	static getEnergysummaryMapper(response: entity.EnergyBillingSummary, formatsService: FormatsService): ChartConfiguration<'bar' | 'line'>['data'] | any {
-
-		console.log(response);
-		
+	  
 		const monthsMap = [
 		  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 		  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -94,6 +92,7 @@ export class Mapper {
 			label: `${monthsMap[i]} 25`,
 			billedEnergyProduced: found ? found.billedEnergyProduced : 0,
 			billedEnergy: found ? found.billedEnergy : 0,
+			billedEnergyAmouth: found ? found.billedEnergyAmouth : 0,
 		  };
 		});
 	  
@@ -120,8 +119,8 @@ export class Mapper {
 			},
 			{
 			  type: 'line',
-			  label: 'Trend',
-			  data: fullMonths.map(m => +((m.billedEnergyProduced + m.billedEnergy) / 2).toFixed(2)),
+			  label: 'Total Amount',
+			  data: fullMonths.map(m => +m.billedEnergyAmouth.toFixed(2)),
 			  borderColor: '#6B021A',
 			  backgroundColor: '#6B021A',
 			  tension: 0.4,
@@ -129,10 +128,12 @@ export class Mapper {
 			  pointBackgroundColor: '#6B021A',
 			  borderWidth: 2,
 			  order: 3,
+			  yAxisID: 'y1'  
 			}
 		  ],
 		  balance: formatsService.moneyFormat(response.response.energySummaryResponse.balance),
 		};
 	  }
+	  
 	  
 }

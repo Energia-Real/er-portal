@@ -5,7 +5,8 @@ import { ColumnDefinition, TabulatorFull as Tabulator } from 'tabulator-tables';
 @Component({
   selector: 'app-tabulator-table',
   templateUrl: './tabulator-table.component.html',
-  styleUrl: './tabulator-table.component.scss'
+  styleUrl: './tabulator-table.component.scss',
+  standalone: false,
 })
 
 export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {

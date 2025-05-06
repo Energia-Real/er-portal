@@ -45,6 +45,7 @@ export interface EnergySummaryResponse {
     month: number;
     billedEnergyProduced: number;
     billedEnergy: number;
+    billedEnergyAmouth: number;
   }[];
   balance: number;
 }
