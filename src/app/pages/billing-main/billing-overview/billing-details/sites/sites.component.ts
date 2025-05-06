@@ -14,7 +14,7 @@ export class SitesComponent implements OnInit, OnDestroy {
   @Input() filterData!: entity.FilterBillingDetails
 
   ngOnInit(): void {
-    console.log('Sites : filterData', this.filterData);
+    // console.log('Sites : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {

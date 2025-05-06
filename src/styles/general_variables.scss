@@ -708,6 +708,17 @@ select:focus {
 
 .filter-selected {
     border: 1px solid #EE6A0A;
+    color: #EE6A0A;
+    span {
+        color: #EE6A0A;
+    }
+}
+
+.filter-unselected {
+    color: #D1D1D1;
+    span {
+        color: #D1D1D1;
+    }
 }
 
 .btn-action-cancel {

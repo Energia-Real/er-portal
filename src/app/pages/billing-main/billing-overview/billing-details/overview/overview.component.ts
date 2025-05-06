@@ -1,7 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 
-import { Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js";
+import { Store } from '@ngrx/store';
+import { BillingService } from '@app/pages/billing-main/billing.service';
+import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { GeneralFilters } from '@app/shared/models/general-models';
+import * as entity from '../../../billing-model';
+import { BaseChartDirective } from 'ng2-charts';
 
 Chart.register(...registerables);
 
@@ -14,106 +20,162 @@ Chart.register(...registerables);
 export class OverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  lineChartData!: ChartConfiguration<'bar'>['data'];
-  lineChartOptions: ChartOptions<'bar'> = {
+  generalFilters$!: Observable<GeneralFilters>;
+
+  @Input() filterData!: entity.FilterBillingDetails
+  @ViewChild(BaseChartDirective) chartComponent!: BaseChartDirective;
+
+  lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
+
+  lineChartOptions: ChartOptions<'bar' | 'line'> = {
     responsive: true,
-    animation: {
-      onComplete: () => { },
-      delay: (context) => {
-        let delay = 0;
-        if (context.type === 'data' && context.mode === 'default') {
-          delay = context.dataIndex * 300 + context.datasetIndex * 100;
-        }
-        return delay;
-      },
+    interaction: {
+      mode: 'index',
+      intersect: false,
     },
     plugins: {
       tooltip: {
         usePointStyle: true,
         callbacks: {
           label: function (context) {
-            const value = Math.abs(context.raw as number).toLocaleString('en-US');
-            return `${context.dataset.label}: ${value} kWh`;
-          },
+            const value = context.raw as number;
+            const label = context.dataset.label || '';
+
+            if (label.includes('Amount')) {
+              return `${label}: $${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            return `${label}: ${value.toLocaleString('en-US')} kWh`;
+          }
         },
       },
       legend: {
         display: false,
+        position: 'top', 
         labels: {
           usePointStyle: true,
-        },
-        position: 'right',
-        onHover: (event, legendItem, legend) => {
-          const index = legendItem.datasetIndex;
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
-          });
-
-          chart.update();
-        },
-        onLeave: (event, legendItem, legend) => {
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === 0 ? '#F97316' : '#57B1B1';
-          });
-
-          chart.update();
+          color: '#333',
+          font: {
+            family: 'Arial',
+            size: 14,
+          },
         },
       },
     },
     scales: {
       x: {
+        grid: { display: false },
         stacked: false,
-        grid: {
-          display: false,
-        },
       },
       y: {
-        ticks: {
-          callback: function (value, index, values) {
-            const numericValue = typeof value == 'number' ? value : parseFloat(value as string);
-
-            if (!isNaN(numericValue)) {
-              return `${numericValue} kWh`;
-            }
-            return '';
-          },
-          stepSize: 25,
-        },
-        min: 0,
-        max: 250,
+        type: 'linear',
+        position: 'left',
         stacked: false,
         grid: {
           color: '#E5E7EB',
         },
+        ticks: {
+          callback: function (value) {
+            return `${value} kWh`;
+          },
+        },
       },
-    },
-    backgroundColor: 'rgba(242, 46, 46, 1)',
+      y1: {
+        type: 'linear',
+        position: 'right',
+        grid: {
+          drawOnChartArea: false,
+        },
+        ticks: {
+          callback: function (value) {
+            return `$${(+value).toLocaleString()}`;
+          },
+        },
+      },
+    }
   };
 
+  datasetVisibility:boolean[] = [true, true, true];
+
+  generalFilters!: GeneralFilters
+  balance: string = '0.00'
+  buttonClass: string = '';
+
+  constructor(
+    private store: Store<{ filters: GeneralFilters }>,
+    private moduleServices: BillingService,
+    private notificationService: OpenModalsService,
+  ) { this.generalFilters$ = this.store.select(state => state.filters) }
+
   ngOnInit(): void {
-    this.initiLineChartData();
+    this.getFilters()
   }
 
-  initiLineChartData() {
-    this.lineChartData = {
-      labels: ['Jan 25', 'Feb 25', 'Mar 25', 'Apr 25', 'May 25', 'Jun 25', 'Jul 25', 'Aug 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dec 25'],
-      datasets: [
-        {
-          data: [100, 125, 150, 175, 135, 120, 150, 120, 150, 175, 150, 125],
-          label: 'Energy Production',
-          backgroundColor: '#F97316',
-        },
-        {
-          data: [90, 115, 140, 165, 190, 120, 120, 150, 120, 165, 140, 115],
-          label: 'Energy Consumption',
-          backgroundColor: '#57B1B1',
-        }
-      ]
-    };
+  getFilters() {
+    this.generalFilters$.pipe(takeUntil(this.onDestroy$)).subscribe((GeneralFilters) => {
+      const filters = {
+        startDate: GeneralFilters.startDate,
+        endDate: GeneralFilters.endDate,
+        customerName: this.filterData.customerName,
+        legalName: this.filterData.legalName,
+        siteName: this.filterData.siteName,
+        productType: this.filterData.productType,
+      };
+
+      this.getEnergysummary(filters);
+    })
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['filterData'] && !changes['filterData'].firstChange) {
+      const prev = changes['filterData'].previousValue;
+      const curr = changes['filterData'].currentValue;
+      // Compara solo los campos relevantes
+      if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
+    }
+  }
+
+  getEnergysummary(filters: entity.FilterBillingEnergysummary) {
+    this.moduleServices.getEnergysummaryOverview(filters).subscribe({
+      next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
+        this.lineChartData = response
+        this.balance = response.balance
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
+  }
+
+  toggleDataset(index: number) {
+    const chart = this.chartComponent.chart;
+    if (!chart) return;
+  
+    const meta = chart.getDatasetMeta(index);
+    this.datasetVisibility[index] = !this.datasetVisibility[index];
+    meta.hidden = !this.datasetVisibility[index];
+    chart.update();
+    this.updateButtonClass();
+  }
+
+  showAllDatasets() {
+    const chart = this.chartComponent.chart;
+    if (!chart) return;
+  
+    chart.data.datasets.forEach((_, index) => {
+      const meta = chart.getDatasetMeta(index);
+      this.datasetVisibility[index] = true;
+      meta.hidden = false;
+    });
+
+    this.buttonClass = 'filter-unselected';
+    chart.update();
+  }
+
+  updateButtonClass() {
+    const hiddenCount = this.datasetVisibility.filter((isVisible, index) => !isVisible).length;
+    this.buttonClass = hiddenCount >= 1 ? 'filter-selected' : 'filter-unselected';
   }
 
   ngOnDestroy(): void {

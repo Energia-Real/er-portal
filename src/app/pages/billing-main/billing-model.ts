@@ -23,6 +23,32 @@ export interface FilterBillingDetails {
   pageSize?:number;
 }
 
+export interface FilterBillingEnergysummary {
+  startDate: string;
+  endDate: string;
+  customerName?:string;
+  legalName?: string;
+  siteName?:string;
+  productType?:string;
+}
+
+export interface EnergyBillingSummary {
+  success: boolean;
+  response: {
+    energySummaryResponse: EnergySummaryResponse;
+  };
+  errors: any;
+}
+
+export interface EnergySummaryResponse {
+  months: {
+    month: number;
+    billedEnergyProduced: number;
+    billedEnergy: number;
+    billedEnergyAmouth: number;
+  }[];
+  balance: number;
+}
 
 export interface BillingData {
   externalId: string;

@@ -6,6 +6,7 @@ import * as entity from './billing-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 import { DataRespSavingDetailsList } from '../plants-main/plants-model';
+import { ChartConfiguration } from 'chart.js';
 import { GeneralFilters, GeneralPaginatedResponse, GeneralResponse } from '@app/shared/models/general-models';
 
 @Injectable({
@@ -16,6 +17,7 @@ export class BillingService implements OnDestroy {
 
   private performanceApiUrl = environment.API_URL_PERFORMANCE;
   private domainApiUrl = environment.API_URL_DOMAIN_BACKEND;
+  
   constructor(
     private http: HttpClient,
     private formatsService: FormatsService
@@ -79,27 +81,27 @@ export class BillingService implements OnDestroy {
   }
 
   getBillingHistory(filters: entity.FilterBillingDetails): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
-    const url = `${this.domainApiUrl}/v1/Billing/History`;
+    const url = `${this.domainApiUrl}/Billing/History`;
     return this.http.post<any>(url,   filters );
   }
 
   getClientCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
-    const url = `${this.domainApiUrl}/v1/Billing/Catalog/Clients`;
+    const url = `${this.domainApiUrl}/Billing/Catalog/Clients`;
     return this.http.get<any>(url );
   }
 
   getLegalNameCatalog(clientId:string): Observable<GeneralResponse<entity.catalogResponseList>> {
-    const url = `${this.domainApiUrl}/v1/Billing/Catalog/LegalNames/${clientId}`;
+    const url = `${this.domainApiUrl}/Billing/Catalog/LegalNames/${clientId}`;
     return this.http.get<any>(url );
   }
 
   getSitesCatalog(legalName:string): Observable<GeneralResponse<entity.catalogResponseList>> {
-    const url = `${this.domainApiUrl}/v1/Billing/Catalog/Sites/${legalName}`;
+    const url = `${this.domainApiUrl}/Billing/Catalog/Sites/${legalName}`;
     return this.http.get<any>(url );
   }
 
   getProductTypesCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
-    const url = `${this.domainApiUrl}/v1/Billing/Catalog/ProductTypes`;
+    const url = `${this.domainApiUrl}/Billing/Catalog/ProductTypes`;
     return this.http.get<any>(url );
   }
 
@@ -108,7 +110,6 @@ export class BillingService implements OnDestroy {
     const params = {"startDate": filters.startDate, "endDate":filters.endDate}
     return this.http.post<any>(url,   params );
   }
-
 
   getBillingDetails(
     filters: any
@@ -185,6 +186,15 @@ export class BillingService implements OnDestroy {
       url,
       data
     );
+  }
+
+  getEnergysummaryOverview(filters:entity.FilterBillingEnergysummary): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
+    const url = `${this.domainApiUrl}/Billing/Energy/Summary`;
+
+    return this.http.post<entity.EnergyBillingSummary>(url, filters).pipe(
+      map((response) =>
+        Mapper.getEnergysummaryMapper(response, this.formatsService )
+      ));
   }
 
   uploadExcel(file: File): Observable<any> {

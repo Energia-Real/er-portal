@@ -43,13 +43,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.notificationService.loadNotificationCenterMessages().subscribe();
 
     this.authService.getInfoUser().subscribe((data) => {
+      console.log(data);
+      
       this.userInfo = data;
       if (typeof pendo !== 'undefined') {
         pendo.initialize({
           visitor: {
             id: this.userInfo.email,
-            firstName: this.userInfo.persona.nombres,
-            lastName: this.userInfo.persona.apellidos
+            firstName: this.userInfo?.persona?.nombres || '',
+            lastName: this.userInfo?.persona?.apellidos || ''
           }
         });
       } else {

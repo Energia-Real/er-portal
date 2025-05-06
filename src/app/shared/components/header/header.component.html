@@ -7,6 +7,7 @@
         routeActive.includes('client-home') ||
         routeActive.includes('invoice') ||
         routeActive.includes('rates') ||
+        routeActive.includes('overview') ||
         routeActive.includes('details')">
 
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
@@ -97,7 +98,7 @@
         </button>
       </div>
 
-      <div class="c-input mb-0" *ngIf="routeActive.includes('energy') || routeActive.includes('overview')">
+      <div class="c-input mb-0" *ngIf="routeActive.includes('energy')">
         <mat-form-field class="select-year" appearance="outline">
           <mat-select placeholder="Year" [(value)]="selectedYearSelect" (valueChange)="searchWithFilters()">
             <mat-option *ngFor="let year of years; let i = index" [value]="year">

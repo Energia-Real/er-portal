@@ -14,7 +14,7 @@ export class BillingInformationComponent implements OnInit, OnDestroy {
   @Input() filterData!: entity.FilterBillingDetails
 
   ngOnInit(): void {
-    console.log('Billing information : filterData', this.filterData);
+    // console.log('Billing information : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {
