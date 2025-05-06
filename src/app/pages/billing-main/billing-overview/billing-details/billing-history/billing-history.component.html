@@ -1,11 +1,11 @@
-<div class="c-billing-history card-content-section">
+<div class="c-billing-history card-content-section mb-6">
     <div class="section-header section-untitled">
     </div>
     <div class="table-container" *ngIf="bills">
-        <app-tabulator-table [data]="bills" [columns]="columns" [height]="450"></app-tabulator-table>
+        <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
     </div>
     <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-    aria-label="Select page of periodic elements">
-</mat-paginator>
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>

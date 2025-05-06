@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { ColumnDefinition, TabulatorFull as Tabulator } from 'tabulator-tables';
+import { ColumnDefinition, Options, TabulatorFull as Tabulator } from 'tabulator-tables';
 
 
 @Component({
@@ -20,9 +20,9 @@ export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {
   ];
   @ViewChild('tableDiv', { static: false }) tableDiv!: ElementRef;
 
-  @Input() columns: ColumnDefinition[] = [];
   @Input() data: any[] = [];
-  @Input() height: number = 140;
+
+  @Input() config!: Options;
   tab = document.createElement('div');
   exTable: any;
 
@@ -32,14 +32,8 @@ export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {
       if (this.exTable) {
         this.exTable.replaceData(this.data);
       }
-      //console.log('Nuevo valor de data:', changes['data'].currentValue);
     }
-    if (changes['columns']) {
-     // console.log('Nuevo valor de columns:', changes['columns'].currentValue);
-    }
-    if (changes['height']) {
-     // console.log('Nuevo valor de height:', changes['height'].currentValue);
-    }
+    
   }
 
   constructor() {
@@ -51,13 +45,8 @@ export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.exTable = new Tabulator(this.tableDiv.nativeElement, {
-      height: this.height,
-      layout: 'fitColumns',
-      columns: this.columns,
-      movableColumns: true,
-      data: this.data,
-    });
+    this.config.data=this.data; 
+    this.exTable = new Tabulator(this.tableDiv.nativeElement, this.config);
   }
 
   download(type: string) {
