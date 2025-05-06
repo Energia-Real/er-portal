@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
-import { ColumnDefinition, CellComponent } from 'tabulator-tables';
+import { ColumnDefinition, CellComponent, Options } from 'tabulator-tables';
 import { BillingService } from '../../billing.service';
 import { Bill, CurrentBillResponse } from '../../billing-model';
 import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
@@ -24,18 +24,23 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   bills!: Bill[] ;
   private monthAbbrPipe = new MonthAbbreviationPipe();
 
+  tableConfig!:Options;
+
+
   columns: ColumnDefinition[] = [
     {
       title: "Legal Name",
       field: "legalName",
       headerSort: false,
-      vertAlign: "middle"
+      vertAlign: "middle",
+      minWidth:150,
     },
     {
       title: "Year",
       field: "year",
       headerSort: false,
-      vertAlign: "middle"
+      vertAlign: "middle",
+      minWidth:80,
     },
     {
       title: "Month",
@@ -45,11 +50,13 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
         return this.monthAbbrPipe.transform(value);
       },
       headerSort: false,
-      vertAlign: "middle"
+      vertAlign: "middle",
+      minWidth:80,
     },
     {
       title: "Status",
       field: "status",
+      minWidth:105,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Define colors for different status IDs
@@ -85,6 +92,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     {
       title: "Product",
       field: "product",
+      minWidth:120,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Default styling (for current string-based product)
@@ -135,6 +143,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     {
       title: "Amount",
       field: "amount",
+      minWidth:120,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Format as currency
@@ -154,6 +163,8 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     {
       title: 'Action',
       field: 'actions',
+      minWidth: 180,
+
       formatter: (cell: CellComponent) => {
         // Generate HTML with the requested icons in a horizontal layout
         return `
@@ -196,6 +207,12 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     private store: Store<{ filters: GeneralFilters }>,
     private moduleServices: BillingService,
   ) {
+    this.tableConfig = {
+      maxHeight: 280,
+      layout:"fitColumns",
+      columns: this.columns,
+      movableColumns: true,
+    }
     this.generalFilters$ = this.store.select(state => state.filters);
     combineLatest([
       this.generalFilters$.pipe(distinctUntilChanged()),

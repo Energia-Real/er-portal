@@ -48,7 +48,7 @@
 
                 <div class="c-input">
                     <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="productType" placeholder="Solar">
+                        <mat-select formControlName="productType" placeholder="Product">
                            <div *ngIf="productsCatalog">
                                 <mat-option *ngFor="let product of productsCatalog" value="{{product.description.toUpperCase()}}">{{product.description}}</mat-option>
                            </div>

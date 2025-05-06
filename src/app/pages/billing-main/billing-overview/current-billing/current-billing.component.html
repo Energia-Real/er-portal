@@ -10,6 +10,6 @@
    
     
     <div class="table-container" *ngIf="bills">
-        <app-tabulator-table [data]="bills" [columns]="columns" [height]="280"></app-tabulator-table>
+        <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
     </div>
 </div>
