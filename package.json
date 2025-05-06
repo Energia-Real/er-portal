@@ -49,7 +49,6 @@
     "ngx-owl-carousel-o": "^19.0.0",
     "ngx-skeleton-loader": "^9.0.0",
     "rxjs": "~7.8.0",
-    "sweetalert2": "^11.10.6",
     "tabulator-tables": "^6.3.1",
     "tippy.js": "^6.3.7",
     "tslib": "^2.6.0",

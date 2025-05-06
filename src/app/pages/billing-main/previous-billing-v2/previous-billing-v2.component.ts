@@ -20,7 +20,7 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
   selector: 'app-previous-billing-v2',
   templateUrl: './previous-billing-v2.component.html',
   styleUrl: './previous-billing-v2.component.scss',
-  standalone : false
+  standalone: false
 })
 export class PreviousBillingV2Component implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -105,8 +105,8 @@ export class PreviousBillingV2Component implements OnInit, OnDestroy {
   }
 
   // Usando el takeUntil(this.onDestroy$), no es necesario almacenar la suscripción en una variable
-  // como this.drawerOpenSub, ya que takeUntil 
-  // se encarga de limpiar la suscripción automáticamente cuando el 
+  // como this.drawerOpenSub, ya que takeUntil
+  // se encarga de limpiar la suscripción automáticamente cuando el
   // componente es destruido (lo que ocurre cuando se emite el onDestroy$).
   drawerOpenSubsctiption() {
     this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((response: DrawerGeneral) => {

@@ -44,7 +44,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       .subscribe(([generalFilters]) => this.generalFilters = generalFilters);
   }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.getClients();
     this.getProducts();
 

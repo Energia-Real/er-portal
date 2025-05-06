@@ -108,7 +108,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) { this.generalFilters$ = this.store.select(state => state.filters) }
 
   ngOnInit(): void {
-    console.log('filterData', this.filterData);
     this.getFilters()
   }
 

@@ -68,10 +68,10 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
 
         // Create a span with the specified styling
         return `<span style="
-          color: ${colors.text}; 
-          background-color: ${colors.bg}; 
-          border-radius: 16px; 
-          padding: 4px 12px; 
+          color: ${colors.text};
+          background-color: ${colors.bg};
+          border-radius: 16px;
+          padding: 4px 12px;
           font-weight: 500;
           display: flex;
           align-items:center;
@@ -118,10 +118,10 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
 
         // Create a span with the specified styling
         return `<span style="
-          color: ${textColor}; 
-          background-color: ${bgColor}; 
-          border-radius: 16px; 
-          padding: 4px 18px; 
+          color: ${textColor};
+          background-color: ${bgColor};
+          border-radius: 16px;
+          padding: 4px 18px;
           font-weight: 500;
           display: flex;
           align-items:center;

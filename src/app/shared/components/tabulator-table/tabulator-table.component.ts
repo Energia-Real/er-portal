@@ -6,7 +6,7 @@ import { ColumnDefinition, TabulatorFull as Tabulator } from 'tabulator-tables';
   selector: 'app-tabulator-table',
   templateUrl: './tabulator-table.component.html',
   styleUrl: './tabulator-table.component.scss',
-  standalone: false,
+  standalone: false
 })
 
 export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {
@@ -28,7 +28,7 @@ export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
-      
+
       if (this.exTable) {
         this.exTable.replaceData(this.data);
       }
@@ -43,11 +43,11 @@ export class TabulatorTableComponent implements OnInit,OnChanges,AfterViewInit {
   }
 
   constructor() {
-    
+
   }
 
   ngOnInit(){
-    
+
   }
 
   ngAfterViewInit() {

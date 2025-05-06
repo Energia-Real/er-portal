@@ -8,9 +8,10 @@
 
   .c-labels-overview {
     flex-direction: row;
+
     >div {
       width: 235px;
-cursor: pointer;
+      cursor: pointer;
       background: #F8F8F8;
       padding: 10px 12px;
       border-radius: 18px;
@@ -44,6 +45,7 @@ cursor: pointer;
 
     >div:nth-child(2) {
       margin: 40px 0;
+
       span {
         background: #57B1B1;
         color: rgb(255, 255, 255);
@@ -52,8 +54,10 @@ cursor: pointer;
         height: 12px;
       }
     }
+
     >div:nth-child(3) {
       margin: 40px 0;
+
       span {
         background: #6B021A;
         color: rgb(255, 255, 255);
@@ -76,7 +80,7 @@ cursor: pointer;
     }
 
     highcharts-chart {
-      height: 340px!important;
+      height: 340px !important;
     }
   }
 }
