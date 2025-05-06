@@ -123,6 +123,22 @@ select:focus {
   font-weight: 500;
 }
 
+.tabulator-row:hover,
+.tabulator-row.tabulator-selectable:hover,
+.tabulator-row.tabulator-row-even:hover {
+  background-color: #bbb !important; 
+  cursor: default !important;
+
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tabulator-row:hover,
+  .tabulator-row.tabulator-selectable:hover,
+  .tabulator-row.tabulator-row-even:hover {
+    background-color: #ffffff !important;
+    cursor: default !important;
+  }
+}
 .tabulator-row.tabulator-row-even{
   background: #ffffff !important;
 }
