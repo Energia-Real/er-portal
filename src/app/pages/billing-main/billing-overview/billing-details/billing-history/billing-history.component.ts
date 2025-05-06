@@ -22,26 +22,26 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
   pageIndex: number = 1;
   totalItems: number = 0;
 
-  bills!: entity.Bill[] ;
+  bills!: entity.Bill[];
   private monthAbbrPipe = new MonthAbbreviationPipe();
 
 
   columns: ColumnDefinition[] = [
-    { 
-      title: "Legal Name", 
+    {
+      title: "Legal Name",
       field: "legalName",
       headerSort: false,
       vertAlign: "middle"
     },
-    { 
-      title: "Year", 
+    {
+      title: "Year",
       field: "year",
       headerSort: false,
       vertAlign: "middle"
     },
-    { 
-      title: "Month", 
-      field: "month", 
+    {
+      title: "Month",
+      field: "month",
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         return this.monthAbbrPipe.transform(value);
@@ -49,23 +49,23 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       headerSort: false,
       vertAlign: "middle"
     },
-    { 
-      title: "Status", 
-      field: "status", 
+    {
+      title: "Status",
+      field: "status",
       formatter: (cell: CellComponent) => {
-        const value = cell.getValue();  
+        const value = cell.getValue();
         // Define colors for different status IDs
-        const statusColors: {[key: string]: {bg: string, text: string}} = {
+        const statusColors: { [key: string]: { bg: string, text: string } } = {
           "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
           "Overdue": { bg: "#E31A1C", text: "white" },      // Orange - Pendiente/Partially paid
           "Pending": { bg: "#E5B83E", text: "white" }       // Red - Open
         };
-        
+
         // Get colors for this status ID (or use defaults)    
-        const colors = (value && statusColors[value]) 
-          ? statusColors[value] 
+        const colors = (value && statusColors[value])
+          ? statusColors[value]
           : { bg: "#E0E0E0", text: "black" };
-        
+
         // Create a span with the specified styling
         return `<span style="
           color: ${colors.text}; 
@@ -84,16 +84,16 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       headerSort: false,
       vertAlign: "middle"
     },
-    { 
-      title: "Product", 
-      field: "product", 
+    {
+      title: "Product",
+      field: "product",
       formatter: (cell: CellComponent) => {
-        const value = cell.getValue();       
+        const value = cell.getValue();
         // Default styling (for current string-based product)
         let icon = '';
         let bgColor = '#E0E0E0';
         let textColor = 'black';
-        
+
         // Prepare for future structure with IDs
         if (value) {
           // Future structure: validate by ID
@@ -115,7 +115,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
               break;
           }
         }
-        
+
         // Create a span with the specified styling
         return `<span style="
           color: ${textColor}; 
@@ -133,10 +133,10 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       headerSort: false,
       vertAlign: "middle"
     },
-   
-    { 
-      title: "Amount", 
-      field: "amount", 
+
+    {
+      title: "Amount",
+      field: "amount",
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Format as currency
@@ -145,7 +145,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
           currency: 'MXN',
           minimumFractionDigits: 2
         }).format(value || 0);
-        
+
         // Add MXN after the amount
         return `${formattedValue} MXN`;
       },
@@ -153,9 +153,9 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       headerSort: false,
       vertAlign: "middle"
     },
-    { 
-      title: 'Action', 
-      field: 'actions', 
+    {
+      title: 'Action',
+      field: 'actions',
       formatter: (cell: CellComponent) => {
         // Generate HTML with the requested icons in a horizontal layout
         return `
@@ -169,12 +169,12 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       cellClick: (e: any, cell: CellComponent) => {
         // Get the clicked element
         const element = e.target as HTMLElement;
-        
+
         // Check if it's one of our action icons
         if (element.classList.contains('action-icon')) {
           const action = element.getAttribute('data-action');
           const row = cell.getRow().getData();
-          
+
           // Call the appropriate function based on the action
           switch (action) {
             case 'downloadPdf':
@@ -194,13 +194,9 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
     }
   ];
 
-
   constructor(
     private moduleService: BillingService
-  ){
-  }
-
-
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
@@ -214,18 +210,17 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('Billing history : filterData', this.filterData);
     this.getBillingHistory();
   }
 
-  getBillingHistory(){
+  getBillingHistory() {
     this.moduleService.getBillingHistory(this.filterData).subscribe({
       next: (response: GeneralPaginatedResponse<entity.HistoryBillResponse>) => {
         this.totalItems = response?.totalItems;
         console.log(response)
-        if(response.data[0]!= null){
+        if (response.data[0] != null) {
           this.bills = response.data[0].historyBillResponse
-        }else{
+        } else {
           this.bills = []
           this.pageIndex = 0;
         }
@@ -234,21 +229,20 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       error: error => {
         this.bills = []
         this.pageIndex = 0;
-
         console.log(error);
       }
     })
   }
 
-  getServerData(event: any){
+  getServerData(event: any) {
     console.log(event)
   }
 
   // Action methods for the icons
   downloadPdf(row: any): void {
     console.log('Download PDF clicked for:', row);
-    this.moduleService.downloadBilling(["pdf"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
+    this.moduleService.downloadBilling(["pdf"], [row.billingId.toString()]).subscribe({
+      next: (doc: Blob) => {
         console.log(doc)
         const url = window.URL.createObjectURL(doc);
         const a = document.createElement('a');
@@ -258,7 +252,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
         window.URL.revokeObjectURL(url);
         a.remove();
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err)
       }
     })
@@ -266,8 +260,8 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
 
   downloadXml(row: any): void {
     console.log('Download XML clicked for:', row);
-    this.moduleService.downloadBilling(["xml"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
+    this.moduleService.downloadBilling(["xml"], [row.billingId.toString()]).subscribe({
+      next: (doc: Blob) => {
         const url = window.URL.createObjectURL(doc);
         const a = document.createElement('a');
         a.href = url;
@@ -276,7 +270,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
         window.URL.revokeObjectURL(url);
         a.remove();
       },
-      error:(err)=>{
+      error: (err) => {
       }
     })
   }
