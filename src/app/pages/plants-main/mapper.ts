@@ -9,6 +9,11 @@ export class Mapper {
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
 		primaryElements.push({
+			title: 'RPU',
+			description: response.rpu
+		});
+
+		primaryElements.push({
 			title: 'Last connection timestamp',
 			description: formatsService.dateFormat(response.lastConnectionTimestamp)
 		});
@@ -18,24 +23,19 @@ export class Mapper {
 			description: formatsService.formatContractDuration(response.contractDuration)
 		});
 
-		additionalItems.push({
-			title: 'RPU',
-			description: response.rpu
+		primaryElements.push({
+			title: 'Commercial Operation Date (COD)',
+			description: formatsService.dateFormat(response.cod)
 		});
 
 		additionalItems.push({
-			title: 'Asset age (years)',
+			title: 'Asset age',
 			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
 		});
 
 		additionalItems.push({
-			title: 'Instalation date',
+			title: 'Install date',
 			description: formatsService.dateFormat(response.installDate)
-		});
-
-		additionalItems.push({
-			title: 'Commercial Operation Date (COD)',
-			description: formatsService.dateFormat(response.cod)
 		});
 
 		return {
@@ -264,13 +264,13 @@ export class Mapper {
 			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: 'Exported generation',
 			description: `${response.response.exportedGeneration?? "0.00"} kWh`,
 			extra: "+2% compared to the previous month"
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: 'CFE network consumption',
 			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
 			extra:'-4% compared to the previous month'
@@ -284,6 +284,7 @@ export class Mapper {
 		additionalItems.push({
 			title: 'Performance',
 			description: `${response.response.performance}%`,
+			extra:'% performance - calculated as (Generated / Esstimated)'
 		});
 
 		return {

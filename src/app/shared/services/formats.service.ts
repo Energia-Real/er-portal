@@ -124,6 +124,6 @@ export class FormatsService {
     const monthText = months ? `${months} month(s)` : '';
     const dayText = days ? `${days} day(s)` : '';
 
-    return [yearText, monthText, dayText].filter(Boolean).join(' ');
+    return [yearText, monthText].filter(Boolean).join(' ');
   }
 }
