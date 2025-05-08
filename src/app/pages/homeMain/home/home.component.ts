@@ -79,9 +79,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ];
 
-  lineChartDataES!: ChartConfiguration<'bar' | 'line'>['data'];
+  lineChartDataES!: ChartConfiguration<'bar' >['data'];
 
-  lineChartOptionsES: ChartOptions<'bar' | 'line'> = {
+  lineChartOptionsES: ChartOptions<'bar'> = {
     responsive: true,
     layout: {
       padding: {
@@ -94,23 +94,49 @@ export class HomeComponent implements OnInit, OnDestroy {
     plugins: {
       legend: {
         display: false
+      },
+      tooltip: {
+        usePointStyle: false, // Desactivamos el indicador de color predeterminado
+        callbacks: {
+          // Personalizamos la etiqueta para mostrar solo el título y el valor máximo
+          label: function(context) {
+            const rawValue = context.raw as [number, number]; // Aserción de tipo para context.raw
+            const maxValue = rawValue[1]; // Tomamos solo el valor máximo (segundo valor del array)
+            
+            return [
+              `${context.dataset.label}`, // Título del label
+              `$${maxValue.toLocaleString('en-US')}` // Valor resaltado
+            ];
+          }
+        },
+        displayColors: false, // Desactivamos los colores de visualización
+        padding: 10
       }
     },
 
     scales: {
       x: {
         type: 'category',
-        stacked: true,
+        //stacked: true,
         grid: {
           display: false,
 
         },
       },
       y: {
-
-        stacked: true,
+       // stacked: true,
         grid: {
           display: true,
+        },
+        ticks: {
+          callback: function (value, index, values) {
+            const numericValue = typeof value === 'number' ? value : parseFloat(value as string);
+  
+            if (!isNaN(numericValue)) {
+              return `$${numericValue.toLocaleString('en-US')}`;
+            }
+            return '';
+          },
         },
       },
 
@@ -301,7 +327,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           order: 2,
           maxBarThickness: 112,
         },
-        {
+        /* {
           type: 'line',
           data: [this.economicSavingsData.expensesWithoutEnergiaReal],
           label: 'Expenses without Energía Real (MXN)',
@@ -311,7 +337,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           pointBorderColor: 'rgba(239, 68, 68, 1)',
           pointRadius: 8,
           order: 1
-        }
+        } */
       ]
     };
   }
@@ -512,40 +538,36 @@ export class HomeComponent implements OnInit, OnDestroy {
           datasets: [
             {
               type: 'bar',
-              data: [response.response.cfeSubtotal],
+              data: [[0, response.response.cfeSubtotal]]  as any,
               label: 'CFE Subtotal (MXN)',
               backgroundColor: 'rgba(121, 36, 48, 1)',
-              maxBarThickness: 112,
+              maxBarThickness: 60,
             },
             {
               type: 'bar',
-              data: [response.response.energiaRealSubtotal],
+              data:  [[ response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal]]  as any,
               label: 'Energía Real Subtotal (MXN)',
               backgroundColor: 'rgba(238, 84, 39, 1)',
-              maxBarThickness: 112,
+              maxBarThickness: 60,
 
 
             },
             {
               type: 'bar',
-              data: [response.response.economicSaving],
+              data: [[response.response.energiaRealSubtotal + response.response.cfeSubtotal,response.response.energiaRealSubtotal + response.response.cfeSubtotal + response.response.economicSaving]] as any,
               label: 'Economic Savings (MXN)',
               backgroundColor: 'rgba(87, 177, 177, 1)',
-              order: 2,
-              maxBarThickness: 112,
+              maxBarThickness: 60,
 
             },
             {
-              type: 'line',
-              data: [response.response.expensesWithoutEnergiaReal],
-              label: 'Expenses Without Energía Real (MXN)',
+              type: 'bar',
+              data: [[0, response.response.expensesWithoutEnergiaReal]] as any,
+              label: 'Expenses without Energía Real (MXN)',
               backgroundColor: 'rgba(239, 68, 68, 1)',
-              borderColor: 'rgba(239, 68, 68, 1)',
-              pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-              pointBorderColor: 'rgba(239, 68, 68, 1)',
-              pointRadius: 8,
-              order: 1
-            }
+              maxBarThickness: 60,
+            },
+           
           ]
         };
         this.displayChartES = true;
