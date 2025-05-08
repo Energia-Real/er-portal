@@ -1,0 +1,16 @@
+.table-container {
+    // Aqui van dentro todas las clases de la tabla
+    height: calc(100vh - 380px);
+
+    .tabulator {
+        max-height: unset !important;
+        height: 100% !important;
+    }
+
+    .wrap-text-cell {
+        white-space: normal !important;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        line-height: 1.4;
+    }
+}

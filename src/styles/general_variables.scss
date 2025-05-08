@@ -607,6 +607,18 @@ select:focus {
     width: 210px !important;
 }
 
+.btn-without-border {
+    color: #EE6A0A;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 120px;
+    height: 42.6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 .btn-action-add {
     min-width: 120px;
     background: #f56e46 !important;

@@ -11,7 +11,7 @@
     <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
         [invoice]="drawerInfo"></app-modal-invoice-details>
 
-    <div class="table-container" *ngIf="bills">
+    <div class="table-container" *ngIf="bills?.length">
         <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
     </div>
 </div>

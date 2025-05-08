@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <div class="separator-cards"></div>
+                <div class="separator-cards m-0"></div>
 
                 <div *ngFor="let data of savingDetails?.additionalItems; let isLast = last" class="c-card-33">
                     <div class="card-info">
@@ -30,7 +30,7 @@
             <div class="highcharts">
                 <div class="charts">
                     <div class="graphic-savings" *ngIf="displayChart">
-                        <canvas id="myChart"  baseChart [type]="'bar'" [data]="lineChartData"
+                        <canvas id="myChart" baseChart [type]="'bar'" [data]="lineChartData"
                             [options]="lineChartOptions">
                         </canvas>
                     </div>
