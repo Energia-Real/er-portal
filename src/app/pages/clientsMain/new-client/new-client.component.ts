@@ -17,10 +17,10 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
-    selector: 'app-new-client',
-    templateUrl: './new-client.component.html',
-    styleUrl: './new-client.component.scss',
-    standalone: false
+  selector: 'app-new-client',
+  templateUrl: './new-client.component.html',
+  styleUrl: './new-client.component.scss',
+  standalone: false
 })
 export class NewClientComponent implements OnInit, OnDestroy {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
@@ -37,7 +37,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   get client(): any | null | undefined { return this._client }
 
   @Input() isOpen = false;
-  @Input() modeDrawer: "Edit" | "Create" = "Create";
+  @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
   @Input() set client(editedData: any | null | undefined) {
     if (editedData) {
       this.editedClient = editedData;

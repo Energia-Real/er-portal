@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
-import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { ColumnDefinition, CellComponent, Options } from 'tabulator-tables';
 import { BillingService } from '../../billing.service';
 import { Bill, CurrentBillResponse } from '../../billing-model';
 import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 @Component({
   selector: 'app-current-billing',
@@ -21,11 +23,10 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
 
-  bills!: Bill[] ;
+  bills!: Bill[];
   private monthAbbrPipe = new MonthAbbreviationPipe();
 
-  tableConfig!:Options;
-
+  tableConfig!: Options;
 
   columns: ColumnDefinition[] = [
     {
@@ -33,14 +34,14 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
       field: "legalName",
       headerSort: false,
       vertAlign: "middle",
-      minWidth:150,
+      minWidth: 150,
     },
     {
       title: "Year",
       field: "year",
       headerSort: false,
       vertAlign: "middle",
-      minWidth:80,
+      minWidth: 80,
     },
     {
       title: "Month",
@@ -51,16 +52,16 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
       },
       headerSort: false,
       vertAlign: "middle",
-      minWidth:80,
+      minWidth: 80,
     },
     {
       title: "Status",
       field: "status",
-      minWidth:105,
+      minWidth: 105,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Define colors for different status IDs
-        const statusColors: {[key: string]: {bg: string, text: string}} = {
+        const statusColors: { [key: string]: { bg: string, text: string } } = {
           "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
           "Overdue": { bg: "#E31A1C", text: "white" },      // Orange - Pendiente/Partially paid
           "Pending": { bg: "#E5B83E", text: "white" }       // Red - Open
@@ -92,7 +93,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     {
       title: "Product",
       field: "product",
-      minWidth:120,
+      minWidth: 120,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Default styling (for current string-based product)
@@ -143,7 +144,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     {
       title: "Amount",
       field: "amount",
-      minWidth:120,
+      minWidth: 120,
       formatter: (cell: CellComponent) => {
         const value = cell.getValue();
         // Format as currency
@@ -203,13 +204,18 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     }
   ];
 
+  drawerOpenSub: Subscription;
+  drawerOpenID: boolean = false;
+  drawerAction: "Create" | "Edit" | "View" = "Create";
+  drawerInfo: any | null | undefined = null;
+
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private moduleServices: BillingService,
   ) {
     this.tableConfig = {
       maxHeight: 280,
-      layout:"fitColumns",
+      layout: "fitColumns",
       columns: this.columns,
       movableColumns: true,
     }
@@ -222,6 +228,15 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
         this.generalFilters = generalFilters;
         this.getBilling();
       });
+
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
+      this.drawerOpenID = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+    });
+  }
+
+  ngOnInit(): void {
   }
 
   getBilling() {
@@ -240,20 +255,10 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-    // No initialization needed as the table component handles everything internally
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-  }
-
   // Action methods for the icons
   downloadPdf(row: any): void {
-    console.log('Download PDF clicked for:', row);
-    this.moduleServices.downloadBilling(["pdf"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
+    this.moduleServices.downloadBilling(["pdf"], [row.billingId.toString()]).subscribe({
+      next: (doc: Blob) => {
         console.log(doc)
         const url = window.URL.createObjectURL(doc);
         const a = document.createElement('a');
@@ -263,16 +268,15 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
         window.URL.revokeObjectURL(url);
         a.remove();
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err)
       }
     })
   }
 
   downloadXml(row: any): void {
-    console.log('Download XML clicked for:', row);
-    this.moduleServices.downloadBilling(["xml"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
+    this.moduleServices.downloadBilling(["xml"], [row.billingId.toString()]).subscribe({
+      next: (doc: Blob) => {
         const url = window.URL.createObjectURL(doc);
         const a = document.createElement('a');
         a.href = url;
@@ -281,16 +285,30 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
         window.URL.revokeObjectURL(url);
         a.remove();
       },
-      error:(err)=>{
+      error: (err) => {
       }
     })
   }
 
   viewDetails(row: any): void {
-    console.log('View Details clicked for:', row);
+    let objData: any = {
+      id: ''
+    }
+
+    this.drawerInfo = row
+    this.updDraweStateView(true);
+  }
+
+  updDraweStateView(estado: boolean): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "View", drawerInfo: this.drawerInfo, needReload: false }));
   }
 
   descargarTabla(tipo: string) {
     this.tabulatorTable.download(tipo);
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

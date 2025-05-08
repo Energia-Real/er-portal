@@ -58,7 +58,7 @@ export class PreviousBillingV2Component implements OnInit, OnDestroy {
 
   showAlert: boolean = false;
   drawerOpen: boolean = false;
-  drawerAction: "Create" | "Edit" = "Create";
+  drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
   generalFilters!: GeneralFilters

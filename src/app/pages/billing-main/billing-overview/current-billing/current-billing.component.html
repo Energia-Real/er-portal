@@ -4,11 +4,13 @@
         <div class="section-header section-untitled" (click)="descargarTabla('csv')">
             <span>
                 Download all CSV
-            </span> 
+            </span>
         </div>
     </div>
-   
-    
+
+    <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
+        [invoice]="drawerInfo"></app-modal-invoice-details>
+
     <div class="table-container" *ngIf="bills">
         <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
     </div>

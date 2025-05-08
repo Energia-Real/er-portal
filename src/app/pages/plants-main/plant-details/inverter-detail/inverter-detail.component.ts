@@ -11,10 +11,10 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 
 @Component({
-    selector: 'app-inverter-detail',
-    templateUrl: './inverter-detail.component.html',
-    styleUrl: './inverter-detail.component.scss',
-    standalone: false
+  selector: 'app-inverter-detail',
+  templateUrl: './inverter-detail.component.html',
+  styleUrl: './inverter-detail.component.scss',
+  standalone: false
 })
 export class InverterDetailComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -32,7 +32,7 @@ export class InverterDetailComponent implements OnInit, OnDestroy {
   images: string[] = [];
   renderedImage: string | null = null;
   materialIcon: string = 'edit';
-  drawerAction: "Create" | "Edit" = "Create";
+  drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: entity.Equipment | null | undefined = null;
   instalations!: entity.Instalations;
   needReload: boolean = false;

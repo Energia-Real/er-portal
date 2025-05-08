@@ -21,10 +21,10 @@ import { NotificationDataService } from '@app/shared/services/notificationData.s
 
 
 @Component({
-    selector: 'app-energy-production',
-    templateUrl: './energy-production.component.html',
-    styleUrl: './energy-production.component.scss',
-    standalone: false
+  selector: 'app-energy-production',
+  templateUrl: './energy-production.component.html',
+  styleUrl: './energy-production.component.scss',
+  standalone: false
 })
 export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
@@ -67,7 +67,7 @@ export class EnergyProductionComponent implements OnDestroy, AfterViewInit {
   ];
 
   drawerOpenPlant: boolean = false;
-  drawerAction: "Create" | "Edit" = "Create";
+  drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
   editedClient: any;
