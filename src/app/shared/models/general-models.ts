@@ -34,6 +34,10 @@ export interface UserInfo {
     nombres: string,
     apellidos: string
   },
+  pendoIntegration:{
+    clientID: string,
+    clientName: string
+  }
   clientes: string[],
   accessTo: string
 }
