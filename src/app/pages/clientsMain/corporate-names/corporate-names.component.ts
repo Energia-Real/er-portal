@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { selectClientName, selectCorporateClient } from '@app/core/store/selectors/drawer.selector';
 import { Store } from '@ngrx/store';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { ClientsService } from '../clients.service';
 import { corporate, DataCorporateResponse, PlantWhitoutCorporate } from '../clients-model';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
@@ -12,6 +12,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { EditCorporateNameComponent } from '../edit-corporate-name/edit-corporate-name.component';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-corporate-names',
@@ -53,6 +54,7 @@ export class CorporateNamesComponent implements OnInit, OnDestroy {
     private encryptionService: EncryptionService,
     private dialog: MatDialog,
     public editDialog: MatDialog,
+    private translationService: TranslationService
   ) {
     this.drawerClientSub = this.store.select(selectCorporateClient).subscribe(resp => {
       this.getCorporateData(resp!)
@@ -64,6 +66,14 @@ export class CorporateNamesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        if (this.clientId) {
+          this.getCorporateData(this.clientId);
+        }
+      });
   }
 
   closeDrawer() {

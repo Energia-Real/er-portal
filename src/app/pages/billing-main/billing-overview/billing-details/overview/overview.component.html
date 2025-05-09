@@ -1,6 +1,6 @@
 <div class="c-overview">
     <div>
-        <h1 class="label-700-24">Energy summary</h1>
+        <h1 class="label-700-24">{{ 'FACTURACION.RESUMEN_ENERGIA' | translate }}</h1>
         <div class="grid grid-cols-1 md:grid-cols-4 ">
 
             <div class="col-span-1 md:col-span-3">
@@ -11,27 +11,27 @@
 
             <div class="col-span-1 md:col-span-1 flex md:flex-col items-end flex-wrap">
                 <div class="card-balance">
-                    <h1>Balance:</h1>
+                    <h1>{{ 'FACTURACION.BALANCE' | translate }}</h1>
                     <h2>+ {{balance}}</h2>
                 </div>
 
                 <button class="btn-show-all-gray" [ngClass]="buttonClass" (click)="showAllDatasets()">
                     <span class="material-symbols-outlined">visibility</span>
-                    Show all
+                    {{ 'FACTURACION.MOSTRAR_TODO' | translate }}
                 </button>
 
                 <div class="c-labels-overview">
                     <div (click)="toggleDataset(0)" [class.inactive]="!datasetVisibility[0]">
                         <span></span>
-                        <h1>Energy Produced (kWh)</h1>
+                        <h1>{{ 'FACTURACION.ENERGIA_PRODUCIDA' | translate }}</h1>
                     </div>
                     <div (click)="toggleDataset(1)" [class.inactive]="!datasetVisibility[1]">
                         <span></span>
-                        <h1>Energy Billed (kWh)</h1>
+                        <h1>{{ 'FACTURACION.ENERGIA_FACTURADA' | translate }}</h1>
                     </div>
                     <div (click)="toggleDataset(2)" [class.inactive]="!datasetVisibility[2]">
                         <span></span>
-                        <h1>Total Amount</h1>
+                        <h1>{{ 'FACTURACION.MONTO_TOTAL' | translate }}</h1>
                     </div>
                 </div>
 

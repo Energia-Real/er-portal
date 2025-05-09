@@ -6,6 +6,7 @@ import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { Mapper } from './mapper';
 import { DataResponseArraysMapper, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,8 @@ export class PlantsService implements OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private formatsService: FormatsService
+    private formatsService: FormatsService,
+    private translationService: TranslationService
   ) { }
 
   getDataById(id: string | null): Observable<entity.DataPlant> {
@@ -37,7 +39,7 @@ export class PlantsService implements OnDestroy {
       .get<entity.DataResponseDetailsClient>(url)
       .pipe(
         map((response) =>
-          Mapper.getDataRespOverviewMapper(response, this.formatsService)
+          Mapper.getDataRespOverviewMapper(response, this.formatsService, this.translationService)
         )
       );
   }
@@ -66,7 +68,7 @@ export class PlantsService implements OnDestroy {
       .get<entity.DataSiteDetails>(url)
       .pipe(
         map((response) =>
-          Mapper.getSiteDetailsMapper(response, this.formatsService)
+          Mapper.getSiteDetailsMapper(response, this.formatsService, this.translationService)
         )
       );
   }
@@ -78,7 +80,7 @@ export class PlantsService implements OnDestroy {
 
     return this.http
       .post<any>(url, filters)
-      .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService)));
+      .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService, this.translationService)));
   }
 
   getSitePerformanceDetails(
@@ -91,7 +93,7 @@ export class PlantsService implements OnDestroy {
       .set('endDate', filters.endDate!);
     return this.http
       .get<any>(url, { params })
-      .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService)));
+      .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService, this.translationService)));
   }
 
   /* getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
@@ -223,7 +225,7 @@ export class PlantsService implements OnDestroy {
     const url = `${this.API_URL_PERFORMANCE}/equipments/${plantCode}`;
     return this.http
       .get<entity.Instalations>(url)
-      .pipe(map((response) => Mapper.getInstalacionesMapper(response)));
+      .pipe(map((response) => Mapper.getInstalacionesMapper(response, this.translationService)));
   }
 
   getInverterMonitoring(

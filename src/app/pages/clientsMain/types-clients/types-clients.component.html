@@ -2,25 +2,24 @@
   c-modal-lateral-padd" [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
     <div class="return-bar-container">
         <button class="button-transparent" type="button" (click)="closeDrawer()">
-            <i class="fa-solid fa-angles-left" matTooltip="Go back"></i>
+            <i class="fa-solid fa-angles-left" matTooltip="{{ 'CLIENTES.VOLVER' | translate }}"></i>
         </button>
     </div>
     <div class="mx-auto text-center w-full">
-        <h2 class="m-0">Types of clients</h2>
+        <h2 class="m-0">{{ 'CLIENTES.TIPOS_DE_CLIENTES' | translate }}</h2>
 
         <form class="p-3">
             <div class="mb-0">
                 <div class="gap-x-6 gap-y-2">
-                    <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{this.editedClient?.id ? 'Edit' :
-                        'Add new'}} client type</h2>
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{this.editedClient?.id ? 
+                        ('CLIENTES.EDITAR' | translate) : ('CLIENTES.AGREGAR_NUEVO' | translate)}} {{ 'CLIENTES.TIPO_DE_CLIENTE_SINGULAR' | translate }}</h2>
                     <div class="flex gap-x-6 gap-y-4">
                         <div class="width-50">
                             <div class="c-input mb-0">
-                                <p class="font-medium text-gray-700">Name of client type:</p>
+                                <p class="font-medium text-gray-700">{{ 'CLIENTES.NOMBRE_TIPO_CLIENTE' | translate }}:</p>
                                 <mat-form-field appearance="outline" class="w-full input-ER">
-                                    <input [formControl]="description" placeholder="Name of client type" matInput>
-                                    <mat-error *ngIf="description?.hasError('required')">You must add name of client
-                                        type.</mat-error>
+                                    <input [formControl]="description" placeholder="{{ 'CLIENTES.NOMBRE_TIPO_CLIENTE' | translate }}" matInput>
+                                    <mat-error *ngIf="description?.hasError('required')">{{ 'CLIENTES.DEBE_AGREGAR_NOMBRE_TIPO' | translate }}</mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -30,18 +29,18 @@
                                     <button class="btn-action-add" (click)="actionSave()">
                                         <i
                                             [class]="this.editedClient?.id ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
-                                        {{ this.editedClient ? 'Edit' : 'Save' }}
+                                        {{ this.editedClient ? ('CLIENTES.EDITAR' | translate) : ('CLIENTES.GUARDAR' | translate) }}
                                     </button>
                                 </div>
 
                                 <button class="btn-cancel" *ngIf="description?.value?.trim() || editedClient"
-                                    (click)="cancelEdit()" type="button">Cancel</button>
+                                    (click)="cancelEdit()" type="button">{{ 'CLIENTES.CANCELAR' | translate }}</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-span-1 md:col-span-1">
-                    <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">Existing Client Types</h2>
+                    <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ 'CLIENTES.TIPOS_EXISTENTES' | translate }}</h2>
                 </div>
             </div>
         </form>
@@ -53,7 +52,7 @@
 
                     <ng-container matColumnDef="tipo">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <p class="header-table">Name of the client</p>
+                            <p class="header-table">{{ 'CLIENTES.NOMBRE_CLIENTE' | translate }}</p>
                         </th>
                         <td mat-cell *matCellDef="let element"> {{ element?.tipo || element.tipo }}
                         </td>
@@ -61,19 +60,19 @@
 
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <p class="header-table">Actions</p>
+                            <p class="header-table">{{ 'CLIENTES.ACCIONES' | translate }}</p>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="editTable(element)">Edit</button>
+                                <button mat-menu-item (click)="editTable(element)">{{ 'CLIENTES.EDITAR' | translate }}</button>
                             </mat-menu>
                         </td>
                     </ng-container>
 
                     <tr *matNoDataRow>
                         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                            <h5 class="text-center my-5">No results found.</h5>
+                            <h5 class="text-center my-5">{{ 'CLIENTES.SIN_RESULTADOS' | translate }}</h5>
                         </td>
                     </tr>
 
