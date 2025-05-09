@@ -111,6 +111,9 @@
             }
           },
           "options": {
+            "ssl": true,
+            "sslKey": "localhost-key.pem",
+            "sslCert": "localhost.pem",
             "port": 9000
           },
           "defaultConfiguration": "development"
