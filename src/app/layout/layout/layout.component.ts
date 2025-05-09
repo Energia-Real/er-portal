@@ -52,11 +52,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
         this.translationService.setLanguage(data.language);
       }
       if (typeof pendo !== 'undefined') {
-        pendo.initialize({
+        pendo.initialize({  
           visitor: {
             id: this.userInfo.email,
             firstName: this.userInfo?.persona?.nombres || '',
             lastName: this.userInfo?.persona?.apellidos || ''
+          }, 
+          account: { 
+            id: this.userInfo?.pendoIntegration?.clientID || '', 
+            name: this.userInfo?.pendoIntegration?.clientName || '', 
           }
         });
       } else {
