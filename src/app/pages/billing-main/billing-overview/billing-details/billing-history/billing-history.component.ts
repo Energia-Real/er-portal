@@ -217,7 +217,9 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-
+  ngOnInit(): void {
+    this.getBillingHistory();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
@@ -228,10 +230,6 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
         this.getBillingHistory();
       }
     }
-  }
-
-  ngOnInit(): void {
-    this.getBillingHistory();
   }
 
   getBillingHistory() {

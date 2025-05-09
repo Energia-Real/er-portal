@@ -22,6 +22,7 @@ import { SitesComponent } from './billing-overview/billing-details/sites/sites.c
 import { BillingInformationComponent } from './billing-overview/billing-details/billing-information/billing-information.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ModalInvoiceDetailsComponent } from './billing-overview/current-billing/modal-invoice-details/modal-invoice-details.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { ModalInvoiceDetailsComponent } from './billing-overview/current-billing
     MaterialModule,
     InfoCardComponent,
     MessageNoDataComponent,
-    NgChartsModule
+    NgChartsModule,
+    NgxSkeletonLoaderModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

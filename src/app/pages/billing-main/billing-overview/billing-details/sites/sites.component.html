@@ -1,9 +1,19 @@
 <div class="c-sites card-content-section">
     <div class="table-container" *ngIf="sites?.length">
-        <app-tabulator-table [data]="sites" [config]="tableConfig"></app-tabulator-table>
-        <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
-            aria-label="Select page of periodic elements">
-        </mat-paginator>
+        <ng-container *ngIf="sites?.length; else loadingSkeleton">
+            <app-tabulator-table [data]="sites" [config]="tableConfig"></app-tabulator-table>
+            <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </ng-container>
     </div>
 </div>
+
+<ng-template #loadingSkeleton>
+    <div class="flex flex-col dataSC">
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+          'border-radius': '32.5px'
+        }"></ngx-skeleton-loader>
+    </div>
+</ng-template>

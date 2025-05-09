@@ -11,7 +11,17 @@
     <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
         [invoice]="drawerInfo"></app-modal-invoice-details>
 
-    <div class="table-container" *ngIf="bills?.length">
-        <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
+    <div class="table-container">
+        <ng-container *ngIf="bills?.length; else loadingSkeleton">
+            <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
+        </ng-container>
     </div>
 </div>
+
+<ng-template #loadingSkeleton>
+    <div class="flex flex-col dataSC">
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+          'border-radius': '32.5px'
+        }"></ngx-skeleton-loader>
+    </div>
+</ng-template>
