@@ -5,6 +5,16 @@ export interface DataTableBillingResponse {
   errors: any[];
 }
 
+export interface InvoiceDetailsTableRow {
+  production: number;
+  concept: string;
+  description: string;
+  unitValue: number;
+  taxes: number;
+  amount: number;
+}
+
+
 export interface BillingResponse {
   pageSize: number;
   page: number;

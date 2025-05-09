@@ -1,7 +1,8 @@
 import { Subject } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ColumnDefinition, CellComponent, Options } from 'tabulator-tables';
+import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
+import * as entity from '../../../billing-model';
 
 @Component({
   selector: 'app-modal-invoice-details',
@@ -18,22 +19,25 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
     console.log(invoiceData);
   }
 
-  invoicesDetails!: any[];
-  tableConfig!: Options;
+  invoicesDetails: entity.InvoiceDetailsTableRow [] = [];
+  tableConfig: Options = {};
   
   constructor(private invoiceTableService: InvoiceTableService) {}
 
   ngOnInit(): void {
-      const { columns, options } = this.invoiceTableService.getTableColumnsWithActions({
-        downloadPdf: (row) => this.downloadPdf(row),
-        downloadXml: (row) => this.downloadXml(row),
-        viewDetails: (row) => this.viewDetails(row)
-      });
+      // const { columns, options } = this.invoiceTableService.getTableOptionsInvoiceDetails({
+      //   downloadPdf: (row:entity.InvoiceDetailsTableRow ) => this.downloadPdf(row),
+      //   downloadXml: (row:entity.InvoiceDetailsTableRow ) => this.downloadXml(row),
+      //   viewDetails: (row:entity.InvoiceDetailsTableRow ) => this.viewDetails(row)
+      // });
     
-      this.tableConfig = {
-        ...options, // Esto incluye las opciones de la tabla como maxHeight, layout, etc.
-        columns: columns // Esto incluye las columnas con acciones
-      };
+      // this.tableConfig = {
+      //   ...options, // Esto incluye las opciones de la tabla como maxHeight, layout, etc...
+      //   columns: columns // Esto incluye las columnas con acciones
+      // };
+
+     
+    this.tableConfig = this.invoiceTableService.getTableOptionsInvoiceDetails()
     
     setTimeout(() => {
       this.invoicesDetails = [
@@ -89,15 +93,18 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
-  downloadPdf(row: any) {
+  downloadPdf(row: entity.InvoiceDetailsTableRow ) {
+    console.log(row);
     console.log('downloadPdf');
   }
   
-  downloadXml(row: any) {
+  downloadXml(row: entity.InvoiceDetailsTableRow ) {
+    console.log(row);
     console.log('downloadXml');
     
   }
-  viewDetails(row: any) {
+  viewDetails(row: entity.InvoiceDetailsTableRow ) {
+    console.log(row);
     console.log('viewDetails');
   }
 

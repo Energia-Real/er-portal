@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { CellComponent, ColumnDefinition, Options } from "tabulator-tables";
+import * as entity from './billing-model';
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceTableService {
@@ -61,10 +62,19 @@ export class InvoiceTableService {
     ];
   }
 
+  getTableOptionsInvoiceDetails(): Options {
+    return {
+      maxHeight: 280,
+      layout: "fitColumns",
+      columns: this.getTableColumnsInvoiceDetails(),
+      movableColumns: true,
+    };
+  }
+
   getTableColumnsWithActions(callbacks: {
-    downloadPdf: (row: any) => void,
-    downloadXml: (row: any) => void,
-    viewDetails: (row: any) => void
+    downloadPdf: (row: entity.InvoiceDetailsTableRow ) => void,
+    downloadXml: (row: entity.InvoiceDetailsTableRow ) => void,
+    viewDetails: (row: entity.InvoiceDetailsTableRow ) => void
   }): { columns: ColumnDefinition[], options: Options } {
     // Definimos las columnas
     const columns: ColumnDefinition[] = [
@@ -86,7 +96,8 @@ export class InvoiceTableService {
           const element = e.target as HTMLElement;
           if (element.classList.contains('action-icon')) {
             const action = element.getAttribute('data-action');
-            const row = cell.getRow().getData();
+            const row = cell.getRow().getData() as entity.InvoiceDetailsTableRow ;
+           
             switch (action) {
               case 'downloadPdf':
                 callbacks.downloadPdf(row);
