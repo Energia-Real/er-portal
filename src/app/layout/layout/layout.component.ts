@@ -6,6 +6,7 @@ import { UserInfo } from '@app/shared/models/general-models';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { Module } from '@app/layout/layout/modules.interface';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 
 declare const pendo: any;
@@ -30,7 +31,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private encryptionService: EncryptionService,
     private route: ActivatedRoute,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public translationService: TranslationService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd), takeUntil(this.onDestroy$))
@@ -46,6 +48,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
       console.log(data);
       
       this.userInfo = data;
+      if(data.language){
+        this.translationService.setLanguage(data.language);
+      }
       if (typeof pendo !== 'undefined') {
         pendo.initialize({
           visitor: {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { corporate, corporatePlant, DataPostRazonSocial, PlantWhitoutCorporate } from '../clients-model';
 import { ClientsService } from '../clients.service';
@@ -10,6 +10,8 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { FormBuilder, Validators } from '@angular/forms';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -18,7 +20,8 @@ import { FormBuilder, Validators } from '@angular/forms';
     styleUrl: './edit-corporate-name.component.scss',
     standalone: false
 })
-export class EditCorporateNameComponent implements OnInit{
+export class EditCorporateNameComponent implements OnInit, OnDestroy {
+  private onDestroy$ = new Subject<void>();
 
   ADD=NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
   CANCEL=NOTIFICATION_CONSTANTS.CANCEL_TYPE;
@@ -58,9 +61,7 @@ export class EditCorporateNameComponent implements OnInit{
             public notificationDialog: MatDialog,
             private dialogRef: MatDialogRef<EditCorporateNameComponent>,
             private fb: FormBuilder,
-            
-
-    
+            private translationService: TranslationService
   ){
     setTimeout(() => {
       this.cdr.detectChanges(); // Fuerza la actualización del HTML
@@ -70,6 +71,17 @@ export class EditCorporateNameComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.getPlantsWithoutRS();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
 

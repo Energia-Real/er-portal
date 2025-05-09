@@ -20,7 +20,7 @@
                         </div>
                         <mat-spinner *ngIf="uploadState=='Loading'" class="mr-4" diameter="35"></mat-spinner>
                         <div class="flex items-center justify-center">
-                            <p class="text-step ">Load</p>
+                            <p class="text-step ">{{ 'MODELO_FINANCIERO.CARGAR' | translate }}</p>
                         </div>
                     </div>
                 </ng-template>
@@ -41,7 +41,7 @@
                         </div>
                         <mat-spinner *ngIf="validationState=='Loading'" class="mr-4" diameter="35"></mat-spinner>
                         <div class="flex items-center justify-center">
-                            <p class="text-step ">Validation</p>
+                            <p class="text-step ">{{ 'MODELO_FINANCIERO.VALIDACION' | translate }}</p>
                         </div>
                     </div>
                 </ng-template>
@@ -63,7 +63,7 @@
                         </div>
                         <mat-spinner *ngIf="executionState=='Loading'" class="mr-4" diameter="35"></mat-spinner>
                         <div class="flex items-center justify-center">
-                            <p class="text-step ">Execution</p>
+                            <p class="text-step ">{{ 'MODELO_FINANCIERO.EJECUCION' | translate }}</p>
                         </div>
                     </div>
                 </ng-template>
@@ -79,7 +79,7 @@
                                 alt="Step Icon">
                         </div>
                         <div class="flex items-center justify-center">
-                            <p class="text-step ">Result</p>
+                            <p class="text-step ">{{ 'MODELO_FINANCIERO.RESULTADO' | translate }}</p>
                         </div>
                     </div>
 
@@ -93,7 +93,7 @@
     <div *ngIf="errors">
         <div *ngFor="let errorKey of objectKeys(errors)" class="errors w-100 c-card-section mb-6">
             <div class="message-status">
-                Errors in scenario: {{errorKey}}
+                {{ 'MODELO_FINANCIERO.ERRORES_ESCENARIO' | translate: { errorKey: errorKey } }}
             </div>
             <div *ngFor="let errorMessage of errors[errorKey]">
                 <div class="message-status mt-2">
@@ -105,19 +105,19 @@
 
     <div class="flex justify-center mb-6 message-status_success" *ngIf="processStatus=='Loading' || processStatus=='Success'">
         <div [ngClass]="{'Success': processStatus === 'Success'}">
-            Progress: {{progress}} out of 100 completed.
+            {{ 'MODELO_FINANCIERO.PROGRESO' | translate: { progress: progress } }}
         </div>
     </div>
 
     <div class="flex justify-center">
         <div *ngIf="processStatus=='Error'" class="message-status mb-6">
-            Check the errors before trying again.
+            {{ 'MODELO_FINANCIERO.REVISAR_ERRORES' | translate }}
         </div>
         <div *ngIf="processStatus=='Loading'" class="message-status_success mb-6">
-            Your process is in progress, and staying on this page will allow it to complete successfully.
+            {{ 'MODELO_FINANCIERO.PROCESO_EN_PROGRESO' | translate }}
         </div>
         <div *ngIf="processStatus=='Success'" class="message-status_success mb-6">
-            Your process has been successfully completed. You can now view your file.
+            {{ 'MODELO_FINANCIERO.PROCESO_COMPLETADO' | translate }}
         </div>
     </div>
     <div>
@@ -125,13 +125,13 @@
     </div>
     <div class="flex justify-center my-6">
         <button *ngIf="processStatus=='Loading'" class="btn-cancel" (click)="cancelProccess()">
-            Cancel
+            {{ 'MODELO_FINANCIERO.CANCELAR' | translate }}
         </button>
         <button *ngIf="processStatus=='Success'" class="btn-action-add" (click)="completeProccess()">
-            Continue
+            {{ 'MODELO_FINANCIERO.CONTINUAR' | translate }}
         </button>
         <button *ngIf="processStatus=='Error'" class="btn-action-back" (click)="cancelProccess()">
-            Back
+            {{ 'MODELO_FINANCIERO.ATRAS' | translate }}
         </button>
     </div>
 

@@ -16,6 +16,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { UserInfo } from '@app/shared/models/general-models';
 import { FormBuilder } from '@angular/forms';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-plant-detail',
@@ -208,6 +209,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
     private dialog: MatDialog,
+    private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {

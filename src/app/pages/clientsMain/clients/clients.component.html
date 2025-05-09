@@ -6,7 +6,7 @@
                     <label class="input-search">
                         <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
                     </label>
-                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="Search by client name"
+                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="{{ 'CLIENTES.BUSCAR_CLIENTE' | translate }}"
                         [formControl]="searchBar">
                 </form>
             </div>
@@ -15,12 +15,12 @@
                 <div class="flex justify-end gap-2 mt-3 md:mt-0">
                     <button class="btn-cancel flex gap-2 items-center" (click)="toggleDrawer('typeClients')" type="button">
                         <i class="fa-solid fa-eye"></i>
-                        See types of clients
+                        {{ 'CLIENTES.VER_TIPOS_CLIENTES' | translate }}
                     </button>
 
                     <button class="btn-action-add" (click)="toggleDrawer('client')">
                         <i class="fa-solid fa-plus"></i>
-                        Add new client
+                        {{ 'CLIENTES.AGREGAR_CLIENTE' | translate }}
                     </button>
                 </div>
             </div>
@@ -35,7 +35,7 @@
         <div class="separator-cards mt-4 mb-4"></div>
 
         <div class="c-paginator-top mt-5">
-            <strong>Items</strong>
+            <strong>{{ 'CLIENTES.ELEMENTOS' | translate }}</strong>
             <mat-form-field>
                 <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize($event)">
                     <mat-option *ngFor="let size of pageSizeOptions" [value]="size"><strong>{{ size
@@ -48,7 +48,7 @@
                 <table mat-table [dataSource]="dataSource" matSort class="table-content">
                     <ng-container matColumnDef="image">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Logo</div>
+                            <div class="target w-24">{{ 'CLIENTES.LOGO' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element" style="width: 100px;">
                             <img [src]="element.imageBase64" *ngIf="element.imageBase64" alt="Client Image" />
@@ -57,14 +57,14 @@
 
                     <ng-container matColumnDef="clientName">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Client name</div>
+                            <div class="target w-24">{{ 'CLIENTES.NOMBRE_CLIENTE' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element"> {{ element?.nombre }} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="clientId">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">ID client</div>
+                            <div class="target w-24">{{ 'CLIENTES.ID_CLIENTE' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.clientId else notDataTable"> {{ element.clientId }} </div>
@@ -73,7 +73,7 @@
 
                     <ng-container matColumnDef="typeClient">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Type of client</div>
+                            <div class="target w-24">{{ 'CLIENTES.TIPO_CLIENTE' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.tipoDeCliente?.id else notDataTable"> {{ element?.tipoDeCliente?.tipo
@@ -84,7 +84,7 @@
 
                     <ng-container matColumnDef="corporateName">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Corporate Name</div>
+                            <div class="target w-24">{{ 'CLIENTES.RAZON_SOCIAL' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.razonSocialCount!=0 else notCorporateName">
@@ -94,7 +94,7 @@
                                 </div>
                                 <div *ngIf="element?.razonSocialCount>1" class="check-razon-social cursor-pointer"
                                     (click)="toggleDrawer ('corporate', element)">
-                                    Multiple Corporate Names
+                                    {{ 'CLIENTES.MULTIPLES_RAZONES_SOCIALES' | translate }}
                                 </div>
                             </div>
                         </td>
@@ -102,19 +102,19 @@
 
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef>
-                            <div class="target w-24">Actions</div>
+                            <div class="target w-24">{{ 'CLIENTES.ACCIONES' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="editClient(element)">Edit</button>
+                                <button mat-menu-item (click)="editClient(element)">{{ 'CLIENTES.EDITAR' | translate }}</button>
                             </mat-menu>
                         </td>
                     </ng-container>
 
                     <tr *matNoDataRow>
                         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                            <h5 class="text-center my-5">No results found.</h5>
+                            <h5 class="text-center my-5">{{ 'CLIENTES.SIN_RESULTADOS' | translate }}</h5>
                         </td>
                     </tr>
 
@@ -132,16 +132,16 @@
 
 <ng-template #notData>
     <div class="no-data-found d-flex justify-center">
-        <app-message-no-data [message]="'The information could not be loaded.'"></app-message-no-data>
+        <app-message-no-data [message]="'CLIENTES.INFO_NO_CARGADA' | translate"></app-message-no-data>
     </div>
 </ng-template>
 
 <ng-template #notDataTable>
-    <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+    <app-message-no-data [message]="'CLIENTES.INFO_NO_DISPONIBLE' | translate"></app-message-no-data>
 </ng-template>
 
 <ng-template #notCorporateName>
     <div class="check-razon-social">
-        Add Corporate Name
+        {{ 'CLIENTES.AGREGAR_RAZON_SOCIAL' | translate }}
     </div>
 </ng-template>

@@ -2,7 +2,7 @@
   c-modal-lateral-padd" [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
     <div class="flex justify-between">
         <div class=" w-auto client-title">
-            CUSTOMER NAME: {{clientName}}
+            {{ 'CLIENTES.NOMBRE_CLIENTE_MAYUS' | translate }} {{clientName}}
 
         </div>
 
@@ -11,7 +11,7 @@
         </button>
     </div>
     <div class="header-message mt-6">
-        Below are the plants related to each corporate name. Select one to view more details.
+        {{ 'CLIENTES.PLANTAS_RELACIONADAS' | translate }}
     </div>
 
     <div class="main-container-corp mt-6  overflow-auto " *ngIf="corporateData!=null">
@@ -29,7 +29,7 @@
                 </div>
 
 
-                <p>Associated plants</p>
+                <p>{{ 'CLIENTES.PLANTAS_ASOCIADAS' | translate }}</p>
 
                 <div class="w-90">
                     <mat-divider></mat-divider>
@@ -51,7 +51,7 @@
     <div class="flex justify-end">
         <button class="btn-cancel btn-corporate-name  flex" (click)="changeEditMode(null)">
             <mat-icon fontIcon="add"></mat-icon>
-            Add Corporate Name
+            {{ 'CLIENTES.AGREGAR_RAZON_SOCIAL' | translate }}
         </button>
     </div>
 

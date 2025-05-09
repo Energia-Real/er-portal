@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
@@ -13,6 +13,7 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-site-performance',
@@ -116,6 +117,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     private dialog: MatDialog,
     private notificationsService: NotificationService,
     private notificationDataService: NotificationDataService,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
@@ -124,6 +126,15 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
     this.getUserClient();
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        if (!this.notData) {
+          this.getUserClient();
+        }
+      });
   }
 
   ngAfterViewInit(): void {

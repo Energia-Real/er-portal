@@ -11,6 +11,7 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { updatePagination } from '@app/core/store/actions/paginator.actions';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { Router } from '@angular/router';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-plants',
@@ -53,7 +54,8 @@ export class PlantsComponent implements OnDestroy, AfterViewInit {
     private store: Store,
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
-    private router: Router
+    private router: Router,
+    private translationService: TranslationService
   ) {
     combineLatest([
       this.store.select(selectPageSize).pipe(distinctUntilChanged()),

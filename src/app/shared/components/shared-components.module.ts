@@ -13,6 +13,8 @@ import { NotificationCardCenterComponent } from './notification-card-center/noti
 import { TimeAgoPipe } from '../pipes/time-ago.pipe';
 import { MonthAbbreviationPipe } from '../pipes/month-abbreviation.pipe';
 import { TabulatorTableComponent } from './tabulator-table/tabulator-table.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageSwitcherComponent } from './language-switcher/language-switcher.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { TabulatorTableComponent } from './tabulator-table/tabulator-table.compo
     RouterModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TranslateModule,
+    LanguageSwitcherComponent
   ],
   exports: [
     HeaderComponent,
@@ -42,7 +46,8 @@ import { TabulatorTableComponent } from './tabulator-table/tabulator-table.compo
     NotificationComponent,
     TimeAgoPipe,
     MonthAbbreviationPipe,
-    TabulatorTableComponent
+    TabulatorTableComponent,
+    TranslateModule
   ]
 })
 export class SharedComponensModule { }

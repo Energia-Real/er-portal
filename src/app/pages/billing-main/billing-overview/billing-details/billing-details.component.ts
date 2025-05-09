@@ -7,6 +7,7 @@ import { catalogResponseList, FilterBillingDetails } from '../../billing-model';
 import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
   selector: 'app-billing-details',
@@ -35,6 +36,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
     private store: Store<{ filters: GeneralFilters }>,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
     combineLatest([
@@ -59,6 +61,21 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
     .subscribe(valor => {
       this.getSites(valor!)
     });
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        // Refresh data when language changes
+        this.getClients();
+        this.getProducts();
+        if (this.filtersForm.get('customerName')?.value) {
+          this.getLegalNames(this.filtersForm.get('customerName')?.value!);
+        }
+        if (this.filtersForm.get('legalName')?.value) {
+          this.getSites(this.filtersForm.get('legalName')?.value!);
+        }
+      });
   }
 
   get filterData(): FilterBillingDetails {

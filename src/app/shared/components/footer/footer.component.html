@@ -1,11 +1,12 @@
 <div class="c-footer border-b-2">
     <div class="content-footer">
         <p>© 2025<span class="font-bold"> EnergiaReal</span> </p>
-        <div class="flex space-x-8">
-            <a routerLink="/er/legals/contact" class="hover:underline">Contact</a>
-            <a routerLink="/er/legals/qya" class="hover:underline">Q&A</a>
-            <a routerLink="/er/legals/privacy-policy" class="hover:underline">Privacy Policy</a>
-            <a routerLink="/er/legals/terms-serivce" class="hover:underline">Terms Of Service</a>
+        <div class="flex space-x-8 content-center">
+            <app-language-switcher></app-language-switcher>
+            <a routerLink="/er/legals/contact" class="hover:underline">{{ 'FOOTER.CONTACTO' | translate }}</a>
+            <a routerLink="/er/legals/qya" class="hover:underline">{{ 'FOOTER.PREGUNTAS' | translate }}</a>
+            <a routerLink="/er/legals/privacy-policy" class="hover:underline">{{ 'FOOTER.POLITICA_PRIVACIDAD' | translate }}</a>
+            <a routerLink="/er/legals/terms-serivce" class="hover:underline">{{ 'FOOTER.TERMINOS_SERVICIO' | translate }}</a>
         </div>
     </div>
 </div>

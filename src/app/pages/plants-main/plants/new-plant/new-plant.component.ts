@@ -16,6 +16,7 @@ import { UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { ClientsService } from '@app/pages/clientsMain/clients.service';
 import { DataCientList } from '@app/pages/clientsMain/clients-model';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-new-plant',
@@ -78,7 +79,8 @@ export class NewPlantComponent implements OnInit, OnDestroy {
     private encryptionService: EncryptionService,
     private moduleServices: PlantsService,
     private router: Router,
-    private clientsService: ClientsService
+    private clientsService: ClientsService,
+    private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
