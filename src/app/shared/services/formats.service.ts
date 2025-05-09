@@ -97,12 +97,11 @@ export class FormatsService {
     }
   }
 
-
   moneyFormat(amount: number) {
     if (!amount) return ''
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('es-MX', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'MXN',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(amount) + ' MXN';

@@ -16,8 +16,14 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
   @Input() set invoice(invoiceData: any | null | undefined) {
+    if (!invoiceData) return;
     console.log(invoiceData);
   }
+
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSize: number = 10;
+  pageIndex: number = 1;
+  totalItems: number = 0;
 
   invoicesDetails: entity.InvoiceDetailsTableRow [] = [];
   tableConfig: Options = {};
@@ -108,6 +114,9 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
     console.log('viewDetails');
   }
 
+  getServerData(event: any){
+    console.log(event)
+  }
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();

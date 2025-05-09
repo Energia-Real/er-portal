@@ -51,7 +51,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       },
       legend: {
         display: false,
-        position: 'top', 
+        position: 'top',
         labels: {
           usePointStyle: true,
           color: '#333',
@@ -95,7 +95,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
   };
 
-  datasetVisibility:boolean[] = [true, true, true];
+  datasetVisibility: boolean[] = [true, true, true];
 
   generalFilters!: GeneralFilters
   balance: string = '0.00'
@@ -108,7 +108,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) { this.generalFilters$ = this.store.select(state => state.filters) }
 
   ngOnInit(): void {
-    this.getFilters()
+    this.getFilters();
   }
 
   getFilters() {
@@ -116,10 +116,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
       const filters = {
         startDate: GeneralFilters.startDate,
         endDate: GeneralFilters.endDate,
-        customerName: this.filterData.customerName,
-        legalName: this.filterData.legalName,
-        siteName: this.filterData.siteName,
-        productType: this.filterData.productType,
+        customerName: this.filterData.customerName ?? '',
+        legalName: this.filterData.legalName ?? '',
+        siteName: this.filterData.siteName ?? '',
+        productType: this.filterData.productType ?? '',
       };
 
       this.getEnergysummary(filters);
@@ -136,22 +136,24 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   getEnergysummary(filters: entity.FilterBillingEnergysummary) {
-    this.moduleServices.getEnergysummaryOverview(filters).subscribe({
-      next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
-        this.lineChartData = response
-        this.balance = response.balance
-      },
-      error: error => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        console.log(error);
-      }
-    });
+    // console.log(filters);
+
+    // this.moduleServices.getEnergysummaryOverview(filters).subscribe({
+    //   next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
+    //     this.lineChartData = response
+    //     this.balance = response.balance
+    //   },
+    //   error: error => {
+    //     // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+    //     // console.log(error);
+    //   }
+    // });
   }
 
   toggleDataset(index: number) {
     const chart = this.chartComponent.chart;
     if (!chart) return;
-  
+
     const meta = chart.getDatasetMeta(index);
     this.datasetVisibility[index] = !this.datasetVisibility[index];
     meta.hidden = !this.datasetVisibility[index];
@@ -162,7 +164,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   showAllDatasets() {
     const chart = this.chartComponent.chart;
     if (!chart) return;
-  
+
     chart.data.datasets.forEach((_, index) => {
       const meta = chart.getDatasetMeta(index);
       this.datasetVisibility[index] = true;

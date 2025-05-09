@@ -14,6 +14,23 @@ export interface InvoiceDetailsTableRow {
   amount: number;
 }
 
+export interface DataBillingSitesTableMapper {
+  pageSize: number,
+  page: number,
+  data: SitesTableRow[],
+  totalItems: number
+}
+
+export interface SitesTableRow {
+  siteName: string;
+  clientName: string;
+  legalName: string;
+  product: string;
+  contractType: string;
+  status: string;
+  address: string;
+}
+
 
 export interface BillingResponse {
   pageSize: number;
@@ -24,22 +41,22 @@ export interface BillingResponse {
 }
 
 export interface FilterBillingDetails {
-  year:number; 
+  year: number;
   customerName: string;
   legalName?: string;
   siteName?: string;
   productType?: string;
   page?: number;
-  pageSize?:number;
+  pageSize?: number;
 }
 
 export interface FilterBillingEnergysummary {
   startDate: string;
   endDate: string;
-  customerName?:string;
+  customerName?: string;
   legalName?: string;
-  siteName?:string;
-  productType?:string;
+  siteName?: string;
+  productType?: string;
 }
 
 export interface EnergyBillingSummary {
@@ -283,14 +300,14 @@ export interface catalogResponseList {
 
 
 
-export interface Bill{
-  amount:     number; 
-  billingId:  string; 
-  legalName:  string; 
-  month:      number; 
-  product:    string; 
-  status:     string; 
-  year:       number;
+export interface Bill {
+  amount: number;
+  billingId: string;
+  legalName: string;
+  month: number;
+  product: string;
+  status: string;
+  year: number;
 }
 
 interface InvoiceDetails {

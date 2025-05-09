@@ -1,9 +1,13 @@
 import { Injectable } from "@angular/core";
 import { CellComponent, ColumnDefinition, Options } from "tabulator-tables";
 import * as entity from './billing-model';
+import { FormatsService } from "@app/shared/services/formats.service";
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceTableService {
+
+  constructor(private formatService: FormatsService) {}
+
  
   getTableColumnsInvoiceDetails(): ColumnDefinition[] {
     return [
@@ -14,7 +18,7 @@ export class InvoiceTableService {
         vertAlign: "middle",
         minWidth: 120,
         hozAlign: "right",
-        formatter: (cell: CellComponent) => this.formatNumber(cell.getValue())
+        formatter: (cell: CellComponent) => this.formatService.energyFormat(cell.getValue())
       },
       {
         title: "Concept",
@@ -36,7 +40,7 @@ export class InvoiceTableService {
         title: "Unit value",
         field: "unitValue",
         minWidth: 150,
-        formatter: (cell: CellComponent) => this.formatCurrency(cell.getValue()),
+        formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
         hozAlign: "left",
         headerSort: false,
         vertAlign: "middle"
@@ -45,7 +49,7 @@ export class InvoiceTableService {
         title: "Taxes",
         field: "taxes",
         minWidth: 150,
-        formatter: (cell: CellComponent) => this.formatCurrency(cell.getValue()),
+        formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
         hozAlign: "left",
         headerSort: false,
         vertAlign: "middle"
@@ -54,7 +58,7 @@ export class InvoiceTableService {
         title: "Total Amount",
         field: "amount",
         minWidth: 150,
-        formatter: (cell: CellComponent) => this.formatCurrency(cell.getValue()),
+        formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
         hozAlign: "left",
         headerSort: false,
         vertAlign: "middle"
@@ -126,24 +130,67 @@ export class InvoiceTableService {
   
     return { columns, options };
   }
-  
-  // FORMATOS 
-   // Función pública para formatear moneda
-   formatCurrency(value: number): string {
-    const formatted = new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-      minimumFractionDigits: 2
-    }).format(value || 0);
-    return `${formatted}`;
-  }
 
-  // Función pública para formatear números con decimales
-  formatNumber(value: number): string {
-    return value.toLocaleString('es-MX', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
+  getTableColumnsSites(): ColumnDefinition[] {
+    return [
+      {
+        title: "Site name",
+        field: "siteName",
+        headerSort: false,
+        vertAlign: "middle",
+        minWidth: 200,
+        maxWidth: 200,
+        cssClass: "wrap-text-cell"
+      },
+      {
+        title: "Client name",
+        field: "clientName",
+        headerSort: false,
+        vertAlign: "middle",
+        minWidth: 200,
+        maxWidth: 200,
+        hozAlign: "left",
+        cssClass: "wrap-text-cell"
+      },
+      {
+        title: "Legal name",
+        field: "legalName",
+        headerSort: false,
+        vertAlign: "middle",
+        hozAlign: "left",
+        minWidth: 200,
+        maxWidth: 200,
+        cssClass: "wrap-text-cell"
+      },
+      {
+        title: "Product / modality",
+        field: "product",
+        minWidth: 200,
+        maxWidth: 200,
+        hozAlign: "center",
+        headerSort: false,
+        vertAlign: "middle",
+        cssClass: "wrap-text-cell"
+      },
+      {
+        title: "Address",
+        field: "address",
+        minWidth: 200,
+        hozAlign: "left",
+        headerSort: false,
+        vertAlign: "middle",
+        cssClass: "wrap-text-cell"
+      }
+    ];
+  }
+  
+  getTableOptionsSites(): Options {
+    return {
+      maxHeight: 280,
+      layout: "fitColumns",
+      columns: this.getTableColumnsSites(),
+      movableColumns: true,
+    };
   }
 
 }

@@ -1,6 +1,7 @@
 .table-container {
     // Aqui van dentro todas las clases de la tabla
-    height: calc(100vh - 380px);
+    // height: calc(100vh - 380px);
+    height: 100%;
 
     .tabulator {
         max-height: unset !important;

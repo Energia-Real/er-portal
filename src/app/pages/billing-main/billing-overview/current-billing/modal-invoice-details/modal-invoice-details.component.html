@@ -1,42 +1,46 @@
 <div class="c-invoice-details c-modal-lateral fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
 c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': isOpen, 'translate-x-full': !isOpen}">
-<div class="border-card">
-    <div class="grid grid-cols-5 md:grid-cols-5 c-invoice-details-header">
-        <div class="col-span-2">
-            <div>
-                <h1>Client: <span>Razón social</span></h1>
-                <h1>RFC: <span>WRRS25589245</span></h1>
-                <h1>Legal name: <span>Razón social</span></h1>
+    <div class="border-card">
+        <div class="grid grid-cols-5 md:grid-cols-5 c-invoice-details-header">
+            <div class="col-span-2">
+                <div>
+                    <h1>Client: <span>Razón social</span></h1>
+                    <h1>RFC: <span>WRRS25589245</span></h1>
+                    <h1>Legal name: <span>Razón social</span></h1>
+                </div>
+            </div>
+            <div class="col-span-1">
+                <div></div>
+            </div>
+            <div class="col-span-2">
+                <div>
+                    <h1>Start Date: <span>01 - 12 - 2025</span></h1>
+                    <h1>End Date: <span>31 - 12 - 2025</span></h1>
+                    <h1>Status: <button class="btn-status">Payed</button></h1>
+                </div>
             </div>
         </div>
-        <div class="col-span-1">
-            <div></div>
-        </div>
-        <div class="col-span-2">
-            <div>
-                <h1>Start Date: <span>01 - 12 - 2025</span></h1>
-                <h1>End Date: <span>31 - 12 - 2025</span></h1>
-                <h1>Status: <button class="btn-status">Payed</button></h1>
-            </div>
+
+        <div class="c-btns-docs">
+            <button class="btn-action-add">
+                Download PDF
+            </button>
+            <button class="btn-without-border">
+                Download XML
+            </button>
+            <button class="btn-without-border">
+                Request cancellation
+            </button>
         </div>
     </div>
 
-    <div class="c-btns-docs">
-        <button class="btn-action-add">
-            Download PDF
-        </button>
-        <button class="btn-without-border">
-            Download XML
-        </button>
-        <button class="btn-without-border">
-            Request cancellation
-        </button>
+    <div class="separator-cards"></div>
+
+    <div class="table-container" *ngIf="invoicesDetails?.length">
+        <app-tabulator-table [data]="invoicesDetails" [config]="tableConfig"></app-tabulator-table>
     </div>
-</div>
-
-<div class="separator-cards"></div>
-
-<div class="table-container" *ngIf="invoicesDetails?.length">
-    <app-tabulator-table [data]="invoicesDetails" [config]="tableConfig"></app-tabulator-table>
-</div>
+    <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
 </div>

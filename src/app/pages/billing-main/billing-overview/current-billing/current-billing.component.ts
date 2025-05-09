@@ -247,7 +247,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
     this.moduleServices.getCurrentInvoices(filters).subscribe({
       next: (response: GeneralResponse<CurrentBillResponse>) => {
         this.bills = response.response.currentBillResponse
-        console.log(response.response)
       },
       error: error => {
         console.log(error);

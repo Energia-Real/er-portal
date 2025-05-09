@@ -1,6 +1,11 @@
 .c-invoice-details {
+
+    .table-container {
+        height: calc(100vh - 420px);
+    }
+
     .c-invoice-details-header {
-        >div{
+        >div {
             display: flex;
             justify-content: center;
 
@@ -8,6 +13,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: end;
+
                 h1 {
                     font-size: 14px;
                     font-weight: 500;
@@ -17,24 +23,27 @@
                     align-items: center;
                     gap: 20px;
                     line-height: 30px;
-                span {
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #231F20;
-                }
-                button {
-                    width: 95px;
-                    height: 24px;
-                    border-radius: 16px;
-                    color: white;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+
+                    span {
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #231F20;
+                    }
+
+                    button {
+                        width: 95px;
+                        height: 24px;
+                        border-radius: 16px;
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
                 }
             }
+
         }
-           
-        }
+
         >div:nth-child(2) {
             >div {
                 width: 1px;
@@ -48,6 +57,7 @@
         margin-top: 25px;
         display: flex;
         justify-content: space-between;
+
         .btn-action-add {
             width: 190px;
         }
@@ -58,4 +68,3 @@
 .btn-status {
     background: #33A02C;
 }
-
