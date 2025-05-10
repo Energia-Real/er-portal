@@ -21,7 +21,7 @@ export class FormatsService {
 
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
-      return numberValue.toLocaleString('en-US', {
+      return numberValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
@@ -35,7 +35,7 @@ export class FormatsService {
     if (!isNaN(numberValue)) {
       const gwhValue = numberValue / 1_000_000;
   
-      return gwhValue.toLocaleString('en-US', {
+      return gwhValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' GWh';
@@ -49,7 +49,7 @@ export class FormatsService {
     if (!isNaN(numberValue)) {
       const mwhValue = numberValue / 1_000; 
   
-      return mwhValue.toLocaleString('en-US', {
+      return mwhValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' MWh';
@@ -63,7 +63,7 @@ export class FormatsService {
     if (!numberValue) return '';
 
     if (!isNaN(numberValue)) {
-      const formattedValue = numberValue.toLocaleString('en-US', {
+      const formattedValue = numberValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
