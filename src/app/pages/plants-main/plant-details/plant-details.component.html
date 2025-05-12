@@ -5,7 +5,7 @@
 
       <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
         <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>
-        <p>Approximate address: <span *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
+        <p>{{ 'PLANTAS.DIRECCION_APROXIMADA' | translate }}: <span *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
       </div>
     </div>
 
@@ -21,7 +21,7 @@
 
         <div>
           <div class="content" *ngIf="!isLoadingTZ else loadingSkeletonTwo">
-            <p>Local time</p>
+            <p>{{ 'PLANTAS.HORA_LOCAL' | translate }}</p>
             <span *ngIf="timeZonePlace else notDataTable">{{ timeZonePlace }}</span>
           </div>
 
@@ -30,7 +30,7 @@
 
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>System size</p>
+            <p>{{ 'PLANTAS.TAMAÑO_SISTEMA' | translate }}</p>
             <span *ngIf="plantData?.systemSize else loadingSkeletonOne">{{ plantData.systemSize }} KWp</span>
           </div>
           <div class="linea"></div>
@@ -38,7 +38,7 @@
 
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>AC capacity</p>
+            <p>{{ 'PLANTAS.CAPACIDAD_AC' | translate }}</p>
             <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData.nominalPowerAC }} kW</span> 
           </div>
           <div class="linea"></div>
@@ -46,7 +46,7 @@
 
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>Status</p>
+            <p>{{ 'PLANTAS.ESTADO' | translate }}</p>
             <mat-icon *ngIf="plantData?.assetStatusIcon else notDataTable" [matTooltip]="plantData.descriptionStatus">{{
               plantData.assetStatusIcon }} </mat-icon>
           </div>
@@ -55,7 +55,7 @@
 
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>System</p>
+            <p>{{ 'PLANTAS.SISTEMA' | translate }}</p>
             <div *ngIf="dataRespoSystem else notDataTable">
               <i class="check" *ngIf="inverterSystemStatus" class="fa-solid fa-check mb-2"></i>
               <i *ngIf="!inverterSystemStatus" class="fa-solid fa-xmark mb-2"></i>
@@ -71,16 +71,16 @@
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
         (selectedTabChange)="onTabChange($event)">
 
-        <mat-tab label="Site details">
+        <mat-tab label="{{ 'PLANTAS.DETALLES_SITIO' | translate }}">
           <app-site-details *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-details>
         </mat-tab>
 
-        <mat-tab label="Site performance">
+        <mat-tab label="{{ 'PLANTAS.RENDIMIENTO_SITIO' | translate }}">
           <app-site-performance *ngIf="plantData" [notData]="showNotdata"
             [plantData]="plantData"></app-site-performance>
         </mat-tab>
 
-        <mat-tab label="Savings">
+        <mat-tab label="{{ 'PLANTAS.AHORROS' | translate }}">
           <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-savings>
         </mat-tab>
 
@@ -95,23 +95,23 @@
 
     <div class="content content-elements">
       <div class="content-header">
-        <h1 class="label-700-24">Asset monitoring parameter</h1>
+        <h1 class="label-700-24">{{ 'PLANTAS.PARAMETRO_MONITOREO_ACTIVO' | translate }}</h1>
       </div>
 
       <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1 position-relative">
           <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
 
-            <mat-tab label="Observed Parameters">
+            <mat-tab label="{{ 'PLANTAS.PARAMETROS_OBSERVADOS' | translate }}">
               <app-observed-parameters [notData]="true" [data]="[]"></app-observed-parameters>
             </mat-tab>
 
-            <mat-tab label="Live KPI">
+            <mat-tab label="{{ 'PLANTAS.KPI_VIVO' | translate }}">
               <app-live-kpi [notData]="true" [data]="[]"></app-live-kpi>
 
             </mat-tab>
 
-            <mat-tab label="Cumulative KPI">
+            <mat-tab label="{{ 'PLANTAS.KPI_ACUMULATIVO' | translate }}">
               <app-comulative-kpi [notData]="true" [data]="[]"></app-comulative-kpi>
             </mat-tab>
 
@@ -128,25 +128,25 @@
 
     <div class="content content-elements border-card">
       <div class="content-header">
-        <h1 class="label-700-24">Asset operations overview</h1>
+        <h1 class="label-700-24">{{ 'PLANTAS.RESUMEN_OPERACIONES_ACTIVO' | translate }}</h1>
       </div>
 
       <div class="c-content c-taps">
         <div class="position-relative">
           <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
-            <mat-tab label="Inverter">
+            <mat-tab label="{{ 'PLANTAS.INVERSOR' | translate }}">
               <app-inverter [notData]="true" [data]="[]"></app-inverter>
             </mat-tab>
 
-            <mat-tab label="Transformer">
+            <mat-tab label="{{ 'PLANTAS.TRANSFORMADOR' | translate }}">
               <app-transformer [notData]="true" [data]="[]"></app-transformer>
             </mat-tab>
 
-            <mat-tab label="Weather Station">
+            <mat-tab label="{{ 'PLANTAS.ESTACION_METEOROLOGICA' | translate }}">
               <app-weather-station [notData]="true" [data]="[]"></app-weather-station>
             </mat-tab>
 
-            <mat-tab label="HT Panel">
+            <mat-tab label="{{ 'PLANTAS.PANEL_HT' | translate }}">
               <app-ht-panel [notData]="true" [data]="[]"></app-ht-panel>
             </mat-tab>
           </mat-tab-group>
@@ -156,14 +156,14 @@
           <div class="position-relative">
             <div class="c-input-search w-100">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input class="block w-full" type="text" placeholder="Search">
+              <input class="block w-full" type="text" placeholder="{{ 'GENERAL.BUSCAR' | translate }}">
             </div>
           </div>
 
           <div class="btns-excel">
             <button class="btn-action-add">
               <span class="material-symbols-outlined">download</span>
-              Download Template
+              {{ 'PLANTAS.DESCARGAR_PLANTILLA' | translate }}
             </button>
           </div>
         </div>
@@ -179,11 +179,11 @@
 </div>
 
 <ng-template #notDataTable>
-  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+  <app-message-no-data [message]="('GENERAL.INFORMACION_NO_DISPONIBLE' | translate)"></app-message-no-data>
 </ng-template>
 
 <ng-template #notData>
-  <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+  <app-message-no-data [message]="('GENERAL.INFORMACION_NO_DISPONIBLE' | translate)"></app-message-no-data>
 </ng-template>
 
 <ng-template #loadingSkeletonTwo> <!-- Loader para 2 lineas -->

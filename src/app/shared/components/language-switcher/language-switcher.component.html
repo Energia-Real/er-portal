@@ -1,0 +1,9 @@
+<div class="language-switcher">
+  <button (click)="changeLanguage('es-MX')" [class.active]="getCurrentLang() === 'es-MX'">
+    ES
+  </button>
+  <button (click)="changeLanguage('en-US')" [class.active]="getCurrentLang() === 'en-US'" style="  margin-right: 30px;">
+    EN
+  </button>
+  <mat-divider vertical ></mat-divider>
+</div>

@@ -2,42 +2,47 @@ import * as moment from 'moment-timezone';
 import * as entity from './plants-model';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { DataResponseArraysMapper, GeneralResponse } from '@app/shared/models/general-models';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 export class Mapper {
-	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService): DataResponseArraysMapper {
+	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService, translationService?: TranslationService): DataResponseArraysMapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
-		primaryElements.push({
-			title: 'RPU',
+		additionalItems.push({
+			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
 			description: response.rpu
 		});
 
 		primaryElements.push({
-			title: 'Last connection timestamp',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.ULTIMA_CONEXION') : 'Last connection timestamp',
 			description: formatsService.dateFormat(response.lastConnectionTimestamp)
 		});
 
 		primaryElements.push({
-			title: 'PPA Duration',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.DURACION_PPA') : 'PPA Duration',
 			description: formatsService.formatContractDuration(response.contractDuration)
 		});
 
 		primaryElements.push({
-			title: 'Commercial Operation Date (COD)',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_OPERACION_COMERCIAL') : 'Commercial Operation Date (COD)',
 			description: formatsService.dateFormat(response.cod)
 		});
 
+
 		additionalItems.push({
-			title: 'Asset age',
-			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.EDAD_ACTIVO') : 'Asset age',
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 
+				(translationService ? translationService.instant('PLANTAS.MAPPER.AÑOS') : 'Years') : 
+				(translationService ? translationService.instant('PLANTAS.MAPPER.AÑO') : 'Year')}`
 		});
 
 		additionalItems.push({
-			title: 'Install date',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_INSTALACION') : 'Instalation date',
 			description: formatsService.dateFormat(response.installDate)
 		});
 
+		
 		return {
 			primaryElements,
 			additionalItems
@@ -87,46 +92,51 @@ export class Mapper {
 		}
 	}
 
-	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient, formatsService: FormatsService): entity.DataResponseDetailsCard[] {
+	static getDataRespOverviewMapper(response: entity.DataResponseDetailsClient, formatsService: FormatsService, translationService?: TranslationService): entity.DataResponseDetailsCard[] {
 		let dataList: entity.DataResponseDetailsCard[] = [];
 
 		dataList.push({
-			title: 'RPU',
+			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
 			description: response.rpu ?? null
 		});
 		dataList.push({
-			title: 'Age of the site',
-			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 'Years' : 'Year'}`
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.EDAD_SITIO') : 'Age of the site',
+			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 
+				(translationService ? translationService.instant('PLANTAS.MAPPER.AÑOS') : 'Years') : 
+				(translationService ? translationService.instant('PLANTAS.MAPPER.AÑO') : 'Year')}`
 		});
 
 		dataList.push({
-			title: 'Install Date',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_INSTALACION') : 'Install Date',
 			description: formatsService.dateFormat(response.endInstallationDate) ?? null
 		});
 		dataList.push({
-			title: 'COD',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_OPERACION_COMERCIAL') : 'COD',
 			description: formatsService.dateFormat(response.contractSignatureDate) ?? null
 		});
 
 		dataList.push({
-			title: 'Commission Date',
+			title: translationService ? translationService.instant('PLANTAS.FECHA_COMISION') : 'Commission Date',
 			description: formatsService.dateFormat(response.commissionDate) ?? null
 		});
 
 		return dataList
 	}
 
-	static mapToClientData(mapperData: entity.DataResponseDetailsCard): Partial<entity.DataResponseDetailsClient> {
+	static mapToClientData(mapperData: entity.DataResponseDetailsCard, translationService?: TranslationService): Partial<entity.DataResponseDetailsClient> {
 		const clientData: Partial<entity.DataResponseDetailsClient> = {};
+		const installDateTitle = translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_INSTALACION') : 'Install Date';
+		const codTitle = translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_OPERACION_COMERCIAL') : 'COD';
+		const commissionDateTitle = translationService ? translationService.instant('PLANTAS.FECHA_COMISION') : 'Commission Date';
 
 		switch (mapperData.title) {
-			case 'Install Date':
+			case installDateTitle:
 				clientData.endInstallationDate = mapperData.description;
 				break;
-			case 'COD':
+			case codTitle:
 				clientData.contractSignatureDate = mapperData.description;
 				break;
-			case 'Commission Date':
+			case commissionDateTitle:
 				clientData.commissionDate = mapperData.description;
 				break;
 			default:
@@ -154,14 +164,14 @@ export class Mapper {
 		return localTime?.format('hh:mm A');
 	}
 
-	static getInstalacionesMapper(response: any): entity.Instalations {
+	static getInstalacionesMapper(response: any, translationService?: TranslationService): entity.Instalations {
 		let instalaciones: entity.Equipment[] = [];
 		instalaciones.push({
 			equipmentId: "0",
 			moduloQty: 0,
 			moduloBrand: "",
 			moduloModel: "",
-			title: "Mounting Technology",
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.TECNOLOGIA_MONTAJE') : "Mounting Technology",
 			description: response.mountingTechnology,
 
 		});
@@ -170,11 +180,12 @@ export class Mapper {
 			moduloQty: 0,
 			moduloBrand: "",
 			moduloModel: "",
-			title: "Roof Type",
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.TIPO_TECHO') : "Roof Type",
 			description: response.roofType,
 		})
 
 		response.equipment.map((data: entity.Equipment, i: number) => {
+			const inverterText = translationService ? translationService.instant('PLANTAS.INVERSOR') : "Inverter";
 			instalaciones.push(
 				{
 					equipmentId: data.equipmentId,
@@ -188,7 +199,7 @@ export class Mapper {
 					orientation: data.orientation,
 					tilt: data.tilt,
 					serialNumber: data?.serialNumber,
-					title: `Inverter ${i + 1} - ${data.moduloBrand}`,
+					title: `${inverterText} ${i + 1} - ${data.moduloBrand}`,
 					description: `${data.moduloQty}  ${data.moduloModel}`,
 				}
 			)
@@ -201,42 +212,42 @@ export class Mapper {
 		}
 	}
 
-	static getSavingsDetailsMapper(response: entity.getSavingsDetails): entity.DataResponseArraysMapper {
+	static getSavingsDetailsMapper(response: entity.getSavingsDetails, translationService?: TranslationService): entity.DataResponseArraysMapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
 		primaryElements.push({
-			title: 'CFE Subtotal',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_CFE') : 'CFE Subtotal',
 			description: `$${response.cfeSubtotal}`,
 			icon: '../../../../../assets/icons/cfe-subtotal.png'
 		});
 
 		primaryElements.push({
-			title: 'ER Subtotal',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_ER') : 'ER Subtotal',
 			description: `$${response.erSubtotal}`,
 			icon: '../../../../../assets/icons/er-subtotal.png'
 		});
 
 		primaryElements.push({
-			title: 'ER + CFE Subtotal',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_ER_CFE') : 'ER + CFE Subtotal',
 			description: `$${response.erCfeSubtotal}`,
 			icon: '../../../../../assets/icons/ercfe-subtotal.png'
 		});
 
 		primaryElements.push({
-			title: 'Expenditure without ER',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.GASTO_SIN_ER') : 'Expenditure without ER',
 			description: `$${response.expenditureWithoutER}`,
 			icon: '../../../../../assets/icons/expenditure.png'
 		});
 
 		additionalItems.push({
-			title: 'Savings',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.AHORROS') : 'Savings',
 			description: `$${response.savings}`,
 			icon: '../../../../../assets/icons/saving.png'
 		});
 	
 		additionalItems.push({
-			title: 'Savings percentage',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.PORCENTAJE_AHORRO') : 'Savings percentage',
 			description: `${response.savingsPercentage}%`,
 			icon: '../../../../../assets/icons/saving.png'
 		});
@@ -247,42 +258,43 @@ export class Mapper {
 		}
 	}
 
-	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>, formatsService: FormatsService): entity.DataResponseArraysMapper | null {
+	static getSitePerformanceMapper(response: GeneralResponse<entity.SitePerformanceResponse>, formatsService: FormatsService, translationService?: TranslationService): entity.DataResponseArraysMapper | null {
 		if (!response.success) return null
 
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 		const monthlyData: entity.MonthlyDataPerformance[] = response.response.monthlyDataResponse;
+		const comparedText = translationService ? translationService.instant('PLANTAS.MAPPER.COMPARADO_MES_ANTERIOR') : 'compared to the previous month';
 
 		primaryElements.push({
-			title: 'System generation',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.GENERACION_SISTEMA') : 'System generation',
 			description : `${response.response.systemGeneration ?? "0.00"} ${response.response?.systemGenerationMeasure}`,
 		});
 
 		primaryElements.push({
-			title: 'Total consumption',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.CONSUMO_TOTAL') : 'Total consumption',
 			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
-		primaryElements.push({
-			title: 'Exported generation',
+		additionalItems.push({
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.GENERACION_EXPORTADA') : 'Exported generation',
 			description: `${response.response.exportedGeneration?? "0.00"} kWh`,
-			extra: "+2% compared to the previous month"
-		});
-
-		primaryElements.push({
-			title: 'CFE network consumption',
-			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
-			extra:'-4% compared to the previous month'
+			extra: `+2% ${comparedText}`
 		});
 
 		additionalItems.push({
-			title: 'Solar coverage',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.CONSUMO_RED_CFE') : 'CFE network consumption',
+			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
+			extra: `-4% ${comparedText}`
+		});
+
+		additionalItems.push({
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.COBERTURA_SOLAR') : 'Solar coverage',
 			description: `${response.response.solarCoverage}%`,
 		});
 
 		additionalItems.push({
-			title: 'Performance',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.RENDIMIENTO') : 'Performance',
 			description: `${response.response.performance}%`,
 			extra:'% performance - calculated as (Generated / Esstimated)'
 		});
@@ -294,12 +306,12 @@ export class Mapper {
 		}
 	}
 
-	static getSitePerformanceSummaryMapper(response: entity.BatuSummary): entity.DataResponseArraysMapper  {
+	static getSitePerformanceSummaryMapper(response: entity.BatuSummary, translationService?: TranslationService): entity.DataResponseArraysMapper  {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
 		additionalItems.push({
-			title: 'CFE network consumption',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.CONSUMO_RED_CFE') : 'CFE network consumption',
 			description: `${response.summary} kWh`,
 		});
 

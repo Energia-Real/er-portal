@@ -2,12 +2,13 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import * as entity from '../clients-model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-types-clients',
@@ -36,11 +37,19 @@ export class TypesClientsComponent implements OnInit, OnDestroy {
   constructor(
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
-    private store: Store
+    private store: Store,
+    private translationService: TranslationService
   ) { }
 
   ngOnInit() {
     this.getDataTable();
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.getDataTable();
+      });
   }
 
   actionSave() {

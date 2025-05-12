@@ -2,47 +2,45 @@
   c-modal-lateral-padd"
     [ngClass]="{ 'translate-x-0': isOpen, 'translate-x-full': !isOpen }">
     <div class="mx-auto text-center w-full">
-        <h2 class="m-0">Clients</h2>
+        <h2 class="m-0">{{ 'CLIENTES.CLIENTES' | translate }}</h2>
         <form [formGroup]="formData" (ngSubmit)="actionSave()" class="p-3">
             <div class="mb-0">
                 <div class="grid grid-cols-1  gap-x-6 gap-y-2">
                     <div class="col-span-1 md:col-span-1">
                         <h2 class="text-xl font-semibold mb-4 border-b pb-2 separate">{{ this.editedClient?.clientId ?
-                            'Edit' : 'Add new'}} client</h2>
+                            ('CLIENTES.EDITAR' | translate) : ('CLIENTES.AGREGAR_NUEVO' | translate)}} {{ 'CLIENTES.NOMBRE_CLIENTE' | translate | lowercase }}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                             <div class="col-span-1 md:col-span-1">
                                 <div class="c-input mb-0">
-                                    <p class="font-medium text-gray-700">Name of client :</p>
+                                    <p class="font-medium text-gray-700">{{ 'CLIENTES.NOMBRE_DE_CLIENTE' | translate }} :</p>
                                     <mat-form-field appearance="outline" class="w-full input-ER">
-                                        <input formControlName="name" placeholder="Name of client" matInput>
-                                        <mat-error *ngIf="formData.get('name')?.hasError('required')">You must add name
-                                            of client.</mat-error>
+                                        <input formControlName="name" placeholder="{{ 'CLIENTES.NOMBRE_DE_CLIENTE' | translate }}" matInput>
+                                        <mat-error *ngIf="formData.get('name')?.hasError('required')">{{ 'CLIENTES.DEBE_AGREGAR_NOMBRE' | translate }}</mat-error>
                                     </mat-form-field>
                                 </div>
 
                             </div>
                             <div class="col-span-1 md:col-span-1">
                                 <div class="c-input">
-                                    <p>Type of client:</p>
+                                    <p>{{ 'CLIENTES.TIPO_DE_CLIENTE' | translate }}:</p>
                                     <mat-form-field class="select-ER" appearance="outline">
-                                        <mat-select formControlName="tipoDeClienteId" placeholder="Type of client">
-                                            <mat-option value="">Choose one</mat-option>
+                                        <mat-select formControlName="tipoDeClienteId" placeholder="{{ 'CLIENTES.TIPO_DE_CLIENTE' | translate }}">
+                                            <mat-option value="">{{ 'CLIENTES.ELEGIR_UNO' | translate }}</mat-option>
                                             <mat-option [value]="cat.id" *ngFor="let cat of catTypesClients">{{
                                                 cat?.tipo || '-'
                                                 }}</mat-option>
                                         </mat-select>
-                                        <mat-error *ngIf="formData.get('tipoDeClienteId')?.hasError('required')">You
-                                            must add type of client.</mat-error>
+                                        <mat-error *ngIf="formData.get('tipoDeClienteId')?.hasError('required')">{{ 'CLIENTES.DEBE_AGREGAR_TIPO' | translate }}</mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
                             <div class="col-span-1 md:col-span-1">
                                 <div class="c-input mb-0">
-                                    <p class="font-medium text-gray-700">Client Id :</p>
+                                    <p class="font-medium text-gray-700">{{ 'CLIENTES.ID_DE_CLIENTE' | translate }} :</p>
                                     <mat-form-field appearance="outline" class="w-full input-ER">
-                                        <input formControlName="clientId" placeholder="Client Id" matInput>
+                                        <input formControlName="clientId" placeholder="{{ 'CLIENTES.ID_DE_CLIENTE' | translate }}" matInput>
                                         <mat-error *ngIf="formData.get('clientId')?.hasError('maxlength')">
-                                            Maximum 4 characters allowed.
+                                            {{ 'CLIENTES.MAXIMO_CARACTERES' | translate }}
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
@@ -52,7 +50,7 @@
 
                             <div class="col-span-2 md:col-span-2">
                                 <div class="c-input mb-0">
-                                    <p class="font-medium text-gray-700">Upload client image:</p>
+                                    <p class="font-medium text-gray-700">{{ 'CLIENTES.SUBIR_IMAGEN' | translate }}</p>
                                     <div class="drag-drop-area" (dragover)="onDragOver($event)"
                                         (dragleave)="onDragLeave($event)" (drop)="onDrop($event)"
                                         (click)="!imagePreview && fileInput.click()">
@@ -65,8 +63,7 @@
                                             <button type="button" class="remove-image-button"
                                                 (click)="removeImage($event, fileInput)">&#10005;</button>
                                         </div>
-                                        <p *ngIf="!imagenSelectedEdit && !imagePreview">Drag & drop an image here, or
-                                            click to select one</p>
+                                        <p *ngIf="!imagenSelectedEdit && !imagePreview">{{ 'CLIENTES.ARRASTRAR_IMAGEN' | translate }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -75,12 +72,12 @@
                         <div class="col-span-1 md:col-span-1 d-flex justify-content-end align-items-center">
                             <div class="button-container d-flex justify-content-between pt-0 gap-2">
                                 <button class="btn-cancel" (click)="createNotificationModal(CANCEL)"
-                                    type="button">Cancel</button>
+                                    type="button">{{ 'CLIENTES.CANCELAR' | translate }}</button>
                                 <div>
                                     <button class="btn-action-add" type="submit" [disabled]="formData.invalid">
                                         <i
                                             [class]="editedClient?.clientId ? 'fas fa-edit' : 'fa-solid fa-floppy-disk'"></i>
-                                        {{ editedClient ? 'Edit' : 'Save' }}
+                                        {{ editedClient ? ('CLIENTES.EDITAR' | translate) : ('CLIENTES.GUARDAR' | translate) }}
                                     </button>
                                 </div>
                             </div>

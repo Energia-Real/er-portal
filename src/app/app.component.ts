@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from './shared/services/notification.service';
+import { TranslationService } from './shared/services/i18n/translation.service';
 
 
 @Component({
@@ -8,8 +8,9 @@ import { NotificationService } from './shared/services/notification.service';
     standalone: false
 })
 export class AppComponent implements OnInit {
-  constructor(){
-
+  constructor(private translationService: TranslationService) {
+    // Inicializar el servicio de traducción
+    translationService.initialize('es-MX', ['es-MX', 'en-US']);
   }
   ngOnInit(): void {
     

@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as entity from '../../plants-model';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -9,6 +9,7 @@ import { Mapper } from '../../mapper';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-savings',
@@ -117,13 +118,23 @@ export class SavingsComponent implements OnInit, OnDestroy {
     private store: Store<{ filters: GeneralFilters }>,
     private formatsService: FormatsService,
     private encryptionService: EncryptionService,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
 
   ngOnInit(): void {
     if (this.notData) this.showAlert = true;
-    else this.getUserClient()
+    else this.getUserClient();
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        if (!this.notData) {
+          this.getUserClient();
+        }
+      });
   }
 
   getUserClient() {
@@ -140,7 +151,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
   getSavings(filters: GeneralFilters) {
     this.moduleServices.getSavingDetails(filters, this.plantData.id).subscribe({
       next: (response: GeneralResponse<entity.getSavingsDetails>) => {
-        this.savingDetails = Mapper.getSavingsDetailsMapper(response.response);
+        this.savingDetails = Mapper.getSavingsDetailsMapper(response.response, this.translationService);
         const cfeSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal));
         const erSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal));
         const savingsData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings));

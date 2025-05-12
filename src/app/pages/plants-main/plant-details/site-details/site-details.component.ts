@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DataResponseArraysMapper, GeneralFilters } from '@app/shared/models/general-models';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PlantsService } from '../../plants.service';
@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { environment } from '@environment/environment';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
     private route: ActivatedRoute,
-    private store: Store<{ filters: GeneralFilters }>
+    private store: Store<{ filters: GeneralFilters }>,
+    private translationService: TranslationService
   ) {
     this.drawerOpenSub = this.store.select(selectDrawer).subscribe(resp => this.drawerOpen = resp.drawerOpen);
   }
@@ -57,7 +59,16 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loaderMap = false;
       this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/maps/embed/v1/view?key=${environment.GOOGLE_API_KEY}&center=` + this.plantData?.latitude + ',' + this.plantData?.longitude + '&zoom=18&maptype=satellite');
-    }, 100)
+    }, 100);
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        if (!this.notData) {
+          this.getSiteDetails();
+        }
+      });
   }
 
   getSiteDetails() {

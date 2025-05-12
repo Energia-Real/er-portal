@@ -1,8 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import * as entity from '../clients-model';
 import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -78,14 +79,21 @@ export class NewClientComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private notificationsService: NotificationService,
     private encryptionService: EncryptionService,
-
+    private translationService: TranslationService
   ) { }
 
   ngOnInit() {
     this.getCatalogs();
     this.authService.getInfoUser().subscribe(res => {
       this.user = res
-    })
+    });
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.getCatalogs();
+      });
   }
 
   getCatalogs() {

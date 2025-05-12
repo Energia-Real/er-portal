@@ -1,7 +1,7 @@
 <div class="c-portafolio-map c-main">
     <div class="content content-elements">
         <div class="content-header">
-            <h1 class="label-700-24 ms-0">Portafolio map</h1>
+            <h1 class="label-700-24 ms-0">{{ 'ADMIN.MAPA_PORTAFOLIO' | translate }}</h1>
         </div>
 
         <div class="grid grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
@@ -14,33 +14,33 @@
                     <div class="portafolio-header">
                         <div>
                             <span></span>
-                            <h1>Excelent</h1>
+                            <h1>{{ 'ADMIN.EXCELENTE' | translate }}</h1>
                         </div>
                         <div>
                             <span></span>
-                            <h1>Good</h1>
+                            <h1>{{ 'ADMIN.BUENO' | translate }}</h1>
                         </div>
                         <div>
                             <span></span>
-                            <h1>Avarage</h1>
+                            <h1>{{ 'ADMIN.PROMEDIO' | translate }}</h1>
                         </div>
                         <div>
                             <span></span>
-                            <h1>Worst</h1>
+                            <h1>{{ 'ADMIN.PEOR' | translate }}</h1>
                         </div>
                         <div>
                             <span></span>
-                            <h1>Error</h1>
+                            <h1>{{ 'ADMIN.ERROR' | translate }}</h1>
                         </div>
                         <div>
                             <span></span>
-                            <h1>Desconectad</h1>
+                            <h1>{{ 'ADMIN.DESCONECTADO' | translate }}</h1>
                         </div>
                     </div>
 
                     <div class="c-input-search float-right">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input class="block w-full" type="text" placeholder="Search">
+                        <input class="block w-full" type="text" placeholder="{{ 'GENERAL.BUSCAR' | translate }}">
                     </div>
 
                     <div class="portafolio-table">
@@ -49,7 +49,7 @@
                                 <table mat-table [dataSource]="dataSource" matSort class="table-content">
                                     <ng-container matColumnDef="state">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header class="state-column">
-                                            <div class="target">State</div>
+                            <div class="target">{{ 'TABLA.ESTADO' | translate }}</div>
                                         </th>
                                         <td mat-cell *matCellDef="let element" class="state-column">
                                             <span class="state-table state-excelent"></span>
@@ -58,7 +58,7 @@
 
                                     <ng-container matColumnDef="siteName">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            <div class="target w-24">Site name</div>
+                            <div class="target w-24">{{ 'TABLA.NOMBRE_SITIO' | translate }}</div>
                                         </th>
                                         <td mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo">
                                             {{ element?.siteName }} </td>
@@ -66,7 +66,7 @@
 
                                     <ng-container matColumnDef="customer">
                                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                                            <div class="target w-24">Customer</div>
+                            <div class="target w-24">{{ 'TABLA.CLIENTE' | translate }}</div>
                                         </th>
                                         <td mat-cell *matCellDef="let element">
                                             <div *ngIf="element?.customer else notDataTable"> {{ element.customer }}
@@ -76,7 +76,7 @@
 
                                     <tr *matNoDataRow>
                                         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                                            <h5 class="text-center my-5">No results found.</h5>
+                                            <h5 class="text-center my-5">{{ 'GENERAL.NO_RESULTADOS' | translate }}</h5>
                                         </td>
                                     </tr>
 
@@ -95,23 +95,23 @@
 
     <div class="content content-elements pb-0">
         <div class="content-header">
-            <h1 class="label-700-24">Asset monitoring parameter</h1>
+            <h1 class="label-700-24">{{ 'ADMIN.PARAMETRO_MONITOREO' | translate }}</h1>
         </div>
 
         <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
             <div class="col-span-1 position-relative">
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
 
-                    <mat-tab label="Observed Parameters">
+                    <mat-tab label="{{ 'ADMIN.PARAMETROS_OBSERVADOS' | translate }}">
                         <app-observed-parameters [notData]="true" [data]="[]"></app-observed-parameters>
                     </mat-tab>
 
-                    <mat-tab label="Live KPI">
+                    <mat-tab label="{{ 'ADMIN.KPI_VIVO' | translate }}">
                         <app-live-kpi [notData]="true" [data]="[]"></app-live-kpi>
 
                     </mat-tab>
 
-                    <mat-tab label="Cumulative KPI">
+                    <mat-tab label="{{'ADMIN.KPI_ACUMULATIVO' | translate}}">
                         <app-comulative-kpi [notData]="true" [data]="[]"></app-comulative-kpi>
                     </mat-tab>
 
@@ -124,18 +124,18 @@
 
     <div class="content content-elements">
         <div class="content-header">
-            <h1 class="label-700-24">Trends</h1>
+            <h1 class="label-700-24">{{'ADMIN.TENDENCIAS' | translate}}</h1>
         </div>
 
         <div class="c-content c-taps">
             <div class="position-relative">
                 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
-                    <mat-tab label="Active power">
+                    <mat-tab label="{{'ADMIN.POTENCIA_ACTIVA' | translate}}">
                         <div class="c-trends">
                             <div class="trends-filter">
-                                <div class="selected">Day</div>
-                                <div>Week</div>
-                                <div>Month</div>
+                                <div class="selected">{{'ADMIN.DIA' | translate}}</div>
+                                <div>{{'ADMIN.SEMANA' | translate}}</div>
+                                <div>{{'ADMIN.MES' | translate}}</div>
                             </div>
 
                             <div class="c-trends-data">
@@ -166,12 +166,12 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Specific Power">
+                    <mat-tab label="{{'ADMIN.POTENCIA_ESPECIFICA' | translate}}">
                         <div class="c-trends">
                             <div class="trends-filter">
-                                <div class="selected">Day</div>
-                                <div>Week</div>
-                                <div>Month</div>
+                                <div class="selected">{{'ADMIN.DIA' | translate}}</div>
+                                <div>{{'ADMIN.SEMANA' | translate}}</div>
+                                <div>{{'ADMIN.MES' | translate}}</div>
                             </div>
 
                             <div class="c-trends-data">
@@ -202,12 +202,12 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Specific Yield">
+                    <mat-tab label="{{'ADMIN.RENDIMIENTO_ESPECIFICO' | translate}}">
                         <div class="c-trends">
                             <div class="trends-filter">
-                                <div class="selected">Day</div>
-                                <div>Week</div>
-                                <div>Month</div>
+                                <div class="selected">{{'ADMIN.DIA' | translate}}</div>
+                                <div>{{'ADMIN.SEMANA' | translate}}</div>
+                                <div>{{'ADMIN.MES' | translate}}</div>
                             </div>
 
                             <div class="c-trends-data">
@@ -238,12 +238,12 @@
                         </div>
                     </mat-tab>
 
-                    <mat-tab label="Perfomance ratio">
+                    <mat-tab label="{{'ADMIN.RATIO_RENDIMIENTO' | translate}}">
                         <div class="c-trends">
                             <div class="trends-filter">
-                                <div class="selected">Day</div>
-                                <div>Week</div>
-                                <div>Month</div>
+                                <div class="selected">{{'ADMIN.DIA' | translate}}</div>
+                                <div>{{'ADMIN.SEMANA' | translate}}</div>
+                                <div>{{'ADMIN.MES' | translate}}</div>
                             </div>
 
                             <div class="c-trends-data">
@@ -280,14 +280,14 @@
                 <div class="position-relative">
                     <div class="c-input-search w-80">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input class="block w-full" type="text" placeholder="Search">
+                        <input class="block w-full" type="text" placeholder="{{'ADMIN.BUSCAR' | translate}}">
                     </div>
                 </div>
 
                 <div class="btns-excel">
                     <button class="btn-action-add">
                         <span class="material-symbols-outlined">download</span>
-                        Download Template
+                        {{'ADMIN.DESCARGAR_PLANTILLA' | translate}}
                     </button>
                 </div>
             </div>
@@ -298,7 +298,7 @@
 
     <div class="content content-elements pb-0">
         <div class="content-header">
-            <h1 class="label-700-24">Plants event summary</h1>
+            <h1 class="label-700-24">{{'ADMIN.RESUMEN_EVENTOS' | translate}}</h1>
 
             <button mat-icon-button [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
                 <mat-icon>more_vert</mat-icon>
@@ -307,7 +307,7 @@
             <mat-menu #menu="matMenu" [overlapTrigger]="false">
                 <div class="c-option-filters">
                     <div class="header-filter">
-                        <h1>Filter</h1>
+                        <h1>{{'ADMIN.FILTRO' | translate}}</h1>
                         <span class="material-symbols-outlined close-icon" (click)="menuTrigger.closeMenu()">
                             close
                         </span>
@@ -316,10 +316,10 @@
                     <div class="content-filters" (click)="$event.stopPropagation()">
                         <form [formGroup]="formFilters">
                             <div class="c-input">
-                                <p>Severity:</p>
+                                <p>{{'ADMIN.SEVERIDAD' | translate}}:</p>
                                 <mat-form-field class="select-ER" appearance="outline">
                                     <mat-select formControlName="severety" placeholder="" disableRipple>
-                                        <mat-option value="">All</mat-option>
+                                        <mat-option value="">{{'ADMIN.TODOS' | translate}}</mat-option>
                                         <mat-option [value]="cat.value" *ngFor="let cat of catSeverety">
                                             {{ cat?.description || '-' }}
                                         </mat-option>
@@ -328,10 +328,10 @@
                             </div>
 
                             <div class="c-input">
-                                <p>Group:</p>
+                                <p>{{'ADMIN.GRUPO' | translate}}:</p>
                                 <mat-form-field class="select-ER" appearance="outline">
                                     <mat-select formControlName="group" placeholder="" disableRipple>
-                                        <mat-option value="">All</mat-option>
+                                        <mat-option value="">{{'ADMIN.TODOS' | translate}}</mat-option>
                                         <mat-option [value]="cat.value" *ngFor="let cat of catGroup">
                                             {{ cat?.description || '-' }}
                                         </mat-option>
@@ -340,10 +340,10 @@
                             </div>
 
                             <div class="c-input">
-                                <p>Order:</p>
+                                <p>{{'ADMIN.ORDEN' | translate}}:</p>
                                 <mat-form-field class="select-ER" appearance="outline">
                                     <mat-select formControlName="order" placeholder="" disableRipple>
-                                        <mat-option value="">All</mat-option>
+                                        <mat-option value="">{{'ADMIN.TODOS' | translate}}</mat-option>
                                         <mat-option [value]="cat.value" *ngFor="let cat of catOrder">
                                             {{ cat?.description || '-' }}
                                         </mat-option>
@@ -355,12 +355,12 @@
                                 <div class="btns-filters">
                                     <button class="btn-action-add">
                                         <span class="material-symbols-outlined">filter_list</span>
-                                        Apply
+                                        {{'ADMIN.APLICAR' | translate}}
                                     </button>
 
                                     <button class="btn-action-clean">
                                         <span class="material-symbols-outlined">delete</span>
-                                        Clear
+                                        {{'ADMIN.LIMPIAR' | translate}}
                                     </button>
 
                                 </div>
@@ -371,7 +371,7 @@
             </mat-menu>
         </div>
 
-        <div class="c-caroucel" matTooltip="Hold down and drag left or right to see more items.">
+        <div class="c-caroucel" matTooltip="{{'ADMIN.HOLD_DOWN' | translate}}">
             <owl-carousel-o [options]="customOptions">
                 <ng-template carouselSlide>
                     <div class="c-content-caroucel">
@@ -538,26 +538,26 @@
 
     <div class="content content-elements">
         <div class="content-header header-filter">
-            <h1 class="label-700-24">Plant status</h1>
+            <h1 class="label-700-24">{{'ADMIN.ESTADO_PLANTA' | translate}}</h1>
 
             <div class="header-filter">
                 <div class="position-relative">
                     <div class="c-input-search w-80">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input class="block w-full" type="text" placeholder="Search">
+                        <input class="block w-full" type="text" placeholder="{{ 'GENERAL.BUSCAR' | translate }}">
                     </div>
                 </div>
 
                 <div class="btns-excel">
                     <button class="btn-action-add">
                         <span class="material-symbols-outlined">download</span>
-                        Download Template
+                        {{'ADMIN.DESCARGAR_PLANTILLA' | translate}}
                     </button>
 
 
                     <button class="neutro-button " (click)="fileInput.click()">
                         <img src="../../../../../assets/svg/upload_orange.svg" alt="Icon Search">
-                        Bulk upload
+                        {{'ADMIN.CARGA_MASIVA' | translate}}
                     </button>
 
                     <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls"
@@ -570,7 +570,7 @@
                 <table mat-table [dataSource]="dataSourcePlants" matSort class="table-content">
                     <ng-container matColumnDef="plantName">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Plant name</div>
+                            <div class="target w-24">{{ 'TABLA.NOMBRE_PLANTA' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element" class="font-semibold column-ipervinculo">
                             {{ element?.plantName }} </td>
@@ -578,7 +578,7 @@
 
                     <ng-container matColumnDef="comm">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Comm.</div>
+                            <div class="target w-24">{{ 'TABLA.COMUNICACION' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="column-wifi-icon">
@@ -591,7 +591,7 @@
 
                     <ng-container matColumnDef="alarms">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Alarms</div>
+                            <div class="target w-24">{{ 'TABLA.ALARMAS' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.alarms else notDataTable"> {{ element.alarms }}
@@ -601,7 +601,7 @@
 
                     <ng-container matColumnDef="inverterAsset">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Inverter asset availability (%)</div>
+                            <div class="target w-24">{{ 'TABLA.DISPONIBILIDAD_INVERSOR' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="column-availability">
@@ -621,7 +621,7 @@
 
                     <ng-container matColumnDef="plantAvailability">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Plant availability (Energy based %)</div>
+                            <div class="target w-24">{{ 'TABLA.DISPONIBILIDAD_PLANTA' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="column-icon-porcentage">
@@ -633,7 +633,7 @@
 
                     <ng-container matColumnDef="gridAvailability">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Grid availability (Energy based %)</div>
+                            <div class="target w-24">{{ 'TABLA.DISPONIBILIDAD_RED' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div class="column-icon-porcentage">
@@ -645,7 +645,7 @@
 
                     <ng-container matColumnDef="perfomanceRatio">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Perfomance ratio (%)</div>
+                            <div class="target w-24">{{ 'TABLA.RATIO_RENDIMIENTO' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.perfomanceRatio else notDataTable"> {{ element.perfomanceRatio }}
@@ -655,7 +655,7 @@
 
                     <ng-container matColumnDef="activePower">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Active Power (MW)</div>
+                            <div class="target w-24">{{ 'TABLA.POTENCIA_ACTIVA' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.activePower else notDataTable"> {{ element.activePower }}
@@ -665,7 +665,7 @@
 
                     <ng-container matColumnDef="irradiation">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Irradiation (kWh/m²)</div>
+                            <div class="target w-24">{{ 'TABLA.IRRADIACION' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.irradiation else notDataTable"> {{ element.irradiation }}
@@ -675,7 +675,7 @@
 
                     <ng-container matColumnDef="specificPower">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                            <div class="target w-24">Specific power (kW/kWp)</div>
+                            <div class="target w-24">{{ 'TABLA.POTENCIA_ESPECIFICA' | translate }}</div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <div *ngIf="element?.specificPower else notDataTable"> {{ element.specificPower }}
@@ -685,7 +685,7 @@
 
                     <tr *matNoDataRow>
                         <td class="mat-cell" [attr.colspan]="displayedColumnsPlant.length">
-                            <h5 class="text-center my-5">No results found.</h5>
+                            <h5 class="text-center my-5">{{ 'GENERAL.NO_RESULTADOS' | translate }}</h5>
                         </td>
                     </tr>
 
