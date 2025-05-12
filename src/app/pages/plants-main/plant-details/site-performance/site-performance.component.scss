@@ -16,6 +16,12 @@
         }
     }
 
+    .c-cards-information {
+        .separator-cards {
+            grid-column: span 2;
+        }
+    }
+    
     .input-group-buttons {
         .mat-button-toggle-appearance-standard.mat-button-toggle-checked {
             background: #57B1B1 !important;

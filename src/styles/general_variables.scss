@@ -721,6 +721,7 @@ select:focus {
 .filter-selected {
     border: 1px solid #EE6A0A;
     color: #EE6A0A;
+
     span {
         color: #EE6A0A;
     }
@@ -728,6 +729,7 @@ select:focus {
 
 .filter-unselected {
     color: #D1D1D1;
+
     span {
         color: #D1D1D1;
     }
@@ -914,23 +916,24 @@ select:focus {
     width: 235px;
     height: 85px;
     border-radius: 24px;
-     border: 1px solid #D2D2D2;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     h1 {
+    border: 1px solid #D2D2D2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
         font-weight: 500;
         font-size: 12px;
         margin-bottom: 8px;
         line-height: 15px;
-     }
+    }
 
-     h2 {
+    h2 {
         font-weight: 500;
         font-size: 24px;
         margin-bottom: 0px;
-     }
+    }
 
 }
 
@@ -1004,6 +1007,42 @@ select:focus {
             margin-bottom: 0;
             margin-top: 10px;
         }
+    }
+}
+
+.c-cards-information {
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+
+    .c-card-50 {
+        display: block;
+        min-height: 80px;
+        border: 1px solid #D2D2D2;
+        padding: 13px 20px;
+        border-radius: 24px;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    h1 {
+        font-size: 12px;
+        font-weight: 700;
+        color: #EE5427;
+        margin-bottom: 0;
+        line-height: 14px;
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: 500;
+        color: #000000;
+        margin-bottom: 0;
     }
 }
 
