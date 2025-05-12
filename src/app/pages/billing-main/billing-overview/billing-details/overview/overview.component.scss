@@ -74,16 +74,6 @@
     margin-top: 16px;
     padding-bottom: 50px;
 
-    .graph {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    highcharts-chart {
-      height: 340px !important;
-    }
   }
 }
 
@@ -105,3 +95,4 @@
 .c-labels-overview div.inactive {
   opacity: 0.4;
 }
+
