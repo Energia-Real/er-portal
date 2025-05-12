@@ -9,7 +9,7 @@ export class Mapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
-		additionalItems.push({
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
 			description: response.rpu
 		});
@@ -276,13 +276,13 @@ export class Mapper {
 			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.GENERACION_EXPORTADA') : 'Exported generation',
 			description: `${response.response.exportedGeneration?? "0.00"} kWh`,
 			extra: `+2% ${comparedText}`
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.CONSUMO_RED_CFE') : 'CFE network consumption',
 			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
 			extra: `-4% ${comparedText}`

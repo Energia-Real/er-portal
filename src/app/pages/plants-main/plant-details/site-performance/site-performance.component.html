@@ -7,7 +7,7 @@
                         <h1 [ngStyle]="{ 
                             'color': idx === 3 ? '#792430' : '#EE5427' 
                           }">{{ data.title }}</h1>
-                        <h2  *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
                     </div>
                 </div>
 
@@ -26,8 +26,8 @@
             <div class="highcharts">
                 <div class="charts">
                     <div class="graphic-performance" *ngIf="displayChart">
-                        <canvas id="myChart" *ngIf="showSitePerformance" baseChart [type]="'bar'" [data]="lineChartData"
-                            [options]="lineChartOptions" [legend]="lineChartLegend">
+                        <canvas id="myChart" baseChart [type]="'bar'" [data]="lineChartData" [legend]="lineChartLegend"
+                            [options]="lineChartOptions">
                         </canvas>
                     </div>
                 </div>

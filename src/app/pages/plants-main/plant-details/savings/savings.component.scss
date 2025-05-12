@@ -5,25 +5,13 @@
         }
     }
 
-
-
     .graphic-savings {
         padding-left: 20px;
-        background: #F9F9F9;
         padding: 20px 10px 10px 10px;
-        border: 1px solid #E2E2E2;
         border-radius: 16px;
-        width: 100% !important;
-        height: auto;
-        min-height: 410px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        canvas {
-            width: 90% !important;
-            height: auto !important;
-        }
+        width: 100%;
+        height: 410px;
+        min-height: 360px;
     }
 
 }
