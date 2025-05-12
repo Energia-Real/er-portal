@@ -42,10 +42,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
             const label = context.dataset.label || '';
 
             if (label.includes('Amount')) {
-              return `${label}: $${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+              return `${label}: $${value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }
 
-            return `${label}: ${value.toLocaleString('en-US')} kWh`;
+            return `${label}: ${value.toLocaleString('es-MX')} kWh`;
           }
         },
       },
@@ -77,18 +77,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
         ticks: {
           callback: function (value) {
             return `${value} kWh`;
-          },
-        },
-      },
-      y1: {
-        type: 'linear',
-        position: 'right',
-        grid: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function (value) {
-            return `$${(+value).toLocaleString()}`;
           },
         },
       },
@@ -138,6 +126,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   getEnergysummary(filters: entity.FilterBillingEnergysummary) {
     this.moduleServices.getEnergysummaryOverview(filters).subscribe({
       next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
+        console.log(response);
+        
         this.lineChartData = response
         this.balance = response.balance
       },
