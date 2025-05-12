@@ -37,6 +37,8 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   userInfo!: UserInfo;
 
+  isLoading: boolean = true;
+
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
 
@@ -104,6 +106,7 @@ export class SitesComponent implements OnInit, OnDestroy {
         this.sites = response.data
         this.totalItems = response?.totalItems;
         this.pageIndex = filters.page;
+        this.isLoading = false;
       },
     });
   }

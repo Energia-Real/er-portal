@@ -107,8 +107,8 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   downloadXml(row: entity.InvoiceDetailsTableRow ) {
     console.log(row);
     console.log('downloadXml');
-    
   }
+
   viewDetails(row: entity.InvoiceDetailsTableRow ) {
     console.log(row);
     console.log('viewDetails');
@@ -117,6 +117,7 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   getServerData(event: any){
     console.log(event)
   }
+  
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();

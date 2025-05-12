@@ -203,6 +203,8 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
     }
   ];
 
+  isLoading: boolean = true;
+
 
   constructor(
     private moduleService: BillingService
@@ -242,11 +244,11 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
           this.bills = []
           this.pageIndex = 0;
         }
+        this.isLoading = false;
       },
       error: error => {
         this.bills = []
         this.pageIndex = 0;
-
         console.log(error);
       }
     })

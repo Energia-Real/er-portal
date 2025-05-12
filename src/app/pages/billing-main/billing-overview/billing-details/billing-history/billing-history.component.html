@@ -1,7 +1,8 @@
 <div class="c-billing-history card-content-section">
     <div class="table-container" *ngIf="bills">
-        <ng-container *ngIf="bills?.length; else loadingSkeleton">
-            <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
+        <ng-container *ngIf="!isLoading; else loadingSkeleton">
+            <app-tabulator-table *ngIf="bills?.length; else noDataTable" [data]="bills"
+                [config]="tableConfig"></app-tabulator-table>
             <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
                 [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
                 aria-label="Select page of periodic elements">
@@ -15,5 +16,13 @@
         <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
           'border-radius': '32.5px'
         }"></ngx-skeleton-loader>
+    </div>
+</ng-template>
+
+<ng-template #noDataTable>
+    <div class="no-data-container">
+        <div class="icon">📄</div>
+        <div class="message-title">No data available</div>
+        <div class="message-subtitle">Try adjusting the filters or check back later.</div>
     </div>
 </ng-template>

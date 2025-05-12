@@ -136,18 +136,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   getEnergysummary(filters: entity.FilterBillingEnergysummary) {
-    // console.log(filters);
-
-    // this.moduleServices.getEnergysummaryOverview(filters).subscribe({
-    //   next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
-    //     this.lineChartData = response
-    //     this.balance = response.balance
-    //   },
-    //   error: error => {
-    //     // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-    //     // console.log(error);
-    //   }
-    // });
+    this.moduleServices.getEnergysummaryOverview(filters).subscribe({
+      next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
+        this.lineChartData = response
+        this.balance = response.balance
+      },
+      error: error => {
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+        console.log(error);
+      }
+    });
   }
 
   toggleDataset(index: number) {

@@ -209,6 +209,8 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
+  isLoading: boolean = true;
+
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private moduleServices: BillingService,
@@ -246,7 +248,8 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
     this.moduleServices.getCurrentInvoices(filters).subscribe({
       next: (response: GeneralResponse<CurrentBillResponse>) => {
-        this.bills = response.response.currentBillResponse
+        this.bills = response.response.currentBillResponse;
+        this.isLoading = false;
       },
       error: error => {
         console.log(error);

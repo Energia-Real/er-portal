@@ -8,7 +8,6 @@ export class InvoiceTableService {
 
   constructor(private formatService: FormatsService) {}
 
- 
   getTableColumnsInvoiceDetails(): ColumnDefinition[] {
     return [
       {
@@ -37,7 +36,7 @@ export class InvoiceTableService {
         cssClass: "wrap-text-cell"
       },
       {
-        title: "Unit value",
+        title: "Unit Value",
         field: "unitValue",
         minWidth: 150,
         formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
@@ -192,5 +191,4 @@ export class InvoiceTableService {
       movableColumns: true,
     };
   }
-
 }
