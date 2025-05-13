@@ -146,7 +146,6 @@ export class InvoiceTableService {
         headerSort: false,
         vertAlign: "middle",
         minWidth: 200,
-        maxWidth: 200,
         cssClass: "wrap-text-cell"
       },
       {
@@ -155,7 +154,6 @@ export class InvoiceTableService {
         headerSort: false,
         vertAlign: "middle",
         minWidth: 200,
-        maxWidth: 200,
         hozAlign: "left",
         cssClass: "wrap-text-cell"
       },
@@ -166,14 +164,12 @@ export class InvoiceTableService {
         vertAlign: "middle",
         hozAlign: "left",
         minWidth: 200,
-        maxWidth: 200,
         cssClass: "wrap-text-cell"
       },
       {
         title: "Product / modality",
         field: "product",
         minWidth: 200,
-        maxWidth: 200,
         hozAlign: "center",
         headerSort: false,
         vertAlign: "middle",
