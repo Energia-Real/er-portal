@@ -93,7 +93,7 @@ export interface DataRespSavingDetails {
 export interface DataRespSavingDetailsMapper {
   data: DataRespSavingDetails[];
   dataFormatted: DataRespSavingDetails[];
-  unit:string;
+  unitMeasu:string;
 }
 
 export interface statesResumeTooltip {
