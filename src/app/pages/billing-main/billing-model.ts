@@ -55,15 +55,13 @@ export interface DataInvoiceDetailsTableMapper {
 }
 
 export interface InvoiceDetailsTableRow {
-  siteName: string;
-  clientName: string;
-  legalName: string;
-  product: string;
-  contractType: string;
-  status: string;
-  address: string;
+  production: number;
+  concept: string;
+  description: string;
+  unitValue: number;
+  taxes: number;
+  totalAmount: number;
 }
-
 
 export interface BillingResponse {
   pageSize: number;

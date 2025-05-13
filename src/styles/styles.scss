@@ -1675,8 +1675,9 @@ input[type="number"]:focus {
   background-color: #fff;
 
   .icon {
-    font-size: 40px;
-    margin-bottom: 25px;
+    width: 60px;
+    margin-bottom: 25px!important;
+    margin: auto;
     color: #EE5427;
   }
 

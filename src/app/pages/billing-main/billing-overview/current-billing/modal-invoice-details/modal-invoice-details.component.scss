@@ -4,58 +4,60 @@
         height: calc(100vh - 465px);
     }
 
-    .c-invoice-details-header {
-        >div {
-            display: flex;
-            justify-content: center;
+    .invoice-details-header {
+        display: flex;
+        justify-content: space-between;
 
-            >div {
-                display: flex;
-                flex-direction: column;
-                align-items: start;
-
-                >div {
-                    margin-bottom: 7px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-
-                h1 {
-                    min-width: 40px;
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #999999;
-                    margin: 0;
-                    display: flex;
-                    align-items: center;
-                    gap: 20px;
-                    line-height: 15px;
-                }
-
-                span {
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: #231F20;
-                }
-
-                button {
-                    width: 95px;
-                    height: 24px;
-                    border-radius: 16px;
-                    color: white;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-            }
+        .h-izq {
+            width: 50%;
         }
 
-        >div:nth-child(2) {
-            >div {
-                width: 1px;
-                height: 85px;
-                background: #CFCFCF;
+        .separate {
+            width: 1px;
+            height: 85px;
+            background: #CFCFCF;
+            margin: 20px 00px;
+        }
+
+        .h-der {
+            width: 41%;
+            padding-left: 50px;
+        }
+
+        >div {
+            div {
+                display: flex;
+                // flex-wrap: wrap;
+                margin-bottom: 10px;
+            }
+
+            h1 {
+                margin-right: 10px !important;
+                // min-width: 40px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #999999;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                line-height: 15px;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: 500;
+                color: #231F20;
+            }
+
+            button {
+                width: 95px;
+                height: 24px;
+                border-radius: 16px;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
@@ -70,7 +72,6 @@
         }
     }
 }
-
 
 .btn-status {
     background: #33A02C;

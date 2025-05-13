@@ -6,7 +6,9 @@
     "DETALLE": "Detalle",
     "CARGANDO": "Cargando...",
     "NO_RESULTADOS": "No se encontraron resultados.",
-    "INFORMACION_NO_DISPONIBLE": "La información solicitada no está disponible."
+    "INFORMACION_NO_DISPONIBLE": "La información solicitada no está disponible.",
+    "SIN_DATOS_TITULO": "No hay datos disponibles",
+    "SIN_DATOS_SUBTITULO": "Intenta ajustar los filtros o vuelve más tarde."
   },
   "PLANTAS": {
     "TITULO": "Plantas totales",
@@ -343,6 +345,16 @@
     "NOMBRE_SITIO": "Nombre del sitio",
     "NOMBRE_CLIENTE": "Nombre del cliente",
     "PRODUCTO_MODALIDAD": "Producto / Modalidad",
-    "DIRECCION": "Dirección"
+    "DIRECCION": "Dirección",
+    "PRODUCCION": "Producción",
+    "CONCEPTO": "Concepto",
+    "DESCRIPCION": "Descripción",
+    "VALOR_UNITARIO": "Valor Unitario",
+    "IMPUESTOS": "Impuestos",
+    "MONTO_TOTAL": "Monto Total",
+    "FECHA_INICIO": "Fecha de inicio",
+    "FECHA_FIN": "Fecha de finalización",
+    "ESTATUS": "Estatus",
+    "SOLICITAR_CANELACION": "Solicitar cancelación"
   }
 }

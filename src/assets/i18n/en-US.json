@@ -6,7 +6,9 @@
     "DETALLE": "Detail",
     "CARGANDO": "Loading...",
     "NO_RESULTADOS": "No results found.",
-    "INFORMACION_NO_DISPONIBLE": "The requested information is not available."
+    "INFORMACION_NO_DISPONIBLE": "The requested information is not available.",
+    "SIN_DATOS_TITULO": "No data available",
+    "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later."
   },
   "PLANTAS": {
     "TITULO": "Total Plants",
@@ -343,6 +345,16 @@
     "NOMBRE_SITIO": "Site Name",
     "NOMBRE_CLIENTE": "Client Name",
     "PRODUCTO_MODALIDAD": "Product / Modality",
-     "DIRECCION": "Address"
+    "DIRECCION": "Address",
+    "PRODUCCION": "Production",
+    "CONCEPTO": "Concept",
+    "DESCRIPCION": "Description",
+    "VALOR_UNITARIO": "Unit value",
+    "IMPUESTOS": "Taxes",
+    "MONTO_TOTAL": "Total amount",
+    "FECHA_INICIO": "Start Date",
+    "FECHA_FIN": "End Date",
+    "ESTATUS": "Status",
+    "SOLICITAR_CANELACION": "Request cancellation"
   }
 }

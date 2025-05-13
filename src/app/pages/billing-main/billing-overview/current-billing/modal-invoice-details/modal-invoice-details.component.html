@@ -1,64 +1,60 @@
 <div class="c-invoice-details c-modal-lateral fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 mt-16 w-3/6 
 c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': isOpen, 'translate-x-full': !isOpen}">
-<div class="header-modal">
-     <i class="fa-solid fa-xmark cursor-pointer" (click)="closeModal(CANCEL)"></i>
-       
-    </div>
-<div class="border-card">
-        <div class="grid grid-cols-5 md:grid-cols-5 c-invoice-details-header">
-            <div class="col-span-2">
-                <div>
-                    <div>
-                        <h1>Client: </h1>
-                        <span *ngIf="invoicesDetailsHeader?.client else notDataTable">{{invoicesDetailsHeader?.client ||
-                            '-'}}</span>
-                    </div>
-                    <div>
-                        <h1>RFC:</h1>
-                        <span *ngIf="invoicesDetailsHeader?.rFc else notDataTable">{{invoicesDetailsHeader?.rFc}}</span>
-                    </div>
-                    <div>
-                        <h1>Legal <br> name:</h1>
-                        <span
-                            *ngIf="invoicesDetailsHeader?.legalName else notDataTable">{{invoicesDetailsHeader?.legalName}}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-1 ms-5">
-                <div></div>
-            </div>
-            <div class="col-span-2">
-                <div>
-                    <div>
-                        <h1>Start Date:</h1>
-                        <span *ngIf="invoicesDetailsHeader?.startDate else notDataTable">
-                            {{ invoicesDetailsHeader?.startDate }}
-                        </span>
-                    </div>
-                    <div>
-                        <h1>End Date:</h1>
-                        <span *ngIf="invoicesDetailsHeader?.endDate else notDataTable">
-                            {{ invoicesDetailsHeader?.endDate }}
-                        </span>
-                    </div>
-                    <div>
-                        <h1>Status:</h1>
-                        <button class="btn-status">Payed</button>
-                    </div>
-                </div>
+    <div class="header-modal">
+        <i class="fa-solid fa-xmark cursor-pointer" (click)="closeModal(CANCEL)"></i>
 
+    </div>
+    <div class="border-card">
+        <div class="invoice-details-header">
+            <div class="h-izq">
+                <div>
+                    <h1>{{ 'FACTURACION.CLIENTE' | translate }}: </h1>
+                    <span *ngIf="invoicesDetailsHeader?.client else notDataTable">{{invoicesDetailsHeader?.client ||
+                        '-'}}</span>
+                </div>
+                <div>
+                    <h1>RFC:</h1>
+                    <span *ngIf="invoicesDetailsHeader?.rFc else notDataTable">{{invoicesDetailsHeader?.rFc}}</span>
+                </div>
+                <div>
+                    <h1>{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}:</h1>
+                    <span
+                        *ngIf="invoicesDetailsHeader?.legalName else notDataTable">{{invoicesDetailsHeader?.legalName}}</span>
+                </div>
+            </div>
+
+            <div class="separate"></div>
+
+            <div class="h-der">
+                <div>
+                    <h1>{{ 'FACTURACION.FECHA_INICIO' | translate }}:</h1>
+                    <span *ngIf="invoicesDetailsHeader?.startDate else notDataTable">
+                        {{ invoicesDetailsHeader?.startDate }}
+                    </span>
+                </div>
+                <div>
+                    <h1>{{ 'FACTURACION.FECHA_FIN' | translate }}:</h1>
+                    <span *ngIf="invoicesDetailsHeader?.endDate else notDataTable">
+                        {{ invoicesDetailsHeader?.endDate }}
+                    </span>
+                </div>
+                <div>
+                    <h1>{{ 'FACTURACION.ESTATUS' | translate }}:</h1>
+                    <button class="btn-status">Payed</button>
+                </div>
             </div>
         </div>
 
+
         <div class="c-btns-docs">
             <button class="btn-action-add">
-                Download PDF
+                {{ 'FACTURACION.DESCARGAR_PDF' | translate }}
             </button>
             <button class="btn-without-border">
-                Download XML
+                {{ 'FACTURACION.DESCARGAR_XML' | translate }}
             </button>
             <button class="btn-without-border">
-                Request cancellation
+                {{ 'FACTURACION.SOLICITAR_CANELACION' | translate }}
             </button>
         </div>
     </div>
@@ -93,8 +89,8 @@ c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': i
 
 <ng-template #noDataTable>
     <div class="no-data-container">
-        <div class="icon">📄</div>
-        <div class="message-title">No data available</div>
-        <div class="message-subtitle">Try adjusting the filters or check back later.</div>
+        <img class="icon" src="../../../../../assets/icons/data-not-found.svg" alt="">
+        <div class="message-title"> {{ 'FACTURACION.SIN_DATOS_TITULO' | translate }} </div>
+        <div class="message-subtitle">{{ 'FACTURACION.SIN_DATOS_SUBTITULO' | translate }}</div>
     </div>
 </ng-template>

@@ -36,7 +36,6 @@ export class SitesComponent implements OnInit, OnDestroy {
   tableConfig: Options = {};
 
   generalFilters!: GeneralFilters
-
   userInfo!: UserInfo;
 
   isLoading: boolean = true;
@@ -97,7 +96,6 @@ export class SitesComponent implements OnInit, OnDestroy {
       if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
     }
   }
-
 
   getFilters() {
     const encryptedData = localStorage.getItem('userInfo');
