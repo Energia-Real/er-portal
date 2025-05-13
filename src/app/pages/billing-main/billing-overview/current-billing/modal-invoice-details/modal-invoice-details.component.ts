@@ -3,6 +3,12 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
 import * as entity from '../../../billing-model';
+import { BillingService } from '@app/pages/billing-main/billing.service';
+import { UserInfo } from '@app/shared/models/general-models';
+import { EncryptionService } from '@app/shared/services/encryption.service';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { Store } from '@ngrx/store';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 
 @Component({
   selector: 'app-modal-invoice-details',
@@ -12,12 +18,13 @@ import * as entity from '../../../billing-model';
 })
 export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+  CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
   @Input() set invoice(invoiceData: any | null | undefined) {
     if (!invoiceData) return;
-    console.log(invoiceData);
+    this.getUserClient();
   }
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -25,99 +32,83 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   pageIndex: number = 1;
   totalItems: number = 0;
 
-  invoicesDetails: entity.InvoiceDetailsTableRow [] = [];
+  invoicesDetailsHeader!: entity.InvoiceDetailsCurrency
+  invoicesDetails!: entity.InvoiceDetailsTableRow[];
   tableConfig: Options = {};
-  
-  constructor(private invoiceTableService: InvoiceTableService) {}
+  isLoading: boolean = true;
+  userInfo!: UserInfo;
+
+  constructor(
+    private invoiceTableService: InvoiceTableService,
+    private moduleServices: BillingService,
+    private encryptionService: EncryptionService,
+    private store: Store,
+
+  ) { }
 
   ngOnInit(): void {
-      // const { columns, options } = this.invoiceTableService.getTableOptionsInvoiceDetails({
-      //   downloadPdf: (row:entity.InvoiceDetailsTableRow ) => this.downloadPdf(row),
-      //   downloadXml: (row:entity.InvoiceDetailsTableRow ) => this.downloadXml(row),
-      //   viewDetails: (row:entity.InvoiceDetailsTableRow ) => this.viewDetails(row)
-      // });
-    
-      // this.tableConfig = {
-      //   ...options, // Esto incluye las opciones de la tabla como maxHeight, layout, etc...
-      //   columns: columns // Esto incluye las columnas con acciones
-      // };
-
-     
     this.tableConfig = this.invoiceTableService.getTableOptionsInvoiceDetails()
-    
-    setTimeout(() => {
-      this.invoicesDetails = [
-        {
-          production: 1000000,
-          concept: "kWh",
-          description: "81112001 ‐ Servicio de procesamiento de datos en línea Servicio de Monitoreo The Landmark Baja Tension febrero 25",
-          unitValue: 1000000,
-          taxes: 1000000,
-          amount: 1000000
-        },
-        {
-          production: 2000000,
-          concept: "kWh",
-          description: "81112001 ‐ Servicio de procesamiento de datos en línea Servicio de Monitoreo The Landmark Baja Tension febrero 25",
-          unitValue: 2000000,
-          taxes: 2000000,
-          amount: 2000000
-        },
-        {
-          production: 3000000,
-          concept: "kWh",
-          description: "81112001 ‐ Servicio de procesamiento de datos en línea Servicio de Monitoreo The Landmark Baja Tension febrero 25",
-          unitValue: 3000000,
-          taxes: 3000000,
-          amount: 3000000
-        },
-        {
-          production: 1000000,
-          concept: "kWh",
-          description: "81112001 ‐ Servicio de procesamiento de datos en línea Servicio de Monitoreo The Landmark Baja Tension febrero 25",
-          unitValue: 1000000,
-          taxes: 1000000,
-          amount: 1000000
-        },
-        {
-          production: 2000000,
-          concept: "kWh",
-          description: "81112001 ‐ Servicio de procesamiento de datos en línea Servicio de Monitoreo The Landmark Baja Tension febrero 25",
-          unitValue: 2000000,
-          taxes: 2000000,
-          amount: 2000000
-        },
-        {
-          production: 3000000,
-          concept: "kWh",
-          description: "81112001 ‐ Servicio de procesamiento de datos en línea Servicio de Monitoreo The Landmark Baja Tension febrero 25",
-          unitValue: 3000000,
-          taxes: 3000000,
-          amount: 3000000
-        },
-      ]
-    }, 500);
   }
 
-  downloadPdf(row: entity.InvoiceDetailsTableRow ) {
+  getInvoiceDetailsHeader(idClient: string) {
+    this.moduleServices.getInvoiceDetailsHeader(idClient).subscribe({
+      next: (response: entity.InvoiceDetailsCurrencyHeader) => {
+        console.log(response);
+        this.invoicesDetailsHeader = response.response
+        this.isLoading = false;
+      },
+    });
+  }
+
+  getInvoiceDetails(filters: any) {
+    this.moduleServices.getInvoiceDetails(filters).subscribe({
+      next: (response: entity.DataInvoiceDetailsTableMapper) => {
+        console.log(response);
+        this.invoicesDetails = response.data
+        this.isLoading = false;
+      },
+    });
+  }
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo: UserInfo = this.encryptionService.decryptData(encryptedData);
+      const filters = {
+        pageSize: this.pageSize,
+        page: this.pageIndex,
+        clientId: userInfo.clientes[0]
+      }
+
+      this.getInvoiceDetailsHeader(userInfo.clientes[0]);
+      this.getInvoiceDetails(filters);
+    }
+  }
+
+  downloadPdf(row: entity.InvoiceDetailsTableRow) {
     console.log(row);
     console.log('downloadPdf');
   }
-  
-  downloadXml(row: entity.InvoiceDetailsTableRow ) {
+
+  downloadXml(row: entity.InvoiceDetailsTableRow) {
     console.log(row);
     console.log('downloadXml');
   }
 
-  viewDetails(row: entity.InvoiceDetailsTableRow ) {
+  viewDetails(row: entity.InvoiceDetailsTableRow) {
     console.log(row);
     console.log('viewDetails');
   }
 
-  getServerData(event: any){
+  getServerData(event: any) {
     console.log(event)
   }
-  
+
+  closeModal(notificationType: string) {
+    this.isOpen = false;
+    this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: false }));
+  }
+
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();

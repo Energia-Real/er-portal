@@ -1,7 +1,8 @@
 <div class="c-sites card-content-section">
     <div class="table-container" *ngIf="sites?.length">
-        <ng-container *ngIf="!isLoading; else loadingSkeleton" >
-            <app-tabulator-table *ngIf="sites?.length; else noDataTable" [data]="sites" [config]="tableConfig"></app-tabulator-table>
+        <ng-container *ngIf="!isLoading; else loadingSkeleton">
+            <app-tabulator-table *ngIf="sites?.length; else noDataTable" [data]="sites"
+                [config]="tableConfig"></app-tabulator-table>
             <mat-paginator #paginator class="c-paginator" [length]="totalItems" [pageSize]="pageSize"
                 [pageSizeOptions]="pageSizeOptions" (page)="getServerData($event)" showFirstLastButtons
                 aria-label="Select page of periodic elements">

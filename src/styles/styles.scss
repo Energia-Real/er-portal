@@ -1692,3 +1692,13 @@ input[type="number"]:focus {
     color: #D2D2D2;
   }
 }
+
+.header-modal {
+ display: flex;
+ justify-content: end; 
+ margin-bottom: 15px;
+  i {
+    font-size: 25px;
+    color: #EE5427;
+  }
+}

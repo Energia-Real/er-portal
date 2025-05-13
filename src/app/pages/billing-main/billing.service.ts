@@ -80,6 +80,29 @@ export class BillingService implements OnDestroy {
       .get<entity.DataBillingSitesTableMapper>(url, { params });
   }
 
+  getInvoiceDetailsHeader(
+    idClient: string
+  ): Observable<entity.InvoiceDetailsCurrencyHeader> {
+    const url = `${this.domainApiUrl}/v1/Billing/Invoice/${idClient}`;
+
+    return this.http
+      .get<entity.InvoiceDetailsCurrencyHeader>(url);
+  }
+
+   getInvoiceDetails(
+    filters: any
+  ): Observable<entity.DataInvoiceDetailsTableMapper> {
+    const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
+
+    const params = new HttpParams()
+      .set('pageSize', filters.pageSize)
+      .set('page', filters.page)
+
+    return this.http
+      .get<entity.DataInvoiceDetailsTableMapper>(url, { params });
+  }
+
+
   getPreviousBillingHistory(
     filters: any
   ): Observable<entity.DataHistoryOverviewTableMapper> {

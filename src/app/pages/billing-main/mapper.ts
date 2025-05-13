@@ -81,8 +81,6 @@ export class Mapper {
 
 	static getEnergysummaryMapper(response: entity.EnergyBillingSummary, formatsService: FormatsService): ChartConfiguration<'bar' | 'line'>['data'] | any {
 
-		console.log(response.response);
-
 		const monthsMap = [
 			'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 			'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -128,12 +126,10 @@ export class Mapper {
 					pointBorderColor: '#6B021A',
 					label: 'Total Amount',
 					order: 0,
+					yield: true,
 				}
 			],
 			balance: formatsService.moneyFormat(response.response.energySummaryResponse.balance),
 		};
-
 	}
-
-
 }

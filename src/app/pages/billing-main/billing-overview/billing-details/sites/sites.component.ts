@@ -102,7 +102,6 @@ export class SitesComponent implements OnInit, OnDestroy {
   getsites(filters: any) {
     this.moduleServices.getBillingSites(filters).subscribe({
       next: (response: entity.DataBillingSitesTableMapper) => {
-        console.log(response.data);
         this.sites = response.data
         this.totalItems = response?.totalItems;
         this.pageIndex = filters.page;

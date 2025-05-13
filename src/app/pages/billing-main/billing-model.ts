@@ -14,6 +14,21 @@ export interface InvoiceDetailsTableRow {
   amount: number;
 }
 
+export interface InvoiceDetailsCurrency {
+  client: string;
+  rFc: string;
+  legalName: string;
+  startDate: string; // Puedes cambiar a Date si lo vas a convertir después
+  endDate: string;   // Igual aquí
+}
+
+export interface InvoiceDetailsCurrencyHeader {
+  success: boolean;
+  response: InvoiceDetailsCurrency;
+  errors: any; // Puedes tipar mejor si sabes la estructura de errores
+}
+
+
 export interface DataBillingSitesTableMapper {
   pageSize: number,
   page: number,
@@ -22,6 +37,24 @@ export interface DataBillingSitesTableMapper {
 }
 
 export interface SitesTableRow {
+  siteName: string;
+  clientName: string;
+  legalName: string;
+  product: string;
+  contractType: string;
+  status: string;
+  address: string;
+}
+
+
+export interface DataInvoiceDetailsTableMapper {
+  pageSize: number,
+  page: number,
+  data: InvoiceDetailsTableRow[],
+  totalItems: number
+}
+
+export interface InvoiceDetailsTableRow {
   siteName: string;
   clientName: string;
   legalName: string;

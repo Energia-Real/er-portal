@@ -6,63 +6,71 @@ import { FormatsService } from "@app/shared/services/formats.service";
 @Injectable({ providedIn: 'root' })
 export class InvoiceTableService {
 
-  constructor(private formatService: FormatsService) {}
+  constructor(private formatService: FormatsService) { }
 
   getTableColumnsInvoiceDetails(): ColumnDefinition[] {
     return [
       {
-        title: "Production",
-        field: "production",
+        title: "Planta",
+        field: "siteName",
         headerSort: false,
         vertAlign: "middle",
-        minWidth: 120,
-        hozAlign: "right",
-        formatter: (cell: CellComponent) => this.formatService.energyFormat(cell.getValue())
+        minWidth: 150,
+        cssClass: "wrap-text-cell"
       },
       {
-        title: "Concept",
-        field: "concept",
+        title: "Cliente",
+        field: "clientName",
         headerSort: false,
         vertAlign: "middle",
-        minWidth: 50,
-        maxWidth: 80,
+        minWidth: 100,
+        cssClass: "wrap-text-cell"
       },
       {
-        title: "Description",
-        field: "description",
+        title: "Razón Social",
+        field: "legalName",
         headerSort: false,
         vertAlign: "middle",
         width: 200,
         cssClass: "wrap-text-cell"
       },
       {
-        title: "Unit Value",
-        field: "unitValue",
+        title: "Producto",
+        field: "product",
         minWidth: 150,
-        formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
         hozAlign: "left",
         headerSort: false,
-        vertAlign: "middle"
+        vertAlign: "middle",
+        cssClass: "wrap-text-cell"
       },
       {
-        title: "Taxes",
-        field: "taxes",
-        minWidth: 150,
-        formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
+        title: "Tipo Contrato",
+        field: "contractType",
+        minWidth: 120,
         hozAlign: "left",
         headerSort: false,
-        vertAlign: "middle"
+        vertAlign: "middle",
+        cssClass: "wrap-text-cell"
       },
       {
-        title: "Total Amount",
-        field: "amount",
-        minWidth: 150,
-        formatter: (cell: CellComponent) => this.formatService.moneyFormat(cell.getValue()),
-        hozAlign: "left",
+        title: "Estatus",
+        field: "status",
+        minWidth: 100,
         headerSort: false,
-        vertAlign: "middle"
+        vertAlign: "middle",
+        cssClass: "wrap-text-cell"
+
       },
+      {
+        title: "Dirección",
+        field: "address",
+        minWidth: 250,
+        headerSort: false,
+        vertAlign: "middle",
+        cssClass: "wrap-text-cell"
+      }
     ];
+
   }
 
   getTableOptionsInvoiceDetails(): Options {
@@ -75,9 +83,9 @@ export class InvoiceTableService {
   }
 
   getTableColumnsWithActions(callbacks: {
-    downloadPdf: (row: entity.InvoiceDetailsTableRow ) => void,
-    downloadXml: (row: entity.InvoiceDetailsTableRow ) => void,
-    viewDetails: (row: entity.InvoiceDetailsTableRow ) => void
+    downloadPdf: (row: entity.InvoiceDetailsTableRow) => void,
+    downloadXml: (row: entity.InvoiceDetailsTableRow) => void,
+    viewDetails: (row: entity.InvoiceDetailsTableRow) => void
   }): { columns: ColumnDefinition[], options: Options } {
     // Definimos las columnas
     const columns: ColumnDefinition[] = [
@@ -99,8 +107,8 @@ export class InvoiceTableService {
           const element = e.target as HTMLElement;
           if (element.classList.contains('action-icon')) {
             const action = element.getAttribute('data-action');
-            const row = cell.getRow().getData() as entity.InvoiceDetailsTableRow ;
-           
+            const row = cell.getRow().getData() as entity.InvoiceDetailsTableRow;
+
             switch (action) {
               case 'downloadPdf':
                 callbacks.downloadPdf(row);
@@ -118,7 +126,7 @@ export class InvoiceTableService {
         vertAlign: "middle"
       }
     ];
-  
+
     // Definimos las opciones de la tabla
     const options: Options = {
       maxHeight: 280,
@@ -126,7 +134,7 @@ export class InvoiceTableService {
       columns: columns,
       movableColumns: true
     };
-  
+
     return { columns, options };
   }
 
@@ -182,7 +190,7 @@ export class InvoiceTableService {
       }
     ];
   }
-  
+
   getTableOptionsSites(): Options {
     return {
       maxHeight: 280,
