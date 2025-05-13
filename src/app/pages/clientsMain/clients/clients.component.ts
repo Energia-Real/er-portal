@@ -17,10 +17,10 @@ import { DrawerGeneral } from '@app/shared/models/general-models';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-clients',
-    templateUrl: './clients.component.html',
-    styleUrl: './clients.component.scss',
-    standalone: false
+  selector: 'app-clients',
+  templateUrl: './clients.component.html',
+  styleUrl: './clients.component.scss',
+  standalone: false
 })
 export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
@@ -42,7 +42,7 @@ export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   searchValue: string = '';
-  drawerAction: "Create" | "Edit" = "Create";
+  drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
   showLoader: boolean = true;

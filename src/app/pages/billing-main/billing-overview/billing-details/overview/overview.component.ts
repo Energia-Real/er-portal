@@ -43,16 +43,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
             const label = context.dataset.label || '';
 
             if (label.includes('Amount')) {
-              return `${label}: $${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+              return `${label}: $${value.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
             }
 
-            return `${label}: ${value.toLocaleString('en-US')} kWh`;
+            return `${label}: ${value.toLocaleString('es-MX')} kWh`;
           }
         },
       },
       legend: {
         display: false,
-        position: 'top', 
+        position: 'top',
         labels: {
           usePointStyle: true,
           color: '#333',
@@ -82,21 +82,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
         },
       },
       y1: {
-        type: 'linear',
-        position: 'right',
-        grid: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function (value) {
-            return `$${(+value).toLocaleString()}`;
-          },
-        },
-      },
+        display: false,
+      }
     }
   };
 
-  datasetVisibility:boolean[] = [true, true, true];
+  datasetVisibility: boolean[] = [true, true, true];
 
   generalFilters!: GeneralFilters
   balance: string = '0.00'
@@ -107,7 +98,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private moduleServices: BillingService,
     private notificationService: OpenModalsService,
     private translationService: TranslationService
-  ) { 
+  ) {
     this.generalFilters$ = this.store.select(state => state.filters);
     this.initChartOptions();
   }
@@ -137,7 +128,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         },
         legend: {
           display: false,
-          position: 'top', 
+          position: 'top',
           labels: {
             usePointStyle: true,
             color: '#333',
@@ -161,36 +152,26 @@ export class OverviewComponent implements OnInit, OnDestroy {
             color: '#E5E7EB',
           },
           ticks: {
-            callback: (value) => {
+            callback: function (value) {
               return `${value} kWh`;
             },
           },
         },
-        y1: {
-          type: 'linear',
-          position: 'right',
-          grid: {
-            drawOnChartArea: false,
-          },
-          ticks: {
-            callback: (value) => {
-              return `$${(+value).toLocaleString()}`;
-            },
-          },
-        },
+        y1: undefined as any
       }
+
     };
   }
 
   ngOnInit(): void {
     this.getFilters();
-    
+
     // Subscribe to language changes to update chart options
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.initChartOptions();
-        
+
         // Update the chart if it exists
         if (this.chartComponent && this.chartComponent.chart) {
           this.chartComponent.chart.update();
@@ -203,10 +184,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
       const filters = {
         startDate: GeneralFilters.startDate,
         endDate: GeneralFilters.endDate,
-        customerName: this.filterData.customerName,
-        legalName: this.filterData.legalName,
-        siteName: this.filterData.siteName,
-        productType: this.filterData.productType,
+        customerName: this.filterData.customerName ?? '',
+        legalName: this.filterData.legalName ?? '',
+        siteName: this.filterData.siteName ?? '',
+        productType: this.filterData.productType ?? '',
       };
 
       this.getEnergysummary(filters);
@@ -239,10 +220,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
             }
           });
         }
-        
+
         this.lineChartData = response;
         this.balance = response.balance;
-        
+
         // Update the chart if it exists
         if (this.chartComponent && this.chartComponent.chart) {
           this.chartComponent.chart.update();
@@ -258,7 +239,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   toggleDataset(index: number) {
     const chart = this.chartComponent.chart;
     if (!chart) return;
-  
+
     const meta = chart.getDatasetMeta(index);
     this.datasetVisibility[index] = !this.datasetVisibility[index];
     meta.hidden = !this.datasetVisibility[index];
@@ -269,7 +250,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   showAllDatasets() {
     const chart = this.chartComponent.chart;
     if (!chart) return;
-  
+
     chart.data.datasets.forEach((_, index) => {
       const meta = chart.getDatasetMeta(index);
       this.datasetVisibility[index] = true;

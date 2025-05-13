@@ -1,10 +1,8 @@
-<div class="c-global c-detail-site">
+<div class="c-global c-savings">
     <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-2 md:col-span-1">
-            <div class="c-card-info-savings" *ngIf="!showAlert else notData">
-                <div *ngFor="let data of savingDetails?.primaryElements; let idx = index"
-                    [ngClass]="{'c-card-50': idx < 2, 'c-card-33': idx >= 2}">
-
+            <div class="c-cards-information" *ngIf="!showAlert else notData">
+                <div class="c-card-50" *ngFor="let data of savingDetails?.primaryElements; let idx = index">
                     <div class="card-info">
                         <div>
                             <h1>{{ data.title }}</h1>
@@ -13,9 +11,9 @@
                     </div>
                 </div>
 
-                <div class="separator-cards"></div>
+                <div class="separator-cards m-0"></div>
 
-                <div *ngFor="let data of savingDetails?.additionalItems; let isLast = last" class="c-card-33">
+                <div *ngFor="let data of savingDetails?.additionalItems; let isLast = last" class="c-card-50">
                     <div class="card-info">
                         <div>
                             <h1>{{ data.title }}</h1>
@@ -30,7 +28,7 @@
             <div class="highcharts">
                 <div class="charts">
                     <div class="graphic-savings" *ngIf="displayChart">
-                        <canvas id="myChart"  baseChart [type]="'bar'" [data]="lineChartData"
+                        <canvas id="myChart" baseChart [type]="'bar'" [data]="lineChartData"
                             [options]="lineChartOptions">
                         </canvas>
                     </div>

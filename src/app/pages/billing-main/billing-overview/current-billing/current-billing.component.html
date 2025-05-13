@@ -7,9 +7,29 @@
             </span> 
         </div>
     </div>
-   
-    
-    <div class="table-container" *ngIf="bills">
-        <app-tabulator-table [data]="bills" [config]="tableConfig"></app-tabulator-table>
+
+    <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
+        [invoice]="drawerInfo"></app-modal-invoice-details>
+
+    <div class="table-container">
+        <ng-container *ngIf="!isLoading; else loadingSkeleton">
+            <app-tabulator-table *ngIf="bills?.length; else noDataTable"  [data]="bills" [config]="tableConfig"></app-tabulator-table>
+        </ng-container>
     </div>
 </div>
+
+<ng-template #loadingSkeleton>
+    <div class="flex flex-col dataSC">
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+          'border-radius': '32.5px'
+        }"></ngx-skeleton-loader>
+    </div>
+</ng-template>
+
+<ng-template #noDataTable>
+    <div class="no-data-container">
+        <div class="icon">📄</div>
+        <div class="message-title">No data available</div>
+        <div class="message-subtitle">Try adjusting the filters or check back later.</div>
+    </div>
+</ng-template>

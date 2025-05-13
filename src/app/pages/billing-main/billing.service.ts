@@ -60,6 +60,48 @@ export class BillingService implements OnDestroy {
         )
       );
   }
+  
+  getBillingSites(
+    filters: any
+  ): Observable<entity.DataBillingSitesTableMapper> {
+    const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
+
+    const params = new HttpParams()
+      .set('pageSize', filters.pageSize)
+      .set('page', filters.page)
+      .set('startDate', filters.startDate)
+      .set('endDate', filters.endDate)
+      .set('customerName', filters.customerName)
+      .set('legalName', filters.legalName)
+      .set('siteName', filters.siteName)
+      .set('productType', filters.productType)
+
+    return this.http
+      .get<entity.DataBillingSitesTableMapper>(url, { params });
+  }
+
+  getInvoiceDetailsHeader(
+    idClient: string
+  ): Observable<entity.InvoiceDetailsCurrencyHeader> {
+    const url = `${this.domainApiUrl}/v1/Billing/Invoice/${idClient}`;
+
+    return this.http
+      .get<entity.InvoiceDetailsCurrencyHeader>(url);
+  }
+
+   getInvoiceDetails(
+    filters: any
+  ): Observable<entity.DataInvoiceDetailsTableMapper> {
+    const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
+
+    const params = new HttpParams()
+      .set('pageSize', filters.pageSize)
+      .set('page', filters.page)
+
+    return this.http
+      .get<entity.DataInvoiceDetailsTableMapper>(url, { params });
+  }
+
 
   getPreviousBillingHistory(
     filters: any

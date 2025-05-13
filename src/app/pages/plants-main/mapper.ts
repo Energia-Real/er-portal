@@ -10,6 +10,11 @@ export class Mapper {
 		const additionalItems: entity.DataResponseDetailsCard[] = []
 
 		primaryElements.push({
+			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
+			description: response.rpu
+		});
+
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.ULTIMA_CONEXION') : 'Last connection timestamp',
 			description: formatsService.dateFormat(response.lastConnectionTimestamp)
 		});
@@ -19,13 +24,14 @@ export class Mapper {
 			description: formatsService.formatContractDuration(response.contractDuration)
 		});
 
-		additionalItems.push({
-			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
-			description: response.rpu
+		primaryElements.push({
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_OPERACION_COMERCIAL') : 'Commercial Operation Date (COD)',
+			description: formatsService.dateFormat(response.cod)
 		});
 
+
 		additionalItems.push({
-			title: translationService ? translationService.instant('PLANTAS.MAPPER.EDAD_ACTIVO') : 'Asset age (years)',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.EDAD_ACTIVO') : 'Asset age',
 			description: `${response.ageOfTheSite} ${response.ageOfTheSite > 1 ? 
 				(translationService ? translationService.instant('PLANTAS.MAPPER.AÑOS') : 'Years') : 
 				(translationService ? translationService.instant('PLANTAS.MAPPER.AÑO') : 'Year')}`
@@ -36,11 +42,7 @@ export class Mapper {
 			description: formatsService.dateFormat(response.installDate)
 		});
 
-		additionalItems.push({
-			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_OPERACION_COMERCIAL') : 'Commercial Operation Date (COD)',
-			description: formatsService.dateFormat(response.cod)
-		});
-
+		
 		return {
 			primaryElements,
 			additionalItems
@@ -274,13 +276,13 @@ export class Mapper {
 			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.GENERACION_EXPORTADA') : 'Exported generation',
 			description: `${response.response.exportedGeneration?? "0.00"} kWh`,
 			extra: `+2% ${comparedText}`
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.CONSUMO_RED_CFE') : 'CFE network consumption',
 			description : `${response.response.cfeNetworkConsumption ?? "0.00"} ${response.response?.cfeNetworkConsumptionMeasure}`,
 			extra: `-4% ${comparedText}`
@@ -294,6 +296,7 @@ export class Mapper {
 		additionalItems.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.RENDIMIENTO') : 'Performance',
 			description: `${response.response.performance}%`,
+			extra:'% performance - calculated as (Generated / Esstimated)'
 		});
 
 		return {

@@ -1,13 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
-import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { ColumnDefinition, CellComponent, Options } from 'tabulator-tables';
 import { BillingService } from '../../billing.service';
 import { Bill, CurrentBillResponse } from '../../billing-model';
 import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 
 @Component({
   selector: 'app-current-billing',
@@ -27,6 +29,13 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
 
   tableConfig!: Options;
   columns: ColumnDefinition[] = [];
+
+  drawerOpenSub: Subscription;
+  drawerOpenID: boolean = false;
+  drawerAction: "Create" | "Edit" | "View" = "Create";
+  drawerInfo: any | null | undefined = null;
+
+  isLoading: boolean = true;
 
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
@@ -49,6 +58,58 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
         this.generalFilters = generalFilters;
         this.getBilling();
       });
+
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
+      this.drawerOpenID = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+    });
+  }
+
+  ngOnInit(): void {
+    // Subscribe to language changes to update column titles
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.initColumns();
+        // Update the table configuration with new columns
+        this.tableConfig = {
+          ...this.tableConfig,
+          columns: this.columns
+        };
+
+        // If the table component is available, update the columns
+        if (this.tabulatorTable) {
+          // Use the new updateColumns method
+          setTimeout(() => {
+            this.tabulatorTable.updateColumns();
+          });
+        }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    // After the view is initialized, we need to make sure the table is updated when the language changes
+    // This is needed because the ViewChild might not be available in ngOnInit
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        // Only update if the table is initialized
+        if (this.tabulatorTable) {
+          // Set a timeout to ensure this runs after Angular's change detection
+          setTimeout(() => {
+            // Update the columns
+            this.initColumns();
+            this.tableConfig = {
+              ...this.tableConfig,
+              columns: this.columns
+            };
+
+            // Use the new updateColumns method
+            this.tabulatorTable.updateColumns();
+          });
+        }
+      });
   }
 
   initColumns() {
@@ -59,6 +120,8 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
         headerSort: false,
         vertAlign: "middle",
         minWidth: 150,
+        cssClass: "wrap-text-cell"
+
       },
       {
         title: this.translationService.instant('FACTURACION.AÑO'),
@@ -85,7 +148,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
         formatter: (cell: CellComponent) => {
           const value = cell.getValue();
           // Define colors for different status IDs
-          const statusColors: {[key: string]: {bg: string, text: string}} = {
+          const statusColors: { [key: string]: { bg: string, text: string } } = {
             "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
             "Overdue": { bg: "#E31A1C", text: "white" },    // Orange - Pendiente/Partially paid
             "Pending": { bg: "#E5B83E", text: "white" }     // Red - Open
@@ -206,7 +269,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
           const downloadPdfTitle = this.translationService.instant('FACTURACION.DESCARGAR_PDF');
           const downloadXmlTitle = this.translationService.instant('FACTURACION.DESCARGAR_XML');
           const viewDetailsTitle = this.translationService.instant('FACTURACION.VER_DETALLES');
-          
+
           // Generate HTML with the requested icons in a horizontal layout
           return `
             <div style="display: flex; justify-content: space-around; align-items: center;">
@@ -253,63 +316,12 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
     this.moduleServices.getCurrentInvoices(filters).subscribe({
       next: (response: GeneralResponse<CurrentBillResponse>) => {
         this.bills = response.response.currentBillResponse;
-        console.log(response.response);
+        this.isLoading = false;
       },
       error: (error) => {
         console.log(error);
       }
     });
-  }
-
-  ngOnInit(): void {
-    // Subscribe to language changes to update column titles
-    this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.initColumns();
-        // Update the table configuration with new columns
-        this.tableConfig = {
-          ...this.tableConfig,
-          columns: this.columns
-        };
-        
-        // If the table component is available, update the columns
-        if (this.tabulatorTable) {
-          // Use the new updateColumns method
-          setTimeout(() => {
-            this.tabulatorTable.updateColumns();
-          });
-        }
-      });
-  }
-
-  ngAfterViewInit(): void {
-    // After the view is initialized, we need to make sure the table is updated when the language changes
-    // This is needed because the ViewChild might not be available in ngOnInit
-    this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // Only update if the table is initialized
-        if (this.tabulatorTable) {
-          // Set a timeout to ensure this runs after Angular's change detection
-          setTimeout(() => {
-            // Update the columns
-            this.initColumns();
-            this.tableConfig = {
-              ...this.tableConfig,
-              columns: this.columns
-            };
-            
-            // Use the new updateColumns method
-            this.tabulatorTable.updateColumns();
-          });
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 
   // Action methods for the icons
@@ -351,10 +363,24 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   viewDetails(row: any): void {
-    console.log('View Details clicked for:', row);
+    let objData: any = {
+      id: ''
+    }
+
+    this.drawerInfo = row
+    this.updDraweStateView(true);
+  }
+
+  updDraweStateView(estado: boolean): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "View", drawerInfo: this.drawerInfo, needReload: false }));
   }
 
   descargarTabla(tipo: string) {
     this.tabulatorTable.download(tipo);
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }

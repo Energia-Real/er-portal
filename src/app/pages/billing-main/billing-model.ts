@@ -5,6 +5,66 @@ export interface DataTableBillingResponse {
   errors: any[];
 }
 
+export interface InvoiceDetailsTableRow {
+  production: number;
+  concept: string;
+  description: string;
+  unitValue: number;
+  taxes: number;
+  amount: number;
+}
+
+export interface InvoiceDetailsCurrency {
+  client: string;
+  rFc: string;
+  legalName: string;
+  startDate: string; // Puedes cambiar a Date si lo vas a convertir después
+  endDate: string;   // Igual aquí
+}
+
+export interface InvoiceDetailsCurrencyHeader {
+  success: boolean;
+  response: InvoiceDetailsCurrency;
+  errors: any; // Puedes tipar mejor si sabes la estructura de errores
+}
+
+
+export interface DataBillingSitesTableMapper {
+  pageSize: number,
+  page: number,
+  data: SitesTableRow[],
+  totalItems: number
+}
+
+export interface SitesTableRow {
+  siteName: string;
+  clientName: string;
+  legalName: string;
+  product: string;
+  contractType: string;
+  status: string;
+  address: string;
+}
+
+
+export interface DataInvoiceDetailsTableMapper {
+  pageSize: number,
+  page: number,
+  data: InvoiceDetailsTableRow[],
+  totalItems: number
+}
+
+export interface InvoiceDetailsTableRow {
+  siteName: string;
+  clientName: string;
+  legalName: string;
+  product: string;
+  contractType: string;
+  status: string;
+  address: string;
+}
+
+
 export interface BillingResponse {
   pageSize: number;
   page: number;
@@ -14,22 +74,22 @@ export interface BillingResponse {
 }
 
 export interface FilterBillingDetails {
-  year:number; 
+  year: number;
   customerName: string;
   legalName?: string;
   siteName?: string;
   productType?: string;
   page?: number;
-  pageSize?:number;
+  pageSize?: number;
 }
 
 export interface FilterBillingEnergysummary {
   startDate: string;
   endDate: string;
-  customerName?:string;
+  customerName?: string;
   legalName?: string;
-  siteName?:string;
-  productType?:string;
+  siteName?: string;
+  productType?: string;
 }
 
 export interface EnergyBillingSummary {
@@ -273,14 +333,14 @@ export interface catalogResponseList {
 
 
 
-export interface Bill{
-  amount:     number; 
-  billingId:  string; 
-  legalName:  string; 
-  month:      number; 
-  product:    string; 
-  status:     string; 
-  year:       number;
+export interface Bill {
+  amount: number;
+  billingId: string;
+  legalName: string;
+  month: number;
+  product: string;
+  status: string;
+  year: number;
 }
 
 interface InvoiceDetails {

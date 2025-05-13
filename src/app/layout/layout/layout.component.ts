@@ -45,8 +45,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.notificationService.loadNotificationCenterMessages().subscribe();
 
     this.authService.getInfoUser().subscribe((data) => {
-      console.log(data);
-      
       this.userInfo = data;
       if(data.language){
         this.translationService.setLanguage(data.language);

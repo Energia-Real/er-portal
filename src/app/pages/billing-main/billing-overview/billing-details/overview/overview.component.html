@@ -2,10 +2,11 @@
     <div>
         <h1 class="label-700-24">{{ 'FACTURACION.RESUMEN_ENERGIA' | translate }}</h1>
         <div class="grid grid-cols-1 md:grid-cols-4 ">
-
             <div class="col-span-1 md:col-span-3">
-                <div class="c-graph relative">
-                    <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" height="195"></canvas>
+                <div class="c-graph">
+                    <div>
+                        <canvas baseChart [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"></canvas>
+                    </div>
                 </div>
             </div>
 

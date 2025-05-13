@@ -3,6 +3,9 @@ import * as entity from './home-model';
 
 export class Mapper {
 	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): any {
+		console.log(response.response.consolidatedData);
+		
+		
 		let totalEnergyConsumption: number = 0;
 		let totalEnergyProduction: number = 0;
 
@@ -23,7 +26,9 @@ export class Mapper {
 				energyConsumptionFormat : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
 				energyProductionFormat : `${data.energyProduction} ${data.energyProductionMeasure}`,
 				co2Saving : data.co2Saving,
-				siteStatus: data?.siteStatus
+				siteStatus: data?.siteStatus,
+				unitProductionMeasure: data?.energyProductionMeasure!,
+				unitConsumptionMeasure: data?.energyConsumptionMeasure!,
 			});
 		});
 

@@ -9,10 +9,10 @@ import { OpenModalsService } from '@app/shared/services/openModals.service';
 import { EnergyProductionService } from '../energy-production.service';
 
 @Component({
-    selector: 'app-energy-prod-update',
-    templateUrl: './energy-prod-update.component.html',
-    styleUrl: './energy-prod-update.component.scss',
-    standalone: false
+  selector: 'app-energy-prod-update',
+  templateUrl: './energy-prod-update.component.html',
+  styleUrl: './energy-prod-update.component.scss',
+  standalone: false
 })
 export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -21,7 +21,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   get plant(): any | null | undefined { return this._plant }
 
   @Input() isOpen = false;
-  @Input() modeDrawer: "Edit" | "Create" = "Create";
+  @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
   @Input() set plant(editedData: any | null | undefined) {
     this.editedPlant = editedData;
 
@@ -59,7 +59,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
 
   ngOnInit() { }
 
-  actionSave(deleteEnergyProd?:boolean) {
+  actionSave(deleteEnergyProd?: boolean) {
     if (!this.formData.valid) return
 
     const objData: any = {
@@ -74,7 +74,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     delete objData.isCreated;
 
     if (deleteEnergyProd) objData.deleteEnergyValue = true;
-     else objData.deleteEnergyValue = false;
+    else objData.deleteEnergyValue = false;
 
     if (this.editedPlant?.isCreated) this.saveDataPatch(objData);
     else this.saveDataPost(objData);
@@ -91,7 +91,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
   }
 
   saveDataPatch(objData: entity.DataPatchEnergyProd) {
-    if(this.editedPlant.energyType == 1){
+    if (this.editedPlant.energyType == 1) {
       this.moduleServices.patchDataEnergyProd(objData).subscribe({
         next: () => { this.completionMessage(true) },
         error: (error) => {
@@ -100,7 +100,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
         }
       })
     }
-    else if(this.editedPlant.energyType == 2){
+    else if (this.editedPlant.energyType == 2) {
       this.moduleServices.patchDataEnergyCon(objData).subscribe({
         next: () => { this.completionMessage(true) },
         error: (error) => {
@@ -109,7 +109,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
         }
       })
     }
-    else{
+    else {
       this.moduleServices.patchDataEnergyEstim(objData).subscribe({
         next: () => { this.completionMessage(true) },
         error: (error) => {
@@ -127,7 +127,7 @@ export class EnergyProdUpdateComponent implements OnInit, OnDestroy {
     this.editedPlant = null;
   }
 
-  closeDrawer(cancel?:boolean) {
+  closeDrawer(cancel?: boolean) {
     this.isOpen = false;
     setTimeout(() => this.cancelEdit(), 300);
     this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: cancel ? false : true }));

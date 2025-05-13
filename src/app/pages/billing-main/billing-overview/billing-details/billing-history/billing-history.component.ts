@@ -29,6 +29,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges, Af
 
   tableConfig!: Options;
   columns: ColumnDefinition[] = [];
+  isLoading : Boolean = true;
 
   constructor(
     private moduleService: BillingService,
@@ -252,7 +253,6 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges, Af
   }
 
   ngOnInit(): void {
-    console.log('Billing history : filterData', this.filterData);
     this.getBillingHistory();
     
     // Subscribe to language changes to update column titles
@@ -303,14 +303,13 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges, Af
     this.moduleService.getBillingHistory(this.filterData).subscribe({
       next: (response: GeneralPaginatedResponse<entity.HistoryBillResponse>) => {
         this.totalItems = response?.totalItems;
-        console.log(response);
         if (response.data[0] != null) {
           this.bills = response.data[0].historyBillResponse;
         } else {
           this.bills = [];
           this.pageIndex = 0;
         }
-        console.log(this.bills);
+        this.isLoading = false;
       },
       error: (error) => {
         this.bills = [];

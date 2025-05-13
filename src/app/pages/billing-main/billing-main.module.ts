@@ -21,6 +21,8 @@ import { BillingHistoryComponent } from './billing-overview/billing-details/bill
 import { SitesComponent } from './billing-overview/billing-details/sites/sites.component';
 import { BillingInformationComponent } from './billing-overview/billing-details/billing-information/billing-information.component';
 import { NgChartsModule } from 'ng2-charts';
+import { ModalInvoiceDetailsComponent } from './billing-overview/current-billing/modal-invoice-details/modal-invoice-details.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { NgChartsModule } from 'ng2-charts';
     OverviewComponent,
     BillingHistoryComponent,
     SitesComponent,
-    BillingInformationComponent
+    BillingInformationComponent,
+    ModalInvoiceDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +51,8 @@ import { NgChartsModule } from 'ng2-charts';
     MaterialModule,
     InfoCardComponent,
     MessageNoDataComponent,
-    NgChartsModule
+    NgChartsModule,
+    NgxSkeletonLoaderModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
