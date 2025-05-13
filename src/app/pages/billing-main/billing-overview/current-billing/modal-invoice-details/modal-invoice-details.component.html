@@ -40,7 +40,13 @@ c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': i
                 </div>
                 <div>
                     <h1>{{ 'FACTURACION.ESTATUS' | translate }}:</h1>
-                    <button class="btn-status">Payed</button>
+                    <button [ngClass]="{
+                        'billing-status-payed': invoicesDetailsHeader?.status == 'Payed',
+                        'billing-status-pending': invoicesDetailsHeader?.status == 'Pending',
+                        'billing-status-overdue': invoicesDetailsHeader?.status == 'Overdue',
+                        'billing-status-canceled': invoicesDetailsHeader?.status == 'Canceled'
+                        }">{{invoicesDetailsHeader?.status}}
+                    </button>
                 </div>
             </div>
         </div>

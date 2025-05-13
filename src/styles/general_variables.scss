@@ -1345,3 +1345,44 @@ select:focus {
     font-weight: 700 !important;
     line-height: 24px !important;
 }
+
+
+.billing-status-payed {
+    background: #33A02C;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.billing-status-pending {
+    background: #E5B83E;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.billing-status-overdue {
+    background: #E31A1C;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.billing-status-canceled {
+    background: #595959;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}

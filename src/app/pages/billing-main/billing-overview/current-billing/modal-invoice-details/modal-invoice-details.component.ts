@@ -75,7 +75,7 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   getInvoiceDetailsHeader(idClient: string) {
     this.moduleServices.getInvoiceDetailsHeader(idClient).subscribe({
       next: (response: entity.InvoiceDetailsCurrencyHeader) => {
-        console.log(response);
+        console.log(response.response);
         this.invoicesDetailsHeader = response.response
         this.isLoading = false;
       },
@@ -85,7 +85,6 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   getInvoiceDetails(filters: any) {
     this.moduleServices.getInvoiceDetails(filters).subscribe({
       next: (response: entity.DataInvoiceDetailsTableMapper) => {
-        console.log(response);
         this.invoicesDetails = response.data
         this.isLoading = false;
       },

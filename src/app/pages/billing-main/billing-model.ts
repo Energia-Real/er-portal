@@ -18,14 +18,15 @@ export interface InvoiceDetailsCurrency {
   client: string;
   rFc: string;
   legalName: string;
-  startDate: string; // Puedes cambiar a Date si lo vas a convertir después
-  endDate: string;   // Igual aquí
+  startDate: string; 
+  endDate: string; 
+  status: string; 
 }
 
 export interface InvoiceDetailsCurrencyHeader {
   success: boolean;
   response: InvoiceDetailsCurrency;
-  errors: any; // Puedes tipar mejor si sabes la estructura de errores
+  errors: any;
 }
 
 
