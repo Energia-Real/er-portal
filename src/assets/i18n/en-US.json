@@ -332,13 +332,17 @@
     "SITIO": "Site",
     "RESUMEN": "Overview",
     "HISTORIAL_FACTURACION": "Billing History",
-    "SITIOS": "Sites",
     "INFORMACION_FACTURACION": "Billing Information",
     "RESUMEN_ENERGIA": "Energy Summary",
     "BALANCE": "Balance:",
     "MOSTRAR_TODO": "Show all",
     "ENERGIA_PRODUCIDA": "Energy Produced (kWh)",
     "ENERGIA_FACTURADA": "Energy Billed (kWh)",
-    "MONTO_TOTAL": "Total Amount"
+    "MONTO_TOTAL": "Total Amount",
+    "SITIOS": "Sites",
+    "NOMBRE_SITIO": "Site Name",
+    "NOMBRE_CLIENTE": "Client Name",
+    "PRODUCTO_MODALIDAD": "Product / Modality",
+     "DIRECCION": "Address"
   }
 }

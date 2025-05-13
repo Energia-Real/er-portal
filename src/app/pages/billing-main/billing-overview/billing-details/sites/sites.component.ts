@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges, AfterViewInit } from '@angular/core';
 import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { Options } from 'tabulator-tables';
@@ -8,7 +8,9 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { BillingService } from '@app/pages/billing-main/billing.service';
 import { Store } from '@ngrx/store';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { MatPaginator } from '@angular/material/paginator.d-BpWCCOIR';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-sites',
@@ -21,8 +23,8 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   generalFilters$!: Observable<GeneralFilters>;
 
+  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
   @ViewChild('paginator', { static: false }) paginator!: MatPaginator;
-
   @Input() filterData!: entity.FilterBillingDetails
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -41,10 +43,10 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
-
     private invoiceTableService: InvoiceTableService,
     private encryptionService: EncryptionService,
-    private moduleServices: BillingService
+    private moduleServices: BillingService,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
 
@@ -61,13 +63,35 @@ export class SitesComponent implements OnInit, OnDestroy {
           this.paginator.pageSize = pageSize;
           this.paginator.pageIndex = pageIndex;
         }
-
+        
         this.getFilters();
       });
   }
 
   ngOnInit(): void {
-    this.tableConfig = this.invoiceTableService.getTableOptionsSites()
+    this.loadTableColumns();
+  }
+
+  loadTableColumns() {
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.loadTableColumns2();
+      });
+  }
+
+  loadTableColumns2(): void {
+    this.invoiceTableService.getTableOptionsSites()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((options) => {
+        this.tableConfig = { ...options };
+
+        if (this.tabulatorTable) {
+          setTimeout(() => {
+            this.tabulatorTable.updateColumns();
+          });
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,6 +101,7 @@ export class SitesComponent implements OnInit, OnDestroy {
       if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
     }
   }
+
 
   getFilters() {
     const encryptedData = localStorage.getItem('userInfo');

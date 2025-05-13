@@ -2,11 +2,16 @@ import { Injectable } from "@angular/core";
 import { CellComponent, ColumnDefinition, Options } from "tabulator-tables";
 import * as entity from './billing-model';
 import { FormatsService } from "@app/shared/services/formats.service";
+import { TranslationService } from "@app/shared/services/i18n/translation.service";
+import { forkJoin, map, Observable } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class InvoiceTableService {
 
-  constructor(private formatService: FormatsService) { }
+  constructor(
+    private formatService: FormatsService,
+    private translationService: TranslationService
+  ) { }
 
   getTableColumnsInvoiceDetails(): ColumnDefinition[] {
     return [
@@ -138,61 +143,77 @@ export class InvoiceTableService {
     return { columns, options };
   }
 
-  getTableColumnsSites(): ColumnDefinition[] {
-    return [
-      {
-        title: "Site name",
-        field: "siteName",
-        headerSort: false,
-        vertAlign: "middle",
-        minWidth: 200,
-        cssClass: "wrap-text-cell"
-      },
-      {
-        title: "Client name",
-        field: "clientName",
-        headerSort: false,
-        vertAlign: "middle",
-        minWidth: 200,
-        hozAlign: "left",
-        cssClass: "wrap-text-cell"
-      },
-      {
-        title: "Legal name",
-        field: "legalName",
-        headerSort: false,
-        vertAlign: "middle",
-        hozAlign: "left",
-        minWidth: 200,
-        cssClass: "wrap-text-cell"
-      },
-      {
-        title: "Product / modality",
-        field: "product",
-        minWidth: 200,
-        hozAlign: "center",
-        headerSort: false,
-        vertAlign: "middle",
-        cssClass: "wrap-text-cell"
-      },
-      {
-        title: "Address",
-        field: "address",
-        minWidth: 200,
-        hozAlign: "left",
-        headerSort: false,
-        vertAlign: "middle",
-        cssClass: "wrap-text-cell"
-      }
+  getTableColumnsSites(): Observable<ColumnDefinition[]> {
+    const keys = [
+      'FACTURACION.NOMBRE_SITIO',
+      'FACTURACION.NOMBRE_CLIENTE',
+      'FACTURACION.NOMBRE_LEGAL',
+      'FACTURACION.PRODUCTO_MODALIDAD',
+      'FACTURACION.DIRECCION'
     ];
+
+    const translationObservables = keys.map(key =>
+      this.translationService.getTranslation(key)
+    );
+
+    return forkJoin(translationObservables).pipe(
+      map(([siteName, clientName, legalName, product, address]) => [
+        {
+          title: siteName,
+          field: "siteName",
+          headerSort: false,
+          vertAlign: "middle",
+          minWidth: 200,
+          cssClass: "wrap-text-cell"
+        },
+        {
+          title: clientName,
+          field: "clientName",
+          headerSort: false,
+          vertAlign: "middle",
+          minWidth: 200,
+          hozAlign: "left",
+          cssClass: "wrap-text-cell"
+        },
+        {
+          title: legalName,
+          field: "legalName",
+          headerSort: false,
+          vertAlign: "middle",
+          hozAlign: "left",
+          minWidth: 200,
+          cssClass: "wrap-text-cell"
+        },
+        {
+          title: product,
+          field: "product",
+          minWidth: 200,
+          hozAlign: "center",
+          headerSort: false,
+          vertAlign: "middle",
+          cssClass: "wrap-text-cell"
+        },
+        {
+          title: address,
+          field: "address",
+          minWidth: 200,
+          hozAlign: "left",
+          headerSort: false,
+          vertAlign: "middle",
+          cssClass: "wrap-text-cell"
+        }
+      ])
+    );
   }
 
-  getTableOptionsSites(): Options {
-    return {
-      maxHeight: 280,
-      layout: "fitColumns",
-      columns: this.getTableColumnsSites(),
-      movableColumns: true,
-    };
+  getTableOptionsSites(): Observable<Options> {
+    return this.getTableColumnsSites().pipe(
+      map((columns) => ({
+        maxHeight: 280,
+        layout: "fitColumns",
+        columns,
+        movableColumns: true,
+      }))
+    );
   }
 }

@@ -332,13 +332,17 @@
     "SITIO": "Sitio",
     "RESUMEN": "Resumen",
     "HISTORIAL_FACTURACION": "Historial de Facturación",
-    "SITIOS": "Sitios",
     "INFORMACION_FACTURACION": "Información de Facturación",
     "RESUMEN_ENERGIA": "Resumen de Energía",
     "BALANCE": "Balance:",
     "MOSTRAR_TODO": "Mostrar todo",
     "ENERGIA_PRODUCIDA": "Energía Producida (kWh)",
     "ENERGIA_FACTURADA": "Energía Facturada (kWh)",
-    "MONTO_TOTAL": "Monto Total"
+    "MONTO_TOTAL": "Monto Total",
+    "SITIOS": "Sitios",
+    "NOMBRE_SITIO": "Nombre del sitio",
+    "NOMBRE_CLIENTE": "Nombre del cliente",
+    "PRODUCTO_MODALIDAD": "Producto / Modalidad",
+    "DIRECCION": "Dirección"
   }
 }
