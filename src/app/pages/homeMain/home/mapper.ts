@@ -2,7 +2,7 @@ import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './home-model';
 
 export class Mapper {
-	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): any {
+	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): entity.DataRespSavingDetailsMapper {
 		const data = response.response.consolidatedData;
 		let unitMeasu: string = 'kWh';
 

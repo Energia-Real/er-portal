@@ -478,6 +478,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   getDataClients(filters: GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response: entity.DataRespSavingDetailsMapper) => {
+        console.log(response);
+        
         let data = this.mappingData(response.dataFormatted);
         const unitMeasure = response.unitMeasu
 

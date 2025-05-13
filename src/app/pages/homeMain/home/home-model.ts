@@ -91,8 +91,8 @@ export interface DataRespSavingDetails {
 }
 
 export interface DataRespSavingDetailsMapper {
-  data: DataRespSavingDetails[];
-  dataFormatted: DataRespSavingDetails[];
+  data: PlantData[];
+  dataFormatted: PlantData[];
   unitMeasu:string;
 }
 
