@@ -4,14 +4,59 @@ import * as entity from './home-model';
 export class Mapper {
 	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): any {
 		console.log(response.response.consolidatedData);
-		
-		
+		const data = response.response.consolidatedData;
+		let unit: string = 'kWh'
+
+		const gwhArray = data.filter(item => item.energyConsumptionMeasure === 'GWh');
+		const mwhArray = data.filter(item => item.energyConsumptionMeasure === 'MWh');
+		const kwhArray = data.filter(item => item.energyConsumptionMeasure === 'kWh');
+
+		let unifiedArray: any[] = [];
+
+		if (gwhArray?.length) {
+			const mwhToGwh = mwhArray.map(item => ({
+				...item,
+				energyConsumption: (item.energyConsumption / 1000).toString(),
+				energyProduction: (item.energyProduction / 1000).toString(),
+				energyConsumptionMeasure: 'GWh',
+				energyProductionMeasure: 'GWh',
+			}));
+			const kwhToGwh = kwhArray.map(item => ({
+				...item,
+				energyConsumption: (item.energyConsumption / 1_000_000).toString(),
+				energyProduction: item.energyProduction / 1_000_000,
+				energyConsumptionMeasure: 'GWh',
+				energyProductionMeasure: 'GWh',
+			}));
+			unit = 'GWh';
+
+			unifiedArray = [...gwhArray, ...mwhToGwh, ...kwhToGwh];
+
+		} else if (mwhArray?.length) {
+			const kwhToMwh = kwhArray.map(item => ({
+				...item,
+				energyConsumption: item.energyConsumption / 1000,
+				energyProduction: item.energyProduction / 1000,
+				energyConsumptionMeasure: 'MWh',
+				energyProductionMeasure: 'MWh',
+			}));
+			unit = 'MWh';
+			unifiedArray = [...mwhArray, ...kwhToMwh];
+
+		} else {
+			unifiedArray = [...kwhArray];
+
+		}
+
+		console.log('Unificado:', unifiedArray);
+
+
 		let totalEnergyConsumption: number = 0;
 		let totalEnergyProduction: number = 0;
 
 		let dataList: entity.PlantData[] = [];
 
-		response.response.consolidatedData.forEach((data: entity.PlantData): void => {
+		data.forEach((data: entity.PlantData): void => {
 			const energyConsumption = data?.energyConsumption;
 			totalEnergyConsumption += energyConsumption;
 			const energyProduction = data?.energyProduction
@@ -21,26 +66,21 @@ export class Mapper {
 				plantId: data?.plantId || '',
 				siteName: data?.siteName || '',
 				solarCoverage: data?.solarCoverage,
-				energyConsumption : data.energyConsumption.toString(),
-				energyProduction : data.energyProduction.toString(),
-				energyConsumptionFormat : `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
-				energyProductionFormat : `${data.energyProduction} ${data.energyProductionMeasure}`,
-				co2Saving : data.co2Saving,
+				energyConsumption: data.energyConsumption.toString(),
+				energyProduction: data.energyProduction.toString(),
+				energyConsumptionFormat: `${data.energyConsumption} ${data.energyConsumptionMeasure}`,
+				energyProductionFormat: `${data.energyProduction} ${data.energyProductionMeasure}`,
+				co2Saving: data.co2Saving,
 				siteStatus: data?.siteStatus,
 				unitProductionMeasure: data?.energyProductionMeasure!,
 				unitConsumptionMeasure: data?.energyConsumptionMeasure!,
 			});
 		});
 
-		console.log(dataList);
-		
-
 		return {
 			data: dataList,
-			savingDetails: {
-				totalEnergyConsumption: formatsService.energyFormat(totalEnergyConsumption),
-				totalEnergyProduction: formatsService.energyFormat(totalEnergyProduction),
-			}
+			dataFormatted: unifiedArray,
+			unit
 		};
 	}
 

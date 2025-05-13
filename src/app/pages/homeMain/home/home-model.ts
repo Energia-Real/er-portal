@@ -92,10 +92,8 @@ export interface DataRespSavingDetails {
 
 export interface DataRespSavingDetailsMapper {
   data: DataRespSavingDetails[];
-  savingDetails: {
-    totalEnergyConsumption: string;
-    totalEnergyProduction: string;
-  }
+  dataFormatted: DataRespSavingDetails[];
+  unit:string;
 }
 
 export interface statesResumeTooltip {
