@@ -92,7 +92,7 @@ export class BillingService implements OnDestroy {
    getInvoiceDetails(
     filters: any
   ): Observable<entity.DataInvoiceDetailsTableMapper> {
-    const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
+    const url = `${this.domainApiUrl}/v1/Billing/Invoice/Details/${filters.clientId}/`;
 
     const params = new HttpParams()
       .set('pageSize', filters.pageSize)

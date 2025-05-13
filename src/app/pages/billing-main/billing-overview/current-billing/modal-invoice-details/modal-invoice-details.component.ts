@@ -1,5 +1,5 @@
-import { Subject } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
 import * as entity from '../../../billing-model';
@@ -9,6 +9,8 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
 
 @Component({
   selector: 'app-modal-invoice-details',
@@ -19,6 +21,8 @@ import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constan
 export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   CANCEL = NOTIFICATION_CONSTANTS.CANCEL_TYPE;
+
+  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
@@ -43,17 +47,35 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
     private moduleServices: BillingService,
     private encryptionService: EncryptionService,
     private store: Store,
-
+    private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
-    this.tableConfig = this.invoiceTableService.getTableOptionsInvoiceDetails()
+    this.loadTableColumns();
+  }
+
+  loadTableColumns() {
+    this.translationService.currentLang$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(() => this.invoiceTableService.getTableOptionsInvoiceDetails())
+      )
+      .subscribe({
+        next: (options) => {
+          this.tableConfig = { ...options };
+
+          if (this.tabulatorTable) this.tabulatorTable.updateColumns();
+        },
+        error: (err) => {
+          console.error('Error al cargar la configuración de la tabla:', err);
+        }
+      });
   }
 
   getInvoiceDetailsHeader(idClient: string) {
     this.moduleServices.getInvoiceDetailsHeader(idClient).subscribe({
       next: (response: entity.InvoiceDetailsCurrencyHeader) => {
-        console.log(response);
+        console.log(response.response);
         this.invoicesDetailsHeader = response.response
         this.isLoading = false;
       },
@@ -63,7 +85,6 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   getInvoiceDetails(filters: any) {
     this.moduleServices.getInvoiceDetails(filters).subscribe({
       next: (response: entity.DataInvoiceDetailsTableMapper) => {
-        console.log(response);
         this.invoicesDetails = response.data
         this.isLoading = false;
       },

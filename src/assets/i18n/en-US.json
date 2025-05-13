@@ -6,7 +6,9 @@
     "DETALLE": "Detail",
     "CARGANDO": "Loading...",
     "NO_RESULTADOS": "No results found.",
-    "INFORMACION_NO_DISPONIBLE": "The requested information is not available."
+    "INFORMACION_NO_DISPONIBLE": "The requested information is not available.",
+    "SIN_DATOS_TITULO": "No data available",
+    "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later."
   },
   "PLANTAS": {
     "TITULO": "Total Plants",
@@ -332,13 +334,27 @@
     "SITIO": "Site",
     "RESUMEN": "Overview",
     "HISTORIAL_FACTURACION": "Billing History",
-    "SITIOS": "Sites",
     "INFORMACION_FACTURACION": "Billing Information",
     "RESUMEN_ENERGIA": "Energy Summary",
     "BALANCE": "Balance:",
     "MOSTRAR_TODO": "Show all",
     "ENERGIA_PRODUCIDA": "Energy Produced (kWh)",
     "ENERGIA_FACTURADA": "Energy Billed (kWh)",
-    "MONTO_TOTAL": "Total Amount"
+    "MONTO_TOTAL": "Total Amount",
+    "SITIOS": "Sites",
+    "NOMBRE_SITIO": "Site Name",
+    "NOMBRE_CLIENTE": "Client Name",
+    "PRODUCTO_MODALIDAD": "Product / Modality",
+    "DIRECCION": "Address",
+    "PRODUCCION": "Production",
+    "CONCEPTO": "Concept",
+    "DESCRIPCION": "Description",
+    "VALOR_UNITARIO": "Unit value",
+    "IMPUESTOS": "Taxes",
+    "MONTO_TOTAL": "Total amount",
+    "FECHA_INICIO": "Start Date",
+    "FECHA_FIN": "End Date",
+    "ESTATUS": "Status",
+    "SOLICITAR_CANELACION": "Request cancellation"
   }
 }

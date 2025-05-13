@@ -91,11 +91,9 @@ export interface DataRespSavingDetails {
 }
 
 export interface DataRespSavingDetailsMapper {
-  data: DataRespSavingDetails[];
-  savingDetails: {
-    totalEnergyConsumption: string;
-    totalEnergyProduction: string;
-  }
+  data: PlantData[];
+  dataFormatted: PlantData[];
+  unitMeasu:string;
 }
 
 export interface statesResumeTooltip {

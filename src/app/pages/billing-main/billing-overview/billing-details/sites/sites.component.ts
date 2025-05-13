@@ -1,5 +1,5 @@
 import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges } from '@angular/core';
-import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
@@ -8,7 +8,9 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { BillingService } from '@app/pages/billing-main/billing.service';
 import { Store } from '@ngrx/store';
 import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
-import { MatPaginator } from '@angular/material/paginator.d-BpWCCOIR';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-sites',
@@ -21,8 +23,8 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   generalFilters$!: Observable<GeneralFilters>;
 
+  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
   @ViewChild('paginator', { static: false }) paginator!: MatPaginator;
-
   @Input() filterData!: entity.FilterBillingDetails
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -34,17 +36,16 @@ export class SitesComponent implements OnInit, OnDestroy {
   tableConfig: Options = {};
 
   generalFilters!: GeneralFilters
-
   userInfo!: UserInfo;
 
   isLoading: boolean = true;
 
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
-
     private invoiceTableService: InvoiceTableService,
     private encryptionService: EncryptionService,
-    private moduleServices: BillingService
+    private moduleServices: BillingService,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
 
@@ -67,10 +68,28 @@ export class SitesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.tableConfig = this.invoiceTableService.getTableOptionsSites()
+    this.loadTableColumns();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  loadTableColumns() {
+    this.translationService.currentLang$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(() => this.invoiceTableService.getTableOptionsSites())
+      )
+      .subscribe({
+        next: (options) => {
+          this.tableConfig = { ...options };
+
+          if (this.tabulatorTable) this.tabulatorTable.updateColumns();
+        },
+        error: (err) => {
+          console.error('Error al cargar la configuración de la tabla:', err);
+        }
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
       const prev = changes['filterData'].previousValue;
       const curr = changes['filterData'].currentValue;

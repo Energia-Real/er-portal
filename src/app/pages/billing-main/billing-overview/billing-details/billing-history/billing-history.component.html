@@ -21,8 +21,8 @@
 
 <ng-template #noDataTable>
     <div class="no-data-container">
-        <div class="icon">📄</div>
-        <div class="message-title">No data available</div>
-        <div class="message-subtitle">Try adjusting the filters or check back later.</div>
+        <img class="icon" src="../../../../../assets/icons/data-not-found.svg" alt="">
+        <div class="message-title"> {{ 'FACTURACION.SIN_DATOS_TITULO' | translate }} </div>
+        <div class="message-subtitle">{{ 'FACTURACION.SIN_DATOS_SUBTITULO' | translate }}</div>
     </div>
 </ng-template>

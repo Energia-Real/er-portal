@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 import { HomeService } from './home.service';
 import { CommonModule } from '@angular/common';
 import { MatSort } from '@angular/material/sort';
-import { MessageNoDataComponent } from '@app/shared/components/message-no-data/message-no-data.component';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartOptions, registerables } from "chart.js";
 import moment from 'moment';
@@ -33,21 +32,21 @@ import { MatDialog } from '@angular/material/dialog';
 
 Chart.register(...registerables);
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    imports: [
-        CommonModule,
-        SharedComponensModule,
-        MaterialModule,
-        ReactiveFormsModule,
-        NgChartsModule,
-        NgxSkeletonLoaderModule,
-        TranslateModule
-    ],
-    standalone:true,
-    styleUrl: './home.component.scss',
-    providers: [provideNativeDateAdapter()],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  imports: [
+    CommonModule,
+    SharedComponensModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    NgChartsModule,
+    NgxSkeletonLoaderModule,
+    TranslateModule
+  ],
+  standalone: true,
+  styleUrl: './home.component.scss',
+  providers: [provideNativeDateAdapter()],
+  encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent implements OnInit, OnDestroy {
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
@@ -62,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   months: entity.Months[] = [];
   labels: entity.Labels[] = [];
 
-  lineChartDataES!: ChartConfiguration<'bar' >['data'];
+  lineChartDataES!: ChartConfiguration<'bar'>['data'];
 
   lineChartOptionsES: ChartOptions<'bar'> = {
     responsive: true,
@@ -82,10 +81,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         usePointStyle: false, // Desactivamos el indicador de color predeterminado
         callbacks: {
           // Personalizamos la etiqueta para mostrar solo el título y el valor máximo
-          label: function(context) {
+          label: function (context) {
             const rawValue = context.raw as [number, number]; // Aserción de tipo para context.raw
             const maxValue = rawValue[1]; // Tomamos solo el valor máximo (segundo valor del array)
-            
+
             return [
               `${context.dataset.label}`, // Título del label
               `$${maxValue.toLocaleString('en-US')}` // Valor resaltado
@@ -107,14 +106,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         },
       },
       y: {
-       // stacked: true,
+        // stacked: true,
         grid: {
           display: true,
         },
         ticks: {
           callback: function (value, index, values) {
             const numericValue = typeof value === 'number' ? value : parseFloat(value as string);
-  
+
             if (!isNaN(numericValue)) {
               return `$${numericValue.toLocaleString('en-US')}`;
             }
@@ -145,7 +144,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   lineChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     animation: {
-      onComplete: () => {},
+      onComplete: () => { },
       delay: (context) => {
         let delay = 0;
         if (context.type === 'data' && context.mode === 'default') {
@@ -158,9 +157,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       tooltip: {
         usePointStyle: true,
         callbacks: {
-          label: function (context) {
+          label: (context) => {
             const value = Math.abs(context.raw as number).toLocaleString('en-US');
-            return `${context.dataset.label}: ${value}`;
+            return `${context.dataset.label}: ${value} ${this.unitMeasure}`;
           },
         },
       },
@@ -172,25 +171,24 @@ export class HomeComponent implements OnInit, OnDestroy {
         onHover: (event, legendItem, legend) => {
           const index = legendItem.datasetIndex;
           const chart = legend.chart;
-  
+
           chart.data.datasets.forEach((dataset, i) => {
             dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
           });
-  
+
           chart.update();
         },
         onLeave: (event, legendItem, legend) => {
           const chart = legend.chart;
-  
+
           chart.data.datasets.forEach((dataset, i) => {
             dataset.backgroundColor = i === 0 ? 'rgba(121, 36, 48, 1)' : 'rgba(87, 177, 177, 1)';
           });
-  
+
           chart.update();
         },
       },
     },
-  
     scales: {
       x: {
         stacked: false,
@@ -200,15 +198,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       y: {
         ticks: {
-          callback: function (value, index, values) {
-            
-            const numericValue = typeof value === 'number' ? value : parseFloat(value as string);
-  
-            if (!isNaN(numericValue)) {
-              const gwhValue = numericValue / 1_000_000; 
-              return `${gwhValue.toLocaleString('en-US')} GWh`;
-            }
-            return '';
+          callback: function (value) {
+            return `${value.toLocaleString('en-US')} GWh`;
           },
         },
         stacked: false,
@@ -219,7 +210,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     },
     backgroundColor: 'rgba(242, 46, 46, 1)',
   };
-  
+
+  unitMeasure: string = 'GWh';
+
   selection = new SelectionModel<entity.PeriodicElement>(true, []);
 
   currentYear = new Date().getFullYear();
@@ -466,41 +459,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  getDataClients(filters: GeneralFilters) {
-    this.moduleServices.getDataClients(filters).subscribe({
-      next: (response: entity.DataRespSavingDetailsMapper) => {
-        let data =this.mappingData(response.data)
-        
-        this.lineChartData = {
-          labels: data.labels,
-          datasets: [
-            {
-              data: data.energyProduction,
-              label: 'Energy Production',
-              backgroundColor: 'rgba(121, 36, 48, 1)',
-            },
-            {
-              data: data.energyConsumption,
-              label: 'Energy Consumption',
-              backgroundColor: 'rgba(87, 177, 177, 1)',
-            }
-          ]
-        };
-        this.isLoadingECWidget = false;
-        this.dataSource.data = response.data;
-        this.dataSource.sort = this.sort;
-        this.selection.clear();
-      },
-      error: (error) => {
-        this.isLoadingECWidget = false;
-        let errorArray = error!.error!.errors!.errors!;
-        if (errorArray && errorArray.length === 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
-      }
-    })
-  }
-
   getDataSolarCoverga(filters: GeneralFilters) {
     this.moduleServices.getDataSolarCoverage(filters).subscribe({
       next: (response: string) => {
@@ -517,10 +475,72 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
+  getDataClients(filters: GeneralFilters) {
+    this.moduleServices.getDataClients(filters).subscribe({
+      next: (response: entity.DataRespSavingDetailsMapper) => {
+        console.log(response);
+        
+        let data = this.mappingData(response.dataFormatted);
+        const unitMeasure = response.unitMeasu
+
+        this.updateChartUnitMeasure(unitMeasure);
+
+        this.lineChartData = {
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.energyProduction,
+              label: 'Energy Production',
+              backgroundColor: 'rgba(121, 36, 48, 1)',
+            },
+            {
+              data: data.energyConsumption,
+              label: 'Energy Consumption',
+              backgroundColor: 'rgba(87, 177, 177, 1)',
+            },
+          ],
+        };
+
+        this.isLoadingECWidget = false;
+        this.dataSource.data = response.data;
+        this.dataSource.sort = this.sort;
+        this.selection.clear();
+      },
+      error: (error) => {
+        this.isLoadingECWidget = false;
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      },
+    });
+  }
+
+  updateChartUnitMeasure(unitMeasure: string) {
+    this.unitMeasure = unitMeasure;
+    if (this.lineChartOptions.scales && this.lineChartOptions.scales['y']) {
+      if (unitMeasure === 'GWh') {
+        this.lineChartOptions.scales['y'].ticks!.callback = function (value) {
+          return `${value.toLocaleString('en-US')} GWh`;
+        };
+      } else if (unitMeasure === 'MWh') {
+        this.lineChartOptions.scales['y'].ticks!.callback = function (value) {
+          return `${value.toLocaleString('en-US')} MWh`;
+        };
+      } else {
+        this.lineChartOptions.scales['y'].ticks!.callback = function (value) {
+          return `${value.toLocaleString('en-US')} ${unitMeasure}`;
+        };
+      }
+    }
+
+    this.chart?.update();
+  }
+
   mappingData(dataSelected: any[]): any {
     let labels = dataSelected.map(item => item.siteName);
-    let energyConsumption = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyConsumption));
-    let energyProduction = dataSelected.map(item => this.formatsService.homeGraphFormat(item.energyProduction));
+    let energyConsumption = dataSelected.map(item => item.energyConsumption);
+    let energyProduction = dataSelected.map(item => item.energyProduction);
 
     return {
       labels: labels,
@@ -547,14 +567,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           datasets: [
             {
               type: 'bar',
-              data: [[0, response.response.cfeSubtotal]]  as any,
+              data: [[0, response.response.cfeSubtotal]] as any,
               label: 'CFE Subtotal (MXN)',
               backgroundColor: 'rgba(121, 36, 48, 1)',
               maxBarThickness: 60,
             },
             {
               type: 'bar',
-              data:  [[ response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal]]  as any,
+              data: [[response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal]] as any,
               label: 'Energía Real Subtotal (MXN)',
               backgroundColor: 'rgba(238, 84, 39, 1)',
               maxBarThickness: 60,
@@ -563,7 +583,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             },
             {
               type: 'bar',
-              data: [[response.response.energiaRealSubtotal + response.response.cfeSubtotal,response.response.energiaRealSubtotal + response.response.cfeSubtotal + response.response.economicSaving]] as any,
+              data: [[response.response.energiaRealSubtotal + response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal + response.response.economicSaving]] as any,
               label: 'Economic Savings (MXN)',
               backgroundColor: 'rgba(87, 177, 177, 1)',
               maxBarThickness: 60,
@@ -576,7 +596,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               backgroundColor: 'rgba(239, 68, 68, 1)',
               maxBarThickness: 60,
             },
-           
+
           ]
         };
         this.displayChartES = true;

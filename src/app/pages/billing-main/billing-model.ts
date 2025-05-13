@@ -18,14 +18,15 @@ export interface InvoiceDetailsCurrency {
   client: string;
   rFc: string;
   legalName: string;
-  startDate: string; // Puedes cambiar a Date si lo vas a convertir después
-  endDate: string;   // Igual aquí
+  startDate: string; 
+  endDate: string; 
+  status: string; 
 }
 
 export interface InvoiceDetailsCurrencyHeader {
   success: boolean;
   response: InvoiceDetailsCurrency;
-  errors: any; // Puedes tipar mejor si sabes la estructura de errores
+  errors: any;
 }
 
 
@@ -55,15 +56,13 @@ export interface DataInvoiceDetailsTableMapper {
 }
 
 export interface InvoiceDetailsTableRow {
-  siteName: string;
-  clientName: string;
-  legalName: string;
-  product: string;
-  contractType: string;
-  status: string;
-  address: string;
+  production: number;
+  concept: string;
+  description: string;
+  unitValue: number;
+  taxes: number;
+  totalAmount: number;
 }
-
 
 export interface BillingResponse {
   pageSize: number;
