@@ -77,7 +77,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
           ...this.tableConfig,
           columns: this.columns
         };
-        
+
         // If the table component is available, update the columns
         if (this.tabulatorTable) {
           // Use the new updateColumns method
@@ -104,7 +104,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
               ...this.tableConfig,
               columns: this.columns
             };
-            
+
             // Use the new updateColumns method
             this.tabulatorTable.updateColumns();
           });
@@ -120,6 +120,8 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
         headerSort: false,
         vertAlign: "middle",
         minWidth: 150,
+        cssClass: "wrap-text-cell"
+
       },
       {
         title: this.translationService.instant('FACTURACION.AÑO'),
@@ -146,7 +148,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
         formatter: (cell: CellComponent) => {
           const value = cell.getValue();
           // Define colors for different status IDs
-          const statusColors: {[key: string]: {bg: string, text: string}} = {
+          const statusColors: { [key: string]: { bg: string, text: string } } = {
             "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
             "Overdue": { bg: "#E31A1C", text: "white" },    // Orange - Pendiente/Partially paid
             "Pending": { bg: "#E5B83E", text: "white" }     // Red - Open
@@ -267,7 +269,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy, AfterViewInit
           const downloadPdfTitle = this.translationService.instant('FACTURACION.DESCARGAR_PDF');
           const downloadXmlTitle = this.translationService.instant('FACTURACION.DESCARGAR_XML');
           const viewDetailsTitle = this.translationService.instant('FACTURACION.VER_DETALLES');
-          
+
           // Generate HTML with the requested icons in a horizontal layout
           return `
             <div style="display: flex; justify-content: space-around; align-items: center;">
