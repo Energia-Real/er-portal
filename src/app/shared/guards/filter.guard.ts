@@ -28,9 +28,6 @@ export class FilterGuard implements CanActivate {
         let startDayYear = startDateParts[0]; 
         let endDayYear = endDateParts[0];
 
-        // Si el año de inicio y fin no coinciden, ajustamos solo el año de endday
-        if (startDayYear !== endDayYear) endDayYear = startDayYear;
-
         const startday = startDate;
         const endday = `${endDayYear}-${endDateParts[1]}-${endDateParts[2]}`;
 
