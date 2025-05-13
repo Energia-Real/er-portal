@@ -1,5 +1,5 @@
-import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges, AfterViewInit } from '@angular/core';
-import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
+import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges } from '@angular/core';
+import { combineLatest, distinctUntilChanged, Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
@@ -63,7 +63,7 @@ export class SitesComponent implements OnInit, OnDestroy {
           this.paginator.pageSize = pageSize;
           this.paginator.pageIndex = pageIndex;
         }
-        
+
         this.getFilters();
       });
   }
@@ -74,27 +74,23 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   loadTableColumns() {
     this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.loadTableColumns2();
-      });
-  }
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(() => this.invoiceTableService.getTableOptionsSites())
+      )
+      .subscribe({
+        next: (options) => {
+          this.tableConfig = { ...options };
 
-  loadTableColumns2(): void {
-    this.invoiceTableService.getTableOptionsSites()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((options) => {
-        this.tableConfig = { ...options };
-
-        if (this.tabulatorTable) {
-          setTimeout(() => {
-            this.tabulatorTable.updateColumns();
-          });
+          if (this.tabulatorTable) this.tabulatorTable.updateColumns();
+        },
+        error: (err) => {
+          console.error('Error al cargar la configuración de la tabla:', err);
         }
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
       const prev = changes['filterData'].previousValue;
       const curr = changes['filterData'].currentValue;
