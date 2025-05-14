@@ -1,4 +1,7 @@
 <div class="c-billing-history card-content-section">
+    <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
+        [invoice]="drawerInfo"></app-modal-invoice-details>
+        
     <div class="table-container" *ngIf="bills">
         <ng-container *ngIf="!isLoading; else loadingSkeleton">
             <app-tabulator-table *ngIf="bills?.length; else noDataTable" [data]="bills"

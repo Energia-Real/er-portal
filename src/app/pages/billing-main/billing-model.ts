@@ -14,6 +14,15 @@ export interface InvoiceDetailsTableRow {
   amount: number;
 }
 
+export interface CurrentBillingTableRow {
+  legalName: string;
+  year: number;
+  month: number;
+  status: string;
+  product: string;
+  amount: number;
+}
+
 export interface InvoiceDetailsCurrency {
   client: string;
   rFc: string;
