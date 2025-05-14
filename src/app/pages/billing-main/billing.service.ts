@@ -77,7 +77,7 @@ export class BillingService implements OnDestroy {
       .set('productType', filters.productType)
 
     return this.http
-      .get<entity.DataBillingSitesTableMapper>(url, { params });
+      .post<entity.DataBillingSitesTableMapper>(url, filters);
   }
 
   getInvoiceDetailsHeader(

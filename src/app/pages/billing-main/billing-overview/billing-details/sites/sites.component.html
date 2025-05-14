@@ -1,4 +1,4 @@
-<div class="c-sites card-content-section">
+<div class="c-sites border-card pb-0">
     <div class="table-container" *ngIf="sites?.length">
         <ng-container *ngIf="!isLoading; else loadingSkeleton">
             <app-tabulator-table *ngIf="sites?.length; else noDataTable" [data]="sites"

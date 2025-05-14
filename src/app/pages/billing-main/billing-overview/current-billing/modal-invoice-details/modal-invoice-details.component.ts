@@ -26,9 +26,11 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
 
   @Input() isOpen = false;
   @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
-  @Input() set invoice(invoiceData: any | null | undefined) {
+  @Input() set invoice(invoiceData: entity.Bill | null | undefined) {
     if (!invoiceData) return;
-    this.getUserClient();
+    console.log(invoiceData);
+
+    this.getUserClient(invoiceData);
   }
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
@@ -91,19 +93,16 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo: UserInfo = this.encryptionService.decryptData(encryptedData);
-      const filters = {
-        pageSize: this.pageSize,
-        page: this.pageIndex,
-        clientId: userInfo.clientes[0]
-      }
+  getUserClient(data:entity.Bill) {
 
-      this.getInvoiceDetailsHeader(userInfo.clientes[0]);
-      this.getInvoiceDetails(filters);
+    const filters = {
+      pageSize: this.pageSize,
+      page: this.pageIndex,
+      clientId: data.billingId
     }
+
+    this.getInvoiceDetailsHeader(data.billingId);
+    this.getInvoiceDetails(filters);
   }
 
   downloadPdf(row: entity.InvoiceDetailsTableRow) {
