@@ -274,7 +274,7 @@ export class InvoiceTableService {
             <div style="display: flex; justify-content: space-around; align-items: center;">
               <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px; " title="${downloadPdfTitle}">
               <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="${downloadXmlTitle}">
-              <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="${viewDetailsTitle}">
+              <img src="assets/svg/icon-eye.svg" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="${viewDetailsTitle}">
             </div>
           `;
           },
@@ -311,7 +311,7 @@ export class InvoiceTableService {
   getTableOptionsInvoiceDetails(): Observable<Options> {
     return this.getTableColumnsInvoiceDetails().pipe(
       map((columns) => ({
-        maxHeight: 280,
+        maxHeight: 490,
         layout: "fitColumns",
         columns,
         movableColumns: true,
@@ -341,7 +341,7 @@ export class InvoiceTableService {
   }): Observable<Options> {
     return this.getTableColumnsCurrentBillings(callbacks).pipe(
       map((columns) => ({
-        maxHeight: 450,
+        maxHeight: 550,
         layout: "fitColumns",
         columns: columns,
         movableColumns: true,
@@ -471,7 +471,7 @@ export class InvoiceTableService {
   getTableOptionsSites(): Observable<Options> {
     return this.getTableColumnsSites().pipe(
       map((columns) => ({
-        maxHeight: 280,
+        maxHeight: 550,
         layout: "fitColumns",
         columns,
         movableColumns: true,
