@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
+import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 
 @Component({
   selector: 'app-modal-invoice-details',
@@ -29,7 +30,6 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   @Input() set invoice(invoiceData: entity.Bill | null | undefined) {
     if (!invoiceData) return;
     console.log(invoiceData);
-
     this.getUserClient(invoiceData);
   }
 
@@ -39,7 +39,7 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
 
   invoicesDetailsHeader!: entity.InvoiceDetailsCurrency
-  invoicesDetails!: entity.InvoiceDetailsTableRow[];
+  invoicesDetails: entity.InvoiceDetailsTableRow[] = [];
   tableConfig: Options = {};
   isLoading: boolean = true;
   userInfo!: UserInfo;
@@ -74,12 +74,11 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  getInvoiceDetailsHeader(idClient: string) {
+  getInvoiceDetailsHeader(idClient: number) {
     this.moduleServices.getInvoiceDetailsHeader(idClient).subscribe({
       next: (response: entity.InvoiceDetailsCurrencyHeader) => {
         console.log(response.response);
         this.invoicesDetailsHeader = response.response
-        this.isLoading = false;
       },
     });
   }
@@ -90,10 +89,14 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
         this.invoicesDetails = response.data
         this.isLoading = false;
       },
-    });
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+      }
+    })
   }
 
-  getUserClient(data:entity.Bill) {
+  getUserClient(data: entity.Bill) {
+    console.log(data);
 
     const filters = {
       pageSize: this.pageSize,
@@ -125,7 +128,9 @@ export class ModalInvoiceDetailsComponent implements OnInit, OnDestroy {
   }
 
   closeModal(notificationType: string) {
+    this.invoicesDetails = [];
     this.isOpen = false;
+    this.isLoading = true;
     this.store.dispatch(updateDrawer({ drawerOpen: false, drawerAction: "Create", drawerInfo: null, needReload: false }));
   }
 

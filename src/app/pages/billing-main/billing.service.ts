@@ -62,7 +62,7 @@ export class BillingService implements OnDestroy {
   }
   
   getBillingSites(
-    filters: any
+    filters: entity.FiltersBillingSites
   ): Observable<entity.DataBillingSitesTableMapper> {
     const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
 
@@ -81,7 +81,7 @@ export class BillingService implements OnDestroy {
   }
 
   getInvoiceDetailsHeader(
-    idClient: string
+    idClient: number
   ): Observable<entity.InvoiceDetailsCurrencyHeader> {
     const url = `${this.domainApiUrl}/v1/Billing/Invoice/${idClient}`;
 
@@ -99,7 +99,11 @@ export class BillingService implements OnDestroy {
       .set('page', filters.page)
 
     return this.http
-      .get<entity.DataInvoiceDetailsTableMapper>(url, { params });
+      .get<entity.DataInvoiceDetailsTableMapper>(url, { params }).pipe(
+        map((response) =>
+          Mapper.InvoiceDetailsMapper(response, this.formatsService)
+        )
+      );;
   }
 
 

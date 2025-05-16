@@ -66,8 +66,7 @@ c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': i
     </div>
 
     <div class="separator-cards"></div>
-
-    <div class="table-container" *ngIf="invoicesDetails?.length">
+    <div class="table-container">
         <ng-container *ngIf="!isLoading; else loadingSkeleton">
             <app-tabulator-table *ngIf="invoicesDetails?.length; else noDataTable" [data]="invoicesDetails"
                 [config]="tableConfig"></app-tabulator-table>
@@ -79,11 +78,9 @@ c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': i
     </div>
 </div>
 
-
 <ng-template #notDataTable>
     <app-message-no-data [message]="('GENERAL.INFORMACION_NO_DISPONIBLE' | translate)"></app-message-no-data>
 </ng-template>
-
 
 <ng-template #loadingSkeleton>
     <div class="flex flex-col dataSC">
@@ -96,7 +93,7 @@ c-modal-lateral-padd create-asset-main-container" [ngClass]="{'translate-x-0': i
 <ng-template #noDataTable>
     <div class="no-data-container">
         <img class="icon" src="../../../../../assets/icons/data-not-found.svg" alt="">
-        <div class="message-title"> {{ 'FACTURACION.SIN_DATOS_TITULO' | translate }} </div>
-        <div class="message-subtitle">{{ 'FACTURACION.SIN_DATOS_SUBTITULO' | translate }}</div>
+        <div class="message-title"> {{ 'GENERAL.SIN_DATOS_TITULO' | translate }} </div>
+        <div class="message-subtitle">{{ 'GENERAL.SIN_DATOS_SUBTITULO' | translate }}</div>
     </div>
 </ng-template>

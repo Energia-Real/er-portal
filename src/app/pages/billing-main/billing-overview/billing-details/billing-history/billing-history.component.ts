@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
-import { Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { BillingService } from '@app/pages/billing-main/billing.service';
-import { DrawerGeneral, GeneralPaginatedResponse } from '@app/shared/models/general-models';
-import { CellComponent, ColumnDefinition, Options } from 'tabulator-tables';
+import { DrawerGeneral, GeneralFilters, GeneralPaginatedResponse } from '@app/shared/models/general-models';
+import { ColumnDefinition, Options } from 'tabulator-tables';
 import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
@@ -11,6 +11,7 @@ import { InvoiceTableService } from '@app/pages/billing-main/billing-table.servi
 import { Store } from '@ngrx/store';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { start } from '@popperjs/core';
 
 @Component({
   selector: 'app-billing-history',
@@ -20,6 +21,9 @@ import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 })
 export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
   private onDestroy$ = new Subject<void>();
+
+  generalFilters$!: Observable<GeneralFilters>;
+
 
   @Input() filterData!: entity.FilterBillingDetails;
 
@@ -33,19 +37,32 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
 
   tableConfig!: Options;
   columns: ColumnDefinition[] = [];
-  isLoading : Boolean = true;
+  isLoading: Boolean = true;
 
   drawerOpenSub: Subscription;
   drawerOpenID: boolean = false;
   drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
+  generalFilters!: GeneralFilters
+
   constructor(
+    private store: Store<{ filters: GeneralFilters }>,
     private moduleService: BillingService,
     private translationService: TranslationService,
     private invoiceTableService: InvoiceTableService,
-    private store: Store
   ) {
+    this.generalFilters$ = this.store.select(state => state.filters);
+
+    combineLatest([
+      this.generalFilters$.pipe(distinctUntilChanged()),
+    ])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(([generalFilters]) => {
+        this.generalFilters = generalFilters;
+        this.getBillingHistory();
+      });
+
     this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
       this.drawerOpenID = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
@@ -53,7 +70,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  
+
   @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -68,10 +85,8 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnInit(): void {
-    this.getBillingHistory();
     this.loadTableColumns();
   }
- 
 
   loadTableColumns() {
     this.translationService.currentLang$
@@ -99,10 +114,8 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-
-
   getBillingHistory() {
-    const filters = { ...this.filterData, pageSize: this.pageSize, page : this.pageIndex };
+    const filters = { ...this.filterData, pageSize: this.pageSize, page: this.pageIndex, startDate: this.generalFilters.startDate, endDate: this.generalFilters.endDate };
     this.moduleService.getBillingHistory(filters).subscribe({
       next: (response: GeneralPaginatedResponse<entity.HistoryBillResponse>) => {
         this.totalItems = response?.totalItems;
@@ -115,6 +128,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
         this.isLoading = false;
       },
       error: (error) => {
+        this.isLoading = false;
         this.bills = [];
         this.pageIndex = 0;
         console.log(error);
@@ -124,7 +138,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
 
   getServerData(event: any) {
     console.log(event);
-    this.pageIndex = event.pageIndex+1; 
+    this.pageIndex = event.pageIndex + 1;
     this.getBillingHistory()
   }
 

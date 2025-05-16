@@ -105,6 +105,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.log(error);
+        this.isLoading = false;
       }
     });
   }
