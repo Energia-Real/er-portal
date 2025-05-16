@@ -98,7 +98,7 @@ export class FormatsService {
   }
 
   moneyFormat(amount: number) {
-    if (!amount) return ''
+    if (!amount) return '0 MXN'
     return new Intl.NumberFormat('es-MX', {
       style: 'currency',
       currency: 'MXN',

@@ -11,6 +11,7 @@ import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/pagin
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 
 @Component({
   selector: 'app-sites',
@@ -118,7 +119,7 @@ export class SitesComponent implements OnInit, OnDestroy {
     }
   }
 
-  getsites(filters: any) {
+  getsites(filters: entity.FiltersBillingSites) {
     this.moduleServices.getBillingSites(filters).subscribe({
       next: (response: entity.DataBillingSitesTableMapper) => {
         this.sites = response.data
@@ -126,6 +127,9 @@ export class SitesComponent implements OnInit, OnDestroy {
         this.pageIndex = filters.page;
         this.isLoading = false;
       },
+       error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+      }
     });
   }
 

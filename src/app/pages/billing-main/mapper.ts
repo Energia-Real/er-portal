@@ -43,6 +43,25 @@ export class Mapper {
 		}
 	}
 
+	static InvoiceDetailsMapper(response: entity.DataInvoiceDetailsTableMapper, formatsService: FormatsService): entity.DataInvoiceDetailsTableMapper {
+		let dataList: entity.InvoiceDetailsTableRow[] = [];
+
+		response?.data?.forEach((data: entity.InvoiceDetailsTableRow): void => {
+			
+			dataList.push({
+				...data,
+				unitValue: formatsService.moneyFormat(parseInt(data.unitValue)),
+				totalAmount: formatsService.moneyFormat(parseFloat(data.totalAmount)),
+				taxes: formatsService.moneyFormat(parseFloat(data.taxes)),
+			});
+		});
+
+		return {
+			...response,
+			data: dataList
+		}
+	}
+
 	static getBillingHistoryMapper(response: entity.DataHistoryOverviewTableMapper, formatsService: FormatsService): entity.DataHistoryOverviewTableMapper {
 		let dataList: entity.DataHistoryOverviewTable[] = [];
 

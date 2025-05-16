@@ -2,7 +2,7 @@
     <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
         [invoice]="drawerInfo"></app-modal-invoice-details>
         
-    <div class="table-container" *ngIf="bills">
+    <div class="table-container">
         <ng-container *ngIf="!isLoading; else loadingSkeleton">
             <app-tabulator-table *ngIf="bills?.length; else noDataTable" [data]="bills"
                 [config]="tableConfig"></app-tabulator-table>
@@ -25,7 +25,7 @@
 <ng-template #noDataTable>
     <div class="no-data-container">
         <img class="icon" src="../../../../../assets/icons/data-not-found.svg" alt="">
-        <div class="message-title"> {{ 'FACTURACION.SIN_DATOS_TITULO' | translate }} </div>
-        <div class="message-subtitle">{{ 'FACTURACION.SIN_DATOS_SUBTITULO' | translate }}</div>
+        <div class="message-title"> {{ 'GENERAL.SIN_DATOS_TITULO' | translate }} </div>
+        <div class="message-subtitle">{{ 'GENERAL.SIN_DATOS_SUBTITULO' | translate }}</div>
     </div>
 </ng-template>

@@ -96,18 +96,6 @@ export class PlantsService implements OnDestroy {
       .pipe(map((response) => Mapper.getSitePerformanceMapper(response, this.formatsService, this.translationService)));
   }
 
-  /* getSavingsDetails(filters: GeneralFilters) : Observable<DataResponseArraysMapper> {
-    const url = `${this.API_URL_PROYECTS}/projects/Savings`;
-    let params = new HttpParams()
-    .set('clientId', filters.clientId!)
-    .set('startMonth', filters.startDate)
-    .set('endMonth', filters.endDate!);
-
-    return this.http.get<entity.getSavingsDetails>(url, { params }).pipe(
-      map((response) => Mapper.getSavingsDetailsMapper(response.response))
-    );
-  } */
-
   getSavingDetails(
     filters: GeneralFilters,
     plantId: string

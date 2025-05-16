@@ -9,9 +9,9 @@ export interface InvoiceDetailsTableRow {
   production: number;
   concept: string;
   description: string;
-  unitValue: number;
-  taxes: number;
-  amount: number;
+  unitValue: string;
+  taxes: string;
+  amount: string;
 }
 
 export interface CurrentBillingTableRow {
@@ -68,9 +68,9 @@ export interface InvoiceDetailsTableRow {
   production: number;
   concept: string;
   description: string;
-  unitValue: number;
-  taxes: number;
-  totalAmount: number;
+  unitValue: string;
+  taxes: string;
+  totalAmount: string;
 }
 
 export interface BillingResponse {
@@ -80,6 +80,19 @@ export interface BillingResponse {
   totalItems: number;
   errors?: any | null;
 }
+
+export interface FiltersBillingSites {
+  pageSize: number;
+  page: number;
+  startDate: string;      
+  endDate: string;      
+  customerName: string;
+  legalName: string;
+  siteName: string;
+  productType: string;
+  clientId: string;
+}
+
 
 export interface FilterBillingDetails {
   year: number;
@@ -343,7 +356,7 @@ export interface catalogResponseList {
 
 export interface Bill {
   amount: number;
-  billingId: string;
+  billingId: number;
   legalName: string;
   month: number;
   product: string;
