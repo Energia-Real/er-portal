@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { FinantialModelRoutingModule } from './finantial-model-routing.module';
 import { FinantialModelLayoutComponent } from './finantial-model-layout/finantial-model-layout.component';
@@ -16,6 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     FinantialModelRoutingModule,
     MaterialModule,
     MessageNoDataComponent,

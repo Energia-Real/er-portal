@@ -62,9 +62,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Nueva sección para la gráfica D3.js -->
+    <div class="mt-8">
+        <h2 class="label-700-24 mb-4">Visualización de Datos Financieros</h2>
+        <div class="c-card-section p-4">
+            <div class="flex justify-between mb-4">
+                <div>
+                    <button class="btn-action-add mr-2" (click)="generateData()">
+                        Generar Datos
+                    </button>
+                    <button class="btn-cancel" (click)="clearChart()">
+                        Limpiar Gráfica
+                    </button>
+                </div>
+                <div>
+                    <select class="form-select" [(ngModel)]="chartType" (change)="updateChart()">
+                        <option value="line">Gráfica de Línea</option>
+                        <option value="bar">Gráfica de Barras</option>
+                        <option value="area">Gráfica de Área</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chart-container" style="height: 500px;">
+                <div #chartContainer class="w-full h-full"></div>
+            </div>
+        </div>
+    </div>
 </div>
-
-
 
 <ng-template #notData>
     <div class="no-data-found d-flex justify-center">

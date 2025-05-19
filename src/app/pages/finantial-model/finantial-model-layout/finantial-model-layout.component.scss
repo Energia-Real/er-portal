@@ -1,57 +1,70 @@
-.div-groups-model {
-    height: 100%;
-    :nth-child(3),
-    :nth-child(4) {
-      h2 {
-        margin-bottom: 32px !important;
-      }
-    }
+// Estilos existentes
 
-   
-
-    >div {
-      border-right-width: none !important;
-      position: relative;
-
-      h2 {
-        font-size: 16px !important;
-        font-weight: 500;
-        margin-bottom: 10px !important;
-
-        span {
-          font-size: 12px;
-          font-weight: 500;
-        }
-      }
-
-      p {
-        margin-top: 8px;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 14px;
-      }
-
-      .linea {
-        width: 1px;
-        height: 34px;
-        background: #CFCFCF;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
-  }
-
- 
-
-  .c-model {
-    min-height: 138px;
-  }
-
-  .scenarios{
-    font-size: 24px;
-    font-weight: 500;
-  }
-
+// Estilos para la gráfica D3.js
+.chart-container {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Estilos para los ejes
+.x-axis, .y-axis {
+  path, line {
+    stroke: #ccc;
+  }
+  
+  text {
+    font-size: 12px;
+    fill: #666;
+  }
+}
+
+// Estilos para el tooltip
+.d3-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 12px;
+  max-width: 200px;
+  z-index: 1000;
+  
+  strong {
+    color: #57B1B1;
+    font-weight: bold;
+  }
+}
+
+// Estilos para el selector de tipo de gráfica
+.form-select {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  
+  &:focus {
+    outline: none;
+    border-color: #57B1B1;
+    box-shadow: 0 0 0 2px rgba(87, 177, 177, 0.2);
+  }
+}
+
+// Estilos para los botones
+.btn-action-add, .btn-cancel {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+}
