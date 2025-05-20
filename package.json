@@ -25,6 +25,7 @@
     "@angular/router": "^19.2.8",
     "@bluehalo/ngx-leaflet": "^19.0.0",
     "@googlemaps/js-api-loader": "^1.16.8",
+    "@microsoft/signalr": "^8.0.7",
     "@ngrx/effects": "^19.1.0",
     "@ngrx/store": "^19.1.0",
     "@ngrx/store-devtools": "^19.1.0",
