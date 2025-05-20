@@ -15,3 +15,154 @@
         line-height: 1.4;
     }
 }
+
+
+#tableDiv .tabulator-header {
+    color: #792430;
+    border: none !important;
+    background: #fff !important;
+    padding-bottom: 20px;
+    font-weight: 500;
+    .tabulator-header-contents {
+      .tabulator-headers {
+        .tabulator-col {
+          background: transparent !important;
+          border: none !important;
+          .tabulator-col-content {
+            .tabulator-col-title-holder {
+              .tabulator-col-title {
+                background: #F8F8F8 !important;
+                width: fit-content;
+                border-radius: 8px !important;
+                border: 1px solid #EDEDED !important;
+                display: flex;
+                align-items: center;
+                padding: 0px 8px;
+  
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .tabulator{
+    border: none !important;
+  }
+  
+  .tabulator-row .tabulator-cell{
+    border: none !important;
+    padding-right: 16px !important;
+    padding-left: 16px !important;
+    color: #000000 !important;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .tabulator-row:hover,
+  .tabulator-row.tabulator-selectable:hover,
+  .tabulator-row.tabulator-row-even:hover {
+    background-color: #bbb !important; 
+    cursor: default !important;
+  
+  }
+  
+  @media (hover: hover) and (pointer: fine) {
+    .tabulator-row:hover,
+    .tabulator-row.tabulator-selectable:hover,
+    .tabulator-row.tabulator-row-even:hover {
+      background-color: #ffffff !important;
+      cursor: default !important;
+    }
+  }
+  .tabulator-row.tabulator-row-even{
+    background: #ffffff !important;
+  }
+  
+  .tabulator-tableholder{
+    max-height: 100% !important;
+    background-color: #ffffff !important;
+  }
+  
+  .tabulator-row.tabulator-selected {
+    background-color: #ffffff !important;
+  }
+  
+  .tabulator-row {
+    padding-bottom: 17px;
+    padding-top: 17px;
+    border-bottom: 1.5px solid #E2E2E2;
+    
+    // Si quieres que la última fila no tenga borde
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  /* Estilos para el checkbox de selección de filas en Tabulator */
+  .tabulator-cell.tabulator-row-header input[type="checkbox"] {
+    /* Resetear apariencia predeterminada */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Dimensiones y forma */
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    
+    /* Color de fondo y borde */
+    background-color: #FFE1D8 !important;
+    border: 1px solid #ddd;
+    
+    /* Centrado */
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    
+    /* Eliminar contorno de foco */
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Estilo para el checkmark (paloma) cuando está seleccionado */
+  .tabulator-cell.tabulator-row-header input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid #EE5427;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+  /* Eliminar contorno de foco cuando está enfocado */
+  .tabulator-cell.tabulator-row-header input[type="checkbox"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: #ddd !important;
+  }
+  
+  /* Estilo para el checkbox en el encabezado de la tabla */
+  .tabulator-header .tabulator-col.tabulator-row-header input[type="checkbox"] {
+    background-color: #FFE1D8 !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Estilo para el checkmark en el encabezado cuando está seleccionado */
+  .tabulator-header .tabulator-col.tabulator-row-header input[type="checkbox"]:checked::after {
+    border-color: #EE5427 !important;
+  }
+  
+  /* Eliminar contorno de foco en el encabezado cuando está enfocado */
+  .tabulator-header .tabulator-col.tabulator-row-header input[type="checkbox"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: #ddd !important;
+  }
+  
+  
