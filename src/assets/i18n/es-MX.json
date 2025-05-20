@@ -310,7 +310,7 @@
   },
   "FACTURACION": {
     "FACTURACION_ACTUAL": "Facturación Actual",
-    "DESCARGAR_CSV": "Descargar todo CSV",
+    "DESCARGAR_CSV": "Descargar Selección",
     "NOMBRE_LEGAL": "Nombre Legal",
     "AÑO": "Año",
     "MES": "Mes",

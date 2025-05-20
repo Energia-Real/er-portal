@@ -20,6 +20,8 @@ import { start } from '@popperjs/core';
   standalone: false
 })
 export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
+
+  
   private onDestroy$ = new Subject<void>();
 
   generalFilters$!: Observable<GeneralFilters>;
@@ -178,6 +180,9 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
         console.log(err);
       }
     });
+  }
+  descargarTabla(tipo: string) {
+    this.tabulatorTable.download(tipo);
   }
 
   viewDetails(row: any): void {

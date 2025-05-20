@@ -1,7 +1,12 @@
 <div class="c-billing-history border-card pb-0">
     <app-modal-invoice-details [isOpen]="drawerOpenID" [modeDrawer]="drawerAction"
         [invoice]="drawerInfo"></app-modal-invoice-details>
-        
+
+    <div class="section-header section-untitled" (click)="descargarTabla('csv')">
+        <span>
+            {{ 'FACTURACION.DESCARGAR_CSV' | translate }}
+        </span>
+    </div>
     <div class="table-container">
         <ng-container *ngIf="!isLoading; else loadingSkeleton">
             <app-tabulator-table *ngIf="bills?.length; else noDataTable" [data]="bills"

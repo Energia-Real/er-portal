@@ -328,6 +328,20 @@ export class InvoiceTableService {
       map((columns) => ({
         maxHeight: 280,
         layout: "fitColumns",
+        rowHeader:{
+          headerSort:false, 
+          resizable: false, 
+          frozen:true, 
+          headerHozAlign:"center", 
+          hozAlign:"left", 
+          formatter:"rowSelection", 
+          titleFormatter:"rowSelection", 
+          cellClick:function(e, cell){
+            cell.getRow().toggleSelect();
+          },
+          width:50
+        },
+        downloadRowRange:"selected",
         columns: columns,
         movableColumns: true,
       }))
@@ -343,6 +357,20 @@ export class InvoiceTableService {
       map((columns) => ({
         maxHeight: 550,
         layout: "fitColumns",
+        rowHeader:{
+          headerSort:false, 
+          resizable: false, 
+          frozen:true, 
+          headerHozAlign:"center", 
+          hozAlign:"left", 
+          formatter:"rowSelection", 
+          titleFormatter:"rowSelection", 
+          cellClick:function(e, cell){
+            cell.getRow().toggleSelect();
+          },
+          width:50
+        },
+        downloadRowRange:"selected",
         columns: columns,
         movableColumns: true,
       }))

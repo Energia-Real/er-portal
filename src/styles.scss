@@ -149,6 +149,10 @@ select:focus {
   background-color: #ffffff !important;
 }
 
+.tabulator-row.tabulator-selected {
+  background-color: #ffffff !important;
+}
+
 .tabulator-row {
   padding-bottom: 17px;
   padding-top: 17px;
@@ -159,3 +163,69 @@ select:focus {
     border-bottom: none;
   }
 }
+
+/* Estilos para el checkbox de selección de filas en Tabulator */
+.tabulator-cell.tabulator-row-header input[type="checkbox"] {
+  /* Resetear apariencia predeterminada */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  /* Dimensiones y forma */
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  
+  /* Color de fondo y borde */
+  background-color: #FFE1D8 !important;
+  border: 1px solid #ddd;
+  
+  /* Centrado */
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  
+  /* Eliminar contorno de foco */
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Estilo para el checkmark (paloma) cuando está seleccionado */
+.tabulator-cell.tabulator-row-header input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid #EE5427;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Eliminar contorno de foco cuando está enfocado */
+.tabulator-cell.tabulator-row-header input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #ddd !important;
+}
+
+/* Estilo para el checkbox en el encabezado de la tabla */
+.tabulator-header .tabulator-col.tabulator-row-header input[type="checkbox"] {
+  background-color: #FFE1D8 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Estilo para el checkmark en el encabezado cuando está seleccionado */
+.tabulator-header .tabulator-col.tabulator-row-header input[type="checkbox"]:checked::after {
+  border-color: #EE5427 !important;
+}
+
+/* Eliminar contorno de foco en el encabezado cuando está enfocado */
+.tabulator-header .tabulator-col.tabulator-row-header input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #ddd !important;
+}
+
