@@ -77,16 +77,19 @@
                     </button>
                 </div>
                 <div>
-                    <select class="form-select" [(ngModel)]="chartType" (change)="updateChart()">
+                    <select class="form-select" [(ngModel)]="chartType" >
                         <option value="line">Gráfica de Línea</option>
                         <option value="bar">Gráfica de Barras</option>
                         <option value="area">Gráfica de Área</option>
+                        <option value="bar-line">Gráfica Combinada (Barras y Línea)</option>
                     </select>
                 </div>
             </div>
-            <div class="chart-container" style="height: 500px;">
-                <div #chartContainer class="w-full h-full"></div>
-            </div>
+            <app-d3graph 
+                [data]="financialData" 
+                title="Datos de Energía Facturada por Mes" 
+                [chartType]="chartType">
+            </app-d3graph>
         </div>
     </div>
 </div>

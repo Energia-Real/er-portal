@@ -15,6 +15,7 @@ import { MonthAbbreviationPipe } from '../pipes/month-abbreviation.pipe';
 import { TabulatorTableComponent } from './tabulator-table/tabulator-table.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageSwitcherComponent } from './language-switcher/language-switcher.component';
+import { D3graphComponent } from './d3graph/d3graph.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { LanguageSwitcherComponent } from './language-switcher/language-switcher
     NotificationCardCenterComponent,
     TimeAgoPipe,
     MonthAbbreviationPipe,
-    TabulatorTableComponent
+    TabulatorTableComponent,
+    D3graphComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { LanguageSwitcherComponent } from './language-switcher/language-switcher
     TimeAgoPipe,
     MonthAbbreviationPipe,
     TabulatorTableComponent,
-    TranslateModule
+    TranslateModule,
+    D3graphComponent
   ]
 })
 export class SharedComponensModule { }

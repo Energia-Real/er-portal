@@ -1,47 +1,4 @@
-// Estilos existentes
 
-// Estilos para la gráfica D3.js
-.chart-container {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-// Estilos para los ejes
-.x-axis, .y-axis {
-  path, line {
-    stroke: #ccc;
-  }
-  
-  text {
-    font-size: 12px;
-    fill: #666;
-  }
-}
-
-// Estilos para el tooltip
-.d3-tooltip {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 4px;
-  pointer-events: none;
-  font-size: 12px;
-  max-width: 200px;
-  z-index: 1000;
-  
-  strong {
-    color: #57B1B1;
-    font-weight: bold;
-  }
-}
 
 // Estilos para el selector de tipo de gráfica
 .form-select {
