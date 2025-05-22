@@ -8,9 +8,7 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { Module } from '@app/layout/layout/modules.interface';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
-
 declare const pendo: any;
-
 
 @Component({
     selector: 'app-layout',
@@ -44,77 +42,117 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.notificationService.loadNotificationTypes().subscribe();
     this.notificationService.loadNotificationCenterMessages().subscribe();
 
-    this.authService.getInfoUser().subscribe((data) => {
-      this.userInfo = data;
-      if(data.language){
-        this.translationService.setLanguage(data.language);
+    // Try to load user info from localStorage first (for offline support)
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      try {
+        this.userInfo = this.encryptionService.decryptData(storedUserInfo);
+        // Check if there's a language preference stored
+        const storedLanguage = localStorage.getItem('userLanguage');
+        if (storedLanguage) {
+          this.translationService.setLanguage(storedLanguage);
+        }
+        this.initializePendoIfAvailable();
+        this.loadModulesFromAPI();
+        this.handleRouteNavigation();
+      } catch (error) {
+        console.error('Error loading stored user info:', error);
       }
-      if (typeof pendo !== 'undefined') {
-        pendo.initialize({  
-          visitor: {
-            id: this.userInfo.email,
-            firstName: this.userInfo?.persona?.nombres || '',
-            lastName: this.userInfo?.persona?.apellidos || ''
-          }, 
-          account: { 
-            id: this.userInfo?.pendoIntegration?.clientID || '', 
-            name: this.userInfo?.pendoIntegration?.clientName || '', 
-          }
-        });
-      } else {
-        console.error('Pendo no está definido. Asegúrate de que el script está cargado en index.html.');
-      }
-      const encryptedData = this.encryptionService.encryptData(data);
-      localStorage.setItem('userInfo', encryptedData);
+    }
 
-      if (this.router.url === '/er') {
-        switch (data.accessTo) {
-          case 'BackOffice':
-            this.router.navigate(['backoffice-home'], { relativeTo: this.route });
-            break;
-          case 'Admin':
-            this.router.navigate(['admin-home'], { relativeTo: this.route });
-            break;
-          case 'Clients':
-            this.router.navigate(['client-home'], { relativeTo: this.route });
-            break;
-          case 'Billing':
-            this.router.navigate(['rates'], { relativeTo: this.route });
-            break;
-          default:
-            this.router.navigate(['/login']);
-            break;
+    // Then try to get fresh data from the API
+    this.authService.getInfoUser().subscribe({
+      next: (data) => {
+        this.userInfo = data;
+        // Store user's preferred language if available
+        const preferredLanguage = localStorage.getItem('userLanguage') || 'es-MX';
+        this.translationService.setLanguage(preferredLanguage);
+        localStorage.setItem('userLanguage', preferredLanguage);
+        this.initializePendoIfAvailable();
+        const encryptedData = this.encryptionService.encryptData(data);
+        localStorage.setItem('userInfo', encryptedData);
+        this.loadModulesFromAPI();
+        this.handleRouteNavigation();
+      },
+      error: (err) => {
+        console.error('Error fetching user info:', err);
+        // If we already loaded from localStorage, we can continue
+        // If not, we might need to redirect to login
+        if (!this.userInfo) {
+          this.router.navigate(['/login']);
         }
       }
-
-      this.authService.getModules().subscribe((modules) => this.modules = modules);
-
-      this.router.events
-        .pipe(filter((event) => event instanceof NavigationEnd))
-        .subscribe(() => {
-          const queryParams = this.route.snapshot.queryParams;
-          const startday = queryParams['startday'];
-          const endday = queryParams['endday'];
-
-          if (startday && endday) {
-            this.router.navigate([], {
-              queryParams: { startday, endday },
-              queryParamsHandling: 'merge',
-            });
-          }
-        });
     });
   }
 
-  onMouseEnter() {
+  initializePendoIfAvailable(): void {
+    if (this.userInfo && typeof pendo !== 'undefined') {
+      pendo.initialize({  
+        visitor: {
+          id: this.userInfo.email,
+          firstName: this.userInfo?.persona?.nombres || '',
+          lastName: this.userInfo?.persona?.apellidos || ''
+        }, 
+        account: { 
+          id: this.userInfo?.pendoIntegration?.clientID || '', 
+          name: this.userInfo?.pendoIntegration?.clientName || '', 
+        }
+      });
+    } else if (typeof pendo === 'undefined') {
+      console.error('Pendo no está definido. Asegúrate de que el script está cargado en index.html.');
+    }
+  }
+
+  loadModulesFromAPI(): void {
+    this.authService.getModules().subscribe((modules) => this.modules = modules);
+  }
+
+  handleRouteNavigation(): void {
+    if (this.router.url === '/er' && this.userInfo) {
+      switch (this.userInfo.accessTo) {
+        case 'BackOffice':
+          this.router.navigate(['backoffice-home'], { relativeTo: this.route });
+          break;
+        case 'Admin':
+          this.router.navigate(['admin-home'], { relativeTo: this.route });
+          break;
+        case 'Clients':
+          this.router.navigate(['client-home'], { relativeTo: this.route });
+          break;
+        case 'Billing':
+          this.router.navigate(['rates'], { relativeTo: this.route });
+          break;
+        default:
+          this.router.navigate(['/login']);
+          break;
+      }
+    }
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const queryParams = this.route.snapshot.queryParams;
+        const startday = queryParams['startday'];
+        const endday = queryParams['endday'];
+
+        if (startday && endday) {
+          this.router.navigate([], {
+            queryParams: { startday, endday },
+            queryParamsHandling: 'merge',
+          });
+        }
+      });
+  }
+
+  onMouseEnter(): void {
     this.isSidebarHovered = true;
   }
 
-  onMouseLeave() {
+  onMouseLeave(): void {
     this.isSidebarHovered = false;
   }
 
-  signOut() {
+  signOut(): void {
     localStorage.removeItem('userEnergiaReal');
     localStorage.removeItem('userInfo');
     this.router.navigate(['']);
