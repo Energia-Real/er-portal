@@ -12,7 +12,7 @@
 
                 <div class="c-input">
                     <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="customerName" placeholder="{{ 'FACTURACION.CLIENTE' | translate }}">
+                        <mat-select formControlName="customerName" multiple placeholder="{{ 'FACTURACION.CLIENTE' | translate }}">
                             <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
                             <div *ngIf="clientsCatalog">
                                 <mat-option *ngFor=" let client of clientsCatalog" value={{client.id}}>{{client.description}}</mat-option>
@@ -23,20 +23,19 @@
 
                 <div class="c-input">
                     <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="legalName" placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
+                        <mat-select formControlName="legalName" multiple placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
                             <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
                             <div *ngIf="legalNameCatalog">
                                 <mat-option *ngFor="let legalName of legalNameCatalog" value = {{legalName.id}}>{{legalName.description}}</mat-option>
                             </div>
                         </mat-select>
 
-                        <!-- <mat-icon *ngIf="filtersForm.get('legal')?.value" matSuffix (click)="filtersForm.get('legal')?.reset()">close</mat-icon> -->
                     </mat-form-field>
                 </div>
 
                 <div class="c-input">
                     <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="siteName" placeholder="{{ 'FACTURACION.SITIO' | translate }}">
+                        <mat-select formControlName="siteName" multiple placeholder="{{ 'FACTURACION.SITIO' | translate }}">
                             <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
                             <div *ngIf="sitesCatalog">
                                 <mat-option *ngFor="let site of sitesCatalog" value={{site.id}}>{{site.description}}</mat-option>
@@ -48,11 +47,10 @@
 
                 <div class="c-input">
                     <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="productType" placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">
+                        <mat-select formControlName="productType" multiple placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">
                            <div *ngIf="productsCatalog">
                                 <mat-option *ngFor="let product of productsCatalog" value="{{product.description.toUpperCase()}}">{{product.description}}</mat-option>
                            </div>
-                            <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
                             
                         </mat-select>
                     </mat-form-field>
@@ -64,7 +62,7 @@
 
     <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
         <div class="col-span-1 position-relative">
-            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="2">
 
                 <mat-tab label="{{ 'FACTURACION.RESUMEN' | translate }}">
                     <app-overview [filterData]="filterData"></app-overview>

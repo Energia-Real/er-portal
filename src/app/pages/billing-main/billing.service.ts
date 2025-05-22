@@ -64,17 +64,21 @@ export class BillingService implements OnDestroy {
   getBillingSites(
     filters: entity.FiltersBillingSites
   ): Observable<entity.DataBillingSitesTableMapper> {
-    const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
-
-    const params = new HttpParams()
-      .set('pageSize', filters.pageSize)
-      .set('page', filters.page)
-      .set('startDate', filters.startDate)
-      .set('endDate', filters.endDate)
-      .set('customerName', filters.customerName)
-      .set('legalName', filters.legalName)
-      .set('siteName', filters.siteName)
-      .set('productType', filters.productType)
+    // const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
+    const url = `${this.domainApiUrl}/v1/Netsuite/Sites`;
+    // https://er-domain-backend-dev.azurewebsites.net/api/v1/Netsuite/Sites
+    // https://er-domain-backend-dev.azurewebsites.net/api/v1/Netsuite/Sites
+    // console.log(filters);
+    
+    // const params = new HttpParams()
+    //   .set('pageSize', filters.pageSize)
+    //   .set('page', filters.page)
+    //   .set('startDate', filters.startDate)
+    //   .set('endDate', filters.endDate)
+    //   .set('customerName', filters.customerName)
+    //   .set('legalName', filters.legalName)
+    //   .set('siteName', filters.siteName)
+    //   .set('productType', filters.productType)
 
     return this.http
       .post<entity.DataBillingSitesTableMapper>(url, filters);

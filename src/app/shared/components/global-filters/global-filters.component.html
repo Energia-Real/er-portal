@@ -1,0 +1,109 @@
+<div class="c-global-filters">
+    <div class="flex align-items-center">
+        <div class="c-month-button" *ngIf="
+        routeActive.includes('backoffice-home') ||
+        routeActive.includes('admin-home') ||
+        routeActive.includes('client-home') ||
+        routeActive.includes('invoice') ||
+        routeActive.includes('rates') ||
+        routeActive.includes('overview') ||
+        routeActive.includes('details')">
+
+            <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
+                <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + (yearStartSelected.toString() | slice:-2) :
+                    'Start' }}</h1>
+                <i class="fa-solid fa-calendar-days"></i>
+            </button>
+
+            <mat-menu #monthMenu1="matMenu" class="custom-menu">
+                <div class="years">
+                    <p class="cursor-pointer"
+                        [ngClass]="{ 'selected-year': 2024 == yearStartSelected, 'default-year': 2024 != yearStartSelected }"
+                        (click)="updateYearSelected(2024, 'start'); $event.stopPropagation()">
+                        2024
+                    </p>
+
+                    <p class="cursor-pointer"
+                        [ngClass]="{ 'selected-year': 2025 == yearStartSelected, 'default-year': 2025 != yearStartSelected }"
+                        (click)="updateYearSelected(2025, 'start'); $event.stopPropagation()">
+                        2025
+                    </p>
+                </div>
+
+                <div class="month-grid">
+                    <button mat-menu-item *ngFor="let month of months" [ngClass]="{ 
+              'selected-month': selectedStartMonth?.value == month.value, 
+              'unselected-month': selectedStartMonth?.value != month.value }"
+                        [disabled]="isMonthDisabledForStart(month)" (click)="selectStartMonth(month, startMenuTrigger)">
+                        {{ month.name }}
+                    </button>
+                </div>
+            </mat-menu>
+
+            <p>To</p>
+
+            <button [matMenuTriggerFor]="monthMenu2" #endMenuTrigger="matMenuTrigger" class="month-button">
+                <h1>{{ singleMonth.value ? 'End' : (selectedEndMonth ? selectedEndMonth.name + ' ' +
+                    (yearEndSelected.toString() | slice:-2) : 'End') }}</h1>
+                <i class="fa-solid fa-calendar-days"></i>
+            </button>
+
+            <mat-menu #monthMenu2="matMenu" class="custom-menu">
+                <div class="years">
+                    <p [ngClass]="{ 
+              'selected-year': 2024 == yearEndSelected && !singleMonth.value, 
+              'default-year': 2024 != yearEndSelected || singleMonth.value,
+              'cursor-pointer' : !singleMonth.value }"
+                        (click)="updateYearSelected(2024, 'end'); $event.stopPropagation()">
+                        2024
+                    </p>
+
+                    <p [ngClass]="{ 
+              'selected-year': 2025 == yearEndSelected && !singleMonth.value, 
+              'default-year': 2025 != yearEndSelected || singleMonth.value,
+              'cursor-pointer' : !singleMonth.value }"
+                        (click)="updateYearSelected(2025, 'end'); $event.stopPropagation()">
+                        2025
+                    </p>
+                </div>
+
+                <div class="month-grid">
+                    <button mat-menu-item *ngFor="let month of months" [ngClass]="{ 
+              'selected-month': selectedEndMonth?.value == month.value, 
+              'unselected-month': selectedEndMonth?.value != month.value 
+              }" [disabled]="
+                  singleMonth.value || 
+                  isSameMonthAndYear(month) || 
+                  isBeforeStartMonth(month) || 
+                  isMonthDisabledForEnd(month)" (click)="selectEndMonth(month, endMenuTrigger)">
+                        {{ month.name }}
+                    </button>
+                </div>
+
+                <div class="single">
+                    <mat-checkbox [formControl]="singleMonth" class="check-color"></mat-checkbox>
+                    <p>Consider a single month only</p>
+                </div>
+            </mat-menu>
+
+            <button class="apply" [ngClass]="{
+          'color-disabled': yearStartSelected > yearEndSelected,
+          'cursor-pointer': yearStartSelected < yearEndSelected ,
+          }" [disabled]="yearStartSelected > yearEndSelected"
+                [matTooltip]="yearStartSelected > yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
+                (click)="searchWithFilters()">Apply
+            </button>
+        </div>
+
+        <div class="c-input mb-0" *ngIf="routeActive.includes('energy')">
+            <mat-form-field class="select-year" appearance="outline">
+                <mat-select placeholder="Year" [(value)]="selectedYearSelect" (valueChange)="searchWithFilters()">
+                    <mat-option *ngFor="let year of years; let i = index" [value]="year">
+                        {{ year.value }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+    </div>
+</div>
