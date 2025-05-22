@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-privacy-policy',
@@ -22,7 +23,9 @@ export class PrivacyPolicyComponent implements OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private location: Location
+    private location: Location,
+    private translationService: TranslationService,
+
   ) { }
 
   onTabChange(event: MatTabChangeEvent) {

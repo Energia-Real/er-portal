@@ -340,7 +340,6 @@
     "MOSTRAR_TODO": "Mostrar todo",
     "ENERGIA_PRODUCIDA": "Energía Producida (kWh)",
     "ENERGIA_FACTURADA": "Energía Facturada (kWh)",
-    "MONTO_TOTAL": "Monto Total",
     "SITIOS": "Sitios",
     "NOMBRE_SITIO": "Nombre del sitio",
     "NOMBRE_CLIENTE": "Nombre del cliente",
@@ -356,5 +355,20 @@
     "FECHA_FIN": "Fecha de finalización",
     "ESTATUS": "Estatus",
     "SOLICITAR_CANELACION": "Solicitar cancelación"
+  },
+  "LEGALS": {
+    "DOWNLOAD_BUTTON": "Descargar",
+    "CONTACTO": {
+      "VOLVER": "Volver",
+      "TITULO": "Contáctanos",
+      "DESCRIPCION": "Si tienes alguna pregunta o necesitas más información, no dudes en contactarnos. Estamos aquí para ayudarte.",
+      "DIRECCION": "Culiacán 123, Hipódromo Condesa, Cuauhtémoc, 06170 Ciudad de México, CDMX",
+      "EMAIL": "clientes@energiareal.mx",
+      "TELEFONO": "(55) 4172 1229",
+      "DIAS_LABORALES": "Lunes a Viernes",
+      "HORARIO": "09:00 AM – 08:00 PM",
+      "MENSAJE_SERVICIO": "Estamos a tu servicio para cualquier duda o consulta.",
+      "SEGUIR_REDES": "Síguenos en"
+    }
   }
 }
