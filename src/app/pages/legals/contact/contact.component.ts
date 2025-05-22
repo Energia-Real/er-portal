@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from '@environment/environment';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 
 @Component({
@@ -18,6 +19,8 @@ export class ContactComponent {
   constructor(
     private location: Location,
     private sanitizer: DomSanitizer,
+    private translationService: TranslationService,
+
 
   ){
     this.urlMap = this.sanitizer.bypassSecurityTrustResourceUrl(

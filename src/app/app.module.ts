@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -6,7 +6,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // Factory function for ngx-translate
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,8 +27,10 @@ import { notificationsReducer } from './core/store/reducers/notifications.reduce
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from './shared/material/paginator-intl';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
-@NgModule({ declarations: [AppComponent],
+@NgModule({
+    declarations: [AppComponent],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         GoogleMapsModule,
@@ -43,22 +45,29 @@ import { getPaginatorIntl } from './shared/material/paginator-intl';
             }
         }),
         StoreModule.forRoot({ paginator: paginatorReducer, drawer: drawerReducer, filters: filterReducer, notifications: notificationsReducer, corporateDrawer: corporateDrawerReducer }),
-        !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : []], providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: LoadingInterceptor,
-            multi: true
-        },
-        {
-            provide: MatPaginatorIntl,
-            useValue: getPaginatorIntl()
-        },
-        provideAnimationsAsync(),
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+        !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: true,
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        })], providers: [
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: TokenInterceptor,
+                multi: true
+            },
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: LoadingInterceptor,
+                multi: true
+            },
+            {
+                provide: MatPaginatorIntl,
+                useValue: getPaginatorIntl()
+            },
+            provideAnimationsAsync(),
+            provideHttpClient(withInterceptorsFromDi()),
+        ]
+})
 export class AppModule { }
