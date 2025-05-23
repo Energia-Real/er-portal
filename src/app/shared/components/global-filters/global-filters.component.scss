@@ -12,11 +12,12 @@
     .c-input {
       margin-bottom: 0;
 
-      .select-ER .mat-mdc-text-field-wrapper {
-        margin-left: 0 !important;
+      ::ng-deep .select-ER .mat-mdc-text-field-wrapper {
+        margin-left: 0;
         width: 130px;
       }
     }
+
   }
 
   ::ng-deep .select-year {
@@ -54,7 +55,6 @@
     margin: 0;
     font-size: 14px;
     font-weight: 500;
-    // cursor: pointer;
     margin-right: 25px;
   }
 
@@ -74,8 +74,8 @@
 
     h1 {
       margin: 0;
-      font-size: 14px !important;
-      font-weight: 500 !important;
+      font-size: 14px;
+      font-weight: 500;
     }
 
     >span {
@@ -118,11 +118,10 @@
   button.mat-menu-item {
     height: 32px !important;
     min-height: unset !important;
-  }
-
-  button.mat-menu-item {
-    text-align: center;
+     text-align: center;
     width: 50px;
+     height: 32px !important;
+    min-height: unset !important;
   }
 
   button.mat-menu-item:hover {
@@ -132,11 +131,6 @@
   button.mat-menu-item.selected {
     background-color: #3f51b5;
     color: white;
-  }
-
-  button.mat-menu-item {
-    height: 32px !important;
-    min-height: unset !important;
   }
 
   ::ng-deep .custom-menu {
@@ -180,16 +174,12 @@
   }
 
   .unselected-month {
-    color: #B5B5B5;
     min-height: unset !important;
     font-size: 16px;
     color: #1F1F1F;
     margin: 0;
     text-align: center;
   }
-
-
-
 }
 
 .single {
