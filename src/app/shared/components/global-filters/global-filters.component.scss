@@ -13,11 +13,10 @@
       margin-bottom: 0;
 
       ::ng-deep .select-ER .mat-mdc-text-field-wrapper {
-        margin-left: 0;
-        width: 130px;
+        margin-left: 0 !important;
+        width: 130px !important;
       }
     }
-
   }
 
   ::ng-deep .select-year {
@@ -25,7 +24,7 @@
     border-radius: 20px;
     background: #F1F1F1;
 
-    .mdc-notched-outline .mdc-notched-outline__trailing,
+    .mdc-notched-outline__trailing,
     .mdc-notched-outline__leading {
       border: none !important;
     }
@@ -38,9 +37,9 @@
 }
 
 .c-month-button {
-  gap: 12px;
   display: flex;
   align-items: center;
+  gap: 12px;
 
   p {
     margin: 0;
@@ -52,17 +51,15 @@
   h2,
   .apply {
     color: #EE6A0A;
-    margin: 0;
+    margin: 0 25px 0 0;
     font-size: 14px;
     font-weight: 500;
-    margin-right: 25px;
   }
 
   .month-button {
     padding: 0 5px;
     width: 98px;
     height: 40px;
-    transition: width 0.3s ease;
     background: #F1F1F1;
     border-radius: 24px;
     font-size: 14px;
@@ -71,11 +68,12 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    transition: width 0.3s ease;
 
     h1 {
       margin: 0;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 14px !important;
+      font-weight: 500 !important;
     }
 
     >span {
@@ -109,28 +107,21 @@
     height: 220px !important;
   }
 
-  .mat-mdc-menu-item {
-    min-height: unset !important;
-    height: 35px !important;
-
-  }
-
+  .mat-mdc-menu-item,
   button.mat-menu-item {
     height: 32px !important;
     min-height: unset !important;
-     text-align: center;
+    text-align: center;
     width: 50px;
-     height: 32px !important;
-    min-height: unset !important;
-  }
 
-  button.mat-menu-item:hover {
-    background-color: #f5f5f5;
-  }
+    &:hover {
+      background-color: #f5f5f5;
+    }
 
-  button.mat-menu-item.selected {
-    background-color: #3f51b5;
-    color: white;
+    &.selected {
+      background-color: #3f51b5;
+      color: white;
+    }
   }
 
   ::ng-deep .custom-menu {
@@ -140,14 +131,13 @@
     border: 2px solid #E5E7EB;
 
     .years {
-      padding: 0px 20px;
-      margin: 0;
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 6px;
-      text-align: left;
       display: flex;
       gap: 14px;
+      padding: 0 20px;
+      margin: 6px 0 0 0;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: left;
 
       p {
         margin-bottom: 0;
@@ -167,29 +157,29 @@
     background: #EE6A0A !important;
     border-radius: 50px !important;
     color: #FFFFFF !important;
-    min-height: unset !important;
     font-size: 16px;
-    text-align: center;
     min-height: unset !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .unselected-month {
-    min-height: unset !important;
-    font-size: 16px;
     color: #1F1F1F;
-    margin: 0;
+    font-size: 16px;
     text-align: center;
+    margin: 0;
   }
 }
 
 .single {
   color: #737373;
   font-size: 12px;
-  padding: 0px 20px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
 
   p {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
