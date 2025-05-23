@@ -1,24 +1,21 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GeneralFilters, MonthsFilters, UserInfo } from '@app/shared/models/general-models';
-import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { NavigationEnd, Router } from '@angular/router';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { selectFilterState } from '@app/core/store/selectors/filters.selector';
-import { SharedComponensModule } from '../shared-components.module';
-import { MaterialModule } from '@app/shared/material/material.module';
-import { CommonModule } from '@angular/common';
+import { DataCatalogs } from '@app/shared/models/catalogs-models';
 
 @Component({
   selector: 'app-global-filters',
   standalone: false,
   templateUrl: './global-filters.component.html',
   styleUrl: './global-filters.component.scss',
-  // imports: [CommonModule, SharedComponensModule, MaterialModule, ReactiveFormsModule]
 })
 export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -64,8 +61,22 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
 
   routeActive: string = '';
 
+  clientsCatalog!: DataCatalogs[];
+  legalNameCatalog!: DataCatalogs[];
+  sitesCatalog!: DataCatalogs[];
+  productsCatalog!: DataCatalogs[];
+
+
+  filtersForm = this.fb.group({
+    customerName: [''],
+    legalName: [''],
+    siteName: [''],
+    productType: [''],
+  });
+
 
   constructor(
+    private fb: FormBuilder,
     private router: Router,
     private store: Store<{ filters: GeneralFilters }>,
     private encryptionService: EncryptionService,
@@ -117,15 +128,15 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.yearEndSelected, +this.selectedEndMonth.value);
 
     console.log('generalFilters', generalFilters);
-    
 
 
-    // this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
-    //   if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
-    //     this.store.dispatch(setGeneralFilters({ generalFilters }));
-    //     this.updateUrlWithFilters(generalFilters);
-    //   }
-    // });
+
+    this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
+      if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
+        this.store.dispatch(setGeneralFilters({ generalFilters }));
+        this.updateUrlWithFilters(generalFilters);
+      }
+    });
   }
 
   updateUrlWithFilters(generalFilters: GeneralFilters): void {
