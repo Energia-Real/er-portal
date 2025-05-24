@@ -13,7 +13,7 @@ export class Mapper {
 				endDate: formatsService.dateFormat(data.endDate),
 				startDate: formatsService.dateFormat(data.startDate),
 				createdInvoiceDocDate: formatsService.dateFormat(data.createdInvoiceDocDate),
-				generatedEnergyKwh: formatsService.energyWithDecimals(data.generatedEnergyKwh, true),
+				generatedEnergyKwh: formatsService.energyWithDecimalsOrKWH(data.generatedEnergyKwh, true),
 				montoPagoAnterior: formatsService.moneyFormat(data.montoPagoAnterior),
 				montoTotal: formatsService.moneyFormat(parseFloat(data.montoTotal)),
 				tarifa: formatsService.moneyFormat(parseFloat(data.tarifa)),
@@ -85,7 +85,7 @@ export class Mapper {
 		response.data[0].plants.forEach((data: any): void => {
 			dataList.push({
 				...data,
-				productionKwh: formatsService.energyWithDecimals(data.productionKwh),
+				productionKwh: formatsService.energyWithDecimalsOrKWH(data.productionKwh),
 				previousPayment: formatsService.moneyFormat(data.previousPayment),
 				rate: formatsService.moneyFormat(data.rate),
 				totalAmount: formatsService.moneyFormat(data.totalAmount),

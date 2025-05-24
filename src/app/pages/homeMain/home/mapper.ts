@@ -100,17 +100,17 @@ export class Mapper {
 
 	static getCo2SavingMapper(response: entity.Co2Saving, formatsService: FormatsService): entity.Co2SavingResponse {
 		return {
-			co2_saving_tCO2: formatsService.energyFormat(response?.response?.co2_saving_tCO2),
-			tree_equivalent: formatsService.energyFormat(response?.response?.tree_equivalent),
-			ev_charges_equivalent: formatsService.energyFormat(response?.response?.ev_charges_equivalent)
+			co2_saving_tCO2: formatsService.energyWithoutDecimalsOrKWH(response?.response?.co2_saving_tCO2),
+			tree_equivalent: formatsService.energyWithoutDecimalsOrKWH(response?.response?.tree_equivalent),
+			ev_charges_equivalent: formatsService.energyWithoutDecimalsOrKWH(response?.response?.ev_charges_equivalent)
 		}
 	}
 
 	static getDataSavingDetailsMapper(response: entity.SavingDetailsResponse, formatsService: FormatsService): entity.SDResponse {
 		return {
 			...response.response,
-			totalEnergyConsumption: `${response?.response?.totalEnergyConsumption} ${response?.response?.energyConsumptionMeasure}`,
-			totalEnergyProduction: `${response?.response?.totalEnergyProduction} ${response?.response?.energyProductionMeasure}`,
+			totalEnergyConsumption: `${formatsService.energyWithoutDecimalsOrKWH(response?.response?.totalEnergyConsumption)} ${response?.response?.energyConsumptionMeasure}`,
+			totalEnergyProduction: `${formatsService.energyWithoutDecimalsOrKWH(response?.response?.totalEnergyProduction)} ${response?.response?.energyProductionMeasure}`,
 		}
 	}
 }
