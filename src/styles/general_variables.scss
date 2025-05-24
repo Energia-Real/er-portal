@@ -1236,7 +1236,7 @@ select:focus {
 .c-solar-co2 {
     display: flex;
     gap: 24px;
-    height: 230px;
+    min-height: 230px;
 
     .co2 {
         width: 100%;
@@ -1293,7 +1293,7 @@ select:focus {
 
                 >div {
                     display: flex;
-                    gap: 7px;
+                    gap: 5px;
 
                     h2 {
                         color: #000000;

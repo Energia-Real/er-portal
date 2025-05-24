@@ -1009,7 +1009,7 @@ input[type="number"]:focus {
 .c-card-section {
   border: 2px solid #E5E7EB;
   border-radius: 20px;
-  padding: 10px 15px 10px 15px !important;
+  padding: 10px 10px 10px 10px !important;
 
   >div {
     span {
@@ -1017,8 +1017,6 @@ input[type="number"]:focus {
     }
 
     h2 {
-      // height: 35px;
-      // font-size: 18px;
       font-size: 22px;
       line-height: 20px;
     }

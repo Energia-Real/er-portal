@@ -30,34 +30,34 @@ export class FormatsService {
 
   energyFormatGWh(content: string | number): string {
     if (!content) return ''
-  
+
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
       const gwhValue = numberValue / 1_000_000;
-  
+
       return gwhValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' GWh';
     } else return '';
   }
-  
+
   energyFormatMWh(content: string | number): string {
     if (!content) return '';
-  
+
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
-      const mwhValue = numberValue / 1_000; 
-  
+      const mwhValue = numberValue / 1_000;
+
       return mwhValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' MWh';
     } else return '';
   }
-  
 
-  energyWithDecimals(content: string | number, formattedKwh?: boolean): string {
+
+  energyWithDecimalsOrKWH(content: string | number, formattedKwh?: boolean): string {
     let numberValue = typeof content == 'string' ? parseFloat(content.replace(/,/g, '')) : content;
 
     if (!numberValue) return '';
@@ -70,6 +70,27 @@ export class FormatsService {
 
       return formattedKwh ? `${formattedValue} kWh` : formattedValue;
     } else return '';
+  }
+
+  energyWithoutDecimalsOrKWH(content: string | number, formattedKwh?: boolean): string {
+    let numberValue = typeof content === 'string'
+      ? parseFloat(content.replace(/,/g, ''))
+      : content;
+
+    if (!numberValue) return '';
+
+    if (!isNaN(numberValue)) {
+      const truncatedValue = Math.trunc(numberValue); 
+
+      const formattedValue = truncatedValue.toLocaleString('es-MX', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+
+      return formattedKwh ? `${formattedValue} kWh` : formattedValue;
+    } else {
+      return '';
+    }
   }
 
 
