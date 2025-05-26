@@ -17,7 +17,9 @@ export class HomeBackOfficeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log("enBKhOme")
   }
 
+  onFiltersChanged(filters: any) {
+    console.log('Filtros aplicados', filters);
+  }
 }

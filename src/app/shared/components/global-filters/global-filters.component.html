@@ -5,11 +5,13 @@
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="customerName" multiple
                     placeholder="{{ 'FACTURACION.CLIENTE' | translate }}">
-                    <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                    <div *ngIf="clientsCatalog">
+                    <!-- <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option> -->
+                    <mat-option value="CT1">CTEST1</mat-option>
+                    <mat-option value="CT2">CTEST2</mat-option>
+                    <!-- <div *ngIf="clientsCatalog">
                         <mat-option *ngFor=" let client of clientsCatalog"
                             value={{client.id}}>{{client.description}}</mat-option>
-                    </div>
+                    </div> -->
                 </mat-select>
             </mat-form-field>
         </div>
@@ -18,11 +20,13 @@
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="legalName" multiple
                     placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
-                    <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                    <div *ngIf="legalNameCatalog">
+                    <!-- <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option> -->
+                    <mat-option value="NLT1">NLTEST1</mat-option>
+                    <mat-option value="NLT2">NLTEST2</mat-option>
+                    <!-- <div *ngIf="legalNameCatalog">
                         <mat-option *ngFor="let legalName of legalNameCatalog"
                             value={{legalName.id}}>{{legalName.description}}</mat-option>
-                    </div>
+                    </div> -->
                 </mat-select>
             </mat-form-field>
         </div>
@@ -31,10 +35,12 @@
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="productType" multiple
                     placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">
-                    <div *ngIf="productsCatalog">
+                    <mat-option value="PT1">PTEST1</mat-option>
+                    <mat-option value="PT2">PTEST2</mat-option>
+                    <!-- <div *ngIf="productsCatalog">
                         <mat-option *ngFor="let product of productsCatalog"
                             value="{{product.description.toUpperCase()}}">{{product.description}}</mat-option>
-                    </div>
+                    </div> -->
 
                 </mat-select>
             </mat-form-field>
@@ -124,13 +130,14 @@
           'cursor-pointer': yearStartSelected < yearEndSelected ,
           }" [disabled]="yearStartSelected > yearEndSelected"
             [matTooltip]="yearStartSelected > yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
-            (click)="searchWithFilters()">Apply
+            (click)="emitOrDispatchFilters()">Apply
         </button>
+        <!-- (click)="searchWithFilters()">Apply -->
     </div>
 
     <div class="c-input mb-0" *ngIf="configGlobalFilters?.showYears">
         <mat-form-field class="select-year" appearance="outline">
-            <mat-select placeholder="Year" [(value)]="selectedYearSelect" (valueChange)="searchWithFilters()">
+            <mat-select placeholder="Year" [(value)]="selectedYearSelect" (valueChange)="emitOrDispatchFilters()">
                 <mat-option *ngFor="let year of years; let i = index" [value]="year">
                     {{ year.value }}
                 </mat-option>

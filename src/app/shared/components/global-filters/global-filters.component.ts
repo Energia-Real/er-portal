@@ -24,6 +24,7 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   version = packageJson.version;
 
   @Input() configGlobalFilters!: entity.ConfigGlobalFilters
+  @Output() filtersChanged = new EventEmitter<any>();
 
   userInfo!: UserInfo;
   @Output() monthSelected = new EventEmitter<{ month: string; year: number }>();
@@ -106,6 +107,47 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+  emitOrDispatchFilters() {
+    const baseFilters = this.buildBaseFilters();
+
+    if (this.configGlobalFilters?.isheader) {
+      // Solo para el header que compare y despache solo si cambia
+      this.store.select(selectFilterState).pipe(take(1)).subscribe((current: any) => {
+        if (JSON.stringify(current.generalFilters) !== JSON.stringify(baseFilters)) {
+          this.store.dispatch(setGeneralFilters({ generalFilters: baseFilters }));
+          this.updateUrlWithFilters(baseFilters);
+        }
+      });
+    } else {
+      // Si no es header, agregamos los filtros locales
+      const localFilters = {
+        ...baseFilters,
+        clients: this.filtersForm.value.customerName?.length || [],
+        legalNames: this.filtersForm.value.legalName?.length || [],
+        products: this.filtersForm.value.productType?.length || [],
+      };
+
+      this.filtersChanged.emit(localFilters);
+    }
+  }
+
+  buildBaseFilters() {
+
+    const startDate = `${this.yearStartSelected}-${this.selectedStartMonth?.value}-01`;
+    const endDate = !this.selectedEndMonth
+      ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth?.value)
+      : this.getLastDayOfMonth(this.yearEndSelected, +this.selectedEndMonth?.value);
+
+    const baseFilters: any = {
+      startDate,
+      endDate,
+    };
+
+    if (this.configGlobalFilters?.isheader) baseFilters.year = this.selectedYearSelect?.value || this.yearStartSelected.toString();
+
+    return baseFilters;
+  }
+
   getFilters() {
     this.generalFilters$.pipe(takeUntil(this.onDestroy$))
       .subscribe((generalFilters: GeneralFilters) => {
@@ -122,24 +164,7 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
       });
   }
 
-  searchWithFilters() {
-    const generalFilters: GeneralFilters = {
-      startDate: `${this.yearStartSelected}-${this.selectedStartMonth.value}-01`,
-      year: this.selectedYearSelect?.value || this.currentYear.toString(),
-      endDate: ''
-    };
-
-    generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.yearEndSelected, +this.selectedEndMonth.value);
-
-    this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
-      if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
-        this.store.dispatch(setGeneralFilters({ generalFilters }));
-        this.updateUrlWithFilters(generalFilters);
-      }
-    });
-  }
-
-  updateUrlWithFilters(generalFilters: GeneralFilters): void {
+  updateUrlWithFilters(generalFilters: GeneralFilters) {
     const params = new URLSearchParams(window.location.search);
 
     if (generalFilters.startDate) params.set('startday', generalFilters.startDate);
@@ -175,12 +200,12 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     return monthNum < startMonthNum;
   }
 
-  selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
+  selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger) {
     this.selectedStartMonth = month;
     menuTrigger.closeMenu();
   }
 
-  selectEndMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger): void {
+  selectEndMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger) {
     this.selectedEndMonth = month;
     menuTrigger.closeMenu();
   }

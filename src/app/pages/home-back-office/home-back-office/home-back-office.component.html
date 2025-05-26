@@ -1,5 +1,8 @@
 <div class="c-main">
     <!-- <p>home-back-office works!</p> -->
 
-    <app-global-filters [configGlobalFilters]="configGlobalFilters"></app-global-filters>
+    <app-global-filters 
+        [configGlobalFilters]="configGlobalFilters"
+        (filtersChanged)="onFiltersChanged($event)"
+    ></app-global-filters>
 </div>
