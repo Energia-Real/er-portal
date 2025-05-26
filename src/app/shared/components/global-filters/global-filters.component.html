@@ -1,7 +1,7 @@
 <div class="c-global-filters">
 
     <form class="c-selects-filters flex align-center gap-3 flex-wrap" [formGroup]="filtersForm">
-        <div class="c-input">
+        <div class="c-input" *ngIf="configGlobalFilters?.showClientsFilter">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="customerName" multiple
                     placeholder="{{ 'FACTURACION.CLIENTE' | translate }}">
@@ -14,7 +14,7 @@
             </mat-form-field>
         </div>
 
-        <div class="c-input">
+        <div class="c-input" *ngIf="configGlobalFilters?.showLegalNamesFilter">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="legalName" multiple
                     placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
@@ -27,20 +27,7 @@
             </mat-form-field>
         </div>
 
-        <div class="c-input">
-            <mat-form-field class="select-ER" appearance="outline">
-                <mat-select formControlName="siteName" multiple placeholder="{{ 'FACTURACION.SITIO' | translate }}">
-                    <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                    <div *ngIf="sitesCatalog">
-                        <mat-option *ngFor="let site of sitesCatalog"
-                            value={{site.id}}>{{site.description}}</mat-option>
-                    </div>
-
-                </mat-select>
-            </mat-form-field>
-        </div>
-
-        <div class="c-input">
+        <div class="c-input" *ngIf="configGlobalFilters?.showProductFilter">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="productType" multiple
                     placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">
@@ -54,15 +41,7 @@
         </div>
     </form>
 
-    <div class="c-month-button" *ngIf="
-        routeActive.includes('backoffice-home') ||
-        routeActive.includes('admin-home') ||
-        routeActive.includes('client-home') ||
-        routeActive.includes('invoice') ||
-        routeActive.includes('rates') ||
-        routeActive.includes('overview') ||
-        routeActive.includes('details')">
-
+    <div class="c-month-button" *ngIf="configGlobalFilters?.showDatepicker">
         <button [matMenuTriggerFor]="monthMenu1" #startMenuTrigger="matMenuTrigger" class="month-button">
             <h1>{{ selectedStartMonth ? selectedStartMonth.name + ' ' + (yearStartSelected.toString() | slice:-2) :
                 'Start' }}</h1>
@@ -149,7 +128,7 @@
         </button>
     </div>
 
-    <div class="c-input mb-0" *ngIf="routeActive.includes('energy')">
+    <div class="c-input mb-0" *ngIf="configGlobalFilters?.showYears">
         <mat-form-field class="select-year" appearance="outline">
             <mat-select placeholder="Year" [(value)]="selectedYearSelect" (valueChange)="searchWithFilters()">
                 <mat-option *ngFor="let year of years; let i = index" [value]="year">

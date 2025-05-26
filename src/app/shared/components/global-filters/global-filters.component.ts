@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GeneralFilters, MonthsFilters, UserInfo } from '@app/shared/models/general-models';
 import { Observable, Subject, take, takeUntil } from 'rxjs';
@@ -10,6 +10,8 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
+import * as entity from './global-filters-model';
+import { GlobalFiltersService } from './global-filters.service';
 
 @Component({
   selector: 'app-global-filters',
@@ -21,11 +23,11 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   private onDestroy$ = new Subject<void>();
   version = packageJson.version;
 
+  @Input() configGlobalFilters!: entity.ConfigGlobalFilters
 
   userInfo!: UserInfo;
   @Output() monthSelected = new EventEmitter<{ month: string; year: number }>();
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
-
 
   years: { value: string }[] = [
     { value: '2024' },
@@ -66,7 +68,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   sitesCatalog!: DataCatalogs[];
   productsCatalog!: DataCatalogs[];
 
-
   filtersForm = this.fb.group({
     customerName: [''],
     legalName: [''],
@@ -74,24 +75,21 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     productType: [''],
   });
 
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private store: Store<{ filters: GeneralFilters }>,
     private encryptionService: EncryptionService,
-
+    private globalFiltersService: GlobalFiltersService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
 
   ngOnInit(): void {
     this.routeActive = this.router.url.split('?')[0];
-    console.log(this.routeActive);
-
+    console.log('configGlobalFilters: ', this.configGlobalFilters);
     this.getFilters();
   }
-
 
   ngAfterViewInit(): void {
     this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((isSingleMonthSelected) => {
@@ -100,6 +98,12 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedMonths.pop()
       }
     });
+
+    if (this.routeActive.includes('backoffice-home')) {
+      this.globalFiltersService.getCatalogsBillingDetails().pipe(takeUntil(this.onDestroy$)).subscribe((response: any) => {
+        // console.log(response);
+      })
+    }
   }
 
   getFilters() {
@@ -126,10 +130,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     };
 
     generalFilters.endDate = !this.selectedEndMonth ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth.value) : this.getLastDayOfMonth(this.yearEndSelected, +this.selectedEndMonth.value);
-
-    console.log('generalFilters', generalFilters);
-
-
 
     this.store.select(selectFilterState).pipe(take(1)).subscribe((currentFiltersState: any) => {
       if (JSON.stringify(currentFiltersState.generalFilters) != JSON.stringify(generalFilters)) {
@@ -202,13 +202,10 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-
-
   getLastDayOfMonth(year: number, month: number): string {
     const lastDay = new Date(year, month, 0).getDate();
     return `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
   }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
