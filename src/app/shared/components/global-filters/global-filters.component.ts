@@ -89,7 +89,19 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   ngOnInit(): void {
     this.routeActive = this.router.url.split('?')[0];
     console.log('configGlobalFilters: ', this.configGlobalFilters);
-    this.getFilters();
+
+    if (this.configGlobalFilters?.isheader) this.getFilters();
+
+    if (this.configGlobalFilters?.showClientsFilter) {
+      this.getCatClients();
+    }
+    if (this.configGlobalFilters?.showLegalNamesFilter) {
+      this.getCatLegalNames();
+    }
+    if (this.configGlobalFilters?.showProductFilter) {
+      this.getCatProduct();
+    }
+
   }
 
   ngAfterViewInit(): void {
@@ -105,6 +117,18 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
         // console.log(response);
       })
     }
+  }
+
+  getCatClients() {
+    console.log('Fetching Clients catalog...');
+  }
+
+  getCatLegalNames() {
+    console.log('Fetching Legal names catalog...');
+  }
+  
+  getCatProduct() {
+    console.log('Fetching Product catalog...');
   }
 
   emitOrDispatchFilters() {
@@ -132,7 +156,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   buildBaseFilters() {
-
     const startDate = `${this.yearStartSelected}-${this.selectedStartMonth?.value}-01`;
     const endDate = !this.selectedEndMonth
       ? this.getLastDayOfMonth(this.yearStartSelected, +this.selectedStartMonth?.value)
