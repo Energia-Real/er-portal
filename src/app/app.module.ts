@@ -28,10 +28,15 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from './shared/material/paginator-intl';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { catalogsReducer } from './core/store/reducers/catalogs.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CatalogEffects } from './core/store/effects/catalogs.effects';
 
 @NgModule({
     declarations: [AppComponent],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent], 
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         GoogleMapsModule,
         CoreModule,
@@ -44,7 +49,16 @@ import { ServiceWorkerModule } from '@angular/service-worker';
                 deps: [HttpClient]
             }
         }),
-        StoreModule.forRoot({ paginator: paginatorReducer, drawer: drawerReducer, filters: filterReducer, notifications: notificationsReducer, corporateDrawer: corporateDrawerReducer }),
+        StoreModule.forRoot({ 
+            paginator: paginatorReducer, 
+            drawer: drawerReducer, 
+            filters: filterReducer, 
+            notifications: notificationsReducer, 
+            corporateDrawer: corporateDrawerReducer,
+            catalogs: catalogsReducer 
+        }),
+        EffectsModule.forRoot([CatalogEffects]),
+
         !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: true,

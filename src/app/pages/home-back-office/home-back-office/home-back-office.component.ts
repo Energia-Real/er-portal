@@ -13,7 +13,8 @@ export class HomeBackOfficeComponent implements OnInit {
     showDatepicker: true,
     showClientsFilter: true,
     showLegalNamesFilter: true,
-    showProductFilter: true
+    showProductFilter: true,
+    clientsIndividual: false,
   }
 
   ngOnInit(): void {

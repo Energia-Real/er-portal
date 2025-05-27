@@ -12,6 +12,8 @@ import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
 import * as entity from './global-filters-model';
 import { GlobalFiltersService } from './global-filters.service';
+import { selectClients, selectClientsIndividual, selectLegalNames, selectProducts } from '../../../core/store/selectors/catalogs.selector';
+import * as CatalogActions from '../../../core/store/actions/catalogs.actions';
 
 @Component({
   selector: 'app-global-filters',
@@ -22,6 +24,11 @@ import { GlobalFiltersService } from './global-filters.service';
 export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   version = packageJson.version;
+
+  clients$ = this.store.select(selectClients);
+  legalNames$ = this.store.select(selectLegalNames);
+  products$ = this.store.select(selectProducts);
+  clientsIndividual$ = this.store.select(selectClientsIndividual);
 
   @Input() configGlobalFilters!: entity.ConfigGlobalFilters
   @Output() filtersChanged = new EventEmitter<any>();
@@ -76,32 +83,36 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     productType: [''],
   });
 
+  // this.generalFilters$ = this.store.select((state: any) => state.filters);
+  // private store: Store<{ filters: GeneralFilters }>,
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private store: Store<{ filters: GeneralFilters }>,
+    private store: Store,
     private encryptionService: EncryptionService,
     private globalFiltersService: GlobalFiltersService
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters);
+    this.clients$ = this.store.select(selectClients);
+    this.legalNames$ = this.store.select(selectLegalNames);
+    this.products$ = this.store.select(selectProducts);
+    this.clientsIndividual$ = this.store.select(selectClientsIndividual);
   }
 
   ngOnInit(): void {
     this.routeActive = this.router.url.split('?')[0];
     console.log('configGlobalFilters: ', this.configGlobalFilters);
 
-    if (this.configGlobalFilters?.isheader) this.getFilters();
+    const {
+      isheader,
+      showClientsFilter,
+      showLegalNamesFilter,
+      showProductFilter,
+      clientsIndividual
+    } = this.configGlobalFilters ?? {};
 
-    if (this.configGlobalFilters?.showClientsFilter) {
-      this.getCatClients();
-    }
-    if (this.configGlobalFilters?.showLegalNamesFilter) {
-      this.getCatLegalNames();
-    }
-    if (this.configGlobalFilters?.showProductFilter) {
-      this.getCatProduct();
-    }
-
+    if (isheader) this.getFilters();
+    if (clientsIndividual) this.store.dispatch(CatalogActions.loadClientsCatalog());
+    if (showClientsFilter || showLegalNamesFilter || showProductFilter) this.store.dispatch(CatalogActions.loadAllCatalogs());
   }
 
   ngAfterViewInit(): void {
@@ -111,24 +122,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedMonths.pop()
       }
     });
-
-    if (this.routeActive.includes('backoffice-home')) {
-      this.globalFiltersService.getCatalogsBillingDetails().pipe(takeUntil(this.onDestroy$)).subscribe((response: any) => {
-        // console.log(response);
-      })
-    }
-  }
-
-  getCatClients() {
-    console.log('Fetching Clients catalog...');
-  }
-
-  getCatLegalNames() {
-    console.log('Fetching Legal names catalog...');
-  }
-  
-  getCatProduct() {
-    console.log('Fetching Product catalog...');
   }
 
   emitOrDispatchFilters() {

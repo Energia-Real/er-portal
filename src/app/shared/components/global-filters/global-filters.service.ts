@@ -19,8 +19,12 @@ export class GlobalFiltersService {
   getCatalogsBillingDetails(): Observable<any> {
     const url = `${this.domainApiUrl}/v1/Netsuite/Catalogos/ClientesProyectos`;
 
-    return this.http.get<any>(url).pipe(
-      map((response) => Mapper.getDataFilters(response, this.formatsService))
-    );
+    return this.http.get<any>(url)
+  }
+
+  getClients(): Observable<any> {
+    const url = `${this.domainApiUrl}/v1/Netsuite/clientesIndividuales`;
+
+    return this.http.get<any>(url)
   }
 }
