@@ -309,21 +309,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       datasets: [
         {
           type: 'bar',
-          data: [this.economicSavingsData.cfeSubtotal],
+          data: [this.economicSavingsData?.cfeSubtotal],
           label: 'CFE Subtotal (MXN)',
           backgroundColor: 'rgba(121, 36, 48, 1)',
           maxBarThickness: 112,
         },
         {
           type: 'bar',
-          data: [this.economicSavingsData.energiaRealSubtotal],
+          data: [this.economicSavingsData?.energiaRealSubtotal],
           label: 'Energía Real Subtotal (MXN)',
           backgroundColor: 'rgba(238, 84, 39, 1)',
           maxBarThickness: 112,
         },
         {
           type: 'bar',
-          data: [this.economicSavingsData.economicSaving],
+          data: [this.economicSavingsData?.economicSaving],
           label: 'Economic Savings (MXN)',
           backgroundColor: 'rgba(87, 177, 177, 1)',
           order: 2,
