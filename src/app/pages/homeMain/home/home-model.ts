@@ -32,6 +32,7 @@ export interface SDResponse {
   energyConsumptionMeasure: string;
   energyProductionMeasure:string;
   totalSavings: string;
+  savingCFE?: string;
 }
 
 export interface PeriodicElement {

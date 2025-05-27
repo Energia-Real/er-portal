@@ -124,13 +124,16 @@
     "COSTO_CFE_SIN_SOLAR": "CFE Cost without Solar",
     "AHORRO_TOTAL": "Total Savings",
     "COBERTURA_SOLAR": "Solar Coverage",
+    "AHORRO_TOTAL": "Total Savings",
     "CALCULANDO_COBERTURA": "Calculating solar coverage...",
     "AHORRO_CO2": "CO2 Saving",
     "CALCULANDO_CO2": "Calculating saved CO2 emissions...",
     "TCO2": "tCO2",
     "EQUIVALENTE_A": "Equivalent to",
+    "EQUIVALENTE_COCHE": "Equivalent to removing",
     "ARBOLES": "trees",
-    "CARGAS_COCHE": "electric car full charges.",
+    "COCHES": "cars from circulation",
+    "CARGAS_OLYMPIC": "Olympic-sized swimming pools",
     "CALCULANDO_AHORRO": "Calculating economic savings...",
     "AHORRO_ECONOMICO": "Economic savings",
     "OBTENIENDO_CONSUMO": "Getting energy consumption..."
@@ -357,18 +360,18 @@
     "SOLICITAR_CANELACION": "Request cancellation"
   },
   "LEGALS": {
-  "DOWNLOAD_BUTTON": "Download",
-  "CONTACTO": {
-    "VOLVER": "Go back",
-    "TITULO": "Contact Us",
-    "DESCRIPCION": "If you have any questions or need more information, feel free to reach out to us. We're here to help.",
-    "DIRECCION": "Culiacán 123, Hipódromo Condesa, Cuauhtémoc, 06170 Ciudad de México, CDMX",
-    "EMAIL": "clientes@energiareal.mx",
-    "TELEFONO": "(55) 4172 1229",
-    "DIAS_LABORALES": "Monday to Friday",
-    "HORARIO": "09:00 AM – 08:00 PM",
-    "MENSAJE_SERVICIO": "We are at your service for any questions or concerns.",
-    "SEGUIR_REDES": "Follow us on"
+    "DOWNLOAD_BUTTON": "Download",
+    "CONTACTO": {
+      "VOLVER": "Go back",
+      "TITULO": "Contact Us",
+      "DESCRIPCION": "If you have any questions or need more information, feel free to reach out to us. We're here to help.",
+      "DIRECCION": "Culiacán 123, Hipódromo Condesa, Cuauhtémoc, 06170 Ciudad de México, CDMX",
+      "EMAIL": "clientes@energiareal.mx",
+      "TELEFONO": "(55) 4172 1229",
+      "DIAS_LABORALES": "Monday to Friday",
+      "HORARIO": "09:00 AM – 08:00 PM",
+      "MENSAJE_SERVICIO": "We are at your service for any questions or concerns.",
+      "SEGUIR_REDES": "Follow us on"
+    }
   }
-}
 }
