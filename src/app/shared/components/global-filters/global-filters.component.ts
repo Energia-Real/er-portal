@@ -1,17 +1,15 @@
-import { AfterViewInit, Component, EventEmitter, Input, input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GeneralFilters, MonthsFilters, UserInfo } from '@app/shared/models/general-models';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { combineLatest, map, Observable, startWith, Subject, take, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EncryptionService } from '@app/shared/services/encryption.service';
 import { setGeneralFilters } from '@app/core/store/actions/filters.actions';
 import { selectFilterState } from '@app/core/store/selectors/filters.selector';
 import { DataCatalogs } from '@app/shared/models/catalogs-models';
 import * as entity from './global-filters-model';
-import { GlobalFiltersService } from './global-filters.service';
 import { selectClients, selectClientsIndividual, selectLegalNames, selectProducts } from '../../../core/store/selectors/catalogs.selector';
 import * as CatalogActions from '../../../core/store/actions/catalogs.actions';
 
@@ -77,20 +75,18 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   productsCatalog!: DataCatalogs[];
 
   filtersForm = this.fb.group({
-    customerName: [''],
-    legalName: [''],
-    siteName: [''],
-    productType: [''],
+    customerName: this.fb.control<string[]>([]),
+    legalName: this.fb.control<string[]>([]),
+    productType: this.fb.control<string[]>([]),
   });
 
-  // this.generalFilters$ = this.store.select((state: any) => state.filters);
-  // private store: Store<{ filters: GeneralFilters }>,
+  filteredLegalNames$!: Observable<any[]>;
+  filteredProducts$!: Observable<any[]>;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private store: Store,
-    private encryptionService: EncryptionService,
-    private globalFiltersService: GlobalFiltersService
   ) {
     this.clients$ = this.store.select(selectClients);
     this.legalNames$ = this.store.select(selectLegalNames);
@@ -100,8 +96,21 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit(): void {
     this.routeActive = this.router.url.split('?')[0];
-    console.log('configGlobalFilters: ', this.configGlobalFilters);
+    this.initFiltersConfig();
+    this.initFilteredLegalNames();
+    this.initFilteredProducts();
+  }
 
+  ngAfterViewInit(): void {
+    this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((isSingleMonthSelected) => {
+      if (isSingleMonthSelected) {
+        this.selectedEndMonth = null;
+        this.selectedMonths.pop()
+      }
+    });
+  }
+
+  initFiltersConfig() {
     const {
       isheader,
       showClientsFilter,
@@ -112,16 +121,42 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
 
     if (isheader) this.getFilters();
     if (clientsIndividual) this.store.dispatch(CatalogActions.loadClientsCatalog());
-    if (showClientsFilter || showLegalNamesFilter || showProductFilter) this.store.dispatch(CatalogActions.loadAllCatalogs());
+    if (showClientsFilter || showLegalNamesFilter || showProductFilter) {
+      this.store.dispatch(CatalogActions.loadAllCatalogs());
+    }
   }
 
-  ngAfterViewInit(): void {
-    this.singleMonth.valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((isSingleMonthSelected) => {
-      if (isSingleMonthSelected) {
-        this.selectedEndMonth = null;
-        this.selectedMonths.pop()
-      }
-    });
+  initFilteredLegalNames() {
+    this.filteredLegalNames$ = combineLatest([
+      this.filtersForm.get('customerName')!.valueChanges.pipe(
+        startWith(this.filtersForm.get('customerName')!.value)
+      ),
+      this.legalNames$
+    ]).pipe(
+      map(([selectedClientIds, legalNames]) => {
+        if (!selectedClientIds || selectedClientIds.length === 0) return legalNames;
+        return legalNames.filter(ln => selectedClientIds.includes(ln.grupoClienteId));
+      })
+    );
+  }
+
+  initFilteredProducts() {
+    this.filteredProducts$ = combineLatest([
+      this.filtersForm.get('legalName')!.valueChanges.pipe(
+        startWith(this.filtersForm.get('legalName')!.value)
+      ),
+      this.products$
+    ]).pipe(
+      map(([selectedRfcs, products]) => {
+        if (!selectedRfcs || selectedRfcs.length === 0) return products;
+
+        const cleanedRfcs = selectedRfcs.map((data: any) => data.rfc.trim());
+
+        return products.filter(product =>
+          product.rfcRazonSocial.some((rfc: string) => cleanedRfcs.includes(rfc.trim()))
+        );
+      })
+    );
   }
 
   emitOrDispatchFilters() {
@@ -139,9 +174,9 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
       // Si no es header, agregamos los filtros locales
       const localFilters = {
         ...baseFilters,
-        clients: this.filtersForm.value.customerName?.length || [],
-        legalNames: this.filtersForm.value.legalName?.length || [],
-        products: this.filtersForm.value.productType?.length || [],
+        customerNames: this.filtersForm.value.customerName,
+        legalName: this.filtersForm.value.legalName?.map((data: any) => data.nombreRazonSocial.trim()),
+        productType: this.filtersForm.value.productType,
       };
 
       this.filtersChanged.emit(localFilters);
@@ -243,7 +278,7 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  getLastDayOfMonth(year: number, month: number): string {
+  getLastDayOfMonth(year: number, month: number) {
     const lastDay = new Date(year, month, 0).getDate();
     return `${year}-${month.toString().padStart(2, '0')}-${lastDay}`;
   }

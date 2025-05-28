@@ -1,6 +1,6 @@
 <nav class="c-header z-10">
-  <div class="mx-10 flex justify-end items-center">
-    <div class="flex align-items-center">
+  <div class="flex justify-end items-center">
+    <div class="flex align-items-center mt-1">
       <div class="c-month-button" *ngIf="
         routeActive.includes('backoffice-home') ||
         routeActive.includes('admin-home') ||
@@ -108,7 +108,7 @@
         </mat-form-field>
       </div>
 
-      <button [ngStyle]="{'padding-top': routeActive.includes('energy') ? '0' : ''}"
+      <!-- <button [ngStyle]="{'padding-top': routeActive.includes('energy') ? '0' : ''}"
         [matMenuTriggerFor]="notificationsMenu" mat-icon-button
         [disabled]="!notifications || notifications.length == 0">
         <div [matBadge]="notifications.length + ' +'" [matBadgeHidden]="!hasNotifications" matBadgeSize="small"
@@ -116,9 +116,9 @@
           <img src="../../../../../assets/svg/notifications.svg" alt="Icon notification" class="notification-icon"
             [ngClass]="{ 'disabled-icon': !notifications || notifications.length == 0 }" />
         </div>
-      </button>
+      </button> -->
 
-      <mat-menu #notificationsMenu="matMenu" xPosition="before" yPosition="below" class="notificationsMenu"
+      <!-- <mat-menu #notificationsMenu="matMenu" xPosition="before" yPosition="below" class="notificationsMenu"
         [hidden]="!menuOpen" (opened)="menuOpen = true; updateLocalNotifications()" (closed)="menuOpen = false">
         <div *ngFor="let notification of notifications; trackBy: trackByNotificationId">
           <app-notification-card-center [@fadeOut] [notification]="notification"
@@ -135,7 +135,7 @@
 
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="signOut()">Sign out</button>
-      </mat-menu>
+      </mat-menu> -->
     </div>
   </div>
 </nav>

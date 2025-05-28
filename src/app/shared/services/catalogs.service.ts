@@ -9,8 +9,9 @@ import { Observable } from 'rxjs';
 })
 export class CatalogsService {
   private API_URL_PERFORMANCE = environment.API_URL_PERFORMANCE;
+  private domainApiUrl = environment.API_URL_DOMAIN_BACKEND;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCatContractType(): Observable<entity.DataCatalogs[]> {
     const url = `${this.API_URL_PERFORMANCE}/tipodecontrato`;
@@ -34,5 +35,17 @@ export class CatalogsService {
     const url = `${this.API_URL_PERFORMANCE}/estatusdelaplanta`;
 
     return this.http.get<entity.DataCatalogs[]>(url);
+  }
+
+  getCatalogsBillingDetails(): Observable<any> {
+    const url = `${this.domainApiUrl}/v1/Netsuite/Catalogos/ClientesProyectos`;
+
+    return this.http.get<any>(url);
+  }
+
+  getClients(): Observable<any> {
+    const url = `${this.domainApiUrl}/v1/Netsuite/clientesIndividuales`;
+
+    return this.http.get<any>(url);
   }
 }

@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, withLatestFrom, filter, Observable } from 'rxjs';
 import * as CatalogActions from '../actions/catalogs.actions';
-import { GlobalFiltersService } from '@app/shared/components/global-filters/global-filters.service';
 import { Store } from '@ngrx/store';
 import { selectClients, selectClientsIndividual, selectLegalNames, selectProducts } from '../selectors/catalogs.selector';
+import { CatalogsService } from '@app/shared/services/catalogs.service';
 
 @Injectable()
 export class CatalogEffects {
   constructor(
     private actions$: Actions,
     private store: Store,
-    private globalFiltersService: GlobalFiltersService
+    private globalFiltersService: CatalogsService
   ) { }
 
   loadAllCatalogs$ = createEffect(() =>
@@ -30,7 +30,7 @@ export class CatalogEffects {
       ),
       mergeMap(() =>
         this.globalFiltersService.getCatalogsBillingDetails().pipe(
-          map(response =>
+          map(({response}) =>
             CatalogActions.loadAllCatalogsSuccess({
               clients: response.clientes,
               legalNames: response.razonesSociales,
