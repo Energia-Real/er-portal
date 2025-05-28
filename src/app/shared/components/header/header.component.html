@@ -5,13 +5,11 @@
       routeActive.includes('client-home') ||
       routeActive.includes('invoice') ||
       routeActive.includes('rates') ||
-      routeActive.includes('overview') ||
       routeActive.includes('details') ||
-      routeActive.includes('energy')" 
-      [configGlobalFilters]="configGlobalFilters">
-    </app-global-filters>
-  
-    <!-- <mat-menu #notificationsMenu="matMenu" xPosition="before" yPosition="below" class="notificationsMenu"
+      routeActive.includes('energy')" [configGlobalFilters]="configGlobalFilters">
+  </app-global-filters>
+
+  <!-- <mat-menu #notificationsMenu="matMenu" xPosition="before" yPosition="below" class="notificationsMenu"
         [hidden]="!menuOpen" (opened)="menuOpen = true; updateLocalNotifications()" (closed)="menuOpen = false">
         <div *ngFor="let notification of notifications; trackBy: trackByNotificationId">
           <app-notification-card-center [@fadeOut] [notification]="notification"

@@ -27,7 +27,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
   generalFilters$!: Observable<GeneralFilters>;
 
 
-  @Input() filterData!: entity.FilterBillingDetails;
+  @Input() filterData!: entity.BillingOverviewFilterData;
 
   pageSizeOptions: number[] = [1, 2, 3, 5];
   pageSize: number = 10;

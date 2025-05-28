@@ -23,7 +23,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   generalFilters$!: Observable<GeneralFilters>;
 
-  @Input() filterData!: entity.FilterBillingDetails
+  @Input() filterData!: entity.BillingOverviewFilterData
   @ViewChild(BaseChartDirective) chartComponent!: BaseChartDirective;
 
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
@@ -181,16 +181,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   getFilters() {
     this.generalFilters$.pipe(takeUntil(this.onDestroy$)).subscribe((GeneralFilters) => {
-      const filters = {
-        startDate: GeneralFilters.startDate,
-        endDate: GeneralFilters.endDate,
-        customerName: this.filterData.customerName ?? '',
-        legalName: this.filterData.legalName ?? '',
-        siteName: this.filterData.siteName ?? '',
-        productType: this.filterData.productType ?? '',
-      };
+      // const filters = {
+      //   startDate: GeneralFilters.startDate,
+      //   endDate: GeneralFilters.endDate,
+      //   customerName: this.filterData.customerName ?? '',
+      //   legalName: this.filterData.legalName ?? '',
+      //   siteName: this.filterData.siteName ?? '',
+      //   productType: this.filterData.productType ?? '',
+      // };
 
-      this.getEnergysummary(filters);
+      // this.getEnergysummary(filters);
     })
   }
 

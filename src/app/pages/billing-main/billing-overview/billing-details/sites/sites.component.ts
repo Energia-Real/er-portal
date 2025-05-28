@@ -26,7 +26,7 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
   @ViewChild('paginator', { static: false }) paginator!: MatPaginator;
-  @Input() filterData!: entity.FilterBillingDetails
+  @Input() filterData!: entity.BillingOverviewFilterData
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 10;
@@ -103,28 +103,29 @@ export class SitesComponent implements OnInit, OnDestroy {
     if (encryptedData) {
       this.userInfo = this.encryptionService.decryptData(encryptedData);
 
-      const filters = {
+      const filters : entity.BillingOverviewFilterData = {
+        customerNames : this.filterData?.customerNames ?? [],
+        legalName : this.filterData?.legalName ?? [],
+        productType : this.filterData?.productType ?? [],
+        clientId: this.userInfo.clientes[0],
         startDate: this.generalFilters.startDate,
         endDate: this.generalFilters.endDate,
-        customerName: this.filterData?.customerName ?? '',
-        legalName: this.filterData?.legalName ?? '',
-        siteName: this.filterData?.siteName ?? '',
-        productType: this.filterData?.productType ?? '',
-        pageSize: this.pageSize,
-        page: this.pageIndex,
-        clientId: this.userInfo.clientes[0]
+        pageSize: 10,
+        page: 0,
       }
+
+      console.log(filters);
 
       this.getsites(filters);
     }
   }
 
-  getsites(filters: entity.FiltersBillingSites) {
+  getsites(filters: entity.BillingOverviewFilterData) {
     this.moduleServices.getBillingSites(filters).subscribe({
       next: (response: entity.DataBillingSitesTableMapper) => {
         this.sites = response.data
-        this.totalItems = response?.totalItems;
-        this.pageIndex = filters.page;
+        // this.totalItems = response?.totalItems;
+        // this.pageIndex = filters.page;
         this.isLoading = false;
       },
        error: (error: HttpErrorResponse) => {

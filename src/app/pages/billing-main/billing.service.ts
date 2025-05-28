@@ -62,7 +62,7 @@ export class BillingService implements OnDestroy {
   }
   
   getBillingSites(
-    filters: entity.FiltersBillingSites
+    filters: entity.BillingOverviewFilterData
   ): Observable<entity.DataBillingSitesTableMapper> {
     // const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
     const url = `${this.domainApiUrl}/v1/Netsuite/Sites`;
@@ -130,7 +130,7 @@ export class BillingService implements OnDestroy {
       );
   }
 
-  getBillingHistory(filters: entity.FilterBillingDetails): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
+  getBillingHistory(filters: entity.BillingOverviewFilterData): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
     const url = `${this.domainApiUrl}/v1/Billing/History`;
     return this.http.post<any>(url,   filters );
   }
