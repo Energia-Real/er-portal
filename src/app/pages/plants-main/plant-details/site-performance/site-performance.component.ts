@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import { FormBuilder } from '@angular/forms';
@@ -16,12 +16,12 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-site-performance',
-    templateUrl: './site-performance.component.html',
-    styleUrls: ['./site-performance.component.scss'],
-    standalone: false
+  selector: 'app-site-performance',
+  templateUrl: './site-performance.component.html',
+  styleUrls: ['./site-performance.component.scss'],
+  standalone: false
 })
-export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SitePerformanceComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   @Input() plantData!: entity.DataPlant;
   @Input() notData!: boolean;
@@ -131,13 +131,10 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        if (!this.notData) {
-          this.getUserClient();
-        }
+        // if (!this.notData) {
+        this.getUserClient();
+        // }
       });
-  }
-
-  ngAfterViewInit(): void {
   }
 
   getUserClient() {
@@ -156,7 +153,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         if (response) {
           this.sitePerformance.primaryElements = response.primaryElements;
           this.sitePerformance.additionalItems = response.additionalItems;
-          this.fullLoad = true;
+          // this.fullLoad = true;
           const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption ?? 0);
           const consumption = response.monthlyData?.map(item => item.consumption ?? 0);
           const generation = response.monthlyData?.map(item => item.generation ?? 0);
@@ -206,9 +203,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
       },
       error: (error) => {
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
         }
         console.error(error)
       }
@@ -267,6 +264,6 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

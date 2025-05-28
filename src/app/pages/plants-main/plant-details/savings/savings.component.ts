@@ -24,7 +24,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   generalFilters$!: Observable<GeneralFilters>;
 
-  showAlert: boolean = false;
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
   chart: any;
 
@@ -124,16 +123,15 @@ export class SavingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.notData) this.showAlert = true;
-    else this.getUserClient();
+    this.getUserClient();
 
     // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        if (!this.notData) {
+        // if (!this.notData) {
           this.getUserClient();
-        }
+        // }
       });
   }
 
@@ -232,6 +230,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

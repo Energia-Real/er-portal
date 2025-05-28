@@ -15,10 +15,10 @@ import { EditCorporateNameComponent } from '../edit-corporate-name/edit-corporat
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-corporate-names',
-    templateUrl: './corporate-names.component.html',
-    styleUrl: './corporate-names.component.scss',
-    standalone: false
+  selector: 'app-corporate-names',
+  templateUrl: './corporate-names.component.html',
+  styleUrl: './corporate-names.component.scss',
+  standalone: false
 })
 export class CorporateNamesComponent implements OnInit, OnDestroy {
   @Input() isOpen = false;
@@ -104,10 +104,9 @@ export class CorporateNamesComponent implements OnInit, OnDestroy {
           this.corporateData = resp.response
         },
         error: (error) => {
-          let errorArray = error.error.errors.errors;
-          if (errorArray.length == 1) {
-            this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-          }
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+          console.error(error)
         }
       })
     }
