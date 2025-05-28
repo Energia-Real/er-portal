@@ -147,14 +147,30 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
       ),
       this.products$
     ]).pipe(
-      map(([selectedRfcs, products]) => {
-        if (!selectedRfcs || selectedRfcs.length === 0) return products;
+      map(([selectedLegalNames, products]) => {
+        if (!selectedLegalNames?.length) {
+          this.filtersForm.get('productType')?.setValue([]);
+          return [];
+        }
 
-        const cleanedRfcs = selectedRfcs.map((data: any) => data.rfc.trim());
+        const cleanedRfcs = selectedLegalNames.map((rfc: string) => rfc.trim());
 
-        return products.filter(product =>
+        const filtered = products.filter(product =>
           product.rfcRazonSocial.some((rfc: string) => cleanedRfcs.includes(rfc.trim()))
         );
+
+        // Validar si el valor actual ya no es válido
+        const selectedProducts = this.filtersForm.get('productType')!.value || [];
+        const filteredProductNames = filtered.map(p => p.nombreTipoProyecto);
+        const validSelected = selectedProducts.filter((p: string) =>
+          filteredProductNames.includes(p)
+        );
+
+        if (selectedProducts.length !== validSelected.length) {
+          this.filtersForm.get('productType')!.setValue(validSelected);
+        }
+
+        return filtered;
       })
     );
   }
@@ -175,8 +191,8 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
       const localFilters = {
         ...baseFilters,
         customerNames: this.filtersForm.value.customerName,
-        legalName: this.filtersForm.value.legalName?.map((data: any) => data.nombreRazonSocial.trim()),
-        productType: this.filtersForm.value.productType,
+        legalName: this.filtersForm.value.legalName,
+        productType: this.filtersForm.value.productType
       };
 
       this.filtersChanged.emit(localFilters);

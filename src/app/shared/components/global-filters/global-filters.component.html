@@ -19,8 +19,7 @@
                 <mat-select formControlName="legalName" multiple
                     placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
                     <!-- <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option> -->
-                    <mat-option *ngFor="let legalName of filteredLegalNames$ | async"
-                        [value]="legalName">
+                    <mat-option *ngFor="let legalName of filteredLegalNames$ | async" [value]="legalName.rfc">
                         {{ legalName.nombreRazonSocial }}
                     </mat-option>
                 </mat-select>
