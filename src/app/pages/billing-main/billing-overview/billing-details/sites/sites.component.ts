@@ -1,16 +1,14 @@
 import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges } from '@angular/core';
-import { combineLatest, distinctUntilChanged, Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
-import { GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { GeneralFilters, GeneralPaginatedResponse, UserInfo } from '@app/shared/models/general-models';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { BillingService } from '@app/pages/billing-main/billing.service';
-import { Store } from '@ngrx/store';
-import { selectPageIndex, selectPageSize } from '@app/core/store/selectors/paginator.selector';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 
 @Component({
@@ -30,7 +28,7 @@ export class SitesComponent implements OnInit, OnDestroy {
 
   pageSizeOptions: number[] = [5, 10, 20, 50];
   pageSize: number = 10;
-  pageIndex: number = 1;
+  pageIndex: number = 0;
   totalItems: number = 0;
 
   sites: entity.SitesTableRow[] = [];
@@ -42,34 +40,15 @@ export class SitesComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
 
   constructor(
-    private store: Store<{ filters: GeneralFilters }>,
     private invoiceTableService: InvoiceTableService,
     private encryptionService: EncryptionService,
     private moduleServices: BillingService,
     private translationService: TranslationService
-  ) {
-    this.generalFilters$ = this.store.select(state => state.filters);
-
-    combineLatest([
-      this.generalFilters$.pipe(distinctUntilChanged()),
-      this.store.select(selectPageSize).pipe(distinctUntilChanged()),
-      this.store.select(selectPageIndex).pipe(distinctUntilChanged()),
-    ])
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([generalFilters, pageSize, pageIndex]) => {
-        this.generalFilters = generalFilters;
-
-        if (this.paginator) {
-          this.paginator.pageSize = pageSize;
-          this.paginator.pageIndex = pageIndex;
-        }
-
-        this.getFilters();
-      });
-  }
+  ) { }
 
   ngOnInit(): void {
     this.loadTableColumns();
+    this.getUserClient();
   }
 
   loadTableColumns() {
@@ -99,43 +78,46 @@ export class SitesComponent implements OnInit, OnDestroy {
   }
 
   getFilters() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      this.userInfo = this.encryptionService.decryptData(encryptedData);
+    const filters: entity.BillingOverviewFilterData = {
+      clientId: this.userInfo.clientes[0],
+      customerNames: this.filterData?.customerNames ?? [],
+      legalName: this.filterData?.legalName ?? [],
+      productType: this.filterData?.productType ?? [],
+      startDate: this.filterData?.startDate ?? '',
+      endDate: this.filterData?.endDate ?? '',
+      pageSize: this.pageSize,
+      page: this.pageIndex + 1
+    };
 
-      const filters : entity.BillingOverviewFilterData = {
-        customerNames : this.filterData?.customerNames ?? [],
-        legalName : this.filterData?.legalName ?? [],
-        productType : this.filterData?.productType ?? [],
-        clientId: this.userInfo.clientes[0],
-        startDate: this.generalFilters.startDate,
-        endDate: this.generalFilters.endDate,
-        pageSize: 10,
-        page: 0,
-      }
-
-      console.log(filters);
-
-      this.getsites(filters);
-    }
+    this.getsites(filters);
   }
 
   getsites(filters: entity.BillingOverviewFilterData) {
     this.moduleServices.getBillingSites(filters).subscribe({
-      next: (response: entity.DataBillingSitesTableMapper) => {
-        this.sites = response.data
-        // this.totalItems = response?.totalItems;
-        // this.pageIndex = filters.page;
+      next: (response: GeneralPaginatedResponse<entity.SitesTableRow>) => {
+        this.sites = response.data;
+        this.totalItems = response.totalItems;
         this.isLoading = false;
       },
-       error: (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
         this.isLoading = false;
       }
     });
   }
 
-  getServerData(event: any) {
-    console.log(event)
+  getServerData(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+
+    this.getFilters();
+  }
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      this.userInfo = this.encryptionService.decryptData(encryptedData)
+      this.getFilters();
+    }
   }
 
   ngOnDestroy(): void {
