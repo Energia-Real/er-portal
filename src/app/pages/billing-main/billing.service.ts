@@ -186,6 +186,21 @@ export class BillingService implements OnDestroy {
     });
   }
 
+  downloadBillingNetsuite(typeDocument:string, idDocument:string): Observable<GeneralResponse<entity.DownloadBillingResponse>> {
+    const url = `${this.domainApiUrl}/v1/Billing/Netsuite/Document`;
+    const params = {typeDocument,idDocument}
+
+    return this.http.post<GeneralResponse<entity.DownloadBillingResponse>>(url,params);
+  }
+
+  downloadBillingADX(typeDocument:string, folioId:string, anio:number,month:number): Observable<GeneralResponse<entity.DownloadBillingResponse>> {
+    const url = `${this.domainApiUrl}/v1/Billing/ADX/Document`;
+    const params = {typeDocument,folioId,anio,month}
+
+    return this.http.post<GeneralResponse<entity.DownloadBillingResponse>>(url,params);
+  }
+
+
   downloadBilling(typeFile:string[], billings:string[]): Observable<Blob> {
     const url = `${this.performanceApiUrl}/Billing/Files`;
     const params = {typeFile,billings}
