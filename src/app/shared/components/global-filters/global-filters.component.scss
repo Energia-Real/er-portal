@@ -3,6 +3,13 @@
   align-items: center;
   justify-content: flex-end;
   gap: 15px;
+  padding: 0 25px;
+
+  .apply {
+    color: #EE6A0A;
+    font-size: 14px;
+    font-weight: 500;
+  }
 
   .c-selects-filters {
     display: flex;
@@ -48,10 +55,8 @@
     color: #000000D9;
   }
 
-  h2,
-  .apply {
+  h2 {
     color: #EE6A0A;
-    margin: 0 25px 0 0;
     font-size: 14px;
     font-weight: 500;
   }

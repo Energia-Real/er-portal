@@ -1,19 +1,18 @@
 <div class="c-clients c-main" [class.sombreado]="drawerOpen">
     <div>
         <div class="grid md:grid-cols-2 sm:grid-cols-1 md:gap-4">
-            <div class=" col-span-1 md:col-span-1">
-                <form class="relative w-80 c-search">
-                    <label class="input-search">
-                        <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-                    </label>
-                    <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="{{ 'CLIENTES.BUSCAR_CLIENTE' | translate }}"
-                        [formControl]="searchBar">
-                </form>
+            <div class=" col-span-1 md:col-span-1 flex justify-start">
+                <div class="c-input-search float-right">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input class="block w-full" [formControl]="searchBar" type="text"
+                        placeholder="{{ 'CLIENTES.BUSCAR_CLIENTE' | translate }}">
+                </div>
             </div>
 
             <div class="col-span-1 md:col-span-1 ">
                 <div class="flex justify-end gap-2 mt-3 md:mt-0">
-                    <button class="btn-cancel flex gap-2 items-center" (click)="toggleDrawer('typeClients')" type="button">
+                    <button class="btn-cancel flex gap-2 items-center" (click)="toggleDrawer('typeClients')"
+                        type="button">
                         <i class="fa-solid fa-eye"></i>
                         {{ 'CLIENTES.VER_TIPOS_CLIENTES' | translate }}
                     </button>
@@ -107,7 +106,8 @@
                         <td mat-cell *matCellDef="let element">
                             <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                             <mat-menu #menu="matMenu">
-                                <button mat-menu-item (click)="editClient(element)">{{ 'CLIENTES.EDITAR' | translate }}</button>
+                                <button mat-menu-item (click)="editClient(element)">{{ 'CLIENTES.EDITAR' | translate
+                                    }}</button>
                             </mat-menu>
                         </td>
                     </ng-container>

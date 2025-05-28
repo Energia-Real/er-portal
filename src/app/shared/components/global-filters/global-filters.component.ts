@@ -86,8 +86,9 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private store: Store,
+    private store: Store<{ filters: GeneralFilters }>,
   ) {
+    this.generalFilters$ = this.store.select(state => state.filters);
     this.clients$ = this.store.select(selectClients);
     this.legalNames$ = this.store.select(selectLegalNames);
     this.products$ = this.store.select(selectProducts);
