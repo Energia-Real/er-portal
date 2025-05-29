@@ -45,37 +45,7 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       .subscribe(([generalFilters]) => this.generalFilters = generalFilters);
   }
 
-  ngOnInit(): void {
-    // this.getClients();
-    // this.getProducts();
-
-    // this.filtersForm.get('customerName')?.valueChanges
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(valor => {
-    //     this.getLegalNames(valor!)
-    //   });
-
-    // this.filtersForm.get('legalName')?.valueChanges
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(valor => {
-    //     this.getSites(valor!)
-    //   });
-
-    // // Subscribe to language changes
-    // this.translationService.currentLang$
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(() => {
-    //     // Refresh data when language changes
-    //     this.getClients();
-    //     this.getProducts();
-    //     if (this.filtersForm.get('customerName')?.value) {
-    //       this.getLegalNames(this.filtersForm.get('customerName')?.value!);
-    //     }
-    //     if (this.filtersForm.get('legalName')?.value) {
-    //       this.getSites(this.filtersForm.get('legalName')?.value!);
-    //     }
-    //   });
-  }
+  ngOnInit(): void {}
 
   onFiltersChanged(filters: any) {
     console.log('Filtros aplicados', filters);

@@ -109,6 +109,8 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
         this.selectedMonths.pop()
       }
     });
+
+    this.emitOrDispatchFilters()
   }
 
   initFiltersConfig() {

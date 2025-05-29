@@ -222,10 +222,10 @@ export class BillingService implements OnDestroy {
     );
   }
 
-  getEnergysummaryOverview(filters:entity.FilterBillingEnergysummary): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
-    const url = `${this.domainApiUrl}/v1/Billing/Energy/Summary`;
+  getEnergysummaryOverview(filters:entity.BillingOverviewFilterData): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
+    const url = `${this.domainApiUrl}/v1/Billing/Energy/SummaryBalance`;
 
-    return this.http.post<entity.EnergyBillingSummary>(url, filters).pipe(
+    return this.http.post<GeneralResponse<entity.EnergySummaryResponse>>(url, filters).pipe(
       map((response) =>
         Mapper.getEnergysummaryMapper(response, this.formatsService )
       ));

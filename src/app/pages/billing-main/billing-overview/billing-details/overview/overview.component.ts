@@ -21,8 +21,6 @@ Chart.register(...registerables);
 export class OverviewComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<GeneralFilters>;
-
   @Input() filterData!: entity.BillingOverviewFilterData
   @ViewChild(BaseChartDirective) chartComponent!: BaseChartDirective;
 
@@ -89,17 +87,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   datasetVisibility: boolean[] = [true, true, true];
 
-  generalFilters!: GeneralFilters
   balance: string = '0.00'
   buttonClass: string = '';
 
   constructor(
-    private store: Store<{ filters: GeneralFilters }>,
     private moduleServices: BillingService,
     private notificationService: OpenModalsService,
     private translationService: TranslationService
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters);
     this.initChartOptions();
   }
 
@@ -179,31 +174,27 @@ export class OverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  getFilters() {
-    this.generalFilters$.pipe(takeUntil(this.onDestroy$)).subscribe((GeneralFilters) => {
-      // const filters = {
-      //   startDate: GeneralFilters.startDate,
-      //   endDate: GeneralFilters.endDate,
-      //   customerName: this.filterData.customerName ?? '',
-      //   legalName: this.filterData.legalName ?? '',
-      //   siteName: this.filterData.siteName ?? '',
-      //   productType: this.filterData.productType ?? '',
-      // };
-
-      // this.getEnergysummary(filters);
-    })
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
       const prev = changes['filterData'].previousValue;
       const curr = changes['filterData'].currentValue;
-      // Compara solo los campos relevantes
       if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
     }
   }
 
-  getEnergysummary(filters: entity.FilterBillingEnergysummary) {
+  getFilters() {
+    const filters: entity.BillingOverviewFilterData = {
+      customerNames: this.filterData?.customerNames ?? [],
+      legalName: this.filterData?.legalName ?? [],
+      productType: this.filterData?.productType ?? [],
+      startDate: this.filterData?.startDate ?? '',
+      endDate: this.filterData?.endDate ?? '',
+    };
+    
+    this.getEnergysummary(filters);
+  }
+
+  getEnergysummary(filters: entity.BillingOverviewFilterData) {
     this.moduleServices.getEnergysummaryOverview(filters).subscribe({
       next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
         // Translate dataset labels

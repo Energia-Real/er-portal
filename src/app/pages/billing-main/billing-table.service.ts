@@ -94,7 +94,7 @@ export class InvoiceTableService {
     callbacks: {
       downloadPdf: (row: entity.CurrentBillingTableRow) => void,
       downloadXml: (row: entity.CurrentBillingTableRow) => void,
-      viewDetails: (row: entity.CurrentBillingTableRow) => void
+      // viewDetails: (row: entity.CurrentBillingTableRow) => void
     }
   ): Observable<ColumnDefinition[]> {
 
@@ -274,9 +274,9 @@ export class InvoiceTableService {
             <div style="display: flex; justify-content: space-around; align-items: center;">
               <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px; " title="${downloadPdfTitle}">
               <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="${downloadXmlTitle}">
-              <img src="assets/svg/icon-eye.svg" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="${viewDetailsTitle}">
-            </div>
-          `;
+              </div>
+              `;
+            // <img src="assets/svg/icon-eye.svg" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="${viewDetailsTitle}">
           },
           cellClick: (e: any, cell: CellComponent) => {
             // Get the clicked element
@@ -295,9 +295,9 @@ export class InvoiceTableService {
                 case 'downloadXml':
                   callbacks.downloadXml(row);
                   break;
-                case 'viewDetails':
-                  callbacks.viewDetails(row);
-                  break;
+                // case 'viewDetails':
+                //   callbacks.viewDetails(row);
+                //   break;
               }
             }
           },
@@ -351,7 +351,7 @@ export class InvoiceTableService {
   getTableOptionsHistoryBillings(callbacks: {
     downloadPdf: (row: entity.CurrentBillingTableRow) => void,
     downloadXml: (row: entity.CurrentBillingTableRow) => void,
-    viewDetails: (row: entity.CurrentBillingTableRow) => void
+    // viewDetails: (row: entity.CurrentBillingTableRow) => void
   }): Observable<Options> {
     return this.getTableColumnsCurrentBillings(callbacks).pipe(
       map((columns) => ({
@@ -394,9 +394,9 @@ export class InvoiceTableService {
             <div style="display: flex; justify-content: space-around; align-items: center;">
               <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px;" title="Download PDF">
               <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="Download XML">
-              <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px;" title="View Details">
-            </div>
-          `;
+              </div>
+              `;
+          // <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px;" title="View Details">
         },
         cellClick: (e: any, cell: CellComponent) => {
           const element = e.target as HTMLElement;
@@ -411,9 +411,9 @@ export class InvoiceTableService {
               case 'downloadXml':
                 callbacks.downloadXml(row);
                 break;
-              case 'viewDetails':
-                callbacks.viewDetails(row);
-                break;
+              // case 'viewDetails':
+              //   callbacks.viewDetails(row);
+              //   break;
             }
           }
         },

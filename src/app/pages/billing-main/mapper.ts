@@ -1,6 +1,7 @@
 import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './billing-model';
 import { ChartConfiguration } from 'chart.js';
+import { GeneralResponse } from '@app/shared/models/general-models';
 export class Mapper {
 	static getBillingDataMapper(response: entity.DataBillingTableMapper, formatsService: FormatsService): entity.DataBillingTableMapper {
 		let dataList: entity.DataBillingTable[] = [];
@@ -47,7 +48,7 @@ export class Mapper {
 		let dataList: entity.InvoiceDetailsTableRow[] = [];
 
 		response?.data?.forEach((data: entity.InvoiceDetailsTableRow): void => {
-			
+
 			dataList.push({
 				...data,
 				unitValue: formatsService.moneyFormat(parseInt(data.unitValue)),
@@ -98,15 +99,14 @@ export class Mapper {
 		}
 	}
 
-	static getEnergysummaryMapper(response: entity.EnergyBillingSummary, formatsService: FormatsService): ChartConfiguration<'bar' | 'line'>['data'] | any {
-
+	static getEnergysummaryMapper(response: GeneralResponse<entity.EnergySummaryResponse>, formatsService: FormatsService): ChartConfiguration<'bar' | 'line'>['data'] | any {
 		const monthsMap = [
 			'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
 			'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 		];
 
 		const fullMonths = Array.from({ length: 12 }, (_, i) => {
-			const found = response.response.energySummaryResponse.months.find(m => m.month === i + 1);
+			const found = response.response.months.find(m => m.month === i + 1);
 			return {
 				label: `${monthsMap[i]} 25`,
 				billedEnergyProduced: found ? found.billedEnergyProduced : 0,
@@ -148,7 +148,7 @@ export class Mapper {
 					yield: true,
 				}
 			],
-			balance: formatsService.moneyFormat(response.response.energySummaryResponse.balance),
+			balance: formatsService.moneyFormat(response.response.balance)
 		};
 	}
 }

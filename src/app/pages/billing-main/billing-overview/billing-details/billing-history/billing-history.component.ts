@@ -1,17 +1,16 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
-import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { BillingService } from '@app/pages/billing-main/billing.service';
 import { DrawerGeneral, GeneralFilters, GeneralPaginatedResponse } from '@app/shared/models/general-models';
 import { ColumnDefinition, Options } from 'tabulator-tables';
-import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
 import { Store } from '@ngrx/store';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
-import { start } from '@popperjs/core';
+import { PageEvent } from '@angular/material/paginator.d-BpWCCOIR';
 
 @Component({
   selector: 'app-billing-history',
@@ -20,33 +19,27 @@ import { start } from '@popperjs/core';
   standalone: false
 })
 export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
-
-  
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<GeneralFilters>;
-
-
+  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
   @Input() filterData!: entity.BillingOverviewFilterData;
 
   pageSizeOptions: number[] = [1, 2, 3, 5];
   pageSize: number = 10;
-  pageIndex: number = 1;
+  pageIndex: number = 0;
   totalItems: number = 0;
 
-  bills!: entity.Bill[];
-  private monthAbbrPipe = new MonthAbbreviationPipe();
+  bills: entity.Bill[] = [];
 
   tableConfig!: Options;
   columns: ColumnDefinition[] = [];
-  isLoading: Boolean = true;
 
   drawerOpenSub: Subscription;
   drawerOpenID: boolean = false;
   drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
-  generalFilters!: GeneralFilters
+  isLoading: Boolean = true;
 
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
@@ -54,17 +47,6 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
     private translationService: TranslationService,
     private invoiceTableService: InvoiceTableService,
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters);
-
-    combineLatest([
-      this.generalFilters$.pipe(distinctUntilChanged()),
-    ])
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([generalFilters]) => {
-        this.generalFilters = generalFilters;
-        this.getBillingHistory();
-      });
-
     this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
       this.drawerOpenID = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
@@ -72,22 +54,17 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-
-  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
+  ngOnInit(): void {
+    this.loadTableColumns();
+    this.getFilters();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
       const prev = changes['filterData'].previousValue;
       const curr = changes['filterData'].currentValue;
-      // Compara solo los campos relevantes
-      if (JSON.stringify(prev) !== JSON.stringify(curr)) {
-        this.getBillingHistory();
-      }
+      if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
     }
-  }
-
-  ngOnInit(): void {
-    this.loadTableColumns();
   }
 
   loadTableColumns() {
@@ -95,11 +72,10 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(
         takeUntil(this.onDestroy$),
         switchMap(() => {
-          // Create callbacks object using component methods
           const callbacks = {
             downloadPdf: (row: any) => this.downloadPdf(row),
             downloadXml: (row: any) => this.downloadXml(row),
-            viewDetails: (row: any) => this.viewDetails(row)
+            // viewDetails: (row: any) => this.viewDetails(row)
           };
           return this.invoiceTableService.getTableOptionsHistoryBillings(callbacks);
         })
@@ -107,7 +83,6 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       .subscribe({
         next: (options) => {
           this.tableConfig = { ...options };
-
           if (this.tabulatorTable) this.tabulatorTable.updateColumns();
         },
         error: (err) => {
@@ -116,32 +91,38 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       });
   }
 
-  getBillingHistory() {
-    const filters = { ...this.filterData, pageSize: this.pageSize, page: this.pageIndex, startDate: this.generalFilters.startDate, endDate: this.generalFilters.endDate };
+  getFilters() {
+    const filters: entity.BillingOverviewFilterData = {
+      customerNames: this.filterData?.customerNames ?? [],
+      legalName: this.filterData?.legalName ?? [],
+      productType: this.filterData?.productType ?? [],
+      startDate: this.filterData?.startDate ?? '',
+      endDate: this.filterData?.endDate ?? '',
+      pageSize: this.pageSize,
+      page: this.pageIndex + 1
+    };
+
+    this.getBillingHistory(filters);
+  }
+
+  getBillingHistory(filters: entity.BillingOverviewFilterData) {
     this.moduleService.getBillingHistory(filters).subscribe({
       next: (response: GeneralPaginatedResponse<entity.HistoryBillResponse>) => {
-        this.totalItems = response?.totalItems;
-        if (response.data[0] != null) {
-          this.bills = response.data[0].historyBillResponse;
-        } else {
-          this.bills = [];
-          this.pageIndex = 0;
-        }
+        this.bills = response.data[0].historyBillResponse;
+        this.totalItems = response.totalItems;
         this.isLoading = false;
       },
       error: (error) => {
         this.isLoading = false;
-        this.bills = [];
-        this.pageIndex = 0;
         console.log(error);
       }
     });
   }
 
-  getServerData(event: any) {
-    console.log(event);
-    this.pageIndex = event.pageIndex + 1;
-    this.getBillingHistory()
+ getServerData(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.getFilters();
   }
 
   // Action methods for the icons
@@ -181,6 +162,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
   }
+
   descargarTabla(tipo: string) {
     this.tabulatorTable.download(tipo);
   }

@@ -1,10 +1,9 @@
 import { Component, OnDestroy, Input, OnInit, ViewChild, SimpleChanges } from '@angular/core';
-import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { Options } from 'tabulator-tables';
 import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
-import { GeneralFilters, GeneralPaginatedResponse, UserInfo } from '@app/shared/models/general-models';
-import { EncryptionService } from '@app/shared/services/encryption.service';
+import { GeneralPaginatedResponse, UserInfo } from '@app/shared/models/general-models';
 import { BillingService } from '@app/pages/billing-main/billing.service';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
@@ -20,8 +19,6 @@ import { HttpErrorResponse } from '@angular/common/module.d-CnjH8Dlt';
 export class SitesComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  generalFilters$!: Observable<GeneralFilters>;
-
   @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
   @ViewChild('paginator', { static: false }) paginator!: MatPaginator;
   @Input() filterData!: entity.BillingOverviewFilterData
@@ -34,21 +31,27 @@ export class SitesComponent implements OnInit, OnDestroy {
   sites: entity.SitesTableRow[] = [];
   tableConfig: Options = {};
 
-  generalFilters!: GeneralFilters
   userInfo!: UserInfo;
 
   isLoading: boolean = true;
 
   constructor(
     private invoiceTableService: InvoiceTableService,
-    private encryptionService: EncryptionService,
     private moduleServices: BillingService,
     private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
     this.loadTableColumns();
-    this.getUserClient();
+    this.getFilters();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['filterData'] && !changes['filterData'].firstChange) {
+      const prev = changes['filterData'].previousValue;
+      const curr = changes['filterData'].currentValue;
+      if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
+    }
   }
 
   loadTableColumns() {
@@ -60,7 +63,6 @@ export class SitesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (options) => {
           this.tableConfig = { ...options };
-
           if (this.tabulatorTable) this.tabulatorTable.updateColumns();
         },
         error: (err) => {
@@ -69,17 +71,8 @@ export class SitesComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['filterData'] && !changes['filterData'].firstChange) {
-      const prev = changes['filterData'].previousValue;
-      const curr = changes['filterData'].currentValue;
-      if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
-    }
-  }
-
   getFilters() {
     const filters: entity.BillingOverviewFilterData = {
-      clientId: this.userInfo.clientes[0],
       customerNames: this.filterData?.customerNames ?? [],
       legalName: this.filterData?.legalName ?? [],
       productType: this.filterData?.productType ?? [],
@@ -89,10 +82,10 @@ export class SitesComponent implements OnInit, OnDestroy {
       page: this.pageIndex + 1
     };
 
-    this.getsites(filters);
+    this.getBillingSites(filters);
   }
 
-  getsites(filters: entity.BillingOverviewFilterData) {
+  getBillingSites(filters: entity.BillingOverviewFilterData) {
     this.moduleServices.getBillingSites(filters).subscribe({
       next: (response: GeneralPaginatedResponse<entity.SitesTableRow>) => {
         this.sites = response.data;
@@ -108,16 +101,7 @@ export class SitesComponent implements OnInit, OnDestroy {
   getServerData(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
-
     this.getFilters();
-  }
-
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      this.userInfo = this.encryptionService.decryptData(encryptedData)
-      this.getFilters();
-    }
   }
 
   ngOnDestroy(): void {

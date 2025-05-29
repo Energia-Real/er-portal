@@ -60,7 +60,6 @@ export interface SitesTableRow {
 export interface BillingOverviewFilterData {
   endDate : string;
   startDate : string;
-  clientId : string;
   customerNames : string[];
   legalName: string[];
   productType: string[];
@@ -126,9 +125,7 @@ export interface FilterBillingEnergysummary {
 
 export interface EnergyBillingSummary {
   success: boolean;
-  response: {
-    energySummaryResponse: EnergySummaryResponse;
-  };
+  response: EnergySummaryResponse;
   errors: any;
 }
 
