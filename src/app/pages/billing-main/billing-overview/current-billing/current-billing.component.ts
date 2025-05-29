@@ -84,6 +84,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   
    private downloadBase64File(base64: string, fileName: string, fileType: string): void {
+    console.log(fileType)
     try {
       // Create a blob from the base64 string
       const byteCharacters = atob(base64);
@@ -94,7 +95,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
       }
       
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: fileType });
+      const blob = new Blob([byteArray], { type: "application/"+fileType });
       
       // Create a link element and trigger the download
       const link = document.createElement('a');
