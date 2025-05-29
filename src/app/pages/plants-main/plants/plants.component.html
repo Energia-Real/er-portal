@@ -27,13 +27,10 @@
       </div>
 
       <div class="col-span-1 search-add mt-3 md:mt-0 lg:mt-0">
-        <form class="relative w-80 ms-auto c-search">
-          <label class="input-search">
-            <img src="../../../../../assets/svg/search.svg" alt="Icon Search">
-          </label>
-          <input class="block w-full rounded-full pl-9 h-9" type="text" placeholder="{{ 'PLANTAS.BUSCAR_SITIO' | translate }}"
-            [formControl]="searchBar">
-        </form>
+        <div class="c-input-search float-right">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input class="block w-full" [formControl]="searchBar" type="text" placeholder="{{ 'GENERAL.BUSCAR_SITIO' | translate }}">
+        </div>
 
         <button class="btn-action-add mt-3 md:mt-0" routerLink="/er/plants/create">
           <i class="fa-solid fa-plus"></i>
@@ -149,8 +146,10 @@
           <td mat-cell *matCellDef="let element">
             <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="navigate('er/plants/edit/' + element.id)">{{ 'PLANTAS.EDITAR' | translate }}</button>
-              <button mat-menu-item (click)="navigate('er/plants/details/' + element.id)">{{ 'PLANTAS.DETALLES' | translate }}</button>
+              <button mat-menu-item (click)="navigate('er/plants/edit/' + element.id)">{{ 'PLANTAS.EDITAR' | translate
+                }}</button>
+              <button mat-menu-item (click)="navigate('er/plants/details/' + element.id)">{{ 'PLANTAS.DETALLES' |
+                translate }}</button>
             </mat-menu>
           </td>
         </ng-container>

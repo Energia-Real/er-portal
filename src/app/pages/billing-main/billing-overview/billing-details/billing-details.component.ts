@@ -3,11 +3,11 @@ import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } f
 import { BillingService } from '../../billing.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { FormBuilder } from '@angular/forms';
-import { catalogResponseList, FilterBillingDetails } from '../../billing-model';
-import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { GeneralFilters } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
-import { DataCatalogs } from '@app/shared/models/catalogs-models';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { ConfigGlobalFilters } from '@app/shared/components/global-filters/global-filters-model';
+import { BillingOverviewFilterData } from '../../billing-model';
 
 @Component({
   selector: 'app-billing-details',
@@ -17,19 +17,18 @@ import { TranslationService } from '@app/shared/services/i18n/translation.servic
 })
 export class BillingDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+
+  configGlobalFilters: ConfigGlobalFilters = {
+    showDatepicker: true,
+    showClientsFilter: true,
+    showLegalNamesFilter: true,
+    showProductFilter: true,
+    clientsIndividual: false,
+  }
+
   generalFilters$!: Observable<GeneralFilters>;
   generalFilters!: GeneralFilters
-  clientsCatalog!:DataCatalogs[];
-  legalNameCatalog!:DataCatalogs[];
-  sitesCatalog!:DataCatalogs[];
-  productsCatalog!:DataCatalogs[];
-
-  filtersForm = this.fb.group({
-    customerName: [''],
-    legalName: [''],
-    siteName: [''],
-    productType: [''],
-  });
+  filterData!: BillingOverviewFilterData
 
   constructor(
     private fb: FormBuilder,
@@ -46,79 +45,17 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       .subscribe(([generalFilters]) => this.generalFilters = generalFilters);
   }
 
-  ngOnInit(): void {
-    this.getClients();
-    this.getProducts();
+  ngOnInit(): void {}
 
-    this.filtersForm.get('customerName')?.valueChanges
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(valor => {
-      this.getLegalNames(valor!)
-    });
-
-    this.filtersForm.get('legalName')?.valueChanges
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(valor => {
-      this.getSites(valor!)
-    });
-
-    // Subscribe to language changes
-    this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // Refresh data when language changes
-        this.getClients();
-        this.getProducts();
-        if (this.filtersForm.get('customerName')?.value) {
-          this.getLegalNames(this.filtersForm.get('customerName')?.value!);
-        }
-        if (this.filtersForm.get('legalName')?.value) {
-          this.getSites(this.filtersForm.get('legalName')?.value!);
-        }
-      });
+  onFiltersChanged(filters: any) {
+    console.log('Filtros aplicados', filters);
+    this.filterData = {
+      ...filters,
+      page: 1,
+      pageSize: 10
+    }
   }
 
-  get filterData(): FilterBillingDetails {
-    return {
-      ...this.filtersForm.value,
-      year:Number( this.generalFilters?.year),
-      page:1,
-      pageSize:10
-    } as FilterBillingDetails;
-  }
-
-  getClients(){
-    this.moduleServices.getClientCatalog().subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.clientsCatalog = resp.response.catalogResponseList
-      }
-    })
-  }
-
-  getLegalNames(clientid:string){
-    this.moduleServices.getLegalNameCatalog(clientid).subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.legalNameCatalog = resp.response.catalogResponseList
-      }
-    })
-  }
-
-  getSites(legalName:string){
-    this.moduleServices.getSitesCatalog(legalName).subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.sitesCatalog = resp.response.catalogResponseList
-      }
-    })
-  }
-
-  getProducts(){
-    this.moduleServices.getProductTypesCatalog().subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.productsCatalog = resp.response.catalogResponseList
-        console.log()
-      }
-    })
-  }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

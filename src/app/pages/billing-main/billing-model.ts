@@ -57,6 +57,16 @@ export interface SitesTableRow {
 }
 
 
+export interface BillingOverviewFilterData {
+  endDate : string;
+  startDate : string;
+  customerNames : string[];
+  legalName: string[];
+  productType: string[];
+  pageSize?: number
+  page?: number
+}
+
 export interface DataInvoiceDetailsTableMapper {
   pageSize: number,
   page: number,
@@ -94,15 +104,15 @@ export interface FiltersBillingSites {
 }
 
 
-export interface FilterBillingDetails {
-  year: number;
-  customerName: string;
-  legalName?: string;
-  siteName?: string;
-  productType?: string;
-  page?: number;
-  pageSize?: number;
-}
+// export interface FilterBillingDetails {
+//   year: number;
+//   customerName: string;
+//   legalName?: string;
+//   siteName?: string;
+//   productType?: string;
+//   page?: number;
+//   pageSize?: number;
+// }
 
 export interface FilterBillingEnergysummary {
   startDate: string;
@@ -115,9 +125,7 @@ export interface FilterBillingEnergysummary {
 
 export interface EnergyBillingSummary {
   success: boolean;
-  response: {
-    energySummaryResponse: EnergySummaryResponse;
-  };
+  response: EnergySummaryResponse;
   errors: any;
 }
 
@@ -355,10 +363,6 @@ export interface HistoryBillResponse {
 export interface catalogResponseList {
   catalogResponseList: DataCatalogs[]
 }
-
-
-
-
 
 export interface Bill {
   amount: number;

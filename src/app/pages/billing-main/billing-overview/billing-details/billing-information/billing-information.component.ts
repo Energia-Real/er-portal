@@ -11,10 +11,9 @@ import * as entity from '../../../billing-model';
 export class BillingInformationComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
-  @Input() filterData!: entity.FilterBillingDetails
+  @Input() filterData!: entity.BillingOverviewFilterData
 
   ngOnInit(): void {
-    // console.log('Billing information : filterData', this.filterData);
   }
 
   ngOnDestroy(): void {

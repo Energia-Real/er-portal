@@ -8,57 +8,8 @@
         </div>
 
         <div class="c-filters-header">
-            <form class="flex align-center gap-3 flex-wrap" [formGroup]="filtersForm">
-
-                <div class="c-input">
-                    <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="customerName" placeholder="{{ 'FACTURACION.CLIENTE' | translate }}">
-                            <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                            <div *ngIf="clientsCatalog">
-                                <mat-option *ngFor=" let client of clientsCatalog" value={{client.id}}>{{client.description}}</mat-option>
-                            </div>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <div class="c-input">
-                    <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="legalName" placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
-                            <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                            <div *ngIf="legalNameCatalog">
-                                <mat-option *ngFor="let legalName of legalNameCatalog" value = {{legalName.id}}>{{legalName.description}}</mat-option>
-                            </div>
-                        </mat-select>
-
-                        <!-- <mat-icon *ngIf="filtersForm.get('legal')?.value" matSuffix (click)="filtersForm.get('legal')?.reset()">close</mat-icon> -->
-                    </mat-form-field>
-                </div>
-
-                <div class="c-input">
-                    <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="siteName" placeholder="{{ 'FACTURACION.SITIO' | translate }}">
-                            <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                            <div *ngIf="sitesCatalog">
-                                <mat-option *ngFor="let site of sitesCatalog" value={{site.id}}>{{site.description}}</mat-option>
-                            </div>
-                            
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <div class="c-input">
-                    <mat-form-field class="select-ER" appearance="outline">
-                        <mat-select formControlName="productType" placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">
-                           <div *ngIf="productsCatalog">
-                                <mat-option *ngFor="let product of productsCatalog" value="{{product.description.toUpperCase()}}">{{product.description}}</mat-option>
-                           </div>
-                            <mat-option value=" ">{{ 'FACTURACION.TODOS' | translate }}</mat-option>
-                            
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </form>
-
+            <app-global-filters [configGlobalFilters]="configGlobalFilters"
+                (filtersChanged)="onFiltersChanged($event)"></app-global-filters>
         </div>
     </div>
 
@@ -67,7 +18,7 @@
             <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0">
 
                 <mat-tab label="{{ 'FACTURACION.RESUMEN' | translate }}">
-                    <app-overview [filterData]="filterData"></app-overview>
+                    <app-overview *ngIf="filterData" [filterData]="filterData"></app-overview>
                 </mat-tab>
 
                 <mat-tab label="{{ 'FACTURACION.HISTORIAL_FACTURACION' | translate }}">
@@ -75,12 +26,12 @@
                 </mat-tab>
 
                 <mat-tab label="{{ 'FACTURACION.SITIOS' | translate }}">
-                    <app-sites [filterData]="filterData"></app-sites>
+                    <app-sites *ngIf="filterData" [filterData]="filterData"></app-sites>
                 </mat-tab>
 
-                <mat-tab label="{{ 'FACTURACION.INFORMACION_FACTURACION' | translate }}">
-                    <app-billing-information [filterData]="filterData"></app-billing-information>
-                </mat-tab>
+                <!-- <mat-tab label="{{ 'FACTURACION.INFORMACION_FACTURACION' | translate }}">
+                    <app-billing-information *ngIf="filterData" [filterData]="filterData"></app-billing-information>
+                </mat-tab> -->
 
             </mat-tab-group>
         </div>

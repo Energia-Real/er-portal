@@ -62,22 +62,10 @@ export class BillingService implements OnDestroy {
   }
   
   getBillingSites(
-    filters: entity.FiltersBillingSites
-  ): Observable<entity.DataBillingSitesTableMapper> {
-    const url = `${this.domainApiUrl}/v1/Billing/Details/Sites/${filters.clientId}/`;
-
-    const params = new HttpParams()
-      .set('pageSize', filters.pageSize)
-      .set('page', filters.page)
-      .set('startDate', filters.startDate)
-      .set('endDate', filters.endDate)
-      .set('customerName', filters.customerName)
-      .set('legalName', filters.legalName)
-      .set('siteName', filters.siteName)
-      .set('productType', filters.productType)
-
-    return this.http
-      .post<entity.DataBillingSitesTableMapper>(url, filters);
+    filters: entity.BillingOverviewFilterData
+  ): Observable<GeneralPaginatedResponse<entity.SitesTableRow>> {
+    const url = `${this.domainApiUrl}/v1/Netsuite/Sites`;
+    return this.http.post<GeneralPaginatedResponse<entity.SitesTableRow>>(url, filters);
   }
 
   getInvoiceDetailsHeader(
@@ -126,7 +114,7 @@ export class BillingService implements OnDestroy {
       );
   }
 
-  getBillingHistory(filters: entity.FilterBillingDetails): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
+  getBillingHistory(filters: entity.BillingOverviewFilterData): Observable<GeneralPaginatedResponse<entity.Bill>> {
     const url = `${this.domainApiUrl}/v1/Billing/History`;
     return this.http.post<any>(url,   filters );
   }
@@ -249,10 +237,10 @@ export class BillingService implements OnDestroy {
     );
   }
 
-  getEnergysummaryOverview(filters:entity.FilterBillingEnergysummary): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
-    const url = `${this.domainApiUrl}/v1/Billing/Energy/Summary`;
+  getEnergysummaryOverview(filters:entity.BillingOverviewFilterData): Observable<ChartConfiguration<'bar' | 'line'>['data'] | any> {
+    const url = `${this.domainApiUrl}/v1/Billing/Energy/SummaryBalance`;
 
-    return this.http.post<entity.EnergyBillingSummary>(url, filters).pipe(
+    return this.http.post<GeneralResponse<entity.EnergySummaryResponse>>(url, filters).pipe(
       map((response) =>
         Mapper.getEnergysummaryMapper(response, this.formatsService )
       ));

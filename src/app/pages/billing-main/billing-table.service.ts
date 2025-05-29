@@ -94,7 +94,7 @@ export class InvoiceTableService {
     callbacks: {
       downloadPdf: (row: entity.CurrentBillingTableRow) => void,
       downloadXml: (row: entity.CurrentBillingTableRow) => void,
-      viewDetails: (row: entity.CurrentBillingTableRow) => void
+      // viewDetails: (row: entity.CurrentBillingTableRow) => void
     }
   ): Observable<ColumnDefinition[]> {
 
@@ -274,9 +274,9 @@ export class InvoiceTableService {
             <div style="display: flex; justify-content: space-around; align-items: center;">
               <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px; " title="${downloadPdfTitle}">
               <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="${downloadXmlTitle}">
-              <img src="assets/svg/icon-eye.svg" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="${viewDetailsTitle}">
-            </div>
-          `;
+              </div>
+              `;
+            // <img src="assets/svg/icon-eye.svg" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="${viewDetailsTitle}">
           },
           cellClick: (e: any, cell: CellComponent) => {
             // Get the clicked element
@@ -295,9 +295,9 @@ export class InvoiceTableService {
                 case 'downloadXml':
                   callbacks.downloadXml(row);
                   break;
-                case 'viewDetails':
-                  callbacks.viewDetails(row);
-                  break;
+                // case 'viewDetails':
+                //   callbacks.viewDetails(row);
+                //   break;
               }
             }
           },
@@ -328,20 +328,20 @@ export class InvoiceTableService {
       map((columns) => ({
         maxHeight: 280,
         layout: "fitColumns",
-        rowHeader:{
-          headerSort:false, 
-          resizable: false, 
-          frozen:true, 
-          headerHozAlign:"center", 
-          hozAlign:"left", 
-          formatter:"rowSelection", 
-          titleFormatter:"rowSelection", 
-          cellClick:function(e, cell){
+        rowHeader: {
+          headerSort: false,
+          resizable: false,
+          frozen: true,
+          headerHozAlign: "center",
+          hozAlign: "left",
+          formatter: "rowSelection",
+          titleFormatter: "rowSelection",
+          cellClick: function (e, cell) {
             cell.getRow().toggleSelect();
           },
-          width:50
+          width: 50
         },
-        downloadRowRange:"selected",
+        downloadRowRange: "selected",
         columns: columns,
         movableColumns: true,
       }))
@@ -351,26 +351,26 @@ export class InvoiceTableService {
   getTableOptionsHistoryBillings(callbacks: {
     downloadPdf: (row: entity.CurrentBillingTableRow) => void,
     downloadXml: (row: entity.CurrentBillingTableRow) => void,
-    viewDetails: (row: entity.CurrentBillingTableRow) => void
+    // viewDetails: (row: entity.CurrentBillingTableRow) => void
   }): Observable<Options> {
     return this.getTableColumnsCurrentBillings(callbacks).pipe(
       map((columns) => ({
         maxHeight: 550,
         layout: "fitColumns",
-        rowHeader:{
-          headerSort:false, 
-          resizable: false, 
-          frozen:true, 
-          headerHozAlign:"center", 
-          hozAlign:"left", 
-          formatter:"rowSelection", 
-          titleFormatter:"rowSelection", 
-          cellClick:function(e, cell){
+        rowHeader: {
+          headerSort: false,
+          resizable: false,
+          frozen: true,
+          headerHozAlign: "center",
+          hozAlign: "left",
+          formatter: "rowSelection",
+          titleFormatter: "rowSelection",
+          cellClick: function (e, cell) {
             cell.getRow().toggleSelect();
           },
-          width:50
+          width: 50
         },
-        downloadRowRange:"selected",
+        downloadRowRange: "selected",
         columns: columns,
         movableColumns: true,
       }))
@@ -394,9 +394,9 @@ export class InvoiceTableService {
             <div style="display: flex; justify-content: space-around; align-items: center;">
               <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px;" title="Download PDF">
               <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="Download XML">
-              <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px;" title="View Details">
-            </div>
-          `;
+              </div>
+              `;
+          // <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px;" title="View Details">
         },
         cellClick: (e: any, cell: CellComponent) => {
           const element = e.target as HTMLElement;
@@ -411,9 +411,9 @@ export class InvoiceTableService {
               case 'downloadXml':
                 callbacks.downloadXml(row);
                 break;
-              case 'viewDetails':
-                callbacks.viewDetails(row);
-                break;
+              // case 'viewDetails':
+              //   callbacks.viewDetails(row);
+              //   break;
             }
           }
         },
@@ -463,7 +463,7 @@ export class InvoiceTableService {
           vertAlign: "middle",
           minWidth: 200,
           hozAlign: "left",
-          cssClass: "wrap-text-cell"
+          cssClass: "wrap-text-cell",
         },
         {
           title: legalName,
@@ -476,12 +476,43 @@ export class InvoiceTableService {
         },
         {
           title: product,
-          field: "product",
-          minWidth: 200,
+          field: "productType",
+          maxWidth: 200,
+          formatter: (cell: CellComponent) => {
+            const value: string[] = cell.getValue();
+            if (!Array.isArray(value)) return '';
+
+            const iconMap: Record<string, { color: string; icon: string; title: string }> = {
+              Solar: { color: "#EE5427", icon: "assets/svg/sun.svg", title: "Solar" },
+              BESS: { color: "#57B1B1", icon: "assets/svg/battery.svg", title: "BESS" },
+              MEM: { color: "#792430", icon: "assets/svg/mem.svg", title: "MEM" }
+            };
+
+            const badges = value.map((type) => {
+              const config = iconMap[type];
+              if (!config) return '';
+              return `
+                <span style="
+                    color: white;
+                    background-color: ${config.color};
+                    border-radius: 16px;
+                    padding: 4px 10px;
+                    font-weight: 500;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 48px;
+                    height: 35px;
+                    margin-bottom: 10px;">
+                  <img src="${config.icon}" title="${config.title}">
+                </span>`;
+            }).join('');
+
+            return `<div>${badges}</div>`;
+          },
           hozAlign: "center",
           headerSort: false,
-          vertAlign: "middle",
-          cssClass: "wrap-text-cell"
+          vertAlign: "middle"
         },
         {
           title: address,
