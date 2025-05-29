@@ -153,7 +153,7 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
       map(([selectedLegalNames, products]) => {
         if (!selectedLegalNames?.length) {
           this.filtersForm.get('productType')?.setValue([]);
-          return [];
+          return products
         }
 
         const cleanedRfcs = selectedLegalNames.map((rfc: string) => rfc.trim());

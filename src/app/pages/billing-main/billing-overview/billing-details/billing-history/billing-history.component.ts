@@ -122,8 +122,8 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
 
   getBillingHistory(filters: entity.BillingOverviewFilterData) {
     this.moduleService.getBillingHistory(filters).subscribe({
-      next: (response: GeneralPaginatedResponse<entity.HistoryBillResponse>) => {
-        this.bills = response.data[0].historyBillResponse;
+      next: (response: GeneralPaginatedResponse<entity.Bill>) => {
+        this.bills = response.data;
         this.totalItems = response.totalItems;
         this.isLoading = false;
       },

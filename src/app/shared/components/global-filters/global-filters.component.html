@@ -115,8 +115,6 @@
                 <p>Consider a single month only</p>
             </div>
         </mat-menu>
-
-       
     </div>
 
     <div class="c-input mb-0" *ngIf="configGlobalFilters?.showYears">
@@ -129,11 +127,11 @@
         </mat-form-field>
     </div>
 
-     <button class="apply" [ngClass]="{
+    <button class="apply" [ngClass]="{
           'color-disabled': yearStartSelected > yearEndSelected,
           'cursor-pointer': yearStartSelected < yearEndSelected ,
           }" [disabled]="yearStartSelected > yearEndSelected"
-            [matTooltip]="yearStartSelected > yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
-            (click)="emitOrDispatchFilters()">Apply
-        </button>
+        [matTooltip]="yearStartSelected > yearEndSelected ? 'The start year cannot be greater than the end year.' :  'Pick a date or range to apply changes to the screen.'"
+        (click)="emitOrDispatchFilters()">Apply
+    </button>
 </div>

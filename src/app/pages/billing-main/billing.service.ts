@@ -114,7 +114,7 @@ export class BillingService implements OnDestroy {
       );
   }
 
-  getBillingHistory(filters: entity.BillingOverviewFilterData): Observable<GeneralPaginatedResponse<entity.HistoryBillResponse>> {
+  getBillingHistory(filters: entity.BillingOverviewFilterData): Observable<GeneralPaginatedResponse<entity.Bill>> {
     const url = `${this.domainApiUrl}/v1/Billing/History`;
     return this.http.post<any>(url,   filters );
   }

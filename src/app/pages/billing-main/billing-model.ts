@@ -364,10 +364,6 @@ export interface catalogResponseList {
   catalogResponseList: DataCatalogs[]
 }
 
-
-
-
-
 export interface Bill {
   amount: number;
   billingId: number;
