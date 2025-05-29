@@ -151,7 +151,7 @@ export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
       }
       
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: fileType });
+      const blob = new Blob([byteArray], { type: "application/"+fileType });
       
       // Create a link element and trigger the download
       const link = document.createElement('a');
