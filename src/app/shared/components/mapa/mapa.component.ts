@@ -84,11 +84,9 @@ export class MapaComponent implements AfterViewInit {
 
   createTooltips() {
     const estados = this.el.nativeElement.querySelectorAll('path');
-    console.log(estados)
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
       const dataEstado = this.tooltipsInfo.find(item => item.state.toLowerCase() === nombreEstado?.toLowerCase());
-      console.log(nombreEstado)
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';
       

@@ -38,9 +38,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const hasReloaded = localStorage.getItem('homeComponentReloaded');
     this.notificationService.loadNotificationStatuses().subscribe();
     this.notificationService.loadNotificationTypes().subscribe();
     this.notificationService.loadNotificationCenterMessages().subscribe();
+    if (!hasReloaded) {
+      localStorage.setItem('homeComponentReloaded', 'true');
+      setTimeout(() => {
+        window.location.reload();
+      }, 300); // Pequeño delay para asegurar que el componente se inicialice
+    }
 
     // Try to load user info from localStorage first (for offline support)
     const storedUserInfo = localStorage.getItem('userInfo');
@@ -159,6 +166,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    localStorage.removeItem('homeComponentReloaded');
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }

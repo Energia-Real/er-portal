@@ -35,7 +35,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
               "src/app/icons"
             ],
             "styles": [
@@ -131,7 +130,6 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/manifest.webmanifest",
               "src/app/icons"
             ],
             "styles": [
