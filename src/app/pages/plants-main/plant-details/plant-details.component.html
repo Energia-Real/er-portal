@@ -72,16 +72,15 @@
         (selectedTabChange)="onTabChange($event)">
 
         <mat-tab label="{{ 'PLANTAS.DETALLES_SITIO' | translate }}">
-          <app-site-details *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-site-details>
+          <app-site-details *ngIf="plantData" [plantData]="plantData"></app-site-details>
         </mat-tab>
 
         <mat-tab label="{{ 'PLANTAS.RENDIMIENTO_SITIO' | translate }}">
-          <app-site-performance *ngIf="plantData" [notData]="showNotdata"
-            [plantData]="plantData"></app-site-performance>
+          <app-site-performance *ngIf="plantData" [plantData]="plantData"></app-site-performance>
         </mat-tab>
 
         <mat-tab label="{{ 'PLANTAS.AHORROS' | translate }}">
-          <app-savings *ngIf="plantData" [notData]="showNotdata" [plantData]="plantData"></app-savings>
+          <app-savings *ngIf="plantData" [plantData]="plantData"></app-savings>
         </mat-tab>
 
       </mat-tab-group>

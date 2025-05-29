@@ -13,10 +13,10 @@ import { TranslationService } from '@app/shared/services/i18n/translation.servic
 
 
 @Component({
-    selector: 'app-site-details',
-    templateUrl: './site-details.component.html',
-    styleUrl: './site-details.component.scss',
-    standalone: false
+  selector: 'app-site-details',
+  templateUrl: './site-details.component.html',
+  styleUrl: './site-details.component.scss',
+  standalone: false
 })
 export class SiteDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -35,7 +35,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
   };
 
   drawerOpen: boolean = false
-  showAlert: boolean = false
 
   id: string = '';
 
@@ -52,9 +51,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id')!;
-
-    if (this.notData) this.showAlert = true;
-    else this.getSiteDetails();
+    this.getSiteDetails();
 
     setTimeout(() => {
       this.loaderMap = false;
@@ -78,7 +75,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
         this.siteDetails.additionalItems = response.additionalItems;
       },
       error: (error) => {
-        this.showAlert = true;
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.error(error)
       }
@@ -87,6 +83,6 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

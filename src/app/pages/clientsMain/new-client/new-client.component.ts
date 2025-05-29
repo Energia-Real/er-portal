@@ -118,10 +118,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
       },
       error: (error) => {
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        console.error(error)
       }
     })
   }
@@ -134,10 +133,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
       },
       error: (error) => {
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        console.error(error)
       }
     })
   }

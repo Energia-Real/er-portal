@@ -419,10 +419,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.isLoadingMapa = false;
-        let errorArray = error!.error!.errors!.errors!;
-        if (errorArray && errorArray.length === 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) {
+          const [errorItem] = errorArray;
+          this.createNotificationError(this.ERROR, errorItem.title, errorItem.descripcion, errorItem.warn);
         }
+        console.error(error)
       }
     });
   }
