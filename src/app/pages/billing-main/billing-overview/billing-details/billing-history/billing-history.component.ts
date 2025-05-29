@@ -10,7 +10,6 @@ import { InvoiceTableService } from '@app/pages/billing-main/billing-table.servi
 import { Store } from '@ngrx/store';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
-import { PageEvent } from '@angular/material/paginator.d-BpWCCOIR';
 import { start } from '@popperjs/core';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
@@ -18,6 +17,7 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-billing-history',
