@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnInit, ViewContainerRef } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
 import { Store } from '@ngrx/store';
-import { GeneralFilters, UserInfo } from '@app/shared/models/general-models';
+import { GeneralFilters, GeneralResponse, UserInfo } from '@app/shared/models/general-models';
 import { Observable } from 'rxjs';
 import tippy, { Instance } from 'tippy.js';
 import { TooltipComponent } from '../tooltip/tooltip.component';
@@ -25,6 +25,8 @@ export class MapaComponent implements AfterViewInit {
   generalFilters$!: Observable<GeneralFilters>;
   userInfo!: UserInfo;
 
+
+
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
     private el: ElementRef,
@@ -37,20 +39,26 @@ export class MapaComponent implements AfterViewInit {
   ) {
     this.createTooltips();
     this.generalFilters$ = this.store.select(state => state.filters);
+    this.generalFilters$.subscribe(filters => {
+      //this.filters = filters;
+      //this.getTooltipInfo(filters);
+    });
   }
 
   ngAfterViewInit() {
     // Los tooltips se generan después de que se obtienen los datos
+    this.createTooltips();
+
   }
 
-  /* getTooltipInfo(filters?: any) {
+  getTooltipInfo(filters?: any) {
     const encryptedData = localStorage.getItem('userInfo');
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.homeService.getDataStates({ clientId: userInfo?.clientes[0], ...filters }).subscribe({
         next: (response: GeneralResponse<entity.MapStatesResponse>) => {
   
-          response.response.kwhByStateResponse.forEach((state) => {
+          response.response.kwhByStateResponse.forEach((state:any) => {
             var color:string; 
   
             color="#FFFFFF";
@@ -72,15 +80,15 @@ export class MapaComponent implements AfterViewInit {
         }
       });
     }
-  } */
+  }
 
   createTooltips() {
     const estados = this.el.nativeElement.querySelectorAll('path');
-
+    console.log(estados)
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
       const dataEstado = this.tooltipsInfo.find(item => item.state.toLowerCase() === nombreEstado?.toLowerCase());
-
+      console.log(nombreEstado)
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';
       
