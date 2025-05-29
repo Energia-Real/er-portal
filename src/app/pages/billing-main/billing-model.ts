@@ -342,6 +342,12 @@ export interface CurrentBillResponse {
   currentBillResponse: Bill[]
 }
 
+export interface DownloadBillingResponse {
+  fileName:string; 
+  base64: string;
+  fileType:string; 
+}
+
 export interface HistoryBillResponse {
   historyBillResponse: Bill[]
 }
