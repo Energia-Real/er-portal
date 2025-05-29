@@ -181,7 +181,14 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   emitOrDispatchFilters() {
     const baseFilters = this.buildBaseFilters();
 
+    console.log(baseFilters);
+    console.log(this.configGlobalFilters);
+    
+    
+
     if (this.configGlobalFilters?.isheader) {
+      console.log('actualizar header');
+      
       // Solo para el header que compare y despache solo si cambia
       this.store.select(selectFilterState).pipe(take(1)).subscribe((current: any) => {
         if (JSON.stringify(current.generalFilters) !== JSON.stringify(baseFilters)) {

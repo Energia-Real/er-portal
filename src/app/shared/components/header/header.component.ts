@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.routeActive.includes('energy')) this.configGlobalFilters = { showDatepicker: false, showYears: true }
-    else this.configGlobalFilters = { showDatepicker: true, showYears: false }
+    else this.configGlobalFilters = {  isheader:true, showDatepicker: true, showYears: false }
 
     this.loadUserInfo();
     this.updateLocalNotifications();
