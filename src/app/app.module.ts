@@ -59,13 +59,7 @@ import { CatalogEffects } from './core/store/effects/catalogs.effects';
         }),
         EffectsModule.forRoot([CatalogEffects]),
 
-        !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: true,
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000'
-        })], providers: [
+      ], providers: [
             {
                 provide: HTTP_INTERCEPTORS,
                 useClass: TokenInterceptor,
