@@ -65,7 +65,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   }
 
   private downloadBase64File(base64: string, fileName: string, fileType: string): void {
-    console.log(fileType)
     try {
       // Create a blob from the base64 string
       const byteCharacters = atob(base64);
@@ -120,7 +119,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   getBilling() {
     this.moduleServices.getCurrentInvoices().subscribe({
       next: (response: GeneralResponse<CurrentBillResponse>) => {
-        console.log(response)
         this.bills = response.response.currentBillResponse;
         this.isLoading = false;
       },
@@ -133,7 +131,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   // Action methods for the icons
   downloadPdf(row: any): void {
-    console.log('Download PDF clicked for:', row);
     if (row.billingId == "" || row.billingId == null) {
       this.moduleServices.downloadBillingADX("pdf", row.fiscalId, row.year, row.month).subscribe({
         next: (resp: any) => {
@@ -158,7 +155,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   }
 
   downloadXml(row: any): void {
-    console.log('Download XML clicked for:', row);
     if (row.billingId == "" || row.billingId == null) {
       this.moduleServices.downloadBillingADX("xml", row.fiscalId, row.year, row.month).subscribe({
         next: (resp: GeneralResponse<DownloadBillingResponse>) => {
