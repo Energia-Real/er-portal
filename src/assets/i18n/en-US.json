@@ -373,5 +373,13 @@
       "MENSAJE_SERVICIO": "We are at your service for any questions or concerns.",
       "SEGUIR_REDES": "Follow us on"
     }
+  },
+  "MAPA": {
+    "TOOLTIPS":{
+      "ACTIVE":"Active plants",
+      "TOTAL_CAPACITY": "Total Installed Capacity kWh",
+      "TOTAL_CO2": "Total CO2 Saving",
+      "PLANTS": "plants"
+    }
   }
 }

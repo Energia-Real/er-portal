@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
@@ -277,6 +277,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getUserClient();
     this.initiLineChartData();
     this.initiLineChartDataES();
+    
+    // Subscribe to language changes to update labels
+    /* this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        //this.initializeTranslations();
+        //this.initiLineChartData();
+        this.initiLineChartDataES();
+        if (this.chart) {
+          this.chart.update();
+        }
+        if (this.chartES) {
+          this.chartES.destroy();
+          //this.initChartES();
+        }
+      }); */
   }
 
   initializeTranslations(): void {
@@ -296,10 +312,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     ];
 
     this.labels = [
-      { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
-      { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
-      { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
-      { text: 'Expenses without Energía Real (MXN)', color: 'rgba(239, 68, 68, 1)' },
+      { text: this.translationService.instant('GRAFICOS.CFE_SUBTOTAL'), color: 'rgba(121, 36, 48, 1)' },
+      { text: this.translationService.instant('GRAFICOS.ENERGIA_REAL_SUBTOTAL'), color: 'rgba(238, 84, 39, 1)' },
+      { text: this.translationService.instant('GRAFICOS.AHORRO_ECONOMICO'), color: 'rgba(87, 177, 177, 1)' },
+      { text: this.translationService.instant('GRAFICOS.GASTOS_SIN_ENERGIA_REAL'), color: 'rgba(239, 68, 68, 1)' },
     ];
   }
 
@@ -310,21 +326,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         {
           type: 'bar',
           data: [this.economicSavingsData?.cfeSubtotal],
-          label: 'CFE Subtotal (MXN)',
+          label: this.translationService.instant('GRAFICOS.CFE_SUBTOTAL'),
           backgroundColor: 'rgba(121, 36, 48, 1)',
           maxBarThickness: 112,
         },
         {
           type: 'bar',
           data: [this.economicSavingsData?.energiaRealSubtotal],
-          label: 'Energía Real Subtotal (MXN)',
+          label: this.translationService.instant('GRAFICOS.ENERGIA_REAL_SUBTOTAL'),
           backgroundColor: 'rgba(238, 84, 39, 1)',
           maxBarThickness: 112,
         },
         {
           type: 'bar',
           data: [this.economicSavingsData?.economicSaving],
-          label: 'Economic Savings (MXN)',
+          label: this.translationService.instant('GRAFICOS.AHORRO_ECONOMICO'),
           backgroundColor: 'rgba(87, 177, 177, 1)',
           order: 2,
           maxBarThickness: 112,
@@ -350,12 +366,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [],
-          label: 'Energy Production',
+          label: this.translationService.instant('GRAFICOS.PRODUCCION_ENERGIA'),
           backgroundColor: 'rgba(121, 36, 48, 1)',
         },
         {
           data: [],
-          label: 'Energy Consumption',
+          label: this.translationService.instant('GRAFICOS.CONSUMO_ENERGIA'),
           backgroundColor: 'rgba(87, 177, 177, 1)',
         }
       ]
@@ -490,12 +506,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           datasets: [
             {
               data: data.energyProduction,
-              label: 'Energy Production',
+              label: this.translationService.instant('GRAFICOS.PRODUCCION_ENERGIA'),
               backgroundColor: 'rgba(121, 36, 48, 1)',
             },
             {
               data: data.energyConsumption,
-              label: 'Energy Consumption',
+              label: this.translationService.instant('GRAFICOS.CONSUMO_ENERGIA'),
               backgroundColor: 'rgba(87, 177, 177, 1)',
             },
           ],
@@ -568,14 +584,14 @@ export class HomeComponent implements OnInit, OnDestroy {
             {
               type: 'bar',
               data: [[0, response.response.cfeSubtotal]] as any,
-              label: 'CFE Subtotal (MXN)',
+              label: this.translationService.instant('GRAFICOS.CFE_SUBTOTAL'),
               backgroundColor: 'rgba(121, 36, 48, 1)',
               maxBarThickness: 60,
             },
             {
               type: 'bar',
               data: [[response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal]] as any,
-              label: 'Energía Real Subtotal (MXN)',
+              label: this.translationService.instant('GRAFICOS.ENERGIA_REAL_SUBTOTAL'),
               backgroundColor: 'rgba(238, 84, 39, 1)',
               maxBarThickness: 60,
 
@@ -584,7 +600,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             {
               type: 'bar',
               data: [[response.response.energiaRealSubtotal + response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal + response.response.economicSaving]] as any,
-              label: 'Economic Savings (MXN)',
+              label: this.translationService.instant('GRAFICOS.AHORRO_ECONOMICO'),
               backgroundColor: 'rgba(87, 177, 177, 1)',
               maxBarThickness: 60,
 
@@ -592,7 +608,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             {
               type: 'bar',
               data: [[0, response.response.expensesWithoutEnergiaReal]] as any,
-              label: 'Expenses without Energía Real (MXN)',
+              label: this.translationService.instant('GRAFICOS.GASTOS_SIN_ENERGIA_REAL'),
               backgroundColor: 'rgba(239, 68, 68, 1)',
               maxBarThickness: 60,
             },
