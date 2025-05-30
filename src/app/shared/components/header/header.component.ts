@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component,  Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import packageJson from '../../../../../package.json';
 import { Store } from '@ngrx/store';
 import { EditNotificationStatus, GeneralFilters, UserInfo } from '@app/shared/models/general-models';
@@ -25,7 +25,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   version = packageJson.version;
 
   configGlobalFilters: ConfigGlobalFilters = {
-    isheader: true,
     showDatepicker: true,
     showYears: false
   }
@@ -50,16 +49,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private encryptionService: EncryptionService,
 
   ) {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.routeActive = this.router.url.split('?')[0]);
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      this.routeActive = this.router.url.split('?')[0];
+      this.updateConfigGlobalFilters();
+    });
   }
 
   ngOnInit(): void {
-    if (this.routeActive.includes('energy')) this.configGlobalFilters = { showDatepicker: false, showYears: true }
-    else this.configGlobalFilters = {  isheader:true, showDatepicker: true, showYears: false }
-
     this.loadUserInfo();
     this.updateLocalNotifications();
+  }
+
+  updateConfigGlobalFilters() {
+    if (this.routeActive.includes('energy')) this.configGlobalFilters = { showDatepicker: false, showYears: true }
+    else this.configGlobalFilters = { showDatepicker: true, showYears: false }
   }
 
   updateLocalNotifications() {
@@ -101,7 +104,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   signOut() {
     localStorage.removeItem('userEnergiaReal');
-    localStorage.removeItem('generalFilters');
     this.router.navigate(['']);
   }
 

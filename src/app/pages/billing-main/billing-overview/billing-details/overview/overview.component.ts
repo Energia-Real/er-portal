@@ -23,7 +23,6 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chartComponent!: BaseChartDirective;
 
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
-
   lineChartOptions: ChartOptions<'bar' | 'line'> = {}
 
   datasetVisibility: boolean[] = [true, true, true];
@@ -70,6 +69,7 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
         mode: 'index',
         intersect: false,
       },
+      
       plugins: {
         tooltip: {
           usePointStyle: true,

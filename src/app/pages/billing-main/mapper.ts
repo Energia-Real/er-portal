@@ -105,23 +105,29 @@ export class Mapper {
 			'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 		];
 
-		const fullMonths = Array.from({ length: 12 }, (_, i) => {
-			const found = response.response.months.find(m => m.month === i + 1);
+		const months = response.response.months;
+
+		const ordered = [...months].sort((a: any, b: any) =>
+			a.year !== b.year ? a.year - b.year : a.month - b.month
+		);
+
+		const chartData = ordered.map((m: any) => {
+			const label = `${monthsMap[m.month - 1]} ${String(m.year).slice(-2)}`;
 			return {
-				label: `${monthsMap[i]} 25`,
-				billedEnergyProduced: found ? found.billedEnergyProduced : 0,
-				billedEnergy: found ? found.billedEnergy : 0,
-				billedEnergyAmouth: found ? found.billedEnergyAmouth : 0,
+				label,
+				billedEnergyProduced: m.billedEnergyProduced || 0,
+				billedEnergy: m.billedEnergy || 0,
+				billedEnergyAmouth: m.billedEnergyAmouth || 0,
 			};
 		});
 
 		return {
-			labels: fullMonths.map(m => m.label),
+			labels: chartData.map(m => m.label),
 			datasets: [
 				{
 					type: 'bar',
 					label: 'Energy Produced (kWh)',
-					data: fullMonths.map(m => +m.billedEnergyProduced.toFixed(2)),
+					data: chartData.map(m => +m.billedEnergyProduced.toFixed(2)),
 					backgroundColor: '#F97316',
 					barPercentage: 0.8,
 					categoryPercentage: 0.9,
@@ -130,7 +136,7 @@ export class Mapper {
 				{
 					type: 'bar',
 					label: 'Energy Billed (kWh)',
-					data: fullMonths.map(m => +m.billedEnergy.toFixed(2)),
+					data: chartData.map(m => +m.billedEnergy.toFixed(2)),
 					backgroundColor: '#57B1B1',
 					barPercentage: 0.8,
 					categoryPercentage: 0.9,
@@ -138,12 +144,12 @@ export class Mapper {
 				},
 				{
 					type: 'line',
-					data: fullMonths.map(m => +m.billedEnergyAmouth.toFixed(2)),
+					label: 'Total Amount',
+					data: chartData.map(m => +m.billedEnergyAmouth.toFixed(2)),
 					borderColor: '#6B021A',
 					backgroundColor: '#6B021A',
 					pointBackgroundColor: '#6B021A',
 					pointBorderColor: '#6B021A',
-					label: 'Total Amount',
 					order: 0,
 					yield: true,
 				}
