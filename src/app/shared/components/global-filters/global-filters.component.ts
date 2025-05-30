@@ -115,14 +115,13 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
 
   initFiltersConfig() {
     const {
-      isheader,
       showClientsFilter,
       showLegalNamesFilter,
       showProductFilter,
       clientsIndividual
     } = this.configGlobalFilters ?? {};
 
-    if (isheader) this.getFilters();
+    this.getFilters();
     if (clientsIndividual) this.store.dispatch(CatalogActions.loadClientsCatalog());
     if (showClientsFilter || showLegalNamesFilter || showProductFilter) {
       this.store.dispatch(CatalogActions.loadAllCatalogs());
@@ -181,16 +180,7 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   emitOrDispatchFilters() {
     const baseFilters = this.buildBaseFilters();
 
-    if (this.configGlobalFilters?.isheader) {
-      // Solo para el header que compare y despache solo si cambia
-      this.store.select(selectFilterState).pipe(take(1)).subscribe((current: any) => {
-        if (JSON.stringify(current.generalFilters) !== JSON.stringify(baseFilters)) {
-          this.store.dispatch(setGeneralFilters({ generalFilters: baseFilters }));
-          this.updateUrlWithFilters(baseFilters);
-        }
-      });
-    } else {
-      // Si no es header, agregamos los filtros locales
+    if (this.configGlobalFilters?.isLocal) {
       const localFilters = {
         ...baseFilters,
         customerNames: this.filtersForm.value.customerName,
@@ -200,6 +190,13 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
 
       this.filtersChanged.emit(localFilters);
     }
+
+    this.store.select(selectFilterState).pipe(take(1)).subscribe((current: any) => {
+      if (JSON.stringify(current.generalFilters) !== JSON.stringify(baseFilters)) {
+        this.store.dispatch(setGeneralFilters({ generalFilters: baseFilters }));
+        this.updateUrlWithFilters(baseFilters);
+      }
+    });
   }
 
   buildBaseFilters() {
@@ -213,7 +210,7 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
       endDate,
     };
 
-    if (this.configGlobalFilters?.isheader) baseFilters.year = this.selectedYearSelect?.value || this.yearStartSelected.toString();
+    if (!this.configGlobalFilters?.isLocal) baseFilters.year = this.selectedYearSelect?.value || this.yearStartSelected.toString();
 
     return baseFilters;
   }

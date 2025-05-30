@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { DrawerGeneral, GeneralFilters, GeneralResponse, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { DrawerGeneral, GeneralResponse, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
-import { combineLatest, distinctUntilChanged, Observable, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
-import { ColumnDefinition, CellComponent, Options } from 'tabulator-tables';
+import { Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { ColumnDefinition, Options } from 'tabulator-tables';
 import { BillingService } from '../../billing.service';
 import { Bill, CurrentBillResponse, DownloadBillingResponse } from '../../billing-model';
-import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
@@ -26,16 +25,12 @@ import { NotificationComponent } from '@app/shared/components/notification/notif
 })
 export class CurrentBillingComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  generalFilters!: GeneralFilters;
-  generalFilters$!: Observable<GeneralFilters>;
 
   @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
-
   bills!: Bill[];
-  private monthAbbrPipe = new MonthAbbreviationPipe();
 
   tableConfig!: Options;
   columns: ColumnDefinition[] = [];
@@ -48,28 +43,15 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
 
   constructor(
-    private store: Store<{ filters: GeneralFilters }>,
+    private store: Store,
     private invoiceTableService: InvoiceTableService,
     private moduleServices: BillingService,
     private translationService: TranslationService,
     private notificationDataService: NotificationDataService,
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
-    private dialog: MatDialog,
-
-
+    private dialog: MatDialog
   ) {
-    
-    this.generalFilters$ = this.store.select(state => state.filters);
-    combineLatest([
-      this.generalFilters$.pipe(distinctUntilChanged()),
-    ])
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([generalFilters]) => {
-        this.generalFilters = generalFilters;
-        this.getBilling();
-      });
-
     this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
       this.drawerOpenID = resp.drawerOpen;
       this.drawerAction = resp.drawerAction;
@@ -79,30 +61,28 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadTableColumns();
-
   }
 
-  
-   private downloadBase64File(base64: string, fileName: string, fileType: string): void {
+  private downloadBase64File(base64: string, fileName: string, fileType: string): void {
     console.log(fileType)
     try {
       // Create a blob from the base64 string
       const byteCharacters = atob(base64);
       const byteNumbers = new Array(byteCharacters.length);
-      
+
       for (let i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
       }
-      
+
       const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: "application/"+fileType });
-      
+      const blob = new Blob([byteArray], { type: "application/" + fileType });
+
       // Create a link element and trigger the download
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
       link.download = fileName;
       link.click();
-      
+
       // Clean up
       window.URL.revokeObjectURL(link.href);
     } catch (error) {
@@ -137,11 +117,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   }
 
   getBilling() {
-    const filters = {
-      ...this.generalFilters
-    };
-
-    this.moduleServices.getCurrentInvoices(filters).subscribe({
+    this.moduleServices.getCurrentInvoices().subscribe({
       next: (response: GeneralResponse<CurrentBillResponse>) => {
         console.log(response)
         this.bills = response.response.currentBillResponse;
@@ -157,9 +133,9 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   // Action methods for the icons
   downloadPdf(row: any): void {
     console.log('Download PDF clicked for:', row);
-    if(row.billingId=="" || row.billingId==null){
-      this.moduleServices.downloadBillingADX("pdf",row.fiscalId,row.year,row.month).subscribe({
-        next:(resp:any) =>{
+    if (row.billingId == "" || row.billingId == null) {
+      this.moduleServices.downloadBillingADX("pdf", row.fiscalId, row.year, row.month).subscribe({
+        next: (resp: any) => {
           this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
         },
         error: (error) => {
@@ -167,9 +143,9 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
           if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
         }
       })
-    }else{
-      this.moduleServices.downloadBillingNetsuite("pdf",row.billingId).subscribe({
-        next:(resp:GeneralResponse<DownloadBillingResponse>) =>{
+    } else {
+      this.moduleServices.downloadBillingNetsuite("pdf", row.billingId).subscribe({
+        next: (resp: GeneralResponse<DownloadBillingResponse>) => {
           this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
         },
         error: (error) => {
@@ -182,9 +158,9 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   downloadXml(row: any): void {
     console.log('Download XML clicked for:', row);
-    if(row.billingId=="" || row.billingId==null){
-      this.moduleServices.downloadBillingADX("xml",row.fiscalId,row.year,row.month).subscribe({
-        next:(resp:GeneralResponse<DownloadBillingResponse>) =>{
+    if (row.billingId == "" || row.billingId == null) {
+      this.moduleServices.downloadBillingADX("xml", row.fiscalId, row.year, row.month).subscribe({
+        next: (resp: GeneralResponse<DownloadBillingResponse>) => {
           this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
         },
         error: (error) => {
@@ -192,9 +168,9 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
           if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
         }
       })
-    }else{
-      this.moduleServices.downloadBillingNetsuite("xml",row.billingId).subscribe({
-        next:(resp:any) =>{
+    } else {
+      this.moduleServices.downloadBillingNetsuite("xml", row.billingId).subscribe({
+        next: (resp: any) => {
           this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
         },
         error: (error) => {
@@ -206,10 +182,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   }
 
   viewDetails(row: any): void {
-    let objData: any = {
-      id: ''
-    }
-
     this.drawerInfo = row
     this.updDraweStateView(true);
   }
@@ -245,7 +217,6 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
       data: dataNotificationModal
     });
   }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
