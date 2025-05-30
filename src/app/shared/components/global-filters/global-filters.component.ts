@@ -36,6 +36,8 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 
   years: { value: string }[] = [
+    { value: '2022' },
+    { value: '2023' },
     { value: '2024' },
     { value: '2025' },
   ];

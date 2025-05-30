@@ -61,6 +61,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadTableColumns();
+    this.getBilling();
   }
 
   private downloadBase64File(base64: string, fileName: string, fileType: string): void {

@@ -141,7 +141,7 @@ export class BillingService implements OnDestroy {
 
   getCurrentInvoices(): Observable<GeneralResponse<entity.CurrentBillResponse>> {
     const url = `${this.performanceApiUrl}/Billing/Current`;
-    return this.http.post<any>(url, null);
+    return this.http.post<any>(url, {});
   }
 
   getBillingDetails(
