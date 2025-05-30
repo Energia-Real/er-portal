@@ -1,7 +1,7 @@
 
 
 export interface ConfigGlobalFilters {
-  isheader?: boolean;
+  isLocal?: boolean;
   showDatepicker?: boolean;
   showYears?: boolean;
   showClientsFilter?: boolean;

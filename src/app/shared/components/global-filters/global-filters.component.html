@@ -48,6 +48,16 @@
         <mat-menu #monthMenu1="matMenu" class="custom-menu">
             <div class="years">
                 <p class="cursor-pointer"
+                    [ngClass]="{ 'selected-year': 2022 == yearStartSelected, 'default-year': 2022 != yearStartSelected }"
+                    (click)="updateYearSelected(2022, 'start'); $event.stopPropagation()">
+                    2022
+                </p>
+                <p class="cursor-pointer"
+                    [ngClass]="{ 'selected-year': 2023 == yearStartSelected, 'default-year': 2023 != yearStartSelected }"
+                    (click)="updateYearSelected(2023, 'start'); $event.stopPropagation()">
+                    2023
+                </p>
+                <p class="cursor-pointer"
                     [ngClass]="{ 'selected-year': 2024 == yearStartSelected, 'default-year': 2024 != yearStartSelected }"
                     (click)="updateYearSelected(2024, 'start'); $event.stopPropagation()">
                     2024
@@ -80,6 +90,21 @@
 
         <mat-menu #monthMenu2="matMenu" class="custom-menu">
             <div class="years">
+                <p [ngClass]="{ 
+              'selected-year': 2022 == yearEndSelected && !singleMonth.value, 
+              'default-year': 2022 != yearEndSelected || singleMonth.value,
+              'cursor-pointer' : !singleMonth.value }"
+                    (click)="updateYearSelected(2022, 'end'); $event.stopPropagation()">
+                    2022
+                </p>
+
+                <p [ngClass]="{ 
+              'selected-year': 2023 == yearEndSelected && !singleMonth.value, 
+              'default-year': 2023 != yearEndSelected || singleMonth.value,
+              'cursor-pointer' : !singleMonth.value }"
+                    (click)="updateYearSelected(2023, 'end'); $event.stopPropagation()">
+                    2023
+                </p>
                 <p [ngClass]="{ 
               'selected-year': 2024 == yearEndSelected && !singleMonth.value, 
               'default-year': 2024 != yearEndSelected || singleMonth.value,
