@@ -365,12 +365,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [],
-          label: 'Energy Production',
+          label: this.translationService.instant('TABLA.PRODUCCION_ENERGIA'),
           backgroundColor: 'rgba(121, 36, 48, 1)',
         },
         {
           data: [],
-          label: 'Energy Consumption',
+          label: this.translationService.instant('TABLA.CONSUMO_ENERGIA'),
           backgroundColor: 'rgba(87, 177, 177, 1)',
         }
       ]
@@ -507,12 +507,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           datasets: [
             {
               data: data.energyProduction,
-              label: this.translationService.instant('FACTURACION.ENERGIA_PRODUCIDA'),
+              label: this.translationService.instant('TABLA.PRODUCCION_ENERGIA'),
               backgroundColor: 'rgba(121, 36, 48, 1)',
             },
             {
               data: data.energyConsumption,
-              label: this.translationService.instant('FACTURACION.ENERGIA_CONSUMIDA'),
+              label: this.translationService.instant('TABLA.CONSUMO_ENERGIA'),
               backgroundColor: 'rgba(87, 177, 177, 1)',
             },
           ],
