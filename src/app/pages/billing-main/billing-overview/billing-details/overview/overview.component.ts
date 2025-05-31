@@ -126,6 +126,7 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
     };
   }
 
+
   getFilters() {
     this.filters = {
       customerNames: this.filterData?.customerNames ?? [],

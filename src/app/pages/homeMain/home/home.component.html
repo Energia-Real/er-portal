@@ -95,13 +95,13 @@
                             </h2>
                         </div>
 
-                        <div *ngIf="co2Saving else notDataTable">
+                        <!-- <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
                             <h2 class="text-base font-normal">{{ 'HOME.EQUIVALENTE_A' | translate }} <br>
                                 <span>{{co2Saving?.ev_charges_equivalent || '' }} {{ 'HOME.CARGAS_OLYMPIC' | translate
                                     }}</span>
                             </h2>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -266,7 +266,7 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="siteStatus">
+                        <!-- <ng-container matColumnDef="siteStatus">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="target">{{ 'TABLA.ESTADO_SITIO' | translate }}</p>
                             </th>
@@ -296,7 +296,7 @@
                                         matTooltip="{{ 'TABLA.ESTADO_DESCONOCIDO' | translate }}">help_outline</mat-icon>
                                 </div>
                             </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <tr *matNoDataRow>
                             <td class="mat-cell" [attr.colspan]="displayedColumns.length">

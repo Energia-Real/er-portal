@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
@@ -57,6 +57,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+
+
 
   months: entity.Months[] = [];
   labels: entity.Labels[] = [];
@@ -137,7 +139,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     'energyProduction',
     'solarCoverage',
     'co2Saving',
-    'siteStatus'
+    // 'siteStatus'
   ];
 
   lineChartData!: ChartConfiguration<'bar'>['data'];
@@ -257,6 +259,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     rangeDateEnd: [{ value: '', disabled: false }]
   });
 
+  filters: any
+
   constructor(
     private moduleServices: HomeService,
     private router: Router,
@@ -277,6 +281,23 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getUserClient();
     this.initiLineChartData();
     this.initiLineChartDataES();
+
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.lineChartDataES.datasets.forEach((dataset: any) => {
+          if (dataset['labelKey']) {
+            dataset.label = this.translationService.instant(dataset['labelKey']);
+          }
+        });
+
+        this.getEconomicSavings(this.filters);
+        this.getDataClients(this.filters);
+
+        if (this.chart?.chart) {
+          this.chart.chart.update();
+        }
+      });
   }
 
   initializeTranslations(): void {
@@ -384,6 +405,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           this.isLoadingMapa = true;
 
+          this.filters = { ...generalFilters, clientId: userInfo.clientes[0] }
+
           this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
           this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
           this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
@@ -477,44 +500,87 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
+  // getDataClients(filters: GeneralFilters) {
+  //   this.moduleServices.getDataClients(filters).subscribe({
+  //     next: (response: entity.DataRespSavingDetailsMapper) => {
+  //       let data = this.mappingData(response.dataFormatted);
+  //       const unitMeasure = response.unitMeasu
+
+  //       this.updateChartUnitMeasure(unitMeasure);
+
+  //       this.lineChartData = {
+  //         labels: data.labels,
+  //         datasets: [
+  //           {
+  //             data: data.energyProduction,
+  //             label: 'Energy Production',
+  //             backgroundColor: 'rgba(121, 36, 48, 1)',
+  //           },
+  //           {
+  //             data: data.energyConsumption,
+  //             label: 'Energy Consumption',
+  //             backgroundColor: 'rgba(87, 177, 177, 1)',
+  //           },
+  //         ],
+  //       };
+
+  //       this.isLoadingECWidget = false;
+  //       this.dataSource.data = response.data;
+  //       this.dataSource.sort = this.sort;
+  //       this.selection.clear();
+  //     },
+  //     error: (error) => {
+  //       this.isLoadingECWidget = false;
+  //       let errorArray = error!.error!.errors!.errors!;
+  //       if (errorArray && errorArray.length === 1) {
+  //         this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+  //       }
+  //     },
+  //   });
+  // }
+
   getDataClients(filters: GeneralFilters) {
-    this.moduleServices.getDataClients(filters).subscribe({
-      next: (response: entity.DataRespSavingDetailsMapper) => {
-        let data = this.mappingData(response.dataFormatted);
-        const unitMeasure = response.unitMeasu
+  this.moduleServices.getDataClients(filters).subscribe({
+    next: (response: entity.DataRespSavingDetailsMapper) => {
+      let data = this.mappingData(response.dataFormatted);
+      const unitMeasure = response.unitMeasu;
 
-        this.updateChartUnitMeasure(unitMeasure);
+      this.updateChartUnitMeasure(unitMeasure);
 
-        this.lineChartData = {
-          labels: data.labels,
-          datasets: [
-            {
-              data: data.energyProduction,
-              label: 'Energy Production',
-              backgroundColor: 'rgba(121, 36, 48, 1)',
-            },
-            {
-              data: data.energyConsumption,
-              label: 'Energy Consumption',
-              backgroundColor: 'rgba(87, 177, 177, 1)',
-            },
-          ],
-        };
+      this.lineChartData = {
+        labels: data.labels,
+        datasets: [
+          {
+            data: data.energyProduction,
+            // labelKey: 'FACTURACION.ENERGIA_PRODUCIDA',
+            label: this.translationService.instant('FACTURACION.ENERGIA_PRODUCIDA'),
+            backgroundColor: 'rgba(121, 36, 48, 1)',
+          },
+          {
+            data: data.energyConsumption,
+            // labelKey: 'FACTURACION.ENERGIA_CONSUMIDA',
 
-        this.isLoadingECWidget = false;
-        this.dataSource.data = response.data;
-        this.dataSource.sort = this.sort;
-        this.selection.clear();
-      },
-      error: (error) => {
-        this.isLoadingECWidget = false;
-        let errorArray = error!.error!.errors!.errors!;
-        if (errorArray && errorArray.length === 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
-        }
-      },
-    });
-  }
+            label: this.translationService.instant('FACTURACION.ENERGIA_CONSUMIDA'),
+            backgroundColor: 'rgba(87, 177, 177, 1)',
+          },
+        ],
+      };
+
+      this.isLoadingECWidget = false;
+      this.dataSource.data = response.data;
+      this.dataSource.sort = this.sort;
+      this.selection.clear();
+    },
+    error: (error) => {
+      this.isLoadingECWidget = false;
+      let errorArray = error!.error!.errors!.errors!;
+      if (errorArray && errorArray.length === 1) {
+        this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+      }
+    },
+  });
+}
+
 
   updateChartUnitMeasure(unitMeasure: string) {
     this.unitMeasure = unitMeasure;
@@ -562,46 +628,52 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.moduleServices.getSavings(filters).subscribe({
       next: (response) => {
         this.isLoadingESWidget = false;
+
+        const translatedLabels = {
+          cfeSubtotal: this.translationService.instant('GRAFICOS.CFE_SUBTOTAL'),
+          energiaRealSubtotal: this.translationService.instant('GRAFICOS.ENERGIA_REAL_SUBTOTAL'),
+          economicSaving: this.translationService.instant('GRAFICOS.AHORRO_ECONOMICO'),
+          expensesWithoutEnergiaReal: this.translationService.instant('GRAFICOS.GASTOS_SIN_ENERGIA_REAL')
+        };
+
         this.lineChartDataES = {
           labels: [''],
           datasets: [
             {
               type: 'bar',
               data: [[0, response.response.cfeSubtotal]] as any,
-              label: 'CFE Subtotal (MXN)',
+              label: translatedLabels.cfeSubtotal,
               backgroundColor: 'rgba(121, 36, 48, 1)',
               maxBarThickness: 60,
             },
             {
               type: 'bar',
               data: [[response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal]] as any,
-              label: 'Energía Real Subtotal (MXN)',
+              label: translatedLabels.energiaRealSubtotal,
               backgroundColor: 'rgba(238, 84, 39, 1)',
               maxBarThickness: 60,
-
-
             },
             {
               type: 'bar',
               data: [[response.response.energiaRealSubtotal + response.response.cfeSubtotal, response.response.energiaRealSubtotal + response.response.cfeSubtotal + response.response.economicSaving]] as any,
-              label: 'Economic Savings (MXN)',
+              label: translatedLabels.economicSaving,
               backgroundColor: 'rgba(87, 177, 177, 1)',
               maxBarThickness: 60,
-
             },
             {
               type: 'bar',
               data: [[0, response.response.expensesWithoutEnergiaReal]] as any,
-              label: 'Expenses without Energía Real (MXN)',
+              label: translatedLabels.expensesWithoutEnergiaReal,
               backgroundColor: 'rgba(239, 68, 68, 1)',
               maxBarThickness: 60,
-            },
-
+            }
           ]
         };
+
         this.displayChartES = true;
         this.initChartES();
       },
+
       error: (error) => {
         this.isLoadingESWidget = false;
         let errorArray = error!.error!.errors!.errors!;
