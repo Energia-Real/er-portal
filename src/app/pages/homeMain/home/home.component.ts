@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   months: entity.Months[] = [];
-  labels: entity.Labels[] = [];
+  labels: entity.Labels[] | any = [];
 
   lineChartDataES!: ChartConfiguration<'bar'>['data'];
 
@@ -291,6 +291,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         });
 
+        this.initializeTranslations();
+
+
         this.getEconomicSavings(this.filters);
         this.getDataClients(this.filters);
 
@@ -301,28 +304,30 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   initializeTranslations(): void {
-    this.months = [
-      { value: '01', viewValue: this.translationService.instant('MESES.ENERO') },
-      { value: '02', viewValue: this.translationService.instant('MESES.FEBRERO') },
-      { value: '03', viewValue: this.translationService.instant('MESES.MARZO') },
-      { value: '04', viewValue: this.translationService.instant('MESES.ABRIL') },
-      { value: '05', viewValue: this.translationService.instant('MESES.MAYO') },
-      { value: '06', viewValue: this.translationService.instant('MESES.JUNIO') },
-      { value: '07', viewValue: this.translationService.instant('MESES.JULIO') },
-      { value: '08', viewValue: this.translationService.instant('MESES.AGOSTO') },
-      { value: '09', viewValue: this.translationService.instant('MESES.SEPTIEMBRE') },
-      { value: '10', viewValue: this.translationService.instant('MESES.OCTUBRE') },
-      { value: '11', viewValue: this.translationService.instant('MESES.NOVIEMBRE') },
-      { value: '12', viewValue: this.translationService.instant('MESES.DICIEMBRE') }
+    const keys = [
+      'GRAFICOS.CFE_SUBTOTAL',
+      'GRAFICOS.ENERGIA_REAL_SUBTOTAL',
+      'GRAFICOS.AHORRO_ECONOMICO',
+      'GRAFICOS.GASTOS_SIN_ENERGIA_REAL'
     ];
 
-    this.labels = [
-      { text: 'CFE Subtotal (MXN)', color: 'rgba(121, 36, 48, 1)' },
-      { text: 'Energía Real Subtotal (MXN)', color: 'rgba(238, 84, 39, 1)' },
-      { text: 'Economic Savings (MXN)', color: 'rgba(87, 177, 177, 1)' },
-      { text: 'Expenses without Energía Real (MXN)', color: 'rgba(239, 68, 68, 1)' },
-    ];
+    const translationObservables = keys.map(key =>
+      this.translationService.getTranslation(key)
+    );
+
+    forkJoin(translationObservables).subscribe(([cfe, energia, ahorro, gastos]) => {
+      this.labels = [
+        { textKey: keys[0], text: cfe, color: 'rgba(121, 36, 48, 1)' },
+        { textKey: keys[1], text: energia, color: 'rgba(238, 84, 39, 1)' },
+        { textKey: keys[2], text: ahorro, color: 'rgba(87, 177, 177, 1)' },
+        { textKey: keys[3], text: gastos, color: 'rgba(239, 68, 68, 1)' },
+      ];
+
+      this.labels = [...this.labels]; 
+    });
   }
+
+
 
   initiLineChartDataES() {
     this.lineChartDataES = {
@@ -331,37 +336,26 @@ export class HomeComponent implements OnInit, OnDestroy {
         {
           type: 'bar',
           data: [this.economicSavingsData?.cfeSubtotal],
-          label: 'CFE Subtotal (MXN)',
+          label: this.translationService.instant('GRAFICOS.CFE_SUBTOTAL'),
           backgroundColor: 'rgba(121, 36, 48, 1)',
           maxBarThickness: 112,
         },
         {
           type: 'bar',
           data: [this.economicSavingsData?.energiaRealSubtotal],
-          label: 'Energía Real Subtotal (MXN)',
+          label: this.translationService.instant('GRAFICOS.ENERGIA_REAL_SUBTOTAL'),
           backgroundColor: 'rgba(238, 84, 39, 1)',
           maxBarThickness: 112,
         },
         {
           type: 'bar',
           data: [this.economicSavingsData?.economicSaving],
-          label: 'Economic Savings (MXN)',
+          label: this.translationService.instant('GRAFICOS.AHORRO_ECONOMICO'),
           backgroundColor: 'rgba(87, 177, 177, 1)',
           order: 2,
           maxBarThickness: 112,
         },
-        /* {
-          type: 'line',
-          data: [this.economicSavingsData.expensesWithoutEnergiaReal],
-          label: 'Expenses without Energía Real (MXN)',
-          backgroundColor: 'rgba(239, 68, 68, 1)',
-          borderColor: 'rgba(239, 68, 68, 1)',
-          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-          pointBorderColor: 'rgba(239, 68, 68, 1)',
-          pointRadius: 8,
-          order: 1
-        } */
-      ]
+      ],
     };
   }
 
@@ -500,86 +494,44 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  // getDataClients(filters: GeneralFilters) {
-  //   this.moduleServices.getDataClients(filters).subscribe({
-  //     next: (response: entity.DataRespSavingDetailsMapper) => {
-  //       let data = this.mappingData(response.dataFormatted);
-  //       const unitMeasure = response.unitMeasu
-
-  //       this.updateChartUnitMeasure(unitMeasure);
-
-  //       this.lineChartData = {
-  //         labels: data.labels,
-  //         datasets: [
-  //           {
-  //             data: data.energyProduction,
-  //             label: 'Energy Production',
-  //             backgroundColor: 'rgba(121, 36, 48, 1)',
-  //           },
-  //           {
-  //             data: data.energyConsumption,
-  //             label: 'Energy Consumption',
-  //             backgroundColor: 'rgba(87, 177, 177, 1)',
-  //           },
-  //         ],
-  //       };
-
-  //       this.isLoadingECWidget = false;
-  //       this.dataSource.data = response.data;
-  //       this.dataSource.sort = this.sort;
-  //       this.selection.clear();
-  //     },
-  //     error: (error) => {
-  //       this.isLoadingECWidget = false;
-  //       let errorArray = error!.error!.errors!.errors!;
-  //       if (errorArray && errorArray.length === 1) {
-  //         this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
-  //       }
-  //     },
-  //   });
-  // }
-
   getDataClients(filters: GeneralFilters) {
-  this.moduleServices.getDataClients(filters).subscribe({
-    next: (response: entity.DataRespSavingDetailsMapper) => {
-      let data = this.mappingData(response.dataFormatted);
-      const unitMeasure = response.unitMeasu;
+    this.moduleServices.getDataClients(filters).subscribe({
+      next: (response: entity.DataRespSavingDetailsMapper) => {
+        let data = this.mappingData(response.dataFormatted);
+        const unitMeasure = response.unitMeasu;
 
-      this.updateChartUnitMeasure(unitMeasure);
+        this.updateChartUnitMeasure(unitMeasure);
 
-      this.lineChartData = {
-        labels: data.labels,
-        datasets: [
-          {
-            data: data.energyProduction,
-            // labelKey: 'FACTURACION.ENERGIA_PRODUCIDA',
-            label: this.translationService.instant('FACTURACION.ENERGIA_PRODUCIDA'),
-            backgroundColor: 'rgba(121, 36, 48, 1)',
-          },
-          {
-            data: data.energyConsumption,
-            // labelKey: 'FACTURACION.ENERGIA_CONSUMIDA',
+        this.lineChartData = {
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.energyProduction,
+              label: this.translationService.instant('FACTURACION.ENERGIA_PRODUCIDA'),
+              backgroundColor: 'rgba(121, 36, 48, 1)',
+            },
+            {
+              data: data.energyConsumption,
+              label: this.translationService.instant('FACTURACION.ENERGIA_CONSUMIDA'),
+              backgroundColor: 'rgba(87, 177, 177, 1)',
+            },
+          ],
+        };
 
-            label: this.translationService.instant('FACTURACION.ENERGIA_CONSUMIDA'),
-            backgroundColor: 'rgba(87, 177, 177, 1)',
-          },
-        ],
-      };
-
-      this.isLoadingECWidget = false;
-      this.dataSource.data = response.data;
-      this.dataSource.sort = this.sort;
-      this.selection.clear();
-    },
-    error: (error) => {
-      this.isLoadingECWidget = false;
-      let errorArray = error!.error!.errors!.errors!;
-      if (errorArray && errorArray.length === 1) {
-        this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
-      }
-    },
-  });
-}
+        this.isLoadingECWidget = false;
+        this.dataSource.data = response.data;
+        this.dataSource.sort = this.sort;
+        this.selection.clear();
+      },
+      error: (error) => {
+        this.isLoadingECWidget = false;
+        let errorArray = error!.error!.errors!.errors!;
+        if (errorArray && errorArray.length === 1) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      },
+    });
+  }
 
 
   updateChartUnitMeasure(unitMeasure: string) {
