@@ -60,7 +60,7 @@
                         'HOME.AHORRO_TOTAL' | translate }}</h2>
                     <div *ngIf="!isLoadingSCWidget else loadingSkeleton" class="dataSC">
                         <p *ngIf="savingsDetails?.totalSavingsPercent else notDataTable">
-                            {{ savingsDetails?.totalSavingsPercent }}%</p>
+                            {{ savingsDetails.totalSavingsPercent }}%</p>
                         <br>
                         <h3 *ngIf="savingsDetails?.totalSavingsPercent ">CFE vs CFE+ER</h3>
                     </div>
@@ -91,17 +91,17 @@
                             <img src="../../../../assets/icons/eletric.svg" alt="">
                             <h2 class="text-base font-normal">{{ 'HOME.EQUIVALENTE_COCHE' | translate }} <br>
                                 <span>{{
-                                    co2Saving?.ev_charges_equivalent || '' }} {{ 'HOME.COCHES' | translate }}</span>
+                                    co2Saving.ev_charges_equivalent || '' }} {{ 'HOME.COCHES' | translate }}</span>
                             </h2>
                         </div>
 
-                        <div *ngIf="co2Saving else notDataTable">
+                        <!-- <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
                             <h2 class="text-base font-normal">{{ 'HOME.EQUIVALENTE_A' | translate }} <br>
-                                <span>{{co2Saving?.ev_charges_equivalent || '' }} {{ 'HOME.CARGAS_OLYMPIC' | translate
+                                <span>{{co2Saving.ev_charges_equivalent || '' }} {{ 'HOME.CARGAS_OLYMPIC' | translate
                                     }}</span>
                             </h2>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -152,8 +152,8 @@
                     translate }}</h2>
                 <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">{{ 'PLANTAS.PLANTAS' | translate
                     }}</h2>
-                <span class="color-57B1B1 material-symbols-outlined"
-                    matTooltip="{{ 'PLANTAS.MAPA_INFO' | translate }}">info</span>
+               <!--  <span class="color-57B1B1 material-symbols-outlined"
+                    matTooltip="{{ 'PLANTAS.MAPA_INFO' | translate }}">info</span> -->
             </div>
             <div class="flex gap-4 items-stretch">
                 <div *ngIf="isLoadingMapa">
@@ -266,7 +266,7 @@
                             </td>
                         </ng-container>
 
-                        <ng-container matColumnDef="siteStatus">
+                        <!-- <ng-container matColumnDef="siteStatus">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="target">{{ 'TABLA.ESTADO_SITIO' | translate }}</p>
                             </th>
@@ -296,7 +296,7 @@
                                         matTooltip="{{ 'TABLA.ESTADO_DESCONOCIDO' | translate }}">help_outline</mat-icon>
                                 </div>
                             </td>
-                        </ng-container>
+                        </ng-container> -->
 
                         <tr *matNoDataRow>
                             <td class="mat-cell" [attr.colspan]="displayedColumns.length">

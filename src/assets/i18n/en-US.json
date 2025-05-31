@@ -325,7 +325,7 @@
     "DESCARGAR_XML": "Download XML",
     "VER_DETALLES": "View Details",
     "PAGADO": "Payed",
-    "VENCIDO": "Overdue",
+    "VENCIDO": "Paid Late",
     "PENDIENTE": "Pending",
     "SOLAR": "SOLAR",
     "BESS": "BESS",
@@ -372,6 +372,14 @@
       "HORARIO": "09:00 AM – 08:00 PM",
       "MENSAJE_SERVICIO": "We are at your service for any questions or concerns.",
       "SEGUIR_REDES": "Follow us on"
+    }
+  },
+  "MAPA": {
+    "TOOLTIPS":{
+      "ACTIVE":"Active plants",
+      "TOTAL_CAPACITY": "Total Installed Capacity kWh",
+      "TOTAL_CO2": "Total CO2 Saving",
+      "PLANTS": "plants"
     }
   }
 }
