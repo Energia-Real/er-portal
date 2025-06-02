@@ -178,7 +178,8 @@ export class InvoiceTableService {
               display: flex;
               align-items:center;
               justify-content:center;
-              width: 95px;
+              width: 120px;
+              
               height: 35px
             ">${translatedValue}</span>`;
           },

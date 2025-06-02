@@ -44,24 +44,7 @@
           <div class="linea"></div>
         </div>
 
-        <div>
-          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>{{ 'PLANTAS.ESTADO' | translate }}</p>
-            <mat-icon *ngIf="plantData?.assetStatusIcon else notDataTable" [matTooltip]="plantData.descriptionStatus">{{
-              plantData.assetStatusIcon }} </mat-icon>
-          </div>
-          <div class="linea"></div>
-        </div>
-
-        <div>
-          <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>{{ 'PLANTAS.SISTEMA' | translate }}</p>
-            <div *ngIf="dataRespoSystem else notDataTable">
-              <i class="check" *ngIf="inverterSystemStatus" class="fa-solid fa-check mb-2"></i>
-              <i *ngIf="!inverterSystemStatus" class="fa-solid fa-xmark mb-2"></i>
-            </div>
-          </div>
-        </div>
+     
       </div>
     </div>
   </div>
