@@ -29,6 +29,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
     responsive: true,
+    maintainAspectRatio: false,
     animation: {
       onComplete: () => {
       },
@@ -39,6 +40,14 @@ export class SavingsComponent implements OnInit, OnDestroy {
         }
         return delay;
       },
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 20,
+        bottom: 20
+      }
     },
     plugins: {
       tooltip: {
@@ -54,6 +63,9 @@ export class SavingsComponent implements OnInit, OnDestroy {
       legend: {
         labels: {
           usePointStyle: true,
+          padding: 20,
+          boxWidth: 10,
+          boxHeight: 10
         },
         position: "bottom",
         /* onHover: (event, legendItem, legend) => {
@@ -88,6 +100,12 @@ export class SavingsComponent implements OnInit, OnDestroy {
         grid: {
           display: false,
         },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45,
+          padding: 10
+        }
       },
       y: {
         ticks: {
