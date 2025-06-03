@@ -185,21 +185,21 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
               {
                 type: 'bar',
                 data: cfeConsumption ?? [],
-                label: 'CFE network consumption (kWh)',
+                label: 'CFE network consumption (MWh)',
                 backgroundColor: 'rgba(121, 36, 48, 1)',
                 order: 1
               },
-              {
+             /*  {
                 type: 'bar',
                 data: exportedSolarGeneration ?? [],
-                label: 'Exported solar generation (kWh)',
+                label: 'Exported solar generation (MWh)',
                 backgroundColor: 'rgba(255, 71, 19, 1)',
                 order: 1
-              },
+              }, */
               {
                 type: 'bar',
                 data: generation ?? [],
-                label: 'Generation (kWh)',
+                label: 'Generation (MWh)',
                 backgroundColor: 'rgba(87, 177, 177, 1)',
                 order: 1
               },
@@ -210,7 +210,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
                 backgroundColor: 'rgba(239, 68, 68, 1)',
                 pointBackgroundColor: 'rgba(239, 68, 68, 1)',
                 pointBorderColor: 'rgba(239, 68, 68, 1)',
-                label: 'Consumption (kWh)',
+                label: 'Consumption (MWh)',
                 order: 0,
               }
             ]

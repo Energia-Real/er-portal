@@ -150,7 +150,8 @@ export class InvoiceTableService {
             const statusColors: { [key: string]: { bg: string, text: string } } = {
               "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
               "Overdue": { bg: "#E31A1C", text: "white" },    // Orange - Pendiente/Partially paid
-              "Pending": { bg: "#E5B83E", text: "white" }     // Red - Open
+              "Pending": { bg: "#E5B83E", text: "white" },
+              "PayedLate": { bg: "#EE5427", text: "white" }     // Red - Open
             };
 
             // Get colors for this status ID (or use defaults)
@@ -166,6 +167,8 @@ export class InvoiceTableService {
               translatedValue = this.translationService.instant('FACTURACION.VENCIDO');
             } else if (value === "Pending") {
               translatedValue = this.translationService.instant('FACTURACION.PENDIENTE');
+            } else if (value === "PayedLate") {
+              translatedValue = this.translationService.instant('FACTURACION.PAGO_TARDIO');
             }
 
             // Create a span with the specified styling
