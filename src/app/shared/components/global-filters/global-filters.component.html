@@ -26,7 +26,7 @@
             </mat-form-field>
         </div>
 
-        <div class="c-input" *ngIf="configGlobalFilters?.showProductFilter">
+        <div class="c-input" *ngIf="configGlobalFilters?.showProductFilter === true">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="productType" multiple
                     placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">

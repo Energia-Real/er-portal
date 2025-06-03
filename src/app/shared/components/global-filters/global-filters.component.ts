@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { GeneralFilters, MonthsFilters, UserInfo } from '@app/shared/models/general-models';
 import { combineLatest, map, Observable, startWith, Subject, take, takeUntil } from 'rxjs';
@@ -19,7 +19,7 @@ import * as CatalogActions from '../../../core/store/actions/catalogs.actions';
   templateUrl: './global-filters.component.html',
   styleUrl: './global-filters.component.scss',
 })
-export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   private onDestroy$ = new Subject<void>();
   version = packageJson.version;
 
@@ -102,6 +102,20 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy 
     this.initFiltersConfig();
     this.initFilteredLegalNames();
     this.initFilteredProducts();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Check if configGlobalFilters has changed
+    if (changes['configGlobalFilters']) {
+      console.log('configGlobalFilters changed:', this.configGlobalFilters);
+      // Re-initialize filters config when configGlobalFilters changes
+      this.initFiltersConfig();
+      
+      // Force re-render of the component
+      setTimeout(() => {
+        // This will trigger change detection
+      }, 0);
+    }
   }
 
   ngAfterViewInit(): void {
