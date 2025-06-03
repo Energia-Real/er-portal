@@ -116,10 +116,10 @@
                 | translate }}</h2>
             <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
                 <div class="graphic-performance relative h-full w-full flex items-center">
-                    <canvas id="economicSavingsChart" baseChart [type]="'bar'" [data]="lineChartDataES"
-                        [options]="lineChartOptionsES">
+
+                    <canvas baseChart [type]="'bar'" [data]="lineChartDataES" [options]="lineChartOptionsES">
                     </canvas>
-                    <!-- Spinner -->
+
                     <div *ngIf="isLoadingESWidget"
                         class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
                         <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="40"
@@ -141,19 +141,19 @@
         </div>
     </div>
 
-    <div class="col-span-2 md:col-span-2">
+    <!-- <div class="col-span-2 md:col-span-2">
         <div class="separator-cards"></div>
-    </div>
+    </div> -->
 
-    <div class="col-span-2 lg:col-span-1">
+    <!-- <div class="col-span-2 lg:col-span-1">
         <div class="c-card-section c-plants">
             <div class="c-section-plant">
                 <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingMapa">{{ 'PLANTAS.RECUPERANDO_DATOS' |
                     translate }}</h2>
                 <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">{{ 'PLANTAS.PLANTAS' | translate
                     }}</h2>
-               <!--  <span class="color-57B1B1 material-symbols-outlined"
-                    matTooltip="{{ 'PLANTAS.MAPA_INFO' | translate }}">info</span> -->
+                <span class="color-57B1B1 material-symbols-outlined"
+                    matTooltip="{{ 'PLANTAS.MAPA_INFO' | translate }}">info</span>
             </div>
             <div class="flex gap-4 items-stretch">
                 <div *ngIf="isLoadingMapa">
@@ -178,13 +178,11 @@
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
+    </div> -->
 
-    <div class="col-span-2 lg:col-span-1 pt-55">
+    <!-- <div class="col-span-2 lg:col-span-1 pt-55">
         <div class="c-graph relative">
-            <!-- Spinner -->
             <div *ngIf="isLoadingESWidget"
                 class="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50">
                 <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="40"
@@ -200,9 +198,9 @@
                 </canvas>
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <div class="col-span-2">
+    <!-- <div class="col-span-2">
         <div class="c-card-section">
             <div class="d-flex justify-content-center align-center text-center">
                 <div class="table-container-scroll mt-3 mb-5">
@@ -266,7 +264,7 @@
                             </td>
                         </ng-container>
 
-                        <!-- <ng-container matColumnDef="siteStatus">
+                        <ng-container matColumnDef="siteStatus">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header>
                                 <p class="target">{{ 'TABLA.ESTADO_SITIO' | translate }}</p>
                             </th>
@@ -296,7 +294,7 @@
                                         matTooltip="{{ 'TABLA.ESTADO_DESCONOCIDO' | translate }}">help_outline</mat-icon>
                                 </div>
                             </td>
-                        </ng-container> -->
+                        </ng-container>
 
                         <tr *matNoDataRow>
                             <td class="mat-cell" [attr.colspan]="displayedColumns.length">
@@ -311,7 +309,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </main>
 
 <app-footer></app-footer>
