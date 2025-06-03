@@ -128,11 +128,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
     // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // if (!this.notData) {
-          this.getUserClient();
-        // }
-      });
+      .subscribe(() => this.getUserClient());
   }
 
   getUserClient() {

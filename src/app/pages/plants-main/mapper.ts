@@ -223,19 +223,19 @@ export class Mapper {
 		});
 
 		primaryElements.push({
-			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_ER') : 'ER Subtotal',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_ER') : 'Real energy Subtotal',
 			description: `$${response.erSubtotal}`,
 			icon: '../../../../../assets/icons/er-subtotal.png'
 		});
 
 		primaryElements.push({
-			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_ER_CFE') : 'ER + CFE Subtotal',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.SUBTOTAL_ER_CFE') : 'Real energy + CFE Subtotal',
 			description: `$${response.erCfeSubtotal}`,
 			icon: '../../../../../assets/icons/ercfe-subtotal.png'
 		});
 
 		primaryElements.push({
-			title: translationService ? translationService.instant('PLANTAS.MAPPER.GASTO_SIN_ER') : 'Expenditure without ER',
+			title: translationService ? translationService.instant('PLANTAS.MAPPER.GASTO_SIN_ER') : 'Expenditure without Real energy',
 			description: `$${response.expenditureWithoutER}`,
 			icon: '../../../../../assets/icons/expenditure.png'
 		});
