@@ -1,6 +1,6 @@
 <main class="grid grid-cols-2 gap-x-6 gap-y-4 md:gap-5 c-home c-main">
     <div class="col-span-2 lg:col-span-1">
-        <div class="c-card-section c-saving-details">
+        <!-- <div class="c-card-section c-saving-details">
             <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSDWidget">{{ 'HOME.DETALLES_AHORRO' |
                 translate }}</h2>
             <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSDWidget">{{ 'HOME.OBTENIENDO_DETALLES' |
@@ -35,9 +35,9 @@
                     <p>{{ 'HOME.AHORRO_TOTAL' | translate }}</p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="c-solar-co2">
+        <!-- <div class="c-solar-co2">
             <div class="c-card-section solar-coverage">
                 <div>
                     <img src="../../../../assets/icons/solar-coverage.svg" alt="">
@@ -95,17 +95,17 @@
                             </h2>
                         </div>
 
-                        <!-- <div *ngIf="co2Saving else notDataTable">
+                        <div *ngIf="co2Saving else notDataTable">
                             <img src="../../../../assets/icons/equivalent.svg" alt="">
                             <h2 class="text-base font-normal">{{ 'HOME.EQUIVALENTE_A' | translate }} <br>
                                 <span>{{co2Saving.ev_charges_equivalent || '' }} {{ 'HOME.CARGAS_OLYMPIC' | translate
                                     }}</span>
                             </h2>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="col-span-2 lg:col-span-1">
@@ -181,7 +181,7 @@
         </div>
     </div> -->
 
-    <!-- <div class="col-span-2 lg:col-span-1 pt-55">
+    <div class="col-span-2 lg:col-span-1 pt-55">
         <div class="c-graph relative">
             <div *ngIf="isLoadingESWidget"
                 class="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50">
@@ -198,7 +198,7 @@
                 </canvas>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!-- <div class="col-span-2">
         <div class="c-card-section">
