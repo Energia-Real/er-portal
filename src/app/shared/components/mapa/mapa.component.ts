@@ -1,8 +1,7 @@
-import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
-import anime from 'animejs/lib/anime.es.js';
+import { AfterViewInit, Component, ComponentRef, ElementRef, Injector, Input, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GeneralFilters, GeneralResponse, UserInfo } from '@app/shared/models/general-models';
-import { Observable, takeUntil, Subject} from 'rxjs';
+import { Observable, takeUntil, Subject, auditTime } from 'rxjs';
 import tippy, { Instance } from 'tippy.js';
 import { TooltipComponent } from '../tooltip/tooltip.component';
 import * as entity from '../../../pages/homeMain/home/home-model';
@@ -12,22 +11,21 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-mapa',
-    templateUrl: './mapa.component.html',
-    styleUrls: ['./mapa.component.scss'],
-    standalone: false
+  selector: 'app-mapa',
+  templateUrl: './mapa.component.html',
+  styleUrls: ['./mapa.component.scss'],
+  standalone: false
 })
 
-export class MapaComponent implements AfterViewInit,OnDestroy {
-  @Input()   tooltipsInfo: entity.statesResumeTooltip[] = [];
-  @Input() statesColors:any ={};
+export class MapaComponent implements AfterViewInit, OnDestroy {
+  private onDestroy$ = new Subject<void>();
+
+  @Input() tooltipsInfo: entity.statesResumeTooltip[] = [];
+  @Input() statesColors: any = {};
   private tippyInstances: Instance[] = [];
   selectedStates: string[] = [];
   generalFilters$!: Observable<GeneralFilters>;
   userInfo!: UserInfo;
-  private onDestroy$ = new Subject<void>();
-
-
 
   constructor(
     private store: Store<{ filters: GeneralFilters }>,
@@ -37,27 +35,16 @@ export class MapaComponent implements AfterViewInit,OnDestroy {
     private homeService: HomeService,
     private notificationService: OpenModalsService,
     private encryptionService: EncryptionService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
   ) {
-      // Subscribe to language changes
-      this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // Recreate tooltips when language changes
-        this.createTooltips();
-      });
-    this.createTooltips();
-    this.generalFilters$ = this.store.select(state => state.filters);
-    this.generalFilters$.subscribe(filters => {
-      //this.filters = filters;
-      //this.getTooltipInfo(filters);
-    });
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$)).pipe(auditTime(500))
+      .subscribe(() => this.createTooltips());
   }
 
   ngAfterViewInit() {
     // Los tooltips se generan después de que se obtienen los datos
     this.createTooltips();
-
   }
 
   getTooltipInfo(filters?: any) {
@@ -66,21 +53,21 @@ export class MapaComponent implements AfterViewInit,OnDestroy {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.homeService.getDataStates({ clientId: userInfo?.clientes[0], ...filters }).subscribe({
         next: (response: GeneralResponse<entity.MapStatesResponse>) => {
-  
-          response.response.kwhByStateResponse.forEach((state:any) => {
-            var color:string; 
-  
-            color="#FFFFFF";
-            if(state.totalInstalledCapacity>0 && state.totalInstalledCapacity <= 1500) color="#9AE3E1"
-            else if(state.totalInstalledCapacity>1500 && state.totalInstalledCapacity <= 3000) color="#64E2E2"
-            else if(state.totalInstalledCapacity>3000 && state.totalInstalledCapacity <= 4500) color="#00E5FF"
-            else if(state.totalInstalledCapacity>4500 && state.totalInstalledCapacity <= 6000) color="#08C4DA"
-            else if(state.totalInstalledCapacity>6000) color="#008796"
+
+          response.response.kwhByStateResponse.forEach((state: any) => {
+            var color: string;
+
+            color = "#FFFFFF";
+            if (state.totalInstalledCapacity > 0 && state.totalInstalledCapacity <= 1500) color = "#9AE3E1"
+            else if (state.totalInstalledCapacity > 1500 && state.totalInstalledCapacity <= 3000) color = "#64E2E2"
+            else if (state.totalInstalledCapacity > 3000 && state.totalInstalledCapacity <= 4500) color = "#00E5FF"
+            else if (state.totalInstalledCapacity > 4500 && state.totalInstalledCapacity <= 6000) color = "#08C4DA"
+            else if (state.totalInstalledCapacity > 6000) color = "#008796"
             this.statesColors[state.state] = {
               color: color,
             };
           });
-  
+
           this.tooltipsInfo = response.response.kwhByStateResponse;
           this.createTooltips();
         },
@@ -94,14 +81,14 @@ export class MapaComponent implements AfterViewInit,OnDestroy {
   createTooltips() {
     // Destroy existing tooltips
     this.destroyTooltips();
-    
+
     const estados = this.el.nativeElement.querySelectorAll('path');
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
       const dataEstado = this.tooltipsInfo.find(item => item.state.toLowerCase() === nombreEstado?.toLowerCase());
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';
-      
+
       if (dataEstado) {
         tooltipContent.instance.infoAdicional = [
           { subtitle: this.translationService.instant('MAPA.TOOLTIPS.ACTIVE'), content: `${dataEstado.plants} ${this.translationService.instant('MAPA.TOOLTIPS.PLANTS')}` },
@@ -125,21 +112,22 @@ export class MapaComponent implements AfterViewInit,OnDestroy {
         trigger: 'mouseenter',
         onShow(instance) {
           const tooltip = instance.popper;
-          tooltip.classList.remove('hide'); 
-          tooltip.classList.add('show'); 
+          tooltip.classList.remove('hide');
+          tooltip.classList.add('show');
         },
         onHide(instance) {
           const tooltip = instance.popper;
-          tooltip.classList.remove('show'); 
-          tooltip.classList.add('hide'); 
+          tooltip.classList.remove('show');
+          tooltip.classList.add('hide');
         }
       });
-      
+
       // Store the tippy instance for later destruction
-      this.tippyInstances.push(instance);
+      this.tippyInstances.push({ ...instance });
+      
     });
   }
-  
+
   destroyTooltips() {
     // Destroy all tippy instances
     this.tippyInstances.forEach(instance => {
@@ -153,7 +141,7 @@ export class MapaComponent implements AfterViewInit,OnDestroy {
   }
 
   onPolygonClick(stateId: string): void {
- 
+
   }
 
   createComponent(component: any): ComponentRef<any> {
