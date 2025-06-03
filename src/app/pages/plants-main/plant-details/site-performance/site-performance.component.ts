@@ -32,7 +32,8 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
 
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
-    responsive: false,
+    responsive: true,
+    maintainAspectRatio: false,
     animation: {
       onComplete: () => {
       },
@@ -43,6 +44,14 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         }
         return delay;
       },
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 20,
+        bottom: 20
+      }
     },
     plugins: {
       tooltip: {
@@ -58,6 +67,9 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
       legend: {
         labels: {
           usePointStyle: true,
+          padding: 20,
+          boxWidth: 10,
+          boxHeight: 10
         },
         position: "bottom",
 
@@ -70,6 +82,12 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         grid: {
           display: false,
         },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45,
+          padding: 10
+        }
       },
       y: {
         ticks: {
@@ -228,7 +246,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   }
 
   initChart(): void {
-    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    const ctx = document.getElementById('myChartPerformance') as HTMLCanvasElement;
     if (ctx) {
       this.chart = new Chart(ctx, {
         type: 'bar',

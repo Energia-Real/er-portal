@@ -65,37 +65,21 @@
         border-radius: 16px;
         width: 100%;
         height: 410px;
+        min-height: 360px;
     }
 
-    .graphic-performance-pie {
-        padding-left: 20px;
-        background: #F9F9F9;
-        padding: 20px 10px 10px 10px;
-        border: 1px solid #E2E2E2;
-        border-radius: 16px;
-        width: 40%;
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    
 }
 
-.graphic-performance canvas {
-    width: 100% !important;
-    height: auto !important;
+.graphic-performance #myChartPerformance{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-left: 20px;
+    padding: 20px 10px 10px 10px;
+    border-radius: 16px;
+    width: 100% !important;
+    height: 100%;
 }
 
-.graphic-performance highcharts-chart {
-    width: 100% !important;
-    height: auto !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .table-check {
     background: #57B1B1;
