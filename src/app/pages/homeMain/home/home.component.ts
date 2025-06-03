@@ -287,9 +287,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.initializeTranslations();
-        if (this.chart?.chart) {
-          this.chart.chart.update();
-        }
       });
   }
 
@@ -325,6 +322,42 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.updateEconomicSavingsChart();
       this.updateClientsChart();
     });
+  }
+
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+
+      if (!userInfo.clientes[0]?.length) {
+        this.alertInformationModal()
+      } else {
+
+        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+          this.isLoadingSDWidget = true;  //loading saving details
+
+          this.isLoadingSCWidget = true; //loading solar coverage
+
+          this.isLoadingCO2Widget = true; //loading co2Widget
+
+          this.isLoadingESWidget = true; //loading economic savings  
+
+          this.isLoadingECWidget = true; //loading energy consumption  
+
+          this.isLoadingMapa = true;
+
+          this.filters = { ...generalFilters, clientId: userInfo.clientes[0] }
+
+          this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
+          this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
+          this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
+          this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
+        });
+      }
+    }
   }
 
   getEconomicSavings(filters: GeneralFilters) {
@@ -386,27 +419,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     };
 
     this.displayChartES = true;
-    this.chart?.chart?.update();
-  }
-
-
-
-  initiLineChartData() {
-    this.lineChartData = {
-      labels: this.labels,
-      datasets: [
-        {
-          data: [],
-          label: this.translationService.instant('TABLA.PRODUCCION_ENERGIA'),
-          backgroundColor: 'rgba(121, 36, 48, 1)',
-        },
-        {
-          data: [],
-          label: this.translationService.instant('TABLA.CONSUMO_ENERGIA'),
-          backgroundColor: 'rgba(87, 177, 177, 1)',
-        }
-      ]
-    };
+    this.chart?.update();
   }
 
   getDataClients(filters: GeneralFilters) {
@@ -451,6 +464,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.dataSource.sort = this.sort;
     this.selection.clear();
     this.isLoadingECWidget = false;
+    this.chart?.update();
   }
 
   updateChartUnitMeasure(unitMeasure: string) {
@@ -486,41 +500,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-
-      if (!userInfo.clientes[0]?.length) {
-        this.alertInformationModal()
-      } else {
-
-        this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-          this.isLoadingSDWidget = true;  //loading saving details
-
-          this.isLoadingSCWidget = true; //loading solar coverage
-
-          this.isLoadingCO2Widget = true; //loading co2Widget
-
-          this.isLoadingESWidget = true; //loading economic savings  
-
-          this.isLoadingECWidget = true; //loading energy consumption  
-
-          this.isLoadingMapa = true;
-
-          this.filters = { ...generalFilters, clientId: userInfo.clientes[0] }
-
-          this.getTooltipInfo({ ...generalFilters, clientId: userInfo.clientes[0] });
-          this.getDataClients({ ...generalFilters, clientId: userInfo.clientes[0] });
-          this.getDataSavingDetails({ ...generalFilters, clientId: userInfo?.clientes[0] });
-          this.getDataSolarCoverga({ ...generalFilters, clientId: userInfo?.clientes[0] });
-          this.getEconomicSavings({ ...generalFilters, clientId: userInfo?.clientes[0] });
-          this.getCo2Saving({ ...generalFilters, clientId: userInfo?.clientes[0] });
-        });
-      }
-    }
-  }
-
   getTooltipInfo(filters: GeneralFilters) {
     this.moduleServices.getDataStates(filters).subscribe({
       next: (response: GeneralResponse<entity.MapStatesResponse>) => {
@@ -541,7 +520,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
 
         this.isLoadingMapa = false;
-        //this.createTooltips();
       },
       error: (error) => {
         this.isLoadingMapa = false;
@@ -603,8 +581,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
   }
 
-
-
   convertToISO8601(month: string): string {
     const year = new Date().getFullYear();
     return moment(`${year}-${month}-01`).startOf('month').toISOString();
@@ -613,7 +589,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   goDetails(id: string) {
     this.router.navigateByUrl(`er/plants/details/${id}`)
   }
-
 
   createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
     const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
