@@ -4,9 +4,7 @@
             <div class="c-cards-information">
                 <div class="c-card-50" *ngFor="let data of sitePerformance?.primaryElements; let idx = index">
                     <div class="card-info">
-                        <h1 [ngStyle]="{ 
-                            'color': idx === 3 ? '#792430' : '#EE5427' 
-                          }">{{ data.title }}</h1>
+                        <h1>{{ data.title }}</h1>
                         <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
                     </div>
                 </div>

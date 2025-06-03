@@ -327,8 +327,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
   initiLineChartDataES() {
     this.lineChartDataES = {
       labels: [''],
@@ -532,7 +530,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
     });
   }
-
 
   updateChartUnitMeasure(unitMeasure: string) {
     this.unitMeasure = unitMeasure;
