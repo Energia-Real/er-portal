@@ -2,6 +2,13 @@
   margin-top: 30px;
   margin-bottom: 50px;
 
+  .label-700-24 {
+    line-height: 20px;
+  }
+
+  >div {
+    h2 {}
+  }
 
   .btn-show-all-gray {
     width: 235px;
@@ -48,12 +55,17 @@
     >div:nth-child(2) {
       margin: 40px 0;
 
-      span {
+      span:nth-child(1) {
         background: #57B1B1;
         color: rgb(255, 255, 255);
         border-radius: 100%;
         width: 12px;
         height: 12px;
+        margin: 0;
+      }
+
+      span {
+        margin-bottom: 10px;
       }
     }
 
@@ -96,3 +108,8 @@
   opacity: 0.4;
 }
 
+/* overview.component.scss */
+.c-graph {
+  position: relative;
+  height: 100%;
+}

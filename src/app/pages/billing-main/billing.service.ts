@@ -94,29 +94,13 @@ export class BillingService implements OnDestroy {
       );;
   }
 
-
-  getPreviousBillingHistory(
-    filters: any
-  ): Observable<entity.DataHistoryOverviewTableMapper> {
-    const url = `${this.performanceApiUrl}/clients/${filters.clientId}/invoices`;
-
-    const params = new HttpParams()
-      .set('page', filters.page)
-      .set('pagesize', filters.pageSize)
-      .set('year', filters.year)
-
-    return this.http
-      .get<entity.DataHistoryOverviewTableMapper>(url, { params })
-      .pipe(
-        map((response) =>
-          Mapper.getBillingHistoryMapper(response, this.formatsService)
-        )
-      );
-  }
-
   getBillingHistory(filters: entity.BillingOverviewFilterData): Observable<GeneralPaginatedResponse<entity.Bill>> {
     const url = `${this.domainApiUrl}/v1/Billing/History`;
-    return this.http.post<any>(url, filters);
+    return this.http.post<GeneralPaginatedResponse<entity.Bill>>(url, filters).pipe(
+      map((response) =>
+        Mapper.getBillingHistoryMapper(response, this.formatsService)
+      )
+    );;
   }
 
   getClientCatalog(): Observable<GeneralResponse<entity.catalogResponseList>> {
