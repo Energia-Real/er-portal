@@ -17,16 +17,16 @@ export interface EquipmentForm {
   orientation: FormControl<number | null>;
 }
 @Component({
-    selector: 'app-new-equipment',
-    templateUrl: './new-equipment.component.html',
-    styleUrl: './new-equipment.component.scss',
-    standalone: false
+  selector: 'app-new-equipment',
+  templateUrl: './new-equipment.component.html',
+  styleUrl: './new-equipment.component.scss',
+  standalone: false
 })
 export class NewEquipmentComponent {
   @Input() isOpen = false;
 
   @Input()
-  modeDrawer: "Edit" | "Create" = "Create";
+  modeDrawer: "Edit" | "Create" | "View" = "Create";
 
   @Input()
   plantCode?: string;

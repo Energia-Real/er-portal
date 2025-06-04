@@ -3,10 +3,10 @@ export type IForm<T> = {
 }
 
 export interface DrawerGeneral {
-    drawerOpen: boolean;
-    drawerAction:  "Create" | "Edit";
-    drawerInfo: any;
-    needReload: boolean;
+  drawerOpen: boolean;
+  drawerAction: "Create" | "Edit" | "View";
+  drawerInfo: any;
+  needReload: boolean;
 }
 export interface User {
   id?: string;
@@ -34,12 +34,16 @@ export interface UserInfo {
     nombres: string,
     apellidos: string
   },
+  pendoIntegration:{
+    clientID: string,
+    clientName: string
+  }
   clientes: string[],
   accessTo: string
 }
 
 export interface GeneralFilters {
-  clientId?:number | string
+  clientId?: number | string
   startDate: string;
   endDate: string;
   year: string;
@@ -50,51 +54,50 @@ export interface DataResponseArraysMapper {
   additionalItems: any[]
 }
 
-export interface ConfirmationConfig
-{
-    title?: string;
-    message?: string;
-    icon?: {
-        show?: boolean;
-        name?: string;
-        color?: 'success' | 'warning' | 'error' | 'question' | 'alert';
+export interface ConfirmationConfig {
+  title?: string;
+  message?: string;
+  icon?: {
+    show?: boolean;
+    name?: string;
+    color?: 'success' | 'warning' | 'error' | 'question' | 'alert';
+  };
+  actions?: {
+    confirm?: {
+      show?: boolean;
+      label?: string;
     };
-    actions?: {
-        confirm?: {
-            show?: boolean;
-            label?: string;
-        };
-        cancel?: {
-            show?: boolean;
-            label?: string;
-        };
+    cancel?: {
+      show?: boolean;
+      label?: string;
     };
-    dismissible?: boolean;
+  };
+  dismissible?: boolean;
 }
 
 
-export interface notificationData{
-  type:     string,
-  typeId?:   number|undefined,
-  title?:    string,
-  subtitle?:    string,
-  content?:  string,
-  warn?:     string,
-  errors?:     string,
+export interface notificationData {
+  type: string,
+  typeId?: number | undefined,
+  title?: string,
+  subtitle?: string,
+  content?: string,
+  warn?: string,
+  errors?: string,
   buttonAction?: string
 }
 
 export const initialFilterState: GeneralFilters = {
-    startDate: '',
-    endDate: '',
-    year: '',
-    clientId: '',
+  startDate: '',
+  endDate: '',
+  year: '',
+  clientId: '',
 };
 
 export interface NotificationServiceData {
   userId: string;
-  descripcion: string|undefined;
-  notificationTypeId: number|undefined;
+  descripcion: string | undefined;
+  notificationTypeId: number | undefined;
   notificationStatusId: number;
 }
 
@@ -102,30 +105,30 @@ export interface EditNotificationStatus {
   externalId: string;
   status?: string;
   centerTextId?: number;
-  readed?:boolean;
+  readed?: boolean;
 }
 
-export interface SnackData{
-  type:"COMPLETE"|"FAILED",
-  title:string,
-  subtitle:string
+export interface SnackData {
+  type: "COMPLETE" | "FAILED",
+  title: string,
+  subtitle: string
 }
 
-export interface NotificationMessages{
-  completedTitleSnack?:string,
-  completedContentSnack?:string,
-  errorTitleSnack?:string,
-  errorContentSnack?:string,
-  notificationId?:string,
-  successCenterMessage?:string,
+export interface NotificationMessages {
+  completedTitleSnack?: string,
+  completedContentSnack?: string,
+  errorTitleSnack?: string,
+  errorContentSnack?: string,
+  notificationId?: string,
+  successCenterMessage?: string,
   errorCenterMessage?: string,
-  userId?:string
+  userId?: string
 }
 
-export interface Notification{
-  description : string,
+export interface Notification {
+  description: string,
   userId: string,
-  notificationTypeId  : number,
+  notificationTypeId: number,
   notificationStatusId: number,
   date: Date,
   externalId: string,
@@ -144,8 +147,8 @@ export interface GeneralResponse<T> {
 export interface GeneralPaginatedResponse<T> {
   pageSize: number,
   page: number,
-  totalItems: number, 
-  data:[T]
+  totalItems: number,
+  data: [T]
   errors: {
     errors: ErrorRequest[]
   }

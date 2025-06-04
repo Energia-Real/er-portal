@@ -1,12 +1,21 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { DrawerGeneral, GeneralResponse, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
-import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
-import { ColumnDefinition, CellComponent } from 'tabulator-tables';
+import { Subject, Subscription, switchMap, takeUntil } from 'rxjs';
+import { ColumnDefinition, Options } from 'tabulator-tables';
 import { BillingService } from '../../billing.service';
-import { Bill, CurrentBillResponse } from '../../billing-model';
-import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
+import { Bill, CurrentBillResponse, DownloadBillingResponse } from '../../billing-model';
 import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { InvoiceTableService } from '../../billing-table.service';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { EncryptionService } from '@app/shared/services/encryption.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 
 @Component({
   selector: 'app-current-billing',
@@ -16,264 +25,198 @@ import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/
 })
 export class CurrentBillingComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
-  generalFilters!: GeneralFilters
-  generalFilters$!: Observable<GeneralFilters>;
 
   @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
 
-  bills!: Bill[] ;
-  private monthAbbrPipe = new MonthAbbreviationPipe();
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
-  columns: ColumnDefinition[] = [
-    {
-      title: "Legal Name",
-      field: "legalName",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Year",
-      field: "year",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Month",
-      field: "month",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        return this.monthAbbrPipe.transform(value);
-      },
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Status",
-      field: "status",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        // Define colors for different status IDs
-        const statusColors: {[key: string]: {bg: string, text: string}} = {
-          "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
-          "Overdue": { bg: "#E31A1C", text: "white" },      // Orange - Pendiente/Partially paid
-          "Pending": { bg: "#E5B83E", text: "white" }       // Red - Open
-        };
+  bills!: Bill[];
 
-        // Get colors for this status ID (or use defaults)
-        const colors = (value && statusColors[value])
-          ? statusColors[value]
-          : { bg: "#E0E0E0", text: "black" };
+  tableConfig!: Options;
+  columns: ColumnDefinition[] = [];
 
-        // Create a span with the specified styling
-        return `<span style="
-          color: ${colors.text};
-          background-color: ${colors.bg};
-          border-radius: 16px;
-          padding: 4px 12px;
-          font-weight: 500;
-          display: flex;
-          align-items:center;
-          justify-content:center;
-          width: 95px;
-          height: 35px
-        ">${value}</span>`;
-      },
-      hozAlign: "left",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Product",
-      field: "product",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        // Default styling (for current string-based product)
-        let icon = '';
-        let bgColor = '#E0E0E0';
-        let textColor = 'black';
+  drawerOpenSub: Subscription;
+  drawerOpenID: boolean = false;
+  drawerAction: "Create" | "Edit" | "View" = "Create";
+  drawerInfo: any | null | undefined = null;
 
-        // Prepare for future structure with IDs
-        if (value) {
-          // Future structure: validate by ID
-          switch (value) {
-            case 'SOLAR': // Solar
-              icon = '<img src="assets/svg/sun.svg" style=" margin-right:18px; " title="Solar">';
-              bgColor = '#EE5427';
-              textColor = 'white';
-              break;
-            case 'BESS': // BESS
-              icon = '<img src="assets/svg/battery.svg" style=" margin-right:18px; " title="BESS">';
-              bgColor = '#57B1B1';
-              textColor = 'white';
-              break;
-            case 'MEM': // MEM
-              icon = '<img src="assets/svg/mem.svg" style=" margin-right:18px; " title="MEM">';
-              bgColor = '#792430';
-              textColor = 'white';
-              break;
-          }
-        }
-
-        // Create a span with the specified styling
-        return `<span style="
-          color: ${textColor};
-          background-color: ${bgColor};
-          border-radius: 16px;
-          padding: 4px 18px;
-          font-weight: 500;
-          display: flex;
-          align-items:center;
-          justify-content:center;
-          width: 133px;
-          height: 35px        ">${icon}${value}</span>`;
-      },
-      hozAlign: "left",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-
-    {
-      title: "Amount",
-      field: "amount",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        // Format as currency
-        const formattedValue = new Intl.NumberFormat('es-MX', {
-          style: 'currency',
-          currency: 'MXN',
-          minimumFractionDigits: 2
-        }).format(value || 0);
-
-        // Add MXN after the amount
-        return `${formattedValue} MXN`;
-      },
-      hozAlign: "left",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: 'Action',
-      field: 'actions',
-      formatter: (cell: CellComponent) => {
-        // Generate HTML with the requested icons in a horizontal layout
-        return `
-          <div style="display: flex; justify-content: space-around; align-items: center;">
-            <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px; " title="Download PDF">
-            <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="Download XML">
-            <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="View Details">
-          </div>
-        `;
-      },
-      cellClick: (e: any, cell: CellComponent) => {
-        // Get the clicked element
-        const element = e.target as HTMLElement;
-
-        // Check if it's one of our action icons
-        if (element.classList.contains('action-icon')) {
-          const action = element.getAttribute('data-action');
-          const row = cell.getRow().getData();
-
-          // Call the appropriate function based on the action
-          switch (action) {
-            case 'downloadPdf':
-              this.downloadPdf(row);
-              break;
-            case 'downloadXml':
-              this.downloadXml(row);
-              break;
-            case 'viewDetails':
-              this.viewDetails(row);
-              break;
-          }
-        }
-      },
-      headerSort: false,
-      vertAlign: "middle"
-    }
-  ];
+  isLoading: boolean = true;
 
   constructor(
-    private store: Store<{ filters: GeneralFilters }>,
+    private store: Store,
+    private invoiceTableService: InvoiceTableService,
     private moduleServices: BillingService,
+    private translationService: TranslationService,
+    private notificationDataService: NotificationDataService,
+    private encryptionService: EncryptionService,
+    private notificationsService: NotificationService,
+    private dialog: MatDialog
   ) {
-    this.generalFilters$ = this.store.select(state => state.filters);
-    combineLatest([
-      this.generalFilters$.pipe(distinctUntilChanged()),
-    ])
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([generalFilters]) => {
-        this.generalFilters = generalFilters;
-        this.getBilling();
-      });
-  }
-
-  getBilling() {
-    const filters = {
-      ...this.generalFilters
-    };
-
-    this.moduleServices.getCurrentInvoices(filters).subscribe({
-      next: (response: GeneralResponse<CurrentBillResponse>) => {
-        this.bills = response.response.currentBillResponse
-        console.log(response.response)
-      },
-      error: error => {
-        console.log(error);
-      }
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
+      this.drawerOpenID = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
     });
   }
 
   ngOnInit(): void {
-    // No initialization needed as the table component handles everything internally
+    this.loadTableColumns();
+    this.getBilling();
+  }
+
+  private downloadBase64File(base64: string, fileName: string, fileType: string): void {
+    try {
+      // Create a blob from the base64 string
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/" + fileType });
+
+      // Create a link element and trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+
+      // Clean up
+      window.URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  }
+
+  loadTableColumns() {
+    this.translationService.currentLang$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(() => {
+          // Create callbacks object using component methods
+          const callbacks = {
+            downloadPdf: (row: any) => this.downloadPdf(row),
+            downloadXml: (row: any) => this.downloadXml(row),
+            viewDetails: (row: any) => this.viewDetails(row)
+          };
+          return this.invoiceTableService.getTableOptionsCurrentBillings(callbacks);
+        })
+      )
+      .subscribe({
+        next: (options) => {
+          this.tableConfig = { ...options };
+
+          if (this.tabulatorTable) this.tabulatorTable.updateColumns();
+        },
+        error: (err) => {
+          console.error('Error al cargar la configuración de la tabla:', err);
+        }
+      });
+  }
+
+  getBilling() {
+    this.moduleServices.getCurrentInvoices().subscribe({
+      next: (response: GeneralResponse<CurrentBillResponse>) => {
+        this.bills = response.response.currentBillResponse;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.log(error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // Action methods for the icons
+  downloadPdf(row: any): void {
+    if (row.billingId == "" || row.billingId == null) {
+      this.moduleServices.downloadBillingADX("pdf", row.fiscalId, row.year, row.month).subscribe({
+        next: (resp: any) => {
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    } else {
+      this.moduleServices.downloadBillingNetsuite("pdf", row.billingId).subscribe({
+        next: (resp: GeneralResponse<DownloadBillingResponse>) => {
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    }
+  }
+
+  downloadXml(row: any): void {
+    if (row.billingId == "" || row.billingId == null) {
+      this.moduleServices.downloadBillingADX("xml", row.fiscalId, row.year, row.month).subscribe({
+        next: (resp: GeneralResponse<DownloadBillingResponse>) => {
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    } else {
+      this.moduleServices.downloadBillingNetsuite("xml", row.billingId).subscribe({
+        next: (resp: any) => {
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    }
+  }
+
+  viewDetails(row: any): void {
+    this.drawerInfo = row
+    this.updDraweStateView(true);
+  }
+
+  updDraweStateView(estado: boolean): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "View", drawerInfo: this.drawerInfo, needReload: false }));
+  }
+
+  descargarTabla(tipo: string) {
+    this.tabulatorTable.download(tipo);
+  }
+
+  createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
+    const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title = title;
+    dataNotificationModal!.content = description;
+    dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      let dataNotificationService: NotificationServiceData = { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId: userInfo.id,
+        descripcion: description,
+        notificationTypeId: dataNotificationModal?.typeId,
+        notificationStatusId: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      }
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res => {
+      })
+    }
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
   }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
-  }
-
-  // Action methods for the icons
-  downloadPdf(row: any): void {
-    console.log('Download PDF clicked for:', row);
-    this.moduleServices.downloadBilling(["pdf"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
-        console.log(doc)
-        const url = window.URL.createObjectURL(doc);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'billing.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      },
-      error:(err)=>{
-        console.log(err)
-      }
-    })
-  }
-
-  downloadXml(row: any): void {
-    console.log('Download XML clicked for:', row);
-    this.moduleServices.downloadBilling(["xml"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
-        const url = window.URL.createObjectURL(doc);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'billing.xml';
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      },
-      error:(err)=>{
-      }
-    })
-  }
-
-  viewDetails(row: any): void {
-    console.log('View Details clicked for:', row);
-  }
-
-  descargarTabla(tipo: string) {
-    this.tabulatorTable.download(tipo);
   }
 }

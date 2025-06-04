@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as entity from '../../plants-model';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -9,6 +9,7 @@ import { Mapper } from '../../mapper';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { FormatsService } from '@app/shared/services/formats.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-savings',
@@ -23,12 +24,12 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   generalFilters$!: Observable<GeneralFilters>;
 
-  showAlert: boolean = false;
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
   chart: any;
 
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
     responsive: true,
+    maintainAspectRatio: false,
     animation: {
       onComplete: () => {
       },
@@ -39,6 +40,14 @@ export class SavingsComponent implements OnInit, OnDestroy {
         }
         return delay;
       },
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 20,
+        bottom: 20
+      }
     },
     plugins: {
       tooltip: {
@@ -54,6 +63,9 @@ export class SavingsComponent implements OnInit, OnDestroy {
       legend: {
         labels: {
           usePointStyle: true,
+          padding: 20,
+          boxWidth: 10,
+          boxHeight: 10
         },
         position: "bottom",
         /* onHover: (event, legendItem, legend) => {
@@ -88,6 +100,12 @@ export class SavingsComponent implements OnInit, OnDestroy {
         grid: {
           display: false,
         },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45,
+          padding: 10
+        }
       },
       y: {
         ticks: {
@@ -117,13 +135,18 @@ export class SavingsComponent implements OnInit, OnDestroy {
     private store: Store<{ filters: GeneralFilters }>,
     private formatsService: FormatsService,
     private encryptionService: EncryptionService,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
 
   ngOnInit(): void {
-    if (this.notData) this.showAlert = true;
-    else this.getUserClient()
+    this.getUserClient();
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => this.getUserClient());
   }
 
   getUserClient() {
@@ -140,7 +163,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
   getSavings(filters: GeneralFilters) {
     this.moduleServices.getSavingDetails(filters, this.plantData.id).subscribe({
       next: (response: GeneralResponse<entity.getSavingsDetails>) => {
-        this.savingDetails = Mapper.getSavingsDetailsMapper(response.response);
+        this.savingDetails = Mapper.getSavingsDetailsMapper(response.response, this.translationService);
         const cfeSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal));
         const erSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal));
         const savingsData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings));
@@ -221,6 +244,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

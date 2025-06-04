@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -14,14 +14,15 @@ import { MatSort } from '@angular/material/sort';
 import { corporateDrawer, updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
 import { DrawerGeneral } from '@app/shared/models/general-models';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-clients',
-    templateUrl: './clients.component.html',
-    styleUrl: './clients.component.scss',
-    standalone: false
+  selector: 'app-clients',
+  templateUrl: './clients.component.html',
+  styleUrl: './clients.component.scss',
+  standalone: false
 })
-export class ClientsComponent implements OnDestroy, AfterViewInit {
+export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
   dataSource = new MatTableDataSource<entity.DataClientsTable>([]);
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -41,7 +42,7 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
   ];
 
   searchValue: string = '';
-  drawerAction: "Create" | "Edit" = "Create";
+  drawerAction: "Create" | "Edit" | "View" = "Create";
   drawerInfo: any | null | undefined = null;
 
   showLoader: boolean = true;
@@ -63,6 +64,7 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
     private moduleServices: ClientsService,
     private notificationService: OpenModalsService,
     private router: Router,
+    private translationService: TranslationService
   ) {
     combineLatest([
       this.store.select(selectPageSize).pipe(distinctUntilChanged()),
@@ -94,6 +96,15 @@ export class ClientsComponent implements OnDestroy, AfterViewInit {
         if (resp.needReload) this.getClients();
       }
     });
+  }
+
+  ngOnInit(): void {
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.getClients(this.searchBar.value || '');
+      });
   }
 
   ngAfterViewInit(): void {

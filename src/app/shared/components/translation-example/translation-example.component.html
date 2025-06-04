@@ -1,0 +1,42 @@
+<div class="translation-example">
+  <h2>{{ 'GENERAL.TITULO' | translate }}</h2>
+  
+  <div class="example-section">
+    <h3>Ejemplos de uso de ngx-translate:</h3>
+    
+    <div class="example-item">
+      <p><strong>Usando la pipe translate:</strong></p>
+      <p>{{ 'PLANTAS.TITULO' | translate }}</p>
+      <p>{{ 'PLANTAS.SITIOS' | translate }}</p>
+    </div>
+    
+    <div class="example-item">
+      <p><strong>Usando la directiva translate:</strong></p>
+      <p translate>PLANTAS.INVERSORES</p>
+      <p translate>PLANTAS.MW_INSTALADOS</p>
+    </div>
+    
+    <div class="example-item">
+      <p><strong>Con parámetros:</strong></p>
+      <p>{{ 'PLANTAS.NOMBRE_SITIO' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="example-section">
+    <h3>Ejemplos de uso del TranslationService:</h3>
+    
+    <div class="example-item">
+      <p><strong>Usando el método instant:</strong></p>
+      <p>{{ getInstantTranslation('PLANTAS.CO2') }}</p>
+    </div>
+    
+    <div class="example-item">
+      <p><strong>Usando el método getTranslation (asíncrono):</strong></p>
+      <p>{{ getTranslation('PLANTAS.BUSCAR_SITIO') | async }}</p>
+    </div>
+  </div>
+
+  <div class="language-selection">
+    <p><strong>Idioma actual:</strong> {{ translationService.getCurrentLanguage() }}</p>
+  </div>
+</div>

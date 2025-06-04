@@ -9,6 +9,7 @@
 @import url('./styles/general_variables.scss');
 @import url('./styles/table.scss');
 @import url('./styles/styles.scss');
+@import url('./styles/tabulador.scss');
 
 @font-face {
   font-family: 'GintoNord';
@@ -79,65 +80,3 @@ select:focus {
   border-color: transparent;
 }
 
-
-#tableDiv .tabulator-header {
-  color: #792430;
-  border: none !important;
-  background: #fff !important;
-  padding-bottom: 20px;
-  font-weight: 500;
-  .tabulator-header-contents {
-    .tabulator-headers {
-      .tabulator-col {
-        background: transparent !important;
-        border: none !important;
-        .tabulator-col-content {
-          .tabulator-col-title-holder {
-            .tabulator-col-title {
-              background: #F8F8F8 !important;
-              width: 50% !important;
-              border-radius: 8px !important;
-              border: 1px solid #EDEDED !important;
-              display: flex;
-              align-items: center;
-              padding-left: 8px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-.tabulator{
-  border: none !important;
-}
-
-.tabulator-row .tabulator-cell{
-  border: none !important;
-  padding-right: 16px !important;
-  padding-left: 16px !important;
-  color: #000000 !important;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.tabulator-row.tabulator-row-even{
-  background: #ffffff !important;
-}
-
-.tabulator-tableholder{
-  max-height: 100% !important;
-  background-color: #ffffff !important;
-}
-
-.tabulator-row {
-  padding-bottom: 17px;
-  padding-top: 17px;
-  border-bottom: 1.5px solid #E2E2E2;
-  
-  // Si quieres que la última fila no tenga borde
-  &:last-child {
-    border-bottom: none;
-  }
-}

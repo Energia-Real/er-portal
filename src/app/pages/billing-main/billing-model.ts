@@ -5,6 +5,84 @@ export interface DataTableBillingResponse {
   errors: any[];
 }
 
+export interface InvoiceDetailsTableRow {
+  production: number;
+  concept: string;
+  description: string;
+  unitValue: string;
+  taxes: string;
+  amount: string;
+}
+
+export interface CurrentBillingTableRow {
+  legalName: string;
+  year: number;
+  month: number;
+  status: string;
+  product: string;
+  amount: number;
+}
+
+export interface InvoiceDetailsCurrency {
+  client: string;
+  rFc: string;
+  legalName: string;
+  startDate: string; 
+  endDate: string; 
+  status: string; 
+}
+
+export interface InvoiceDetailsCurrencyHeader {
+  success: boolean;
+  response: InvoiceDetailsCurrency;
+  errors: any;
+}
+
+
+export interface DataBillingSitesTableMapper {
+  pageSize: number,
+  page: number,
+  data: SitesTableRow[],
+  totalItems: number
+}
+
+export interface SitesTableRow {
+  siteName: string;
+  clientName: string;
+  legalName: string;
+  product: string;
+  contractType: string;
+  status: string;
+  address: string;
+}
+
+
+export interface BillingOverviewFilterData {
+  endDate : string;
+  startDate : string;
+  customerNames : string[];
+  legalName: string[];
+  productType: string[];
+  pageSize?: number
+  page?: number
+}
+
+export interface DataInvoiceDetailsTableMapper {
+  pageSize: number,
+  page: number,
+  data: InvoiceDetailsTableRow[],
+  totalItems: number
+}
+
+export interface InvoiceDetailsTableRow {
+  production: number;
+  concept: string;
+  description: string;
+  unitValue: string;
+  taxes: string;
+  totalAmount: string;
+}
+
 export interface BillingResponse {
   pageSize: number;
   page: number;
@@ -13,16 +91,53 @@ export interface BillingResponse {
   errors?: any | null;
 }
 
-export interface FilterBillingDetails {
-  year:number; 
+export interface FiltersBillingSites {
+  pageSize: number;
+  page: number;
+  startDate: string;      
+  endDate: string;      
   customerName: string;
+  legalName: string;
+  siteName: string;
+  productType: string;
+  clientId: string;
+}
+
+
+// export interface FilterBillingDetails {
+//   year: number;
+//   customerName: string;
+//   legalName?: string;
+//   siteName?: string;
+//   productType?: string;
+//   page?: number;
+//   pageSize?: number;
+// }
+
+export interface FilterBillingEnergysummary {
+  startDate: string;
+  endDate: string;
+  customerName?: string;
   legalName?: string;
   siteName?: string;
   productType?: string;
-  page?: number;
-  pageSize?:number;
 }
 
+export interface EnergyBillingSummary {
+  success: boolean;
+  response: EnergySummaryResponse;
+  errors: any;
+}
+
+export interface EnergySummaryResponse {
+  months: {
+    month: number;
+    billedEnergyProduced: number;
+    billedEnergy: number;
+    billedEnergyAmouth: number;
+  }[];
+  balance: number;
+}
 
 export interface BillingData {
   externalId: string;
@@ -235,6 +350,12 @@ export interface CurrentBillResponse {
   currentBillResponse: Bill[]
 }
 
+export interface DownloadBillingResponse {
+  fileName:string; 
+  base64: string;
+  fileType:string; 
+}
+
 export interface HistoryBillResponse {
   historyBillResponse: Bill[]
 }
@@ -243,18 +364,14 @@ export interface catalogResponseList {
   catalogResponseList: DataCatalogs[]
 }
 
-
-
-
-
-export interface Bill{
-  amount:     number; 
-  billingId:  string; 
-  legalName:  string; 
-  month:      number; 
-  product:    string; 
-  status:     string; 
-  year:       number;
+export interface Bill {
+  amount: number;
+  billingId: number;
+  legalName: string;
+  month: number;
+  product: string;
+  status: string;
+  year: number;
 }
 
 interface InvoiceDetails {

@@ -73,7 +73,7 @@
 
   <div class="content" [ngStyle]="{ 'margin-left': keepOpen ? '230px' : '' }">
     <app-header [routeActive]="routeActive" *ngIf="userInfo"></app-header>
-    <router-outlet *ngIf="userInfo"></router-outlet>
+    <router-outlet></router-outlet>
     <app-footer></app-footer>
   </div>
 </div>

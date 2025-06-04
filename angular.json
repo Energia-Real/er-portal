@@ -34,7 +34,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/app/icons"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
@@ -69,8 +70,7 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.production.ts"
                 }
-              ]
-            },
+              ]            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -80,8 +80,7 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.development.ts"
                 }
-              ]
-            },
+              ]            },
             "staging": {
               "optimization": false,
               "extractLicenses": false,
@@ -92,7 +91,8 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
             }
           },
           "defaultConfiguration": "production"
@@ -111,6 +111,9 @@
             }
           },
           "options": {
+            "ssl": true,
+            "sslKey": "localhost-key.pem",
+            "sslCert": "localhost.pem",
             "port": 9000
           },
           "defaultConfiguration": "development"
@@ -126,7 +129,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/app/icons"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",

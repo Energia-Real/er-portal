@@ -1,8 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { updateDrawer } from '@app/core/store/actions/drawer.actions';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import * as entity from '../clients-model';
 import { ClientsService } from '../clients.service';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -17,10 +18,10 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { EncryptionService } from '@app/shared/services/encryption.service';
 
 @Component({
-    selector: 'app-new-client',
-    templateUrl: './new-client.component.html',
-    styleUrl: './new-client.component.scss',
-    standalone: false
+  selector: 'app-new-client',
+  templateUrl: './new-client.component.html',
+  styleUrl: './new-client.component.scss',
+  standalone: false
 })
 export class NewClientComponent implements OnInit, OnDestroy {
   ADD = NOTIFICATION_CONSTANTS.ADD_CONFIRM_TYPE;
@@ -37,7 +38,7 @@ export class NewClientComponent implements OnInit, OnDestroy {
   get client(): any | null | undefined { return this._client }
 
   @Input() isOpen = false;
-  @Input() modeDrawer: "Edit" | "Create" = "Create";
+  @Input() modeDrawer: "Edit" | "Create" | "View" = "Create";
   @Input() set client(editedData: any | null | undefined) {
     if (editedData) {
       this.editedClient = editedData;
@@ -78,14 +79,21 @@ export class NewClientComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private notificationsService: NotificationService,
     private encryptionService: EncryptionService,
-
+    private translationService: TranslationService
   ) { }
 
   ngOnInit() {
     this.getCatalogs();
     this.authService.getInfoUser().subscribe(res => {
       this.user = res
-    })
+    });
+
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.getCatalogs();
+      });
   }
 
   getCatalogs() {
@@ -110,10 +118,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
       },
       error: (error) => {
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        console.error(error)
       }
     })
   }
@@ -126,10 +133,9 @@ export class NewClientComponent implements OnInit, OnDestroy {
 
       },
       error: (error) => {
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        console.error(error)
       }
     })
   }

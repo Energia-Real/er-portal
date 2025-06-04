@@ -3,6 +3,40 @@
     --mdc-outlined-text-field-container-shape: 28px;
   }
 
+  .c-solar-co2 {
+
+    gap: 15px !important;
+
+    .co2>div {
+      padding-top: 0px !important;
+    }
+
+    .title-right {
+      border-left: 1px solid #CFCFCF;
+      padding-left: 10px;
+      flex-direction: column;
+
+      >div {
+        margin-bottom: 10px;
+        flex-direction: row !important;
+        width: 100%;
+
+        h2 {
+          margin-left: 15px;
+          margin-top: 0;
+          width: 100%;
+          line-height: 14px;
+        }
+
+        span {
+          color: #000000 !important;
+          font-size: 12px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
   .economic-savings {
     height: 404px;
   }
@@ -41,6 +75,7 @@
   }
 
   .c-card-section {
+    // display: flex;
     padding: 15px 15px;
     margin-top: 22px;
 
@@ -58,8 +93,7 @@
         }
       }
 
-      .total-saving {
-      }
+      .total-saving {}
 
       >div {
         border-right-width: none !important;
@@ -99,6 +133,12 @@
     padding-top: 55px;
   }
 
+  .total-saving {
+    h2 {
+        color: #57B1B1!important;
+      }
+  }
+
   .solar-coverage {
     width: 40%;
     text-align: center;
@@ -118,7 +158,8 @@
 
       h2 {
         margin-bottom: 16px;
-        font-size: 16px;
+        font-size: 15px;
+        line-height: 15px;
         font-weight: 700;
         color: #EE5427;
       }
@@ -255,7 +296,7 @@
 
     .header-table {
       margin: 0;
-      font-size: 12px!important;
+      font-size: 12px !important;
       line-height: 18px;
     }
   }
@@ -345,19 +386,28 @@
   border-top: 2px solid #231F20;
 }
 
-.dataSC{
+.dataSC {
   width: 80%;
+  h3 {
+    color: #999999;
+    font-size: 16px;
+    line-height: 15px;
+    font-weight: 700;
+  }
 }
 
 .relative {
   position: relative;
 }
+
 .absolute {
   position: absolute;
 }
 
-.mat-mdc-progress-spinner { --mdc-circular-progress-active-indicator-color: grey; }
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: grey;
+}
 
-.messageEC{
+.messageEC {
   font-size: 16px !important;
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit, Inject, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FinantialDataModelStepper, ProcessType, StatusType, WebSocketResponse } from '../finantial-model-model';
 import { FinantialService } from '../finantial.service';
@@ -6,6 +6,8 @@ import { NotificationMessages } from '@app/shared/models/general-models';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import anime from 'animejs';
 import { MatStepper } from '@angular/material/stepper';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { Subject, takeUntil } from 'rxjs';
 
 type StepState = "Initial" | "Disabled" | "Loading" | "Success" | "Error";
 
@@ -17,7 +19,8 @@ type StepState = "Initial" | "Disabled" | "Loading" | "Success" | "Error";
     styleUrls: ['./finantial-stepper.component.scss'],
     standalone: false
 })
-export class FinantialStepperComponent implements OnInit {
+export class FinantialStepperComponent implements OnInit, OnDestroy {
+  private onDestroy$ = new Subject<void>();
 
 
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -33,7 +36,7 @@ export class FinantialStepperComponent implements OnInit {
   executionState: StepState = "Disabled"
   resultState: StepState = "Disabled"
 
-  title = 'Process Calculation...'
+  title = '';
 
 
   executeMessagesCount = 0;
@@ -51,11 +54,36 @@ export class FinantialStepperComponent implements OnInit {
     private moduleService: FinantialService,
     private cdRef: ChangeDetectorRef,
     public dialogRef: MatDialogRef<FinantialStepperComponent>,
+    private translationService: TranslationService
   ) {
     this.postFile(this.data.file!)
   }
   ngOnInit(): void {
+    // Set initial title
+    this.updateTitle();
 
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        this.updateTitle();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
+
+  private updateTitle(): void {
+    // Update title based on process status
+    if (this.processStatus === "Success") {
+      this.title = this.translationService.instant('MODELO_FINANCIERO.TITULO_EXITO');
+    } else if (this.processStatus === "Error") {
+      this.title = this.translationService.instant('MODELO_FINANCIERO.TITULO_ERROR');
+    } else {
+      this.title = this.translationService.instant('MODELO_FINANCIERO.TITULO_CALCULO');
+    }
   }
 
   objectKeys(obj: any): string[] {
@@ -81,7 +109,8 @@ export class FinantialStepperComponent implements OnInit {
       },
       error: (errors: any) => {
         this.processStatus = "Error";
-        this.title = 'Process Error Detected'
+        this.processStatus = "Error";
+        this.updateTitle();
       }
     })
   }
@@ -94,7 +123,8 @@ export class FinantialStepperComponent implements OnInit {
       error: (err) => {
         console.error("Error en WebSocket ❌", err);
         this.processStatus = "Error";
-        this.title = 'Process Error Detected'
+        this.processStatus = "Error";
+        this.updateTitle();
       }
     });
     this.startRequest(fileId);
@@ -113,7 +143,8 @@ export class FinantialStepperComponent implements OnInit {
       this.validationState = "Error"
       this.errors = response.errors
       this.processStatus = "Error"
-      this.title = 'Process Error Detected'
+      this.processStatus = "Error";
+      this.updateTitle();
     }
     switch (process) {
       case 'validate':
@@ -186,8 +217,7 @@ export class FinantialStepperComponent implements OnInit {
       if (this.resultState == "Success") {
         this.siguientePaso()
         this.processStatus = "Success"
-        this.title = 'Calculation Successful'
-        console.log(this.title)
+        this.updateTitle();
         this.cdRef.detectChanges();
 
       }

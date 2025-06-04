@@ -1,6 +1,22 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+// Factory function for ngx-translate
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
+const cubejsOptions = {
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTQ2NjY4OTR9.0fdi5cuDZ2t3OSrPOMoc3B1_pwhnWj4ZmM3FHEX7Aus",
+    options: {
+      apiUrl: "https://awesome-ecom.gcp-us-central1.cubecloudapp.dev/cubejs-api/v1"
+    }
+  };47
+  
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,30 +36,55 @@ import { notificationsReducer } from './core/store/reducers/notifications.reduce
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from './shared/material/paginator-intl';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { catalogsReducer } from './core/store/reducers/catalogs.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CatalogEffects } from './core/store/effects/catalogs.effects';
 
-@NgModule({ declarations: [AppComponent],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+@NgModule({
+    declarations: [AppComponent],
+    bootstrap: [AppComponent], 
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         GoogleMapsModule,
         CoreModule,
         CarouselModule,
-        StoreModule.forRoot({ paginator: paginatorReducer, drawer: drawerReducer, filters: filterReducer, notifications: notificationsReducer, corporateDrawer: corporateDrawerReducer }),
-        !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : []], providers: [
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TokenInterceptor,
-            multi: true
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: LoadingInterceptor,
-            multi: true
-        },
-        {
-            provide: MatPaginatorIntl,
-            useValue: getPaginatorIntl()
-        },
-        provideAnimationsAsync(),
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+        TranslateModule.forRoot({
+            defaultLanguage: 'es-MX',
+            loader: {
+                provide: TranslateLoader,
+                useFactory: createTranslateLoader,
+                deps: [HttpClient]
+            }
+        }),
+        StoreModule.forRoot({ 
+            paginator: paginatorReducer, 
+            drawer: drawerReducer, 
+            filters: filterReducer, 
+            notifications: notificationsReducer, 
+            corporateDrawer: corporateDrawerReducer,
+            catalogs: catalogsReducer 
+        }),
+        EffectsModule.forRoot([CatalogEffects]),
+
+      ], providers: [
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: TokenInterceptor,
+                multi: true
+            },
+            {
+                provide: HTTP_INTERCEPTORS,
+                useClass: LoadingInterceptor,
+                multi: true
+            },
+            {
+                provide: MatPaginatorIntl,
+                useValue: getPaginatorIntl()
+            },
+            provideAnimationsAsync(),
+            provideHttpClient(withInterceptorsFromDi()),
+        ]
+})
 export class AppModule { }

@@ -15,11 +15,11 @@ import { Location } from '@angular/common';
 
 
 @Component({
-    selector: 'app-qya',
-    templateUrl: './qya.component.html',
-    styleUrl: './qya.component.scss',
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+  selector: 'app-qya',
+  templateUrl: './qya.component.html',
+  styleUrl: './qya.component.scss',
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
 })
 export class QyaComponent implements OnInit {
 
@@ -60,10 +60,9 @@ export class QyaComponent implements OnInit {
         console.log(this.QyAsES)
       },
       error: (error) => {
-        let errorArray = error!.error!.errors!.errors!;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        console.error(error)
       }
     })
   }

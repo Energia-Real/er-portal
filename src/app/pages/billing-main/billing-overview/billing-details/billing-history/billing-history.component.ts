@@ -1,10 +1,23 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import * as entity from '../../../billing-model';
 import { BillingService } from '@app/pages/billing-main/billing.service';
-import { GeneralPaginatedResponse } from '@app/shared/models/general-models';
-import { CellComponent, ColumnDefinition } from 'tabulator-tables';
-import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe';
+import { DrawerGeneral, GeneralFilters, GeneralPaginatedResponse, GeneralResponse, notificationData, NotificationServiceData } from '@app/shared/models/general-models';
+import { ColumnDefinition, Options } from 'tabulator-tables';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { TabulatorTableComponent } from '@app/shared/components/tabulator-table/tabulator-table.component';
+import { InvoiceTableService } from '@app/pages/billing-main/billing-table.service';
+import { Store } from '@ngrx/store';
+import { selectDrawer } from '@app/core/store/selectors/drawer.selector';
+import { updateDrawer } from '@app/core/store/actions/drawer.actions';
+import { start } from '@popperjs/core';
+import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { EncryptionService } from '@app/shared/services/encryption.service';
+import { NotificationService } from '@app/shared/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-billing-history',
@@ -13,276 +26,232 @@ import { MonthAbbreviationPipe } from '@app/shared/pipes/month-abbreviation.pipe
   standalone: false
 })
 export class BillingHistoryComponent implements OnInit, OnDestroy, OnChanges {
+
+  ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
+
   private onDestroy$ = new Subject<void>();
 
-  @Input() filterData!: entity.FilterBillingDetails
+  @ViewChild(TabulatorTableComponent) tabulatorTable!: TabulatorTableComponent;
+  @Input() filterData!: entity.BillingOverviewFilterData;
 
-  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSizeOptions: number[] = [1, 2, 3, 5];
   pageSize: number = 10;
-  pageIndex: number = 1;
+  pageIndex: number = 0;
   totalItems: number = 0;
 
-  bills!: entity.Bill[] ;
-  private monthAbbrPipe = new MonthAbbreviationPipe();
+  bills: entity.Bill[] = [];
 
+  tableConfig!: Options;
+  columns: ColumnDefinition[] = [];
 
-  columns: ColumnDefinition[] = [
-    {
-      title: "Legal Name",
-      field: "legalName",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Year",
-      field: "year",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Month",
-      field: "month",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        return this.monthAbbrPipe.transform(value);
-      },
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Status",
-      field: "status",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        // Define colors for different status IDs
-        const statusColors: {[key: string]: {bg: string, text: string}} = {
-          "Payed": { bg: "#33A02C", text: "white" },      // Green - Paid in full
-          "Overdue": { bg: "#E31A1C", text: "white" },      // Orange - Pendiente/Partially paid
-          "Pending": { bg: "#E5B83E", text: "white" }       // Red - Open
-        };
+  drawerOpenSub: Subscription;
+  drawerOpenID: boolean = false;
+  drawerAction: "Create" | "Edit" | "View" = "Create";
+  drawerInfo: any | null | undefined = null;
 
-        // Get colors for this status ID (or use defaults)
-        const colors = (value && statusColors[value])
-          ? statusColors[value]
-          : { bg: "#E0E0E0", text: "black" };
-
-        // Create a span with the specified styling
-        return `<span style="
-          color: ${colors.text};
-          background-color: ${colors.bg};
-          border-radius: 16px;
-          padding: 4px 12px;
-          font-weight: 500;
-          display: flex;
-          align-items:center;
-          justify-content:center;
-          width: 95px;
-          height: 35px
-        ">${value}</span>`;
-      },
-      hozAlign: "left",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: "Product",
-      field: "product",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        // Default styling (for current string-based product)
-        let icon = '';
-        let bgColor = '#E0E0E0';
-        let textColor = 'black';
-
-        // Prepare for future structure with IDs
-        if (value) {
-          // Future structure: validate by ID
-          switch (value) {
-            case 'SOLAR': // Solar
-              icon = '<img src="assets/svg/sun.svg" style=" margin-right:18px; " title="Solar">';
-              bgColor = '#EE5427';
-              textColor = 'white';
-              break;
-            case 'BESS': // BESS
-              icon = '<img src="assets/svg/battery.svg" style=" margin-right:18px; " title="BESS">';
-              bgColor = '#57B1B1';
-              textColor = 'white';
-              break;
-            case 'MEM': // MEM
-              icon = '<img src="assets/svg/mem.svg" style=" margin-right:18px; " title="MEM">';
-              bgColor = '#792430';
-              textColor = 'white';
-              break;
-          }
-        }
-
-        // Create a span with the specified styling
-        return `<span style="
-          color: ${textColor};
-          background-color: ${bgColor};
-          border-radius: 16px;
-          padding: 4px 18px;
-          font-weight: 500;
-          display: flex;
-          align-items:center;
-          justify-content:center;
-          width: 133px;
-          height: 35px        ">${icon}${value}</span>`;
-      },
-      hozAlign: "left",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-
-    {
-      title: "Amount",
-      field: "amount",
-      formatter: (cell: CellComponent) => {
-        const value = cell.getValue();
-        // Format as currency
-        const formattedValue = new Intl.NumberFormat('es-MX', {
-          style: 'currency',
-          currency: 'MXN',
-          minimumFractionDigits: 2
-        }).format(value || 0);
-
-        // Add MXN after the amount
-        return `${formattedValue} MXN`;
-      },
-      hozAlign: "left",
-      headerSort: false,
-      vertAlign: "middle"
-    },
-    {
-      title: 'Action',
-      field: 'actions',
-      formatter: (cell: CellComponent) => {
-        // Generate HTML with the requested icons in a horizontal layout
-        return `
-          <div style="display: flex; justify-content: space-around; align-items: center;">
-            <img src="assets/svg/pdf-download.svg" class="action-icon" data-action="downloadPdf" style="cursor:pointer; margin:0 18px; " title="Download PDF">
-            <img src="assets/svg/xml-download.svg" class="action-icon" data-action="downloadXml" style="cursor:pointer; margin:0 18px;" title="Download XML">
-            <img src="assets/img/eye-open-orange.png" class="action-icon" data-action="viewDetails" style="cursor:pointer; margin:0 18px; " title="View Details">
-          </div>
-        `;
-      },
-      cellClick: (e: any, cell: CellComponent) => {
-        // Get the clicked element
-        const element = e.target as HTMLElement;
-
-        // Check if it's one of our action icons
-        if (element.classList.contains('action-icon')) {
-          const action = element.getAttribute('data-action');
-          const row = cell.getRow().getData();
-
-          // Call the appropriate function based on the action
-          switch (action) {
-            case 'downloadPdf':
-              this.downloadPdf(row);
-              break;
-            case 'downloadXml':
-              this.downloadXml(row);
-              break;
-            case 'viewDetails':
-              this.viewDetails(row);
-              break;
-          }
-        }
-      },
-      headerSort: false,
-      vertAlign: "middle"
-    }
-  ];
-
+  isLoading: Boolean = true;
 
   constructor(
-    private moduleService: BillingService
-  ){
+    private store: Store<{ filters: GeneralFilters }>,
+    private moduleService: BillingService,
+    private translationService: TranslationService,
+    private invoiceTableService: InvoiceTableService,
+    private notificationDataService: NotificationDataService,
+    private encryptionService: EncryptionService,
+    private notificationsService: NotificationService,
+    private dialog: MatDialog,
+
+  ) {
+    this.drawerOpenSub = this.store.select(selectDrawer).pipe(takeUntil(this.onDestroy$)).subscribe((resp: DrawerGeneral) => {
+      this.drawerOpenID = resp.drawerOpen;
+      this.drawerAction = resp.drawerAction;
+      this.drawerInfo = resp.drawerInfo;
+    });
   }
 
-
+  ngOnInit(): void {
+    this.loadTableColumns();
+    this.getFilters();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
       const prev = changes['filterData'].previousValue;
       const curr = changes['filterData'].currentValue;
-      // Compara solo los campos relevantes
-      if (JSON.stringify(prev) !== JSON.stringify(curr)) {
-        this.getBillingHistory();
-      }
+      if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
     }
   }
 
-  ngOnInit(): void {
-    console.log('Billing history : filterData', this.filterData);
-    this.getBillingHistory();
+  loadTableColumns() {
+    this.translationService.currentLang$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(() => {
+          const callbacks = {
+            downloadPdf: (row: any) => this.downloadPdf(row),
+            downloadXml: (row: any) => this.downloadXml(row),
+            // viewDetails: (row: any) => this.viewDetails(row)
+          };
+          return this.invoiceTableService.getTableOptionsHistoryBillings(callbacks);
+        })
+      )
+      .subscribe({
+        next: (options) => {
+          this.tableConfig = { ...options };
+          if (this.tabulatorTable) this.tabulatorTable.updateColumns();
+        },
+        error: (err) => {
+          console.error('Error al cargar la configuración de la tabla:', err);
+        }
+      });
   }
 
-  getBillingHistory(){
-    this.moduleService.getBillingHistory(this.filterData).subscribe({
-      next: (response: GeneralPaginatedResponse<entity.HistoryBillResponse>) => {
-        this.totalItems = response?.totalItems;
-        console.log(response)
-        if(response.data[0]!= null){
-          this.bills = response.data[0].historyBillResponse
-        }else{
-          this.bills = []
-          this.pageIndex = 0;
-        }
-        console.log(this.bills)
-      },
-      error: error => {
-        this.bills = []
-        this.pageIndex = 0;
+  getFilters() {
+    const filters: entity.BillingOverviewFilterData = {
+      customerNames: this.filterData?.customerNames ?? [],
+      legalName: this.filterData?.legalName ?? [],
+      productType: this.filterData?.productType ?? [],
+      startDate: this.filterData?.startDate ?? '',
+      endDate: this.filterData?.endDate ?? '',
+      pageSize: this.pageSize,
+      page: this.pageIndex + 1
+    };
 
+    this.getBillingHistory(filters);
+  }
+
+  getBillingHistory(filters: entity.BillingOverviewFilterData) {
+    this.moduleService.getBillingHistory(filters).subscribe({
+      next: (response: GeneralPaginatedResponse<entity.Bill>) => {
+        this.bills = response.data;
+        this.totalItems = response.totalItems;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
         console.log(error);
       }
-    })
+    });
   }
 
-  getServerData(event: any){
-    console.log(event)
+ getServerData(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.getFilters();
+  }
+
+  private downloadBase64File(base64: string, fileName: string, fileType: string): void {
+    try {
+      // Create a blob from the base64 string
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/"+fileType });
+      
+      // Create a link element and trigger the download
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = fileName;
+      link.click();
+      
+      // Clean up
+      window.URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
   }
 
   // Action methods for the icons
   downloadPdf(row: any): void {
     console.log('Download PDF clicked for:', row);
-    this.moduleService.downloadBilling(["pdf"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
-        console.log(doc)
-        const url = window.URL.createObjectURL(doc);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'billing.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      },
-      error:(err)=>{
-        console.log(err)
-      }
-    })
+    if(row.billingId=="" || row.billingId==null){
+      this.moduleService.downloadBillingADX("pdf",row.fiscalId,row.year,row.month).subscribe({
+        next:(resp:any) =>{
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    }else{
+      this.moduleService.downloadBillingNetsuite("pdf",row.billingId).subscribe({
+        next:(resp:GeneralResponse<entity.DownloadBillingResponse>) =>{
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    }
   }
 
   downloadXml(row: any): void {
     console.log('Download XML clicked for:', row);
-    this.moduleService.downloadBilling(["xml"],[row.billingId.toString()]).subscribe({
-      next:(doc: Blob)=>{
-        const url = window.URL.createObjectURL(doc);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'billing.xml';
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      },
-      error:(err)=>{
-      }
-    })
+    if(row.billingId=="" || row.billingId==null){
+      this.moduleService.downloadBillingADX("xml",row.fiscalId,row.year,row.month).subscribe({
+        next:(resp:GeneralResponse<entity.DownloadBillingResponse>) =>{
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    }else{
+      this.moduleService.downloadBillingNetsuite("xml",row.billingId).subscribe({
+        next:(resp:GeneralResponse<entity.DownloadBillingResponse>) =>{
+          this.downloadBase64File(resp.response.base64, resp.response.fileName, resp.response.fileType);
+        },
+        error: (error) => {
+          const errorArray = error?.error?.errors?.errors ?? [];
+          if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+      })
+    }
+  }
+
+  descargarTabla(tipo: string) {
+    this.tabulatorTable.download(tipo);
   }
 
   viewDetails(row: any): void {
-    console.log('View Details clicked for:', row);
+    this.drawerInfo = row;
+    this.updDraweStateView(true);
+  }
+
+  updDraweStateView(estado: boolean): void {
+    this.store.dispatch(updateDrawer({ drawerOpen: estado, drawerAction: "View", drawerInfo: this.drawerInfo, needReload: false }));
+  }
+
+  createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
+    const dataNotificationModal: notificationData | undefined = this.notificationDataService.uniqueError();
+    dataNotificationModal!.title = title;
+    dataNotificationModal!.content = description;
+    dataNotificationModal!.warn = warn; // ESTOS PARAMETROS SE IGUALAN AQUI DEBIDO A QUE DEPENDEN DE LA RESPUESTA DEL ENDPOINT
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      let dataNotificationService: NotificationServiceData = { //INFORMACION NECESARIA PARA DAR DE ALTA UNA NOTIFICACION EN SISTEMA
+        userId: userInfo.id,
+        descripcion: description,
+        notificationTypeId: dataNotificationModal?.typeId,
+        notificationStatusId: this.notificationsService.getNotificationStatusByName(NOTIFICATION_CONSTANTS.COMPLETED_STATUS).id //EL STATUS ES COMPLETED DEBIDO A QUE EN UN ERROR NO ESPERAMOS UNA CONFIRMACION O CANCELACION(COMO PUEDE SER EN UN ADD, EDIT O DELETE)
+      }
+      this.notificationsService.createNotification(dataNotificationService).subscribe(res => {
+      })
+    }
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
   }
 
   ngOnDestroy(): void {

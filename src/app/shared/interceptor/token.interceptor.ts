@@ -24,21 +24,30 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const accountService = inject(AuthService);
     const notificationMessages = request.headers.get('NotificationMessages');
+    
+    // Get current language from localStorage directly to avoid circular dependency
+    const currentLang = localStorage.getItem('selectedLanguage') || 'es-MX';
+    
     if ( request.url.startsWith(environment.API_URL_FINANTIAL_MODEL) ||request.url.startsWith(environment.API_URL_PERFORMANCE) ||request.url.startsWith(environment.API_URL_DOMAIN_BACKEND) || request.url.startsWith("https://localhost:7188/")) {
       let notificationData:any=null;
 
       if (notificationMessages) notificationData = JSON.parse(notificationMessages);
 
       const user = accountService.userValue;
-
+      
       const clonedRequest = user?.token
       ? request.clone({
           setHeaders: {
             Authorization: `Bearer ${user.token}`,
-            AccessControlAllowOrigin: '*'
+            AccessControlAllowOrigin: '*',
+            'Accept-Language': currentLang
           }
         })
-      : request;
+      : request.clone({
+          setHeaders: {
+            'Accept-Language': currentLang
+          }
+        });
 
       return next.handle(clonedRequest).pipe(
         tap((event) => {
@@ -116,7 +125,13 @@ export class TokenInterceptor implements HttpInterceptor {
       })
     );
     }
-    return next.handle(request);
+    // For other requests, still add the Accept-Language header
+    const clonedRequest = request.clone({
+      setHeaders: {
+        'Accept-Language': currentLang
+      }
+    });
+    return next.handle(clonedRequest);
   }
 
   openCustomComponentSnackBar(data:SnackData) {

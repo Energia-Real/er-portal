@@ -1,0 +1,190 @@
+.c-global-filters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 0 25px;
+
+  .apply {
+    color: #EE6A0A;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .c-selects-filters {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .c-input {
+      margin-bottom: 0;
+
+      ::ng-deep .select-ER .mat-mdc-text-field-wrapper {
+        margin-left: 0 !important;
+        width: 130px !important;
+      }
+    }
+  }
+
+  ::ng-deep .select-year {
+    width: 80px !important;
+    border-radius: 20px;
+    background: #F1F1F1;
+
+    .mdc-notched-outline__trailing,
+    .mdc-notched-outline__leading {
+      border: none !important;
+    }
+
+    .mat-mdc-select-value-text {
+      font-size: 14px !important;
+      font-weight: 500 !important;
+    }
+  }
+}
+
+.c-month-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000D9;
+  }
+
+  h2 {
+    color: #EE6A0A;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .month-button {
+    padding: 0 5px;
+    width: 98px;
+    height: 40px;
+    background: #F1F1F1;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    transition: width 0.3s ease;
+
+    h1 {
+      margin: 0;
+      font-size: 14px !important;
+      font-weight: 500 !important;
+    }
+
+    >span {
+      font-size: 2px;
+    }
+
+    .mat-mdc-menu-content {
+      width: 240px !important;
+      height: 220px !important;
+    }
+  }
+}
+
+.month-grid {
+  width: 240px;
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 32px);
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  background: #FBFBFB;
+
+  .mat-elevation-z8,
+  .mat-mdc-elevation-specific.mat-elevation-z8 {
+    box-shadow: none !important;
+  }
+
+  .mat-mdc-menu-content {
+    width: 240px !important;
+    height: 220px !important;
+  }
+
+  .mat-mdc-menu-item,
+  button.mat-menu-item {
+    height: 32px !important;
+    min-height: unset !important;
+    text-align: center;
+    width: 50px;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &.selected {
+      background-color: #3f51b5;
+      color: white;
+    }
+  }
+
+  ::ng-deep .custom-menu {
+    margin-top: 5px;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    border: 2px solid #E5E7EB;
+
+    .years {
+      display: flex;
+      gap: 14px;
+      padding: 0 20px;
+      margin: 6px 0 0 0;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: left;
+
+      p {
+        margin-bottom: 0;
+      }
+
+      .default-year {
+        color: #737373;
+      }
+
+      .selected-year {
+        color: #EE6A0A;
+      }
+    }
+  }
+
+  .selected-month {
+    background: #EE6A0A !important;
+    border-radius: 50px !important;
+    color: #FFFFFF !important;
+    font-size: 16px;
+    min-height: unset !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unselected-month {
+    color: #1F1F1F;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+  }
+}
+
+.single {
+  color: #737373;
+  font-size: 12px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+
+  p {
+    margin-bottom: 0;
+  }
+}

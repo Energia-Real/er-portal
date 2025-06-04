@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
@@ -13,14 +13,15 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-site-performance',
-    templateUrl: './site-performance.component.html',
-    styleUrls: ['./site-performance.component.scss'],
-    standalone: false
+  selector: 'app-site-performance',
+  templateUrl: './site-performance.component.html',
+  styleUrls: ['./site-performance.component.scss'],
+  standalone: false
 })
-export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SitePerformanceComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
   @Input() plantData!: entity.DataPlant;
   @Input() notData!: boolean;
@@ -31,7 +32,8 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
 
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
-    responsive: false,
+    responsive: true,
+    maintainAspectRatio: false,
     animation: {
       onComplete: () => {
       },
@@ -42,6 +44,14 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
         return delay;
       },
+    },
+    layout: {
+      padding: {
+        left: 10,
+        right: 10,
+        top: 20,
+        bottom: 20
+      }
     },
     plugins: {
       tooltip: {
@@ -57,6 +67,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
       legend: {
         labels: {
           usePointStyle: true,
+          padding: 20,
+          boxWidth: 10,
+          boxHeight: 10
         },
         position: "bottom",
 
@@ -69,6 +82,12 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         grid: {
           display: false,
         },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45,
+          padding: 10
+        }
       },
       y: {
         ticks: {
@@ -116,6 +135,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     private dialog: MatDialog,
     private notificationsService: NotificationService,
     private notificationDataService: NotificationDataService,
+    private translationService: TranslationService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
@@ -124,9 +144,15 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
     this.getUserClient();
-  }
 
-  ngAfterViewInit(): void {
+    // Subscribe to language changes
+    this.translationService.currentLang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        // if (!this.notData) {
+        this.getUserClient();
+        // }
+      });
   }
 
   getUserClient() {
@@ -145,7 +171,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         if (response) {
           this.sitePerformance.primaryElements = response.primaryElements;
           this.sitePerformance.additionalItems = response.additionalItems;
-          this.fullLoad = true;
+          // this.fullLoad = true;
           const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption ?? 0);
           const consumption = response.monthlyData?.map(item => item.consumption ?? 0);
           const generation = response.monthlyData?.map(item => item.generation ?? 0);
@@ -159,21 +185,21 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
               {
                 type: 'bar',
                 data: cfeConsumption ?? [],
-                label: 'CFE network consumption (kWh)',
+                label: 'CFE network consumption (MWh)',
                 backgroundColor: 'rgba(121, 36, 48, 1)',
                 order: 1
               },
-              {
+             /*  {
                 type: 'bar',
                 data: exportedSolarGeneration ?? [],
-                label: 'Exported solar generation (kWh)',
+                label: 'Exported solar generation (MWh)',
                 backgroundColor: 'rgba(255, 71, 19, 1)',
                 order: 1
-              },
+              }, */
               {
                 type: 'bar',
                 data: generation ?? [],
-                label: 'Generation (kWh)',
+                label: 'Generation (MWh)',
                 backgroundColor: 'rgba(87, 177, 177, 1)',
                 order: 1
               },
@@ -184,7 +210,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
                 backgroundColor: 'rgba(239, 68, 68, 1)',
                 pointBackgroundColor: 'rgba(239, 68, 68, 1)',
                 pointBorderColor: 'rgba(239, 68, 68, 1)',
-                label: 'Consumption (kWh)',
+                label: 'Consumption (MWh)',
                 order: 0,
               }
             ]
@@ -195,9 +221,9 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
         }
       },
       error: (error) => {
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
         }
         console.error(error)
       }
@@ -220,7 +246,7 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   initChart(): void {
-    const ctx = document.getElementById('myChart') as HTMLCanvasElement;
+    const ctx = document.getElementById('myChartPerformance') as HTMLCanvasElement;
     if (ctx) {
       this.chart = new Chart(ctx, {
         type: 'bar',
@@ -256,6 +282,6 @@ export class SitePerformanceComponent implements OnInit, AfterViewInit, OnDestro
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
-    this.onDestroy$.unsubscribe();
+    this.onDestroy$.complete();
   }
 }

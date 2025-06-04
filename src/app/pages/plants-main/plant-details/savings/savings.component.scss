@@ -1,73 +1,17 @@
-.c-card-info-savings {
-    height: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-
-    >div {
-        min-height: 80px;
-    }
-
-    .c-card-50 {
-        flex: 1 1 48%;
-    }
-
-    .c-card-33 {
-        flex: 1 1 30%;
-    }
-
-    .card-info {
-        border: 1px solid #D2D2D2;
-        height: auto;
-        min-height: 80px;
-        padding: 13px 20px;
-        border-radius: 24px;
-        display: flex;
-        margin-bottom: 0;
-
-        >div {
-            display: flex;
-            align-items: start;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        img {
-            margin-right: 20px;
-        }
-
-        h1 {
-            color: #EE5427;
-            font-size: 12px;
-            font-weight: 700;
-            line-height: 14px;
-            margin-bottom: 0px;
-        }
-
-        h2 {
-            color: #000000;
-            font-size: 20px;
-            font-weight: 500;
-            margin-bottom: 0;
+.c-savings {
+    .c-cards-information {
+        .separator-cards {
+            grid-column: span 2;
         }
     }
+
+    .graphic-savings {
+        padding-left: 20px;
+        padding: 20px 10px 10px 10px;
+        border-radius: 16px;
+        width: 90%;
+        height: 410px;
+        min-height: 360px;
+    }
+
 }
-
-.graphic-savings {
-    padding-left: 20px;
-    background: #F9F9F9;
-    padding: 20px 10px 10px 10px;
-    border: 1px solid #E2E2E2;
-    border-radius: 16px;
-    width: 100% !important;
-    height: auto;
-    min-height: 410px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    canvas{
-        width: 90% !important;
-        height: auto !important;
-    }
-}
-

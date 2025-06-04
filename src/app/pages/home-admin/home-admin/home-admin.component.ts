@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { notificationData } from '@app/shared/models/general-models';
 import { NotificationDataService } from '@app/shared/services/notificationData.service';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Subject } from 'rxjs';
 
@@ -365,7 +366,7 @@ export class HomeAdminComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private notificationDataService: NotificationDataService,
-
+    private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {

@@ -1,12 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { combineLatest, distinctUntilChanged, Observable, Subject, takeUntil } from 'rxjs';
-import { BillingService } from '../../billing.service';
-import { EncryptionService } from '@app/shared/services/encryption.service';
-import { FormBuilder } from '@angular/forms';
-import { catalogResponseList, FilterBillingDetails } from '../../billing-model';
-import { GeneralFilters, GeneralResponse } from '@app/shared/models/general-models';
+import { GeneralFilters } from '@app/shared/models/general-models';
 import { Store } from '@ngrx/store';
-import { DataCatalogs } from '@app/shared/models/catalogs-models';
+import { ConfigGlobalFilters } from '@app/shared/components/global-filters/global-filters-model';
+import { BillingOverviewFilterData } from '../../billing-model';
 
 @Component({
   selector: 'app-billing-details',
@@ -16,29 +13,22 @@ import { DataCatalogs } from '@app/shared/models/catalogs-models';
 })
 export class BillingDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+  
+  selectedTabIndex: number = 0;
+
+  configGlobalFilters: ConfigGlobalFilters = {
+    isLocal: true,
+    showDatepicker: true,
+    showClientsFilter: true,
+    showLegalNamesFilter: true,
+    showProductFilter: false, // Initially false since default tab index is 0
+  }
+
   generalFilters$!: Observable<GeneralFilters>;
   generalFilters!: GeneralFilters
-  clientsCatalog!:DataCatalogs[];
-  legalNameCatalog!:DataCatalogs[];
-  sitesCatalog!:DataCatalogs[];
-  productsCatalog!:DataCatalogs[];
-
-
-
-
-
-
-  filtersForm = this.fb.group({
-    customerName: [''],
-    legalName: [''],
-    siteName: [''],
-    productType: [''],
-  });
+  filterData!: BillingOverviewFilterData
 
   constructor(
-    private fb: FormBuilder,
-    private encryptionService: EncryptionService,
-    private moduleServices: BillingService,
     private store: Store<{ filters: GeneralFilters }>,
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
@@ -46,73 +36,33 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       this.generalFilters$.pipe(distinctUntilChanged()),
     ])
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(([generalFilters]) => {
-        this.generalFilters = generalFilters;
-        //this.getBilling();
-      });
+      .subscribe(([generalFilters]) => this.generalFilters = generalFilters);
   }
 
   ngOnInit(): void {
-    this.getClients();
-    this.getProducts();
-
-    this.filtersForm.get('customerName')?.valueChanges
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(valor => {
-      this.getLegalNames(valor!)
-    });
-
-    this.filtersForm.get('legalName')?.valueChanges
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(valor => {
-      this.getSites(valor!)
-    });
-
-
-
+    // Initial setup is already done with default values
   }
 
-  get filterData(): FilterBillingDetails {
-    return {
-      ...this.filtersForm.value,
-      year:Number( this.generalFilters?.year),
-      page:1,
-      pageSize:10
-    } as FilterBillingDetails;
+  onFiltersChanged(filters: any) {
+    this.filterData = filters;
   }
 
-  getClients(){
-    this.moduleServices.getClientCatalog().subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.clientsCatalog = resp.response.catalogResponseList
-      }
-    })
+  // Method to handle tab change events
+  onTabChange(index: number) {
+    this.selectedTabIndex = index;
+    
+    // Create a new object to ensure change detection
+    const newConfig = {
+      isLocal: true,
+      showDatepicker: true,
+      showClientsFilter: true,
+      showLegalNamesFilter: true,
+      showProductFilter: this.selectedTabIndex !== 0 // Hide product filter only when index is 0
+    };
+    
+    // Update the configGlobalFilters with the new object
+    this.configGlobalFilters = newConfig;
   }
-
-  getLegalNames(clientid:string){
-    this.moduleServices.getLegalNameCatalog(clientid).subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.legalNameCatalog = resp.response.catalogResponseList
-      }
-    })
-  }
-  getSites(legalName:string){
-    this.moduleServices.getSitesCatalog(legalName).subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.sitesCatalog = resp.response.catalogResponseList
-      }
-    })
-  }
-
-  getProducts(){
-    this.moduleServices.getProductTypesCatalog().subscribe({
-      next:(resp: GeneralResponse<catalogResponseList>) => {
-        this.productsCatalog = resp.response.catalogResponseList
-        console.log()
-      }
-    })
-  }
-
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

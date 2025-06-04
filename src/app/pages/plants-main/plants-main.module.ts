@@ -16,6 +16,7 @@ import { PlantsRoutingModule } from './plants-routing.module';
 import { PlantsComponent } from './plants/plants.component';
 import { NewPlantComponent } from './plants/new-plant/new-plant.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SavingsComponent } from './plant-details/savings/savings.component';
@@ -75,7 +76,8 @@ import { PlantsEvenetSummaryComponent } from './plant-details/plants-evenet-summ
     PdfViewerModule,
     NgxImageZoomModule,
     NgxSkeletonLoaderModule,
-    CarouselModule
+    CarouselModule,
+    TranslateModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports : [

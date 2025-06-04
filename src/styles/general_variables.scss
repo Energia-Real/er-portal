@@ -47,7 +47,7 @@
 
     i {
         position: absolute;
-        top: 50%;
+        top: 21px;
         left: 10px;
         transform: translateY(-50%);
         color: #000000;
@@ -557,7 +557,7 @@ select:focus {
     color: #EE6A0A !important;
     border-radius: 24px;
     padding: 5px 15px !important;
-    font-size: 18px;
+    font-size: 14px;
     display: block;
     font-weight: 500;
     border: none;
@@ -605,6 +605,18 @@ select:focus {
 
 .btn-width-large {
     width: 210px !important;
+}
+
+.btn-without-border {
+    color: #EE6A0A;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 120px;
+    height: 42.6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .btn-action-add {
@@ -708,6 +720,19 @@ select:focus {
 
 .filter-selected {
     border: 1px solid #EE6A0A;
+    color: #EE6A0A;
+
+    span {
+        color: #EE6A0A;
+    }
+}
+
+.filter-unselected {
+    color: #D1D1D1;
+
+    span {
+        color: #D1D1D1;
+    }
 }
 
 .btn-action-cancel {
@@ -891,23 +916,24 @@ select:focus {
     width: 235px;
     height: 85px;
     border-radius: 24px;
-     border: 1px solid #D2D2D2;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     h1 {
+    border: 1px solid #D2D2D2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
         font-weight: 500;
         font-size: 12px;
         margin-bottom: 8px;
         line-height: 15px;
-     }
+    }
 
-     h2 {
+    h2 {
         font-weight: 500;
         font-size: 24px;
         margin-bottom: 0px;
-     }
+    }
 
 }
 
@@ -981,6 +1007,42 @@ select:focus {
             margin-bottom: 0;
             margin-top: 10px;
         }
+    }
+}
+
+.c-cards-information {
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+
+    .c-card-50 {
+        display: block;
+        min-height: 80px;
+        border: 1px solid #D2D2D2;
+        padding: 13px 20px;
+        border-radius: 24px;
+    }
+
+    .card-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    h1 {
+        font-size: 12px;
+        font-weight: 700;
+        color: #EE5427;
+        margin-bottom: 0;
+        line-height: 14px;
+    }
+
+    h2 {
+        font-size: 20px;
+        font-weight: 500;
+        color: #000000;
+        margin-bottom: 0;
     }
 }
 
@@ -1174,7 +1236,7 @@ select:focus {
 .c-solar-co2 {
     display: flex;
     gap: 24px;
-    height: 230px;
+    min-height: 230px;
 
     .co2 {
         width: 100%;
@@ -1231,7 +1293,7 @@ select:focus {
 
                 >div {
                     display: flex;
-                    gap: 7px;
+                    gap: 5px;
 
                     h2 {
                         color: #000000;
@@ -1282,4 +1344,49 @@ select:focus {
     font-size: 24px !important;
     font-weight: 700 !important;
     line-height: 24px !important;
+}
+
+
+.billing-status-payed {
+    background: #33A02C;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.billing-status-pending {
+    background: #E5B83E;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.billing-status-overdue {
+    background: #E31A1C;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.billing-status-canceled {
+    background: #595959;
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.action-icon {
+    width: 25px;
 }

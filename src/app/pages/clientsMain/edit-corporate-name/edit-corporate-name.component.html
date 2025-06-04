@@ -1,8 +1,8 @@
 <div class="py-6  mx-6" >
     <div *ngIf="data?.razonSocial">
-        <span class="title" >Corporate Name Edit</span>
+        <span class="title" >{{ 'CLIENTES.EDITAR_RAZON_SOCIAL' | translate }}</span>
         <div class="my-6">
-            You are editing the Corporate Name {{data?.razonSocial?.corporateName}} to add or remove associated plants. Make sure the changes are correct before proceeding.
+            {{ 'CLIENTES.EDITANDO_RAZON_SOCIAL' | translate: { corporateName: data?.razonSocial?.corporateName } }}
         </div>
         <div class="corp-title">
             {{data?.razonSocial?.corporateName}}
@@ -11,7 +11,7 @@
             {{data?.razonSocial?.rfc}}
         </div>
         <div class="mt-5 mb-2 associated">
-            Associated plants
+            {{ 'CLIENTES.PLANTAS_ASOCIADAS' | translate }}
         </div>
         <mat-divider ></mat-divider>
     
@@ -36,13 +36,13 @@
 
 
     <div *ngIf="data?.razonSocial == null">
-        <span class="title" >Add corporate name</span>
+        <span class="title" >{{ 'CLIENTES.AGREGAR_RAZON_SOCIAL_TITULO' | translate }}</span>
         <div class="my-6">
-            Add a new corporate name, associate plants with it, and enter the RFC.        
+            {{ 'CLIENTES.AGREGAR_RAZON_SOCIAL_DESCRIPCION' | translate }}
         </div>
         <div >
             <form class="relative w-80  c-search" [formGroup]="formData"  >
-                <input class="block w-full rounded-full  h-7 mb-3" type="text" placeholder="Corporate Name"
+                <input class="block w-full rounded-full  h-7 mb-3" type="text" placeholder="{{ 'CLIENTES.RAZON_SOCIAL_PLACEHOLDER' | translate }}"
                 formControlName="inputCorporateName">
                 
                 <input class="block w-full rounded-full  h-7" type="text" placeholder="RFC"
@@ -50,7 +50,7 @@
             </form>
         </div>
         <div class="mt-5 mb-2 associated">
-            Associated plants
+            {{ 'CLIENTES.PLANTAS_ASOCIADAS' | translate }}
         </div>
         <mat-divider ></mat-divider>
     
@@ -79,7 +79,7 @@
     <div class="flex justify-end mt-2 mb-6 ">
         <button mat-button [matMenuTriggerFor]="menuPlants" class=" btn-cancel btn-corporate-name  flex" > 
         <mat-icon  fontIcon="add"></mat-icon>                    
-        Add Plant</button>
+        {{ 'CLIENTES.AGREGAR_PLANTA' | translate }}</button>
         <mat-menu #menuPlants="matMenu" class="z-40" [overlayPanelClass]="'custom-menu'"    >
             <button mat-menu-item *ngFor="let pl of plants" (click)="addPlant(pl)">{{pl.siteName}}</button>
 
@@ -89,10 +89,10 @@
     <mat-divider ></mat-divider>
     <div class=" flex justify-around mt-6">
         <button class="btn-action-back" (click)="createNotificationModal(CANCEL)">
-            Back
+            {{ 'CLIENTES.ATRAS' | translate }}
         </button>
         <button class="btn-action-add" (click)="actionSave()">
-            Apply
+            {{ 'CLIENTES.APLICAR' | translate }}
         </button>
     </div>
 

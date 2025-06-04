@@ -21,55 +21,76 @@ export class FormatsService {
 
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
-      return numberValue.toLocaleString('en-US', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
+      return numberValue.toLocaleString('es-MX', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
     } else return '';
   }
 
   energyFormatGWh(content: string | number): string {
     if (!content) return ''
-  
+
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
       const gwhValue = numberValue / 1_000_000;
-  
-      return gwhValue.toLocaleString('en-US', {
+
+      return gwhValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' GWh';
     } else return '';
   }
-  
+
   energyFormatMWh(content: string | number): string {
     if (!content) return '';
-  
+
     let numberValue = typeof content === 'string' ? parseFloat(content.replace(/,/g, '')) : content;
     if (!isNaN(numberValue)) {
-      const mwhValue = numberValue / 1_000; 
-  
-      return mwhValue.toLocaleString('en-US', {
+      const mwhValue = numberValue / 1_000;
+
+      return mwhValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       }) + ' MWh';
     } else return '';
   }
-  
 
-  energyWithDecimals(content: string | number, formattedKwh?: boolean): string {
+
+  energyWithDecimalsOrKWH(content: string | number, formattedKwh?: boolean): string {
     let numberValue = typeof content == 'string' ? parseFloat(content.replace(/,/g, '')) : content;
 
     if (!numberValue) return '';
 
     if (!isNaN(numberValue)) {
-      const formattedValue = numberValue.toLocaleString('en-US', {
+      const formattedValue = numberValue.toLocaleString('es-MX', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
 
       return formattedKwh ? `${formattedValue} kWh` : formattedValue;
     } else return '';
+  }
+
+  energyWithoutDecimalsOrKWH(content: string | number, formattedKwh?: boolean): string {
+    let numberValue = typeof content === 'string'
+      ? parseFloat(content.replace(/,/g, ''))
+      : content;
+
+    if (!numberValue) return '';
+
+    if (!isNaN(numberValue)) {
+      const truncatedValue = Math.trunc(numberValue); 
+
+      const formattedValue = truncatedValue.toLocaleString('es-MX', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+
+      return formattedKwh ? `${formattedValue} kWh` : formattedValue;
+    } else {
+      return '';
+    }
   }
 
 
@@ -97,12 +118,11 @@ export class FormatsService {
     }
   }
 
-
   moneyFormat(amount: number) {
-    if (!amount) return ''
-    return new Intl.NumberFormat('en-US', {
+    if (!amount) return '0 MXN'
+    return new Intl.NumberFormat('es-MX', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'MXN',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(amount) + ' MXN';
@@ -124,6 +144,6 @@ export class FormatsService {
     const monthText = months ? `${months} month(s)` : '';
     const dayText = days ? `${days} day(s)` : '';
 
-    return [yearText, monthText, dayText].filter(Boolean).join(' ');
+    return [yearText, monthText].filter(Boolean).join(' ');
   }
 }

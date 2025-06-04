@@ -9,6 +9,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { PlantsMainModule } from '../plants-main/plants-main.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PlantsMainModule } from '../plants-main/plants-main.module';
     CarouselModule,
     ReactiveFormsModule,
     SharedComponensModule,
-    PlantsMainModule 
+    PlantsMainModule,
+    TranslateModule
   ]
 })
 export class HomeAdminModule { }

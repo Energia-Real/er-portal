@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
 import { ReturnBarModule } from '@app/shared/components/return-bar/return-bar.module';
@@ -44,7 +45,8 @@ import { EditCorporateNameComponent } from './edit-corporate-name/edit-corporate
     NgChartsModule,
     MessageNoDataComponent,
     PdfViewerModule,
-    NgxImageZoomModule
+    NgxImageZoomModule,
+    TranslateModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

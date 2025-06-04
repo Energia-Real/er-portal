@@ -32,6 +32,7 @@ export interface SDResponse {
   energyConsumptionMeasure: string;
   energyProductionMeasure:string;
   totalSavings: string;
+  totalSavingsPercent?: string;
 }
 
 export interface PeriodicElement {
@@ -70,6 +71,8 @@ export interface PlantData {
   energyConsumptionMeasure?: string;
   energyProductionMeasure?: string;
   energyConsumptionFormat: string;
+  unitProductionMeasure: string;
+  unitConsumptionMeasure: string;
   energyProductionFormat: string;
   solarCoverage: number;
   co2Saving: any;
@@ -89,11 +92,9 @@ export interface DataRespSavingDetails {
 }
 
 export interface DataRespSavingDetailsMapper {
-  data: DataRespSavingDetails[];
-  savingDetails: {
-    totalEnergyConsumption: string;
-    totalEnergyProduction: string;
-  }
+  data: PlantData[];
+  dataFormatted: PlantData[];
+  unitMeasu:string;
 }
 
 export interface statesResumeTooltip {

@@ -11,6 +11,7 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { Subject } from 'rxjs';
 import { Tabulator } from 'tabulator-tables';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 
 
@@ -48,6 +49,7 @@ export class FinantialModelLayoutComponent implements OnInit, OnDestroy,AfterVie
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
     public notificationDialog: MatDialog,
+    private translationService: TranslationService
   ) {
 
   }

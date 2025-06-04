@@ -16,12 +16,13 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { UserInfo } from '@app/shared/models/general-models';
 import { FormBuilder } from '@angular/forms';
 import { SitePerformanceComponent } from './site-performance/site-performance.component';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-plant-detail',
-    templateUrl: './plant-details.component.html',
-    styleUrl: './plant-details.component.scss',
-    standalone: false
+  selector: 'app-plant-detail',
+  templateUrl: './plant-details.component.html',
+  styleUrl: './plant-details.component.scss',
+  standalone: false
 })
 export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   private onDestroy$ = new Subject<void>();
@@ -208,6 +209,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
     private dialog: MatDialog,
+    private translationService: TranslationService
   ) { }
 
   ngOnInit(): void {
@@ -228,46 +230,18 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       next: (response: entity.DataPlant) => {
         this.isLoadingPD = false;
         this.plantData = response;
-        this.verifyInformation(response);
+        this.getWeather(this.plantData.latitude, this.plantData.longitude);
+        this.getPlaceAddress(this.plantData.latitude, this.plantData.longitude);
+        this.getLocalTimeOfPlace(this.plantData.latitude, this.plantData.longitude);
       },
       error: (error) => {
         this.isLoadingPD = false;
-        let errorArray = error.error.errors.errors;
-        if (errorArray.length == 1) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn)
-        }
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
         console.error(error)
       }
     });
   }
-
-  verifyInformation(plantData: entity.DataPlant) {
-    if (plantData?.plantCode && plantData?.inverterBrand[0] == 'Huawei') {
-      this.showNotdata = false
-    } else {
-      this.showNotdata = true;
-      if (plantData?.plantCode && plantData?.inverterBrand[0] != 'Huawei') this.modalMessage.push('The information provided includes an inverter brand that has not yet been implemented.');
-      else this.modalMessage.push('Information does not include plant code or inverter brand.');
-      this.loadingSystem = false;
-    }
-
-    if (plantData.latitude != null && plantData.longitude != null) {
-      this.getWeather(plantData.latitude, plantData.longitude);
-      this.getPlaceAddress(plantData.latitude, plantData.longitude);
-      this.getLocalTimeOfPlace(plantData.latitude, plantData.longitude);
-    } else {
-      this.loadingWeather = this.loadingTimeZone = false;
-      this.modalMessage.push('The information provided does not include latitude or longitude coordinates, so it is not possible to upload the map.')
-    }
-
-    if (this.modalMessage.length) {
-      const formattedMessages = this.modalMessage.map(message => `(${'\u2022'}) ${message}`).map(message => `<div>${message}</div>`).join('\n');
-      this.notificationService.notificacion(formattedMessages, 'alert');
-    }
-
-    this.loadingSystem = false;
-  }
-
 
   getWeather(lat: number, long: number) {
     this.plantsService.getWeatherData(lat, long).subscribe({
@@ -347,14 +321,14 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-   alertInformationModal(){
-      const dataNotificationModal: notificationData = this.notificationDataService.showNoModuleAlert();
-  
-      this.dialog.open(NotificationComponent, {
-        width: '540px',     
-        data: dataNotificationModal
-      });
-    }
+  alertInformationModal() {
+    const dataNotificationModal: notificationData = this.notificationDataService.showNoModuleAlert();
+
+    this.dialog.open(NotificationComponent, {
+      width: '540px',
+      data: dataNotificationModal
+    });
+  }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
