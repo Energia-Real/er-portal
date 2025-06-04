@@ -102,9 +102,9 @@
       "TECNOLOGIA_MONTAJE": "Tecnología de montaje",
       "TIPO_TECHO": "Tipo de techo",
       "SUBTOTAL_CFE": "Subtotal CFE",
-      "SUBTOTAL_ER": "Subtotal energía real",
-      "SUBTOTAL_ER_CFE": "Subtotal energía real + CFE",
-      "GASTO_SIN_ER": "Gasto sin energía real",
+      "SUBTOTAL_ER": "Subtotal Energía Real",
+      "SUBTOTAL_ER_CFE": "Subtotal Energía Real + CFE",
+      "GASTO_SIN_ER": "Gasto sin Energía Real",
       "AHORROS": "Ahorros",
       "PORCENTAJE_AHORRO": "Porcentaje de ahorro",
       "GENERACION_SISTEMA": "Generación del sistema",
@@ -316,7 +316,9 @@
     "NOMBRE_LEGAL": "Nombre Legal",
     "AÑO": "Año",
     "MES": "Mes",
+    "EMITIDO": "Emitido",
     "ESTADO": "Estado",
+    "PERIODO": "Periodo",
     "PRODUCTO": "Producto",
     "MONTO": "Monto",
     "ACCION": "Acción",
@@ -338,7 +340,8 @@
     "RESUMEN": "Resumen",
     "HISTORIAL_FACTURACION": "Historial de Facturación",
     "INFORMACION_FACTURACION": "Información de Facturación",
-    "RESUMEN_ENERGIA": "Resumen de Energía",
+    "RESUMEN_ENERGIA": "Resumen de energía solar y facturación",
+    "RESUMEN_ENERGIA_SUB": "Facturado sobre la producción del mes anterior",
     "BALANCE": "Balance:",
     "MOSTRAR_TODO": "Mostrar todo",
     "ENERGIA_PRODUCIDA": "Energía Producida (kWh)",
@@ -354,6 +357,7 @@
     "VALOR_UNITARIO": "Valor Unitario",
     "IMPUESTOS": "Impuestos",
     "MONTO_TOTAL": "Monto Total",
+    "FACTURADO_ENERGIA": "Facturado por la energía producida en el mes anterior.",
     "FECHA_INICIO": "Fecha de inicio",
     "FECHA_FIN": "Fecha de finalización",
     "ESTATUS": "Estatus",
@@ -375,8 +379,8 @@
     }
   },
   "MAPA": {
-    "TOOLTIPS":{
-      "ACTIVE":"Plantas activas",
+    "TOOLTIPS": {
+      "ACTIVE": "Plantas activas",
       "TOTAL_CAPACITY": "Capacidad Instalada Total kWh",
       "TOTAL_CO2": "Ahorro de Co2 Total",
       "PLANTS": "plantas"

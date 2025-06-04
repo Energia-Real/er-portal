@@ -100,8 +100,8 @@ export class InvoiceTableService {
 
     const keys = [
       'FACTURACION.NOMBRE_LEGAL',
-      'FACTURACION.AÑO',
-      'FACTURACION.MES',
+      'FACTURACION.EMITIDO',
+      'FACTURACION.PERIODO',
       'FACTURACION.ESTADO',
       'FACTURACION.PRODUCTO',
       'FACTURACION.MONTO',
@@ -113,7 +113,7 @@ export class InvoiceTableService {
     );
 
     return forkJoin(translationObservables).pipe(
-      map(([legalName, year, month, status, product, amount, action]) => [
+      map(([legalName, issued, period, status, product, amount, action]) => [
         {
           title: legalName,
           field: "legalName",
@@ -123,22 +123,20 @@ export class InvoiceTableService {
           cssClass: "wrap-text-cell"
         },
         {
-          title: year,
-          field: "year",
+          title: issued,
+          field: "issuanceDate",
           headerSort: false,
           vertAlign: "middle",
-          minWidth: 80,
+          minWidth: 150,
+          cssClass: "wrap-text-cell"
         },
         {
-          title: month,
-          field: "month",
-          formatter: (cell: CellComponent) => {
-            const value = cell.getValue();
-            return this.monthAbbrPipe.transform(value);
-          },
+          title: period,
+          field: "billingPeriod",
           headerSort: false,
           vertAlign: "middle",
-          minWidth: 80,
+          minWidth: 150,
+          cssClass: "wrap-text-cell"
         },
         {
           title: status,

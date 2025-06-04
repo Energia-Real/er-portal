@@ -1,7 +1,7 @@
 import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './billing-model';
 import { ChartConfiguration } from 'chart.js';
-import { GeneralResponse } from '@app/shared/models/general-models';
+import { GeneralPaginatedResponse, GeneralResponse } from '@app/shared/models/general-models';
 export class Mapper {
 	static getBillingDataMapper(response: entity.DataBillingTableMapper, formatsService: FormatsService): entity.DataBillingTableMapper {
 		let dataList: entity.DataBillingTable[] = [];
@@ -63,17 +63,17 @@ export class Mapper {
 		}
 	}
 
-	static getBillingHistoryMapper(response: entity.DataHistoryOverviewTableMapper, formatsService: FormatsService): entity.DataHistoryOverviewTableMapper {
-		let dataList: entity.DataHistoryOverviewTable[] = [];
-
-		response?.data?.forEach((data: entity.DataHistoryOverviewTable): void => {
+	static getBillingHistoryMapper(response: GeneralPaginatedResponse<entity.Bill>, formatsService: FormatsService): any {
+		let dataList: entity.Bill[] = [];
+		
+		response?.data?.forEach((data: entity.Bill): void => {
 			dataList.push({
 				...data,
-				amount: formatsService.moneyFormat(parseFloat(data.amount)),
-				monthFormatter: formatsService.getMonthName(parseFloat(data.month)),
+				issuanceDate : formatsService.dateFormatWithoutDay(data.issuanceDate),
+				billingPeriod : formatsService.dateFormatWithoutDay(data.billingPeriod)
 			});
 		});
-
+		
 		return {
 			...response,
 			data: dataList

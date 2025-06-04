@@ -6,11 +6,11 @@
                 matTooltip="{{ 'FACTURACION.INFO_GRAFICO' | translate }}">info
             </span>
         </div>
+    </div>
 
-        <div class="c-filters-header">
-            <app-global-filters [configGlobalFilters]="configGlobalFilters"
-                (filtersChanged)="onFiltersChanged($event)"></app-global-filters>
-        </div>
+    <div class="c-filters-header">
+        <app-global-filters [configGlobalFilters]="configGlobalFilters"
+            (filtersChanged)="onFiltersChanged($event)"></app-global-filters>
     </div>
 
     <div class="c-content c-taps grid grid-cols-1 gap-x-6 gap-y-4 md:gap-5">
