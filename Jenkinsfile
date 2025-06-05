@@ -29,7 +29,7 @@ pipeline {
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
                         STATIC_WEB_APP_TOKEN = TOKEN_DEV
-                        DEPLOY_ENV = "development"
+                        DEPLOY_ENV = "Production"
                         STATIC_WEB_APP_NAME="er-portal-app-dev"
                         STATIC_WEB_APP_URL="https://delightful-river-002b49710.4.azurestaticapps.net"
                     } else {
