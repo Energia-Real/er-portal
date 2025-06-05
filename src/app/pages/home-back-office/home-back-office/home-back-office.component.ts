@@ -9,14 +9,6 @@ import { ConfigGlobalFilters } from '@app/shared/components/global-filters/globa
 })
 export class HomeBackOfficeComponent implements OnInit {
 
-  configGlobalFilters: ConfigGlobalFilters = {
-    showDatepicker: true,
-    showClientsFilter: true,
-    showLegalNamesFilter: true,
-    showProductFilter: true,
-    clientsIndividual: false,
-  }
-
   ngOnInit(): void {
   }
 
