@@ -385,5 +385,10 @@
       "TOTAL_CO2": "Ahorro de Co2 Total",
       "PLANTS": "plantas"
     }
+  },
+  "DETALLE_PLANTA": {
+    "GENERACION": "Generación",
+    "CONSUMO_CFE_RED": "Consumo de la red de CFE (MWh)",
+    "CONSUMO_CFE": "Consumo (MWh)"
   }
 }
