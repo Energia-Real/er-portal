@@ -10,6 +10,7 @@ pipeline {
         TOKEN_PROD = credentials('STATIC_WEB_APP_TOKEN')
         STATIC_WEB_APP_TOKEN = ""
         DEPLOY_ENV =""
+        CONFIG_ENV = ""
         STATIC_WEB_APP_DEV_TOKEN=""
         STATIC_WEB_APP_URL=""
         APP_LOCATION = 'src' // Carpeta donde está tu aplicación Node.js
@@ -23,13 +24,15 @@ pipeline {
                     if (env.GIT_BRANCH ==~ 'origin/main') {
                         echo "Se desplegará en Producción."
                         STATIC_WEB_APP_TOKEN = TOKEN_PROD
-                        DEPLOY_ENV = "production"
+                        DEPLOY_ENV = "Production"
+                        CONFIG_ENV = "production"
                         STATIC_WEB_APP_NAME="er-portal-app"
                         STATIC_WEB_APP_URL="https://white-coast-0fa879810.4.azurestaticapps.net"
                     } else if (env.GIT_BRANCH ==~ 'origin/develop') {
                         echo "Se desplegará en Desarrollo."
                         STATIC_WEB_APP_TOKEN = TOKEN_DEV
                         DEPLOY_ENV = "Production"
+                        CONFIG_ENV = "development"
                         STATIC_WEB_APP_NAME="er-portal-app-dev"
                         STATIC_WEB_APP_URL="https://delightful-river-002b49710.4.azurestaticapps.net"
                     } else {
@@ -62,7 +65,7 @@ pipeline {
         }
         stage('Build Application') {
             steps {
-                sh "npm run build -- --configuration=${DEPLOY_ENV}"
+                sh "npm run build -- --configuration=${CONFIG_ENV}"
             }
         }
         stage('Deploy to Azure Web App') {
