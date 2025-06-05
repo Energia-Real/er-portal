@@ -13,13 +13,15 @@ import { BillingOverviewFilterData } from '../../billing-model';
 })
 export class BillingDetailsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
+  
+  selectedTabIndex: number = 0;
 
   configGlobalFilters: ConfigGlobalFilters = {
-    isLocal:true,
+    isLocal: true,
     showDatepicker: true,
     showClientsFilter: true,
     showLegalNamesFilter: true,
-    showProductFilter: true,
+    showProductFilter: false, // Initially false since default tab index is 0
   }
 
   generalFilters$!: Observable<GeneralFilters>;
@@ -37,10 +39,29 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
       .subscribe(([generalFilters]) => this.generalFilters = generalFilters);
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    // Initial setup is already done with default values
+  }
 
   onFiltersChanged(filters: any) {
     this.filterData = filters;
+  }
+
+  // Method to handle tab change events
+  onTabChange(index: number) {
+    this.selectedTabIndex = index;
+    
+    // Create a new object to ensure change detection
+    const newConfig = {
+      isLocal: true,
+      showDatepicker: true,
+      showClientsFilter: true,
+      showLegalNamesFilter: true,
+      showProductFilter: this.selectedTabIndex !== 0 // Hide product filter only when index is 0
+    };
+    
+    // Update the configGlobalFilters with the new object
+    this.configGlobalFilters = newConfig;
   }
 
   ngOnDestroy(): void {
