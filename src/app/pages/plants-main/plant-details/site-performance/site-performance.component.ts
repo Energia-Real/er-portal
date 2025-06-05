@@ -126,6 +126,8 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
+  isLoading: boolean = true;
+
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
@@ -148,11 +150,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        // if (!this.notData) {
-        this.getUserClient();
-        // }
-      });
+      .subscribe(() => this.getUserClient());
   }
 
   getUserClient() {
@@ -189,13 +187,13 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
                 backgroundColor: 'rgba(121, 36, 48, 1)',
                 order: 1
               },
-             /*  {
-                type: 'bar',
-                data: exportedSolarGeneration ?? [],
-                label: 'Exported solar generation (MWh)',
-                backgroundColor: 'rgba(255, 71, 19, 1)',
-                order: 1
-              }, */
+              /*  {
+                 type: 'bar',
+                 data: exportedSolarGeneration ?? [],
+                 label: 'Exported solar generation (MWh)',
+                 backgroundColor: 'rgba(255, 71, 19, 1)',
+                 order: 1
+               }, */
               {
                 type: 'bar',
                 data: generation ?? [],
@@ -217,6 +215,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
           };
 
           this.displayChart = true;
+          this.isLoading = false;
           this.initChart();
         }
       },

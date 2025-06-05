@@ -12,10 +12,10 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-savings',
-    templateUrl: './savings.component.html',
-    styleUrl: './savings.component.scss',
-    standalone: false
+  selector: 'app-savings',
+  templateUrl: './savings.component.html',
+  styleUrl: './savings.component.scss',
+  standalone: false
 })
 export class SavingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -129,6 +129,8 @@ export class SavingsComponent implements OnInit, OnDestroy {
     additionalItems: []
   };
 
+  isLoading: boolean = true;
+
   constructor(
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
@@ -207,6 +209,8 @@ export class SavingsComponent implements OnInit, OnDestroy {
             }
           ]
         };
+
+        this.isLoading = false;
         this.displayChart = true;
         this.initChart();
       },
