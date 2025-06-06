@@ -126,7 +126,10 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
   isLoading: boolean = true;
-  filters: any
+
+  labelsChart: { key: string; text: string; }[] = [];
+  translatedMonthsMap: Record<string, string> = {};
+
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
@@ -141,34 +144,20 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
 
-  labelsChart: { key: string; text: string; }[] = [];
-  translatedMonthsMap: Record<string, string> = {};
-
-
   ngOnInit(): void {
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
-    this.getUserClient();
 
-    // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => this.getUserClient());
-  }
-
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.filters = { clientId: userInfo.clientes[0], ...generalFilters }
-        this.getSitePerformance(this.filters);
+      .subscribe(() => {
+        this.initializeTranslations();
+        this.getUserClient();
       });
-    }
   }
 
-  initializeTranslations(response: entity.DataResponseArraysMapper): void {
-    const keysChart2 = [
+  initializeTranslations(): void {
+    const keysChart = [
       'DETALLE_PLANTA.GENERACION',
       'DETALLE_PLANTA.CONSUMO_CFE_RED',
       'DETALLE_PLANTA.CONSUMO_CFE'
@@ -190,14 +179,14 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     };
 
     const monthKeys = Object.values(months);
-    const chartTranslations$ = forkJoin(keysChart2.map(k => this.translationService.getTranslation(k)));
+    const chartTranslations$ = forkJoin(keysChart.map(k => this.translationService.getTranslation(k)));
     const monthTranslations$ = forkJoin(monthKeys.map(k => this.translationService.getTranslation(k)));
 
     forkJoin([chartTranslations$, monthTranslations$]).subscribe(([[generacion, produccion, consumo], translatedMonths]) => {
       this.labelsChart = [
-        { key: keysChart2[0], text: generacion },
-        { key: keysChart2[1], text: produccion },
-        { key: keysChart2[2], text: consumo }
+        { key: keysChart[0], text: generacion },
+        { key: keysChart[1], text: produccion },
+        { key: keysChart[2], text: consumo }
       ];
 
       this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
@@ -205,8 +194,36 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         return acc;
       }, {} as Record<string, string>);
 
-      this.updateClientsChart(response);
     });
+  }
+
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
+      });
+    }
+  }
+
+  getSitePerformance(filters?: GeneralFilters) {
+    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters!).subscribe({
+      next: (response: entity.DataResponseArraysMapper | null) => {
+        if (response) {
+          this.sitePerformance.primaryElements = response.primaryElements;
+          this.sitePerformance.additionalItems = response.additionalItems;
+          this.updateClientsChart(response)
+        }
+      },
+      error: (error) => {
+        const errorArray = error?.error?.errors?.errors ?? [];
+        if (errorArray.length) {
+          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
+        }
+        console.error(error)
+      }
+    })
   }
 
   updateClientsChart(dataResponse: entity.DataResponseArraysMapper) {
@@ -225,9 +242,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
       }
       return item.month;
     });
-
-    console.log(chartLabels);
-
 
     this.lineChartData = {
       labels: chartLabels,
@@ -263,25 +277,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.isLoading = false;
     this.initChart();
     this.chart?.update();
-  }
-
-  getSitePerformance(filters?: GeneralFilters) {
-    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters!).subscribe({
-      next: (response: entity.DataResponseArraysMapper | null) => {
-        if (response) {
-          this.sitePerformance.primaryElements = response.primaryElements;
-          this.sitePerformance.additionalItems = response.additionalItems;
-          this.initializeTranslations(response)
-        }
-      },
-      error: (error) => {
-        const errorArray = error?.error?.errors?.errors ?? [];
-        if (errorArray.length) {
-          this.createNotificationError(this.ERROR, errorArray[0].title, errorArray[0].descripcion, errorArray[0].warn);
-        }
-        console.error(error)
-      }
-    })
   }
 
   getStatus() {
