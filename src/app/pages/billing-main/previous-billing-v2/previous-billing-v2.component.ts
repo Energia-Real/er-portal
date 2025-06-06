@@ -146,18 +146,18 @@ export class PreviousBillingV2Component implements OnInit, OnDestroy {
       clientId: this.userInfo.clientes[0]
     };
 
-    this.moduleServices.getPreviousBillingHistory(filters).subscribe({
-      next: (response: entity.DataHistoryOverviewTableMapper) => {
-        this.dataSourceHistory.data = response?.data;
-        this.totalItemsHistory = response?.totalItems;
-        this.dataSourceHistory.sort = this.sort;
-        this.pageIndexHistory = filters.page;
-      },
-      error: error => {
-        // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
-        // console.log(error);
-      }
-    });
+    // this.moduleServices.getPreviousBillingHistory(filters).subscribe({
+    //   next: (response: entity.DataHistoryOverviewTableMapper) => {
+    //     this.dataSourceHistory.data = response?.data;
+    //     this.totalItemsHistory = response?.totalItems;
+    //     this.dataSourceHistory.sort = this.sort;
+    //     this.pageIndexHistory = filters.page;
+    //   },
+    //   error: error => {
+    //     // this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
+    //     // console.log(error);
+    //   }
+    // });
   }
 
   changePageSize(event: MatSelectChange, type: 'billing' | 'history') {

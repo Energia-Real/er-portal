@@ -1,41 +1,43 @@
 <div class="c-global c-detail-site">
-    <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
-        <div class="col-span-2 md:col-span-1">
-            <div class="c-cards-information">
-                <div class="c-card-50" *ngFor="let data of siteDetails?.primaryElements; let idx = index">
-                    <div class="card-info">
-                        <h1>{{ data.title }}</h1>
-                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+    <ng-container *ngIf="!isLoading; else loadingSkeleton">
+        <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+            <div class="col-span-2 md:col-span-1">
+                <div class="c-cards-information">
+                    <div class="c-card-50" *ngFor="let data of siteDetails?.primaryElements; let idx = index">
+                        <div class="card-info">
+                            <h1>{{ data.title }}</h1>
+                            <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="separator-cards m-0"></div>
+
+                    <div *ngFor="let data of siteDetails?.additionalItems" class="c-card-50">
+                        <div class="card-info">
+                            <h1>{{ data.title }}</h1>
+                            <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="separator-cards m-0"></div>
-
-                <div *ngFor="let data of siteDetails?.additionalItems" class="c-card-50">
-                    <div class="card-info">
-                        <h1>{{ data.title }}</h1>
-                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
-                    </div>
+            <div class="col-span-2 md:col-span-1 text-center" *ngIf="siteDetails && urlMap">
+                <div class="loader-overlay" *ngIf="loaderMap">
+                    <div class="loader"></div>
                 </div>
+
+                <div *ngIf="loaderMap"
+                    class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
+                    <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="40"
+                        class="custom-spinner">
+                    </mat-progress-spinner>
+                </div>
+                <iframe class="iframe" *ngIf="!loaderMap" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
+                    [src]="urlMap" allowfullscreen>
+                </iframe>
             </div>
         </div>
-
-        <div class="col-span-2 md:col-span-1 text-center" *ngIf="siteDetails && urlMap">
-            <div class="loader-overlay" *ngIf="loaderMap">
-                <div class="loader"></div>
-            </div>
-
-            <div *ngIf="loaderMap"
-                class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
-                <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="40"
-                    class="custom-spinner">
-                </mat-progress-spinner>
-            </div>
-            <iframe class="iframe" *ngIf="!loaderMap" frameborder="0" referrerpolicy="no-referrer-when-downgrade"
-                [src]="urlMap" allowfullscreen>
-            </iframe>
-        </div>
-    </div>
+    </ng-container>
 </div>
 
 <ng-template #notData>
@@ -46,4 +48,13 @@
 
 <ng-template #notDataTable>
     <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
+
+
+<ng-template #loadingSkeleton>
+    <div class="flex flex-col dataSC">
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+          'border-radius': '32.5px'
+        }"></ngx-skeleton-loader>
+    </div>
 </ng-template>

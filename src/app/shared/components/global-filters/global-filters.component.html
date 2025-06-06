@@ -1,7 +1,7 @@
 <div class="c-global-filters">
 
     <form class="c-selects-filters flex align-center gap-3 flex-wrap" [formGroup]="filtersForm">
-        <div class="c-input" *ngIf="configGlobalFilters?.showClientsFilter">
+        <div class="c-input select-catalogs" *ngIf="configGlobalFilters?.showClientsFilter">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="customerName" multiple
                     placeholder="{{ 'FACTURACION.CLIENTE' | translate }}">
@@ -14,7 +14,7 @@
             </mat-form-field>
         </div>
 
-        <div class="c-input" *ngIf="configGlobalFilters?.showLegalNamesFilter">
+        <div class="c-input select-catalogs" *ngIf="configGlobalFilters?.showLegalNamesFilter">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="legalName" multiple
                     placeholder="{{ 'FACTURACION.NOMBRE_LEGAL' | translate }}">
@@ -26,7 +26,7 @@
             </mat-form-field>
         </div>
 
-        <div class="c-input" *ngIf="configGlobalFilters?.showProductFilter === true">
+        <div class="c-input select-catalogs" *ngIf="configGlobalFilters?.showProductFilter === true">
             <mat-form-field class="select-ER" appearance="outline">
                 <mat-select formControlName="productType" multiple
                     placeholder="{{ 'FACTURACION.PRODUCTO' | translate }}">

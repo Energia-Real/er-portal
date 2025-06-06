@@ -23,6 +23,10 @@
     color: #BDBDBD !important;
 }
 
+.color-595959 {
+    color: #595959 !important;
+}
+
 // INPUTS 
 .input-search {
     position: absolute;
@@ -126,6 +130,20 @@
     }
 
 
+}
+
+.select-catalogs {
+    width: 200px;
+}
+
+.mat-mdc-select-value-text {
+    font-size: 13px !important;
+    line-height: 16px !important;
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+    font-size: 13px !important;
+    line-height: 16px !important;
 }
 
 .select-ER {
@@ -256,11 +274,17 @@
     margin: 0 !important;
 }
 
+.label-700-16 {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+
 .label-500-24 {
     font-size: 24px !important;
     font-weight: 500 !important;
     color: #EE5427 !important;
-    margin: 0 !important
+    margin: 0 !important;
 }
 
 .title-icon-info {

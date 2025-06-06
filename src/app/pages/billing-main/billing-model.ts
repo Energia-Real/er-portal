@@ -368,10 +368,12 @@ export interface Bill {
   amount: number;
   billingId: number;
   legalName: string;
-  month: number;
+  rfc: string;
   product: string;
   status: string;
-  year: number;
+  issuanceDate: string;
+  billingPeriod: string;
+  fiscalId: number;
 }
 
 interface InvoiceDetails {

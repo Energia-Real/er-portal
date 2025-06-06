@@ -1,37 +1,39 @@
 <div class="c-global c-site-performance">
-    <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
-        <div class="col-span-2 md:col-span-1">
-            <div class="c-cards-information">
-                <div class="c-card-50" *ngFor="let data of sitePerformance?.primaryElements; let idx = index">
-                    <div class="card-info">
-                        <h1>{{ data.title }}</h1>
-                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+    <ng-container *ngIf="!isLoading; else loadingSkeleton">
+        <div class="grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-4 md:gap-5">
+            <div class="col-span-2 md:col-span-1">
+                <div class="c-cards-information">
+                    <div class="c-card-50" *ngFor="let data of sitePerformance?.primaryElements; let idx = index">
+                        <div class="card-info">
+                            <h1>{{ data.title }}</h1>
+                            <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+                        </div>
+                    </div>
+
+                    <div class="separator-cards m-0"></div>
+
+                    <div *ngFor="let data of sitePerformance?.additionalItems; let idx = index" class="c-card-50">
+                        <div class="card-info">
+                            <h1>{{ data.title }}</h1>
+                            <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="separator-cards m-0"></div>
-
-                <div *ngFor="let data of sitePerformance?.additionalItems; let idx = index" class="c-card-50">
-                    <div class="card-info">
-                        <h1>{{ data.title }}</h1>
-                        <h2 *ngIf="data?.description else notDataTable">{{ data.description }}</h2>
+            <div class="col-span-2 md:col-span-1">
+                <div class="highcharts">
+                    <div class="charts">
+                        <div class="graphic-performance" *ngIf="displayChart">
+                            <canvas id="myChartPerformance" baseChart [type]="'bar'" [data]="lineChartData"
+                                [legend]="lineChartLegend" [options]="lineChartOptions">
+                            </canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-span-2 md:col-span-1">
-            <div class="highcharts">
-                <div class="charts">
-                    <div class="graphic-performance" *ngIf="displayChart">
-                        <canvas id="myChartPerformance" baseChart [type]="'bar'" [data]="lineChartData" [legend]="lineChartLegend"
-                            [options]="lineChartOptions">
-                        </canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </ng-container>
 </div>
 
 <ng-template #notData>
@@ -42,4 +44,12 @@
 
 <ng-template #notDataTable>
     <app-message-no-data [message]="'The requested information is not available.'"></app-message-no-data>
+</ng-template>
+
+<ng-template #loadingSkeleton>
+    <div class="flex flex-col dataSC">
+        <ngx-skeleton-loader count="1" appearance="line" [theme]="{ 
+          'border-radius': '32.5px'
+        }"></ngx-skeleton-loader>
+    </div>
 </ng-template>

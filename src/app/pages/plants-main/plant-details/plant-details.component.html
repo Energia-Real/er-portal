@@ -5,15 +5,16 @@
 
       <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
         <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>
-        <p>{{ 'PLANTAS.DIRECCION_APROXIMADA' | translate }}: <span *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
+        <p>{{ 'PLANTAS.DIRECCION_APROXIMADA' | translate }}: <span
+            *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
       </div>
     </div>
 
     <div class="col-span-2">
       <div class="c-information">
-        <div *ngIf="!isLoadingWD else loadingSkeletonTwo">
-          <div class="content" *ngIf="weatherData else notDataTable">
-            <p>{{weatherData?.temperature | number:'1.1-1'}}°C </p>
+        <div>
+          <div class="content" *ngIf="!isLoadingTZ else loadingSkeletonTwo">
+            <p >{{weatherData?.temperature | number:'1.1-1'}}°C </p>
             <i class="mb-2" [ngClass]="weatherCode[weatherData.weatherCode].icon"></i>
           </div>
           <div class="linea"></div>
@@ -39,12 +40,12 @@
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
             <p>{{ 'PLANTAS.CAPACIDAD_AC' | translate }}</p>
-            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData.nominalPowerAC }} kW</span> 
+            <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData.nominalPowerAC }} kW</span>
           </div>
           <div class="linea"></div>
         </div>
 
-     
+
       </div>
     </div>
   </div>

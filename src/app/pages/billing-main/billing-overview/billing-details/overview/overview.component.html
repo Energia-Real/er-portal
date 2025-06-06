@@ -1,11 +1,14 @@
 <div class="c-overview">
     <div>
         <h1 class="label-700-24">{{ 'FACTURACION.RESUMEN_ENERGIA' | translate }}</h1>
+        <h2 class="label-700-16 color-595959">{{ 'FACTURACION.RESUMEN_ENERGIA_SUB' | translate }}</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 ">
             <div class="col-span-1 md:col-span-3">
                 <div class="c-graph">
                     <div>
-                        <canvas baseChart [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"></canvas>
+                        <canvas baseChart [type]="'bar'" [data]="lineChartData" [options]="lineChartOptions"
+                            #chartCanvas></canvas>
+                            <ng-template #tooltipTemplate></ng-template>
                     </div>
                 </div>
             </div>
@@ -29,6 +32,8 @@
                     <div (click)="toggleDataset(1)" [class.inactive]="!datasetVisibility[1]">
                         <span></span>
                         <h1>{{ 'FACTURACION.ENERGIA_FACTURADA' | translate }}</h1>
+                        <span class="color-57B1B1 material-symbols-outlined"
+                            matTooltip="{{ 'FACTURACION.FACTURADO_ENERGIA' | translate }}">info</span>
                     </div>
                     <div (click)="toggleDataset(2)" [class.inactive]="!datasetVisibility[2]">
                         <span></span>

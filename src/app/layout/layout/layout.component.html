@@ -53,13 +53,13 @@
 
       <div class="sidebar-footer">
         <div class="linea"></div>
-        <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen}">
+        <!-- <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen}">
           <img src="../../../assets/icons/Assistance-icon.svg" alt="Assistance">
           <p class="animate-durations" [ngClass]="{
             'show-names': isSidebarHovered || keepOpen,
             'animate__animated animate__fadeInRight': isSidebarHovered && !keepOpen
           }">Assistance</p>
-        </div>
+        </div> -->
         <div class="options" [ngClass]="{'p-0': isSidebarHovered || keepOpen}">
           <img src="../../../assets/icons/logout-icon.svg" alt="Logout">
           <p (click)="signOut()" class="animate-durations" [ngClass]="{
