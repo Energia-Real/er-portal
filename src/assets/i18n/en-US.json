@@ -10,6 +10,11 @@
     "SIN_DATOS_TITULO": "No data available",
     "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later."
   },
+  "SIDEBAR" : {
+    "INICIO": "Home",
+    "RECIBOS": "Billings",
+    "PLANTAS": "Plants"
+  },
   "PLANTAS": {
     "TITULO": "Total Plants",
     "SITIOS": "# of sites",
@@ -104,7 +109,7 @@
       "SUBTOTAL_CFE": "CFE Subtotal",
       "SUBTOTAL_ER": "Subtotal Energía Real",
       "SUBTOTAL_ER_CFE": "Subtotal Energía Real + CFE",
-      "GASTO_SIN_ER": "Gasto sin Energía Real",
+      "GASTO_SIN_ER": "Expenditure without Energía Real",
       "AHORROS": "Savings",
       "PORCENTAJE_AHORRO": "Savings percentage",
       "GENERACION_SISTEMA": "System generation",
@@ -184,7 +189,19 @@
     "SEPTIEMBRE": "September",
     "OCTUBRE": "October",
     "NOVIEMBRE": "November",
-    "DICIEMBRE": "December"
+    "DICIEMBRE": "December",
+    "ENE": "Jan",
+    "FEB": "Feb",
+    "MAR": "Mar",
+    "ABR": "Apr",
+    "MAY": "May",
+    "JUN": "Jun",
+    "JUL": "Jul",
+    "AGO": "Aug",
+    "SEP": "Sep",
+    "OCT": "Oct",
+    "NOV": "Nov",
+    "DIC": "Dec"
   },
   "ADMIN": {
     "MAPA_PORTAFOLIO": "Portfolio map",
@@ -386,5 +403,10 @@
       "TOTAL_CO2": "Total CO2 Saving",
       "PLANTS": "plants"
     }
+  },
+  "DETALLE_PLANTA": {
+    "GENERACION": "Generation",
+    "CONSUMO_CFE_RED": "CFE network consumption (MWh)",
+    "CONSUMO_CFE": "Consumption (MWh)"
   }
 }

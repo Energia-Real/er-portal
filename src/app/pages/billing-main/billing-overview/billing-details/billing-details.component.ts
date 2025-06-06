@@ -21,7 +21,6 @@ export class BillingDetailsComponent implements OnInit, OnDestroy {
     showDatepicker: true,
     showClientsFilter: true,
     showLegalNamesFilter: true,
-    showProductFilter: false, // Initially false since default tab index is 0
   }
 
   generalFilters$!: Observable<GeneralFilters>;

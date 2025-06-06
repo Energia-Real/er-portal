@@ -21,7 +21,8 @@
 
       ::ng-deep .select-ER .mat-mdc-text-field-wrapper {
         margin-left: 0 !important;
-        width: 130px !important;
+        width: 100% !important;
+        // width: 130px !important;
       }
     }
   }

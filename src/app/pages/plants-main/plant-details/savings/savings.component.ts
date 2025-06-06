@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import * as entity from '../../plants-model';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
 import { PlantsService } from '../../plants.service';
 import { Store } from '@ngrx/store';
 import { OpenModalsService } from '@app/shared/services/openModals.service';
@@ -12,10 +12,10 @@ import { EncryptionService } from '@app/shared/services/encryption.service';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
-    selector: 'app-savings',
-    templateUrl: './savings.component.html',
-    styleUrl: './savings.component.scss',
-    standalone: false
+  selector: 'app-savings',
+  templateUrl: './savings.component.html',
+  styleUrl: './savings.component.scss',
+  standalone: false
 })
 export class SavingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
@@ -129,6 +129,11 @@ export class SavingsComponent implements OnInit, OnDestroy {
     additionalItems: []
   };
 
+  isLoading: boolean = true;
+
+  labelsChart: { key: string; text: string; }[] = [];
+  translatedMonthsMap: Record<string, string> = {};
+
   constructor(
     private moduleServices: PlantsService,
     private notificationService: OpenModalsService,
@@ -146,7 +151,53 @@ export class SavingsComponent implements OnInit, OnDestroy {
     // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => this.getUserClient());
+      .subscribe(() => {
+        this.initializeTranslations();
+        this.getUserClient();
+      });
+  }
+
+  initializeTranslations(): void {
+    const keysChart = [
+      'GRAFICOS.GASTOS_SIN_ENERGIA_REAL',
+      'GRAFICOS.CFE_SUBTOTAL',
+      'GRAFICOS.ENERGIA_REAL_SUBTOTAL',
+      'GRAFICOS.AHORRO_ECONOMICO',
+    ];
+
+    const months: Record<string, string> = {
+      JAN: 'MESES.ENE',
+      FEB: 'MESES.FEB',
+      MAR: 'MESES.MAR',
+      APR: 'MESES.ABR',
+      MAY: 'MESES.MAY',
+      JUN: 'MESES.JUN',
+      JUL: 'MESES.JUL',
+      AUG: 'MESES.AGO',
+      SEP: 'MESES.SEP',
+      OCT: 'MESES.OCT',
+      NOV: 'MESES.NOV',
+      DEC: 'MESES.DIC'
+    };
+
+    const monthKeys = Object.values(months);
+    const chartTranslations$ = forkJoin(keysChart.map(k => this.translationService.getTranslation(k)));
+    const monthTranslations$ = forkJoin(monthKeys.map(k => this.translationService.getTranslation(k)));
+
+    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([[generacion, produccion, consumo, ahorro], translatedMonths]) => {
+      this.labelsChart = [
+        { key: keysChart[0], text: generacion },
+        { key: keysChart[1], text: produccion },
+        { key: keysChart[2], text: consumo },
+        { key: keysChart[3], text: ahorro }
+      ];
+
+      this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
+        acc[abbr] = translatedMonths[index];
+        return acc;
+      }, {} as Record<string, string>);
+
+    });
   }
 
   getUserClient() {
@@ -160,61 +211,74 @@ export class SavingsComponent implements OnInit, OnDestroy {
     }
   }
 
+  updateClientsChart(dataResponse: entity.getSavingsDetails) {
+    const labels = this.labelsChart.map(l => l.text);
+    const translatedMonthsMap = this.translatedMonthsMap;
+
+    const chartLabels = dataResponse.monthlyData?.map((item: any) => {
+      const match = item.month.match(/^([A-Z]+)\((\d{2})\)$/);
+      if (match) {
+        const [_, monthAbbr, year] = match;
+        const translatedMonth = translatedMonthsMap[monthAbbr] ?? monthAbbr;
+        return `${translatedMonth} (${year})`;
+      }
+      return item.month;
+    });
+
+    this.lineChartData = {
+      labels: chartLabels,
+      datasets: [
+        {
+          type: 'bar',
+          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal)),
+          label: labels[0],
+          backgroundColor: 'rgba(121, 36, 48, 1)',
+          order: 1
+        },
+        {
+          type: 'bar',
+          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal)),
+          label: labels[1],
+          backgroundColor: 'rgba(255, 71, 19, 1)',
+          order: 1
+        },
+        {
+          type: 'bar',
+          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings)),
+          label: labels[2],
+          backgroundColor: 'rgba(87, 177, 177, 1)',
+          order: 1
+        },
+        {
+          type: 'line',
+          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.expenditureWithoutER)),
+          label: labels[3],
+          borderColor: 'rgba(239, 68, 68, 1)',
+          backgroundColor: 'rgba(239, 68, 68, 1)',
+          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+          pointBorderColor: 'rgba(239, 68, 68, 1)',
+          order: 0
+        }
+      ]
+    };
+
+    this.displayChart = true;
+    this.isLoading = false;
+    this.initChart();
+    this.chart?.update();
+  }
+
   getSavings(filters: GeneralFilters) {
     this.moduleServices.getSavingDetails(filters, this.plantData.id).subscribe({
       next: (response: GeneralResponse<entity.getSavingsDetails>) => {
+        this.updateClientsChart(response.response);
         this.savingDetails = Mapper.getSavingsDetailsMapper(response.response, this.translationService);
-        const cfeSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal));
-        const erSubtotalData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal));
-        const savingsData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings));
-        const expensesWithoutEnergiaRealData = response.response.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.expenditureWithoutER));
-
-        this.lineChartData = {
-          labels: response.response.monthlyData.map((item) => {
-            return item.month;
-          }),
-          datasets: [
-            {
-              type: 'bar',
-              data: cfeSubtotalData,
-              label: 'CFE Subtotal (MXN)',
-              backgroundColor: 'rgba(121, 36, 48, 1)',
-              order: 1
-            },
-            {
-              type: 'bar',
-              data: erSubtotalData,
-              label: 'Energía Real Subtotal (MXN)',
-              backgroundColor: 'rgba(255, 71, 19, 1)',
-              order: 1
-            },
-            {
-              type: 'bar',
-              data: savingsData,
-              label: 'Economic Savings (MXN)',
-              backgroundColor: 'rgba(87, 177, 177, 1)',
-              order: 1
-            },
-            {
-              type: 'line',
-              data: expensesWithoutEnergiaRealData,
-              borderColor: 'rgba(239, 68, 68, 1)',
-              backgroundColor: 'rgba(239, 68, 68, 1)',
-              pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-              pointBorderColor: 'rgba(239, 68, 68, 1)',
-              label: 'Expenses without Energía Real (MXN)',
-              order: 0,
-            }
-          ]
-        };
-        this.displayChart = true;
-        this.initChart();
       },
       error: (error) => {
-        this.notificationService.notificacion(`Talk to the administrator.`, 'alert')
+        this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
       }
-    })
+    });
   }
 
   initChart(): void {

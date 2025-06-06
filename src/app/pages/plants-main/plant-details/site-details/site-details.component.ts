@@ -38,6 +38,8 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
 
   id: string = '';
 
+  isLoading: boolean = true;
+
   constructor(
     private sanitizer: DomSanitizer,
     private moduleServices: PlantsService,
@@ -73,6 +75,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
       next: (response: DataResponseArraysMapper) => {
         this.siteDetails.primaryElements = response.primaryElements;
         this.siteDetails.additionalItems = response.additionalItems;
+        this.isLoading = false
       },
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');

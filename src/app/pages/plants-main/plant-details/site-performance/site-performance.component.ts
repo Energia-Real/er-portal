@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
 import * as entity from '../../plants-model';
 import { FormBuilder } from '@angular/forms';
 import { Chart, ChartConfiguration, ChartOptions } from "chart.js";
@@ -30,7 +30,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
   chart: any;
   lineChartData!: ChartConfiguration<'bar' | 'line'>['data'];
-
   lineChartOptions: ChartOptions<'bar' | 'line'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -126,6 +125,11 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
+  isLoading: boolean = true;
+
+  labelsChart: { key: string; text: string; }[] = [];
+  translatedMonthsMap: Record<string, string> = {};
+
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
@@ -143,16 +147,54 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
-    this.getUserClient();
 
-    // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        // if (!this.notData) {
+        this.initializeTranslations();
         this.getUserClient();
-        // }
       });
+  }
+
+  initializeTranslations(): void {
+    const keysChart = [
+      'DETALLE_PLANTA.GENERACION',
+      'DETALLE_PLANTA.CONSUMO_CFE_RED',
+      'DETALLE_PLANTA.CONSUMO_CFE'
+    ];
+
+    const months: Record<string, string> = {
+      JAN: 'MESES.ENE',
+      FEB: 'MESES.FEB',
+      MAR: 'MESES.MAR',
+      APR: 'MESES.ABR',
+      MAY: 'MESES.MAY',
+      JUN: 'MESES.JUN',
+      JUL: 'MESES.JUL',
+      AUG: 'MESES.AGO',
+      SEP: 'MESES.SEP',
+      OCT: 'MESES.OCT',
+      NOV: 'MESES.NOV',
+      DEC: 'MESES.DIC'
+    };
+
+    const monthKeys = Object.values(months);
+    const chartTranslations$ = forkJoin(keysChart.map(k => this.translationService.getTranslation(k)));
+    const monthTranslations$ = forkJoin(monthKeys.map(k => this.translationService.getTranslation(k)));
+
+    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([[generacion, produccion, consumo], translatedMonths]) => {
+      this.labelsChart = [
+        { key: keysChart[0], text: generacion },
+        { key: keysChart[1], text: produccion },
+        { key: keysChart[2], text: consumo }
+      ];
+
+      this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
+        acc[abbr] = translatedMonths[index];
+        return acc;
+      }, {} as Record<string, string>);
+
+    });
   }
 
   getUserClient() {
@@ -165,59 +207,13 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     }
   }
 
-  getSitePerformance(filters: GeneralFilters) {
-    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters).subscribe({
+  getSitePerformance(filters?: GeneralFilters) {
+    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters!).subscribe({
       next: (response: entity.DataResponseArraysMapper | null) => {
         if (response) {
           this.sitePerformance.primaryElements = response.primaryElements;
           this.sitePerformance.additionalItems = response.additionalItems;
-          // this.fullLoad = true;
-          const cfeConsumption = response.monthlyData?.map(item => item.cfeConsumption ?? 0);
-          const consumption = response.monthlyData?.map(item => item.consumption ?? 0);
-          const generation = response.monthlyData?.map(item => item.generation ?? 0);
-          const exportedSolarGeneration = response.monthlyData?.map(item => item.exportedGeneration ?? 0);
-
-          this.lineChartData = {
-            labels: response.monthlyData?.map((item) => {
-              return item.month;
-            }),
-            datasets: [
-              {
-                type: 'bar',
-                data: cfeConsumption ?? [],
-                label: 'CFE network consumption (MWh)',
-                backgroundColor: 'rgba(121, 36, 48, 1)',
-                order: 1
-              },
-             /*  {
-                type: 'bar',
-                data: exportedSolarGeneration ?? [],
-                label: 'Exported solar generation (MWh)',
-                backgroundColor: 'rgba(255, 71, 19, 1)',
-                order: 1
-              }, */
-              {
-                type: 'bar',
-                data: generation ?? [],
-                label: 'Generation (MWh)',
-                backgroundColor: 'rgba(87, 177, 177, 1)',
-                order: 1
-              },
-              {
-                type: 'line',
-                data: consumption ?? [],
-                borderColor: 'rgba(239, 68, 68, 1)',
-                backgroundColor: 'rgba(239, 68, 68, 1)',
-                pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-                pointBorderColor: 'rgba(239, 68, 68, 1)',
-                label: 'Consumption (MWh)',
-                order: 0,
-              }
-            ]
-          };
-
-          this.displayChart = true;
-          this.initChart();
+          this.updateClientsChart(response)
         }
       },
       error: (error) => {
@@ -228,6 +224,59 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     })
+  }
+
+  updateClientsChart(dataResponse: entity.DataResponseArraysMapper) {
+    this.sitePerformance.primaryElements = dataResponse.primaryElements;
+    this.sitePerformance.additionalItems = dataResponse.additionalItems;
+
+    const labels = this.labelsChart.map(l => l.text);
+    const translatedMonthsMap = this.translatedMonthsMap;
+
+    const chartLabels = dataResponse.monthlyData?.map((item: any) => {
+      const match = item.month.match(/^([A-Z]+)\((\d{2})\)$/);
+      if (match) {
+        const [_, monthAbbr, year] = match;
+        const translatedMonth = translatedMonthsMap[monthAbbr] ?? monthAbbr;
+        return `${translatedMonth} (${year})`;
+      }
+      return item.month;
+    });
+
+    this.lineChartData = {
+      labels: chartLabels,
+      datasets: [
+        {
+          type: 'bar',
+          data: dataResponse?.monthlyData?.map((item: any) => item.cfeConsumption ?? 0)!,
+          label: labels[0],
+          backgroundColor: 'rgba(121, 36, 48, 1)',
+          order: 1
+        },
+        {
+          type: 'bar',
+          data: dataResponse?.monthlyData?.map((item: any) => item.generation ?? 0)!,
+          label: labels[1],
+          backgroundColor: 'rgba(87, 177, 177, 1)',
+          order: 1
+        },
+        {
+          type: 'line',
+          data: dataResponse?.monthlyData?.map((item: any) => item.consumption ?? 0)!,
+          label: labels[2],
+          borderColor: 'rgba(239, 68, 68, 1)',
+          backgroundColor: 'rgba(239, 68, 68, 1)',
+          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+          pointBorderColor: 'rgba(239, 68, 68, 1)',
+          order: 0,
+        }
+      ]
+    };
+
+    this.displayChart = true;
+    this.isLoading = false;
+    this.initChart();
+    this.chart?.update();
   }
 
   getStatus() {
