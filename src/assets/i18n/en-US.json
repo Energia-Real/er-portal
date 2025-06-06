@@ -12,7 +12,8 @@
   },
   "SIDEBAR" : {
     "INICIO": "Home",
-    "RECIBOS": "Billings"
+    "RECIBOS": "Billings",
+    "PLANTAS": "Plants"
   },
   "PLANTAS": {
     "TITULO": "Total Plants",
