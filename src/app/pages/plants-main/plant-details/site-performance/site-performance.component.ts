@@ -126,10 +126,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
 
   isLoading: boolean = true;
-
-  labelsChart: { key: string; text: string; }[] = [];
-  chartDataCache: any = null;
-
+  filters: any
   constructor(
     private formBuilder: FormBuilder,
     private moduleServices: PlantsService,
@@ -144,75 +141,114 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.generalFilters$ = this.store.select(state => state.filters);
   }
 
+  labelsChart: { key: string; text: string; }[] = [];
+  translatedMonthsMap: Record<string, string> = {};
+
+
   ngOnInit(): void {
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
     this.getUserClient();
 
+    // Subscribe to language changes
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.initializeTranslations();
-      });
+      .subscribe(() => this.getUserClient());
   }
 
-  initializeTranslations(): void {
+  getUserClient() {
+    const encryptedData = localStorage.getItem('userInfo');
+    if (encryptedData) {
+      const userInfo = this.encryptionService.decryptData(encryptedData);
+      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.filters = { clientId: userInfo.clientes[0], ...generalFilters }
+        this.getSitePerformance(this.filters);
+      });
+    }
+  }
+
+  initializeTranslations(response: entity.DataResponseArraysMapper): void {
     const keysChart2 = [
       'DETALLE_PLANTA.GENERACION',
       'DETALLE_PLANTA.CONSUMO_CFE_RED',
       'DETALLE_PLANTA.CONSUMO_CFE'
     ];
 
-    const translations2$ = forkJoin(keysChart2.map(k => this.translationService.getTranslation(k)));
+    const months: Record<string, string> = {
+      JAN: 'MESES.ENE',
+      FEB: 'MESES.FEB',
+      MAR: 'MESES.MAR',
+      APR: 'MESES.ABR',
+      MAY: 'MESES.MAY',
+      JUN: 'MESES.JUN',
+      JUL: 'MESES.JUL',
+      AUG: 'MESES.AGO',
+      SEP: 'MESES.SEP',
+      OCT: 'MESES.OCT',
+      NOV: 'MESES.NOV',
+      DEC: 'MESES.DIC'
+    };
 
-    forkJoin([translations2$]).subscribe(([[generacion, produccion, consumo]]) => {
+    const monthKeys = Object.values(months);
+    const chartTranslations$ = forkJoin(keysChart2.map(k => this.translationService.getTranslation(k)));
+    const monthTranslations$ = forkJoin(monthKeys.map(k => this.translationService.getTranslation(k)));
+
+    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([[generacion, produccion, consumo], translatedMonths]) => {
       this.labelsChart = [
         { key: keysChart2[0], text: generacion },
         { key: keysChart2[1], text: produccion },
         { key: keysChart2[2], text: consumo }
       ];
 
-      this.updateClientsChart();
+      this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
+        acc[abbr] = translatedMonths[index];
+        return acc;
+      }, {} as Record<string, string>);
+
+      this.updateClientsChart(response);
     });
   }
 
-
-  updateClientsChart() {
-    const dataResponse = this.chartDataCache;
-    if (!dataResponse) return;
-
-    const labels = this.labelsChart.map(l => l.text);
+  updateClientsChart(dataResponse: entity.DataResponseArraysMapper) {
     this.sitePerformance.primaryElements = dataResponse.primaryElements;
     this.sitePerformance.additionalItems = dataResponse.additionalItems;
-    const cfeConsumption = dataResponse.monthlyData?.map((item: any) => item.cfeConsumption ?? 0);
-    const consumption = dataResponse.monthlyData?.map((item: any) => item.consumption ?? 0);
-    const generation = dataResponse.monthlyData?.map((item: any) => item.generation ?? 0);
-    const exportedSolarGeneration = dataResponse.monthlyData?.map((item: any) => item.exportedGeneration ?? 0);
 
-    console.log('dataResponse.monthlyData', dataResponse.monthlyData);
-    
+    const labels = this.labelsChart.map(l => l.text);
+    const translatedMonthsMap = this.translatedMonthsMap;
+
+    const chartLabels = dataResponse.monthlyData?.map((item: any) => {
+      const match = item.month.match(/^([A-Z]+)\((\d{2})\)$/);
+      if (match) {
+        const [_, monthAbbr, year] = match;
+        const translatedMonth = translatedMonthsMap[monthAbbr] ?? monthAbbr;
+        return `${translatedMonth} (${year})`;
+      }
+      return item.month;
+    });
+
+    console.log(chartLabels);
+
+
     this.lineChartData = {
-      labels: dataResponse.monthlyData?.map((item: any) => {
-        return item.month;
-      }),
+      labels: chartLabels,
       datasets: [
         {
           type: 'bar',
-          data: cfeConsumption ?? [],
+          data: dataResponse?.monthlyData?.map((item: any) => item.cfeConsumption ?? 0)!,
           label: labels[0],
           backgroundColor: 'rgba(121, 36, 48, 1)',
           order: 1
         },
         {
           type: 'bar',
-          data: generation ?? [],
+          data: dataResponse?.monthlyData?.map((item: any) => item.generation ?? 0)!,
           label: labels[1],
           backgroundColor: 'rgba(87, 177, 177, 1)',
           order: 1
         },
         {
           type: 'line',
-          data: consumption ?? [],
+          data: dataResponse?.monthlyData?.map((item: any) => item.consumption ?? 0)!,
           label: labels[2],
           borderColor: 'rgba(239, 68, 68, 1)',
           backgroundColor: 'rgba(239, 68, 68, 1)',
@@ -229,12 +265,13 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.chart?.update();
   }
 
-  getSitePerformance(filters: GeneralFilters) {
-    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters).subscribe({
+  getSitePerformance(filters?: GeneralFilters) {
+    this.moduleServices.getSitePerformanceDetails(this.plantData.id, filters!).subscribe({
       next: (response: entity.DataResponseArraysMapper | null) => {
         if (response) {
-          this.chartDataCache = response;
-          this.updateClientsChart()
+          this.sitePerformance.primaryElements = response.primaryElements;
+          this.sitePerformance.additionalItems = response.additionalItems;
+          this.initializeTranslations(response)
         }
       },
       error: (error) => {
@@ -255,16 +292,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         console.error(error)
       }
     })
-  }
-
-  getUserClient() {
-    const encryptedData = localStorage.getItem('userInfo');
-    if (encryptedData) {
-      const userInfo = this.encryptionService.decryptData(encryptedData);
-      this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
-        this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
-      });
-    }
   }
 
   refreshChart(index?: number): void {

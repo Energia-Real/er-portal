@@ -10,6 +10,10 @@
     "SIN_DATOS_TITULO": "No data available",
     "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later."
   },
+  "SIDEBAR" : {
+    "INICIO": "Home",
+    "RECIBOS": "Billings"
+  },
   "PLANTAS": {
     "TITULO": "Total Plants",
     "SITIOS": "# of sites",
@@ -184,7 +188,19 @@
     "SEPTIEMBRE": "September",
     "OCTUBRE": "October",
     "NOVIEMBRE": "November",
-    "DICIEMBRE": "December"
+    "DICIEMBRE": "December",
+    "ENE": "Jan",
+    "FEB": "Feb",
+    "MAR": "Mar",
+    "ABR": "Apr",
+    "MAY": "May",
+    "JUN": "Jun",
+    "JUL": "Jul",
+    "AGO": "Aug",
+    "SEP": "Sep",
+    "OCT": "Oct",
+    "NOV": "Nov",
+    "DIC": "Dec"
   },
   "ADMIN": {
     "MAPA_PORTAFOLIO": "Portfolio map",

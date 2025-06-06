@@ -10,6 +10,10 @@
     "SIN_DATOS_TITULO": "No hay datos disponibles",
     "SIN_DATOS_SUBTITULO": "Intenta ajustar los filtros o vuelve más tarde."
   },
+  "SIDEBAR": {
+    "INICIO": "Inicio",
+    "RECIBOS": "Recibos"
+  },
   "PLANTAS": {
     "TITULO": "Plantas totales",
     "SITIOS": "# de sitios",
@@ -183,7 +187,19 @@
     "SEPTIEMBRE": "Septiembre",
     "OCTUBRE": "Octubre",
     "NOVIEMBRE": "Noviembre",
-    "DICIEMBRE": "Diciembre"
+    "DICIEMBRE": "Diciembre",
+    "ENE": "Ene",
+    "FEB": "Feb",
+    "MAR": "Mar",
+    "ABR": "Abr",
+    "MAY": "May",
+    "JUN": "Jun",
+    "JUL": "Jul",
+    "AGO": "Ago",
+    "SEP": "Sep",
+    "OCT": "Oct",
+    "NOV": "Nov",
+    "DIC": "Dic"
   },
   "ADMIN": {
     "MAPA_PORTAFOLIO": "Mapa de portafolio",
