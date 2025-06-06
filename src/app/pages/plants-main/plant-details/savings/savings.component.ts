@@ -221,8 +221,9 @@ export class SavingsComponent implements OnInit, OnDestroy {
         const [_, monthAbbr, year] = match;
         const translatedMonth = translatedMonthsMap[monthAbbr] ?? monthAbbr;
         return `${translatedMonth} (${year})`;
+      } else {
+        return translatedMonthsMap[item.month] ?? item.month;
       }
-      return item.month;
     });
 
     this.lineChartData = {
