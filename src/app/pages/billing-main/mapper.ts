@@ -69,8 +69,8 @@ export class Mapper {
 		response?.data?.forEach((data: entity.Bill): void => {
 			dataList.push({
 				...data,
-				issuanceDate : formatsService.dateFormatWithoutDayV2(data.issuanceDate),
-				billingPeriod : formatsService.dateFormatWithoutDayV2(data.billingPeriod)
+				issuanceDate : formatsService.dateFormatWithoutDay(data.issuanceDate),
+				billingPeriod : formatsService.dateFormatWithoutDay(data.billingPeriod)
 			});
 		});
 		

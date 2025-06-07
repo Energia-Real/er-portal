@@ -12,11 +12,6 @@ export class FormatsService {
   }
 
   dateFormatWithoutDay(content?: string) {
-    if (content) return moment(content).format('MMM YYYY')
-    else return ''
-  }
-
-  dateFormatWithoutDayV2(content?: string) {
     if (content) return moment(content, 'D/M/YYYY').format('MMM YYYY');
     else return '';
   }
