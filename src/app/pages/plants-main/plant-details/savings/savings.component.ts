@@ -131,7 +131,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.initializeTranslations();
-        this.getUserClient();
       });
   }
 
