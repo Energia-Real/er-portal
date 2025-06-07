@@ -385,7 +385,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const labels = this.labelsChart1.map(l => l.text);
 
     this.lineChartDataES = {
-      labels: [''],
+     labels: [''],
       datasets: [
         {
           type: 'bar',
