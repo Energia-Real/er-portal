@@ -46,7 +46,7 @@
             }"
             [routerLink]="routeActive.includes(module.routePath) ? null : module.routePath"
             class="hover:text-gray-300 cursor-pointer animate-durations">
-            {{ module.name }}
+            {{ module?.translateHelper || module.name| translate }} 
           </a>
         </li>
       </ul>
