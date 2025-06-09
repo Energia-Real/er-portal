@@ -80,6 +80,26 @@ export class Mapper {
 		}
 	}
 
+	static getCurrentBillingMapper(response: GeneralResponse<entity.CurrentBillResponse>, formatsService: FormatsService): any {
+		let currentBillResponse: entity.Bill[] = [];
+		
+		response?.response.currentBillResponse.forEach((data: entity.Bill): void => {
+			currentBillResponse.push({
+				...data,
+				issuanceDate : formatsService.dateFormatWithoutDay(data.issuanceDate),
+				billingPeriod : formatsService.dateFormatWithoutDay(data.billingPeriod)
+			});
+		});
+		console.log( {
+			...response,
+			response: {currentBillResponse}
+		})
+		return {
+			...response,
+			response: {currentBillResponse}
+		}
+	}
+
 	static getBillingDetailsMapper(response: entity.DataDetailsOverviewTableMapper, formatsService: FormatsService): entity.DataDetailsOverviewTableMapper {
 		let dataList: entity.DataDetailsOverviewTable[] = [];
 

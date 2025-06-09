@@ -1,5 +1,6 @@
 import { FormatsService } from '@app/shared/services/formats.service';
 import * as entity from './home-model';
+import { C } from '@angular/cdk/scrolling-module.d-ud2XrbF8';
 
 export class Mapper {
 	static getDataClientsMapper(response: entity.DataTablePlantsResponse, formatsService: FormatsService): entity.DataRespSavingDetailsMapper {
@@ -29,45 +30,53 @@ export class Mapper {
 			};
 		});
 
-		const gwhArray = data.filter(item => item.energyConsumptionMeasure === 'GWh');
-		const mwhArray = data.filter(item => item.energyConsumptionMeasure === 'MWh');
-		const kwhArray = data.filter(item => item.energyConsumptionMeasure === 'kWh');
+		const unitIndex = { kWh: 0, MWh: 1, GWh: 2 };
+		let finalUnit = 'kWh';
 
-		if (gwhArray.length) {
-			const mwhToGwh = mwhArray.map(item => ({
-				...item,
-				energyConsumption: (item.energyConsumption / 1000).toString(),
-				energyProduction: (item.energyProduction / 1000).toString(),
-				energyConsumptionMeasure: 'GWh',
-				energyProductionMeasure: 'GWh',
-			}));
-			const kwhToGwh = kwhArray.map(item => ({
-				...item,
-				energyConsumption: (item.energyConsumption / 1_000_000).toString(),
-				energyProduction: (item.energyProduction / 1_000_000).toString(),
-				energyConsumptionMeasure: 'GWh',
-				energyProductionMeasure: 'GWh',
-			}));
-			unifiedArray = [...gwhArray, ...mwhToGwh, ...kwhToGwh];
-			unitMeasu = 'GWh';
-		} else if (mwhArray.length) {
-			const kwhToMwh = kwhArray.map(item => ({
-				...item,
-				energyConsumption: (item.energyConsumption / 1000).toString(),
-				energyProduction: (item.energyProduction / 1000).toString(),
-				energyConsumptionMeasure: 'MWh',
-				energyProductionMeasure: 'MWh',
-			}));
-			unifiedArray = [...mwhArray, ...kwhToMwh];
-			unitMeasu = 'MWh';
-		} else {
-			unifiedArray = [...kwhArray];
+		for (const item of data) {
+			const consumptionUnit = item.energyConsumptionMeasure;
+			const productionUnit = item.energyProductionMeasure;
+
+			if (
+				consumptionUnit &&
+				unitIndex[consumptionUnit as keyof typeof unitIndex] > unitIndex[finalUnit as keyof typeof unitIndex]
+			) {
+				finalUnit = consumptionUnit as keyof typeof unitIndex;
+			}
+
+			if (
+				productionUnit &&
+				unitIndex[productionUnit as keyof typeof unitIndex] > unitIndex[finalUnit as keyof typeof unitIndex]
+			) {
+				finalUnit = productionUnit as keyof typeof unitIndex;
+			}
+
 		}
 
+		function convertValue(value: number, from?: string, to?: string): number {
+			const power = unitIndex[to as keyof typeof unitIndex] - unitIndex[from as keyof typeof unitIndex];
+			return value / Math.pow(1000, power);
+		}
+
+		unifiedArray = data.map(item => {
+			const convertedConsumption = convertValue(item.energyConsumption, item.energyConsumptionMeasure, finalUnit);
+			const convertedProduction = convertValue(item.energyProduction, item.energyProductionMeasure, finalUnit);
+
+			return {
+				...item,
+				energyConsumption: convertedConsumption.toString(),
+				energyProduction: convertedProduction.toString(),
+				energyConsumptionMeasure: finalUnit,
+				energyProductionMeasure: finalUnit,
+
+			};
+		});
+
+		console.log(unifiedArray)
 		return {
 			data: dataList,
 			dataFormatted: unifiedArray,
-			unitMeasu,
+			unitMeasu: finalUnit,
 		};
 	}
 
