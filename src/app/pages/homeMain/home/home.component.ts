@@ -432,6 +432,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getDataClients(filters: GeneralFilters) {
     this.moduleServices.getDataClients(filters).subscribe({
       next: (response) => {
+        console.log(response)
         this.chartDataCache = response;
         this.updateChartUnitMeasure(response.unitMeasu);
         this.updateClientsChart();
