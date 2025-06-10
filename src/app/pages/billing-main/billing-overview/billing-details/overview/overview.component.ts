@@ -62,9 +62,9 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
       const startDateChanged = prev?.startDate !== curr?.startDate;
       const endDateChanged = prev?.endDate !== curr?.endDate;
   
-      if (startDateChanged || endDateChanged) {
-        this.getFilters();
-      }
+      //if (startDateChanged || endDateChanged) {
+      this.getFilters();
+      //}
     }
   }
 
