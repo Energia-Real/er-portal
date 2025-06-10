@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ViewEncapsulation } from '@angular/core';
 import { SharedComponensModule } from '@app/shared/components/shared-components.module';
-import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
+import { forkJoin, min, Observable, Subject, takeUntil } from 'rxjs';
 import { MaterialModule } from '@app/shared/material/material.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
@@ -90,10 +90,12 @@ export class HomeComponent implements OnInit, OnDestroy {
           label: function (context) {
             const rawValue = context.raw as [number, number]; // Aserción de tipo para context.raw
             const maxValue = rawValue[1]; // Tomamos solo el valor máximo (segundo valor del array)
-
+            const minValue = rawValue[0];
+            const totValue = maxValue - minValue;
             return [
               `${context.dataset.label}`, // Título del label
-              `$${maxValue.toLocaleString('en-US')}` // Valor resaltado
+              
+              `$${totValue.toLocaleString('en-US')}` // Valor resaltado
             ];
           }
         },
@@ -383,9 +385,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (!dataResponse) return;
 
     const labels = this.labelsChart1.map(l => l.text);
-
+    const labelTexts = this.labelsChart1.map(l => l.text);
+    this.labels = [
+      { text: labelTexts[0], color: 'rgba(121, 36, 48, 1)' },
+      { text: labelTexts[1], color: 'rgba(238, 84, 39, 1)' },
+      { text: labelTexts[2], color: 'rgba(87, 177, 177, 1)' },
+      { text: labelTexts[3], color: 'rgba(239, 68, 68, 1)' }
+    ];    
     this.lineChartDataES = {
-      labels: [''],
+     labels: [''],
       datasets: [
         {
           type: 'bar',

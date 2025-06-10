@@ -58,7 +58,13 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
     if (changes['filterData'] && !changes['filterData'].firstChange) {
       const prev = changes['filterData'].previousValue;
       const curr = changes['filterData'].currentValue;
-      if (JSON.stringify(prev) !== JSON.stringify(curr)) this.getFilters();
+  
+      const startDateChanged = prev?.startDate !== curr?.startDate;
+      const endDateChanged = prev?.endDate !== curr?.endDate;
+  
+      //if (startDateChanged || endDateChanged) {
+      this.getFilters();
+      //}
     }
   }
 
@@ -140,7 +146,7 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
   }
 
   getEnergysummary(filters: entity.BillingOverviewFilterData) {
-    this.moduleServices.getEnergysummaryOverview(filters).subscribe({
+      this.moduleServices.getEnergysummaryOverview(filters).subscribe({
       next: (response: ChartConfiguration<'bar' | 'line'>['data'] | any) => {
         // Translate dataset labels
         if (response && response.datasets && response.datasets.length > 0) {

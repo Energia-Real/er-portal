@@ -165,6 +165,8 @@ export class InvoiceTableService {
               translatedValue = this.translationService.instant('FACTURACION.VENCIDO');
             } else if (value === "Pending") {
               translatedValue = this.translationService.instant('FACTURACION.PENDIENTE');
+            } else if (value === "Open") {
+              translatedValue = this.translationService.instant('FACTURACION.OPEN');
             } else if (value === "PayedLate") {
               translatedValue = this.translationService.instant('FACTURACION.PAGO_TARDIO');
             }

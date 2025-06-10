@@ -147,12 +147,12 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
+    this.getUserClient();
 
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.initializeTranslations();
-        this.getUserClient();
       });
   }
 
@@ -227,6 +227,8 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   }
 
   updateClientsChart(dataResponse: entity.DataResponseArraysMapper) {
+    console.log(dataResponse);
+
     this.sitePerformance.primaryElements = dataResponse.primaryElements;
     this.sitePerformance.additionalItems = dataResponse.additionalItems;
 

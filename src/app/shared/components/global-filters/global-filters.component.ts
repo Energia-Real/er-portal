@@ -36,7 +36,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 
   years: { value: string }[] = [
-    { value: '2022' },
     { value: '2023' },
     { value: '2024' },
     { value: '2025' },
@@ -107,7 +106,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
   ngOnChanges(changes: SimpleChanges): void {
     // Check if configGlobalFilters has changed
     if (changes['configGlobalFilters']) {
-      console.log('configGlobalFilters changed:', this.configGlobalFilters);
       // Re-initialize filters config when configGlobalFilters changes
       this.initFiltersConfig();
       

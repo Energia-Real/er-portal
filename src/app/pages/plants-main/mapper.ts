@@ -276,11 +276,11 @@ export class Mapper {
 			description : `${response.response.totalConsumption ?? "0.00"} ${response.response?.totalConsumptionMeasure}`,
 		});
 
-		primaryElements.push({
+		/* primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.GENERACION_EXPORTADA') : 'Exported generation',
 			description: `${response.response.exportedGeneration?? "0.00"} kWh`,
 			extra: `+2% ${comparedText}`
-		});
+		}); */
 
 		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.CONSUMO_RED_CFE') : 'CFE network consumption',
@@ -288,16 +288,16 @@ export class Mapper {
 			extra: `-4% ${comparedText}`
 		});
 
-		additionalItems.push({
+		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.COBERTURA_SOLAR') : 'Solar coverage',
 			description: `${response.response.solarCoverage}%`,
 		});
 
-		additionalItems.push({
+		/* additionalItems.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.RENDIMIENTO') : 'Performance',
 			description: `${response.response.performance}%`,
 			extra:'% performance - calculated as (Generated / Esstimated)'
-		});
+		}); */
 
 		return {
 			primaryElements,

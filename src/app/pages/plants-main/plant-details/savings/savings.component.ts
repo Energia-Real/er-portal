@@ -68,29 +68,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
           boxHeight: 10
         },
         position: "bottom",
-        /* onHover: (event, legendItem, legend) => {
-          const index = legendItem.datasetIndex;
-          const chart = legend.chart;
 
-          chart.data.datasets.forEach((dataset, i) => {
-            dataset.backgroundColor = i === index ? dataset.backgroundColor : 'rgba(200, 200, 200, 0.5)';
-          });
-
-          chart.update();
-        },
-        onLeave: (event, legendItem, legend) => {
-          const chart = legend.chart;
-
-          chart.data.datasets.forEach((dataset, i) => {
-            if (i === 0) {
-              dataset.backgroundColor = 'rgba(121, 36, 48, 1)';
-            } else {
-              dataset.backgroundColor = 'rgba(238, 84, 39, 1)';
-            }
-          });
-
-          chart.update();
-        } */
       }
     },
 
@@ -153,7 +131,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         this.initializeTranslations();
-        this.getUserClient();
       });
   }
 
@@ -166,18 +143,18 @@ export class SavingsComponent implements OnInit, OnDestroy {
     ];
 
     const months: Record<string, string> = {
-      JAN: 'MESES.ENE',
-      FEB: 'MESES.FEB',
-      MAR: 'MESES.MAR',
-      APR: 'MESES.ABR',
-      MAY: 'MESES.MAY',
-      JUN: 'MESES.JUN',
-      JUL: 'MESES.JUL',
-      AUG: 'MESES.AGO',
-      SEP: 'MESES.SEP',
-      OCT: 'MESES.OCT',
-      NOV: 'MESES.NOV',
-      DEC: 'MESES.DIC'
+      January: 'MESES.ENE',
+      February: 'MESES.FEB',
+      March: 'MESES.MAR',
+      April: 'MESES.ABR',
+      May: 'MESES.MAY',
+      June: 'MESES.JUN',
+      July: 'MESES.JUL',
+      August: 'MESES.AGO',
+      September: 'MESES.SEP',
+      October: 'MESES.OCT',
+      November: 'MESES.NOV',
+      December: 'MESES.DIC'
     };
 
     const monthKeys = Object.values(months);

@@ -12,8 +12,8 @@ export class FormatsService {
   }
 
   dateFormatWithoutDay(content?: string) {
-    if (content) return moment(content).format('MMM YYYY')
-    else return ''
+    if (content) return moment(content, 'D/M/YYYY').format('MMM YYYY');
+    else return '';
   }
 
   energyFormat(content: string | number): string {
@@ -80,7 +80,7 @@ export class FormatsService {
     if (!numberValue) return '';
 
     if (!isNaN(numberValue)) {
-      const truncatedValue = Math.trunc(numberValue); 
+      const truncatedValue = Math.trunc(numberValue);
 
       const formattedValue = truncatedValue.toLocaleString('es-MX', {
         minimumFractionDigits: 0,

@@ -119,6 +119,7 @@ export class CurrentBillingComponent implements OnInit, OnDestroy {
   getBilling() {
     this.moduleServices.getCurrentInvoices().subscribe({
       next: (response: GeneralResponse<CurrentBillResponse>) => {
+        console.log(response)
         this.bills = response.response.currentBillResponse;
         this.isLoading = false;
       },
