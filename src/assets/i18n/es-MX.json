@@ -8,7 +8,9 @@
     "NO_RESULTADOS": "No se encontraron resultados.",
     "INFORMACION_NO_DISPONIBLE": "La información solicitada no está disponible.",
     "SIN_DATOS_TITULO": "No hay datos disponibles",
-    "SIN_DATOS_SUBTITULO": "Intenta ajustar los filtros o vuelve más tarde."
+    "SIN_DATOS_SUBTITULO": "Intenta ajustar los filtros o vuelve más tarde.",
+    "ERROR_FINAL_MENOR_INICIO": "La fecha de fin no puede ser menor a la fecha de inicio",
+    "CERRAR" : "Cerrar"
   },
   "SIDEBAR": {
     "INICIO": "Inicio",
