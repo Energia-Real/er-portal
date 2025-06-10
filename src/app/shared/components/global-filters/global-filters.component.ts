@@ -12,6 +12,8 @@ import { DataCatalogs } from '@app/shared/models/catalogs-models';
 import * as entity from './global-filters-model';
 import { selectClients, selectClientsIndividual, selectLegalNames, selectProducts } from '../../../core/store/selectors/catalogs.selector';
 import * as CatalogActions from '../../../core/store/actions/catalogs.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-global-filters',
@@ -88,6 +90,8 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
     private fb: FormBuilder,
     private router: Router,
     private store: Store<{ filters: GeneralFilters }>,
+    private snackBar: MatSnackBar,
+    private translate: TranslateService
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
     this.clients$ = this.store.select(selectClients);
@@ -193,6 +197,22 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
 
   emitOrDispatchFilters() {
     const baseFilters = this.buildBaseFilters();
+
+    const start = new Date(baseFilters.startDate);
+    const end = new Date(baseFilters.endDate);
+
+    if (end < start) {
+      this.snackBar.open(
+        this.translate.instant('GENERAL.ERROR_FINAL_MENOR_INICIO'),
+        this.translate.instant('GENERAL.CERRAR'),
+        {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        }
+      );
+      return;
+   }
 
     if (this.configGlobalFilters?.isLocal) {
       const localFilters = {

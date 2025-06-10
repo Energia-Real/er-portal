@@ -8,7 +8,9 @@
     "NO_RESULTADOS": "No results found.",
     "INFORMACION_NO_DISPONIBLE": "The requested information is not available.",
     "SIN_DATOS_TITULO": "No data available",
-    "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later."
+    "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later.",
+    "ERROR_FINAL_MENOR_INICIO": "End date cannot be before start date",
+    "CERRAR" : "Close"
   },
   "SIDEBAR" : {
     "INICIO": "Home",
