@@ -72,7 +72,6 @@ export class Mapper {
 			};
 		});
 
-		console.log(unifiedArray)
 		return {
 			data: dataList,
 			dataFormatted: unifiedArray,

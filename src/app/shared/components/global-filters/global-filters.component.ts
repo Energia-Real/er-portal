@@ -106,7 +106,6 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
   ngOnChanges(changes: SimpleChanges): void {
     // Check if configGlobalFilters has changed
     if (changes['configGlobalFilters']) {
-      console.log('configGlobalFilters changed:', this.configGlobalFilters);
       // Re-initialize filters config when configGlobalFilters changes
       this.initFiltersConfig();
       
