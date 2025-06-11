@@ -76,6 +76,7 @@ export class TranslationService {
    * @returns Observable con la traducción
    */
   getTranslation(key: string, params?: object): Observable<string> {
+    console.log(this.translateService.get(key, params))
     return this.translateService.get(key, params);
   }
 

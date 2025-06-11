@@ -12,23 +12,7 @@
         </div>
 
         <div class="c-content c-taps grid grid-cols-4 gap-x-6 gap-y-4 md:gap-5">
-            <div class="col-span-3 position-relative">
-                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
-                    (selectedTabChange)="onTabChange($event)">
-
-                    <mat-tab label="English">
-                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="pdfSources.english" [show-all]="true"
-                            style=""></pdf-viewer>
-
-                    </mat-tab>
-
-                    <mat-tab label="Spanish">
-                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="pdfSources.spanish" [show-all]="true"
-                            style=""></pdf-viewer>
-                    </mat-tab>
-
-                </mat-tab-group>
-            </div>
+        
 
 
             <div class="col-span-1 position-relative">
