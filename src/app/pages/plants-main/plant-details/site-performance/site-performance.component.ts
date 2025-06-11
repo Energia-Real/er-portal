@@ -127,7 +127,9 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = true;
 
-  labelsChart: { key: string; text: string; }[] = [];
+  labelsChart: { key: string; dataKey: string; color: any }[] = [];
+  translatedChartMap: Record<string, string> = {};
+
   translatedMonthsMap: Record<string, string> = {};
 
   constructor(
@@ -152,15 +154,16 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
+        console.log("cambio")
         this.initializeTranslations();
       });
   }
 
   initializeTranslations(): void {
-    const keysChart = [
-      'DETALLE_PLANTA.GENERACION',
-      'DETALLE_PLANTA.CONSUMO_CFE_RED',
-      'DETALLE_PLANTA.CONSUMO_CFE'
+    const chartKeys = [
+      { key:  'DETALLE_PLANTA.GENERACION', dataKey: 'generation', color:'rgba(87, 177, 177, 1)' },
+      { key: 'DETALLE_PLANTA.CONSUMO_CFE_RED', dataKey: 'cfeConsumption', color:'rgba(121, 36, 48, 1)'},
+      { key: 'DETALLE_PLANTA.CONSUMO', dataKey: 'consumption', color:'rgba(239, 68, 68, 1)' },   
     ];
 
     const months: Record<string, string> = {
@@ -179,22 +182,25 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     };
 
     const monthKeys = Object.values(months);
-    const chartTranslations$ = forkJoin(keysChart.map(k => this.translationService.getTranslation(k)));
+    const chartTranslations$ = forkJoin(chartKeys.map(k => this.translationService.getTranslation(k.key)));
     const monthTranslations$ = forkJoin(monthKeys.map(k => this.translationService.getTranslation(k)));
 
-    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([[generacion, produccion, consumo], translatedMonths]) => {
-      this.labelsChart = [
-        { key: keysChart[0], text: generacion },
-        { key: keysChart[1], text: produccion },
-        { key: keysChart[2], text: consumo }
-      ];
+    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([chartTranslations, translatedMonths]) => {
+      this.labelsChart = chartKeys;
+    
+      // Guardar traducciones de los keys
+      this.translatedChartMap = chartKeys.reduce((acc, item, index) => {
+        acc[item.key] = chartTranslations[index];
+        return acc;
+      }, {} as Record<string, string>);
 
+    
       this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
         acc[abbr] = translatedMonths[index];
         return acc;
       }, {} as Record<string, string>);
-
     });
+    
   }
 
   getUserClient() {
@@ -232,7 +238,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.sitePerformance.primaryElements = dataResponse.primaryElements;
     this.sitePerformance.additionalItems = dataResponse.additionalItems;
 
-    const labels = this.labelsChart.map(l => l.text);
+    //const labels = this.labelsChart.map(l => l.text);
     const translatedMonthsMap = this.translatedMonthsMap;
 
     const chartLabels = dataResponse.monthlyData?.map((item: any) => {
@@ -248,32 +254,19 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
     this.lineChartData = {
       labels: chartLabels,
-      datasets: [
-        {
-          type: 'bar',
-          data: dataResponse?.monthlyData?.map((item: any) => item.cfeConsumption ?? 0)!,
-          label: labels[0],
-          backgroundColor: 'rgba(121, 36, 48, 1)',
-          order: 1
-        },
-        {
-          type: 'bar',
-          data: dataResponse?.monthlyData?.map((item: any) => item.generation ?? 0)!,
-          label: labels[1],
-          backgroundColor: 'rgba(87, 177, 177, 1)',
-          order: 1
-        },
-        {
-          type: 'line',
-          data: dataResponse?.monthlyData?.map((item: any) => item.consumption ?? 0)!,
-          label: labels[2],
-          borderColor: 'rgba(239, 68, 68, 1)',
-          backgroundColor: 'rgba(239, 68, 68, 1)',
-          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-          pointBorderColor: 'rgba(239, 68, 68, 1)',
-          order: 0,
-        }
-      ]
+      datasets: this.labelsChart.map((item) => {
+        const isLine = item.dataKey === 'consumption'; // o la lógica que prefieras
+        return {
+          type: isLine ? 'line' : 'bar',
+          data: dataResponse?.monthlyData?.map((dataItem: any) => dataItem[item.dataKey] ?? 0)!,
+          label: this.translatedChartMap[item.key],
+          backgroundColor: item.color,
+          borderColor: isLine ? item.color : undefined,
+          pointBackgroundColor: isLine ? item.color : undefined,
+          pointBorderColor: isLine ? item.color : undefined,
+          order: isLine ? 0 : 1
+        };
+      })
     };
 
     this.displayChart = true;

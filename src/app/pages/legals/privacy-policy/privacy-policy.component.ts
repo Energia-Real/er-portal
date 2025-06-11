@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
 import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
@@ -26,11 +26,17 @@ export class PrivacyPolicyComponent implements OnDestroy {
     private location: Location,
     private translationService: TranslationService,
 
-  ) { }
+  ) { 
+    this.translationService.currentLang$
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(resp => {
+      this.selectedLanguage = resp === "es-MX" ? 'spanish' : 'english';
 
-  onTabChange(event: MatTabChangeEvent) {
-    this.selectedLanguage = event.index === 1 ? 'spanish' : 'english';
+      console.log(resp)
+    });
   }
+
+
 
   downloadPDF() {
     const pdfUrl = this.pdfSources[this.selectedLanguage];

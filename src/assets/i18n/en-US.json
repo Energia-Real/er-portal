@@ -410,6 +410,6 @@
   "DETALLE_PLANTA": {
     "GENERACION": "Generation",
     "CONSUMO_CFE_RED": "CFE network consumption (MWh)",
-    "CONSUMO_CFE": "Consumption (MWh)"
+    "CONSUMO": "Consumption (MWh)"
   }
 }
