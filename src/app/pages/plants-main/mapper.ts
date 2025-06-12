@@ -8,7 +8,7 @@ export class Mapper {
 	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService, translationService?: TranslationService): DataResponseArraysMapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
-
+		console.log(response)
 		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
 			description: response.rpu

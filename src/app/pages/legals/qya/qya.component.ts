@@ -12,6 +12,8 @@ import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constan
 import { NotificationComponent } from '@app/shared/components/notification/notification.component';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -22,6 +24,7 @@ import { Location } from '@angular/common';
   standalone: false
 })
 export class QyaComponent implements OnInit {
+  private onDestroy$ = new Subject<void>();
 
   constructor(
     private moduleServices: LegalsService,
@@ -30,9 +33,20 @@ export class QyaComponent implements OnInit {
     private encryptionService: EncryptionService,
     private notificationsService: NotificationService,
     private router: Router,
-    private location: Location
-  ) {
+    private location: Location,
+    private translationService: TranslationService
 
+  ) {
+    this.translationService.currentLang$
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(resp => {
+      if(resp=="es-MX"){
+        this.selectES()
+      }
+      else{
+        this.selectEN()
+      }
+    });
   }
   ERROR = NOTIFICATION_CONSTANTS.ERROR_TYPE;
   QyAsEN!: CatQyA[];
@@ -103,5 +117,10 @@ export class QyaComponent implements OnInit {
 
   return() {
     this.location.back();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 }
