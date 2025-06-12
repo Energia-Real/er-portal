@@ -21,7 +21,7 @@ export class Mapper {
 
 		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.DURACION_PPA') : 'PPA Duration',
-			description: formatsService.formatContractDuration(response.contractDuration)
+			description: formatsService.formatContractDuration(response.plazoNominal)
 		});
 
 		primaryElements.push({
