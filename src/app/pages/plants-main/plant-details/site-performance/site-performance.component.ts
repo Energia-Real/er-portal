@@ -154,16 +154,15 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.translationService.currentLang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        console.log("cambio")
         this.initializeTranslations();
       });
   }
 
   initializeTranslations(): void {
     const chartKeys = [
-      { key:  'DETALLE_PLANTA.GENERACION', dataKey: 'generation', color:'rgba(87, 177, 177, 1)' },
-      { key: 'DETALLE_PLANTA.CONSUMO_CFE_RED', dataKey: 'cfeConsumption', color:'rgba(121, 36, 48, 1)'},
-      { key: 'DETALLE_PLANTA.CONSUMO', dataKey: 'consumption', color:'rgba(239, 68, 68, 1)' },   
+      { key: 'DETALLE_PLANTA.GENERACION', dataKey: 'generation', color: 'rgba(87, 177, 177, 1)' },
+      { key: 'DETALLE_PLANTA.CONSUMO_CFE_RED', dataKey: 'cfeConsumption', color: 'rgba(121, 36, 48, 1)' },
+      { key: 'DETALLE_PLANTA.CONSUMO', dataKey: 'consumption', color: 'rgba(239, 68, 68, 1)' },
     ];
 
     const months: Record<string, string> = {
@@ -187,20 +186,20 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
 
     forkJoin([chartTranslations$, monthTranslations$]).subscribe(([chartTranslations, translatedMonths]) => {
       this.labelsChart = chartKeys;
-    
+
       // Guardar traducciones de los keys
       this.translatedChartMap = chartKeys.reduce((acc, item, index) => {
         acc[item.key] = chartTranslations[index];
         return acc;
       }, {} as Record<string, string>);
 
-    
+
       this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
         acc[abbr] = translatedMonths[index];
         return acc;
       }, {} as Record<string, string>);
     });
-    
+
   }
 
   getUserClient() {
@@ -208,7 +207,14 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     if (encryptedData) {
       const userInfo = this.encryptionService.decryptData(encryptedData);
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.translationService.currentLang$
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(() => {
+            this.initializeTranslations();
+            this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
+          });
         this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
+
       });
     }
   }
@@ -233,8 +239,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   }
 
   updateClientsChart(dataResponse: entity.DataResponseArraysMapper) {
-    console.log(dataResponse);
-
     this.sitePerformance.primaryElements = dataResponse.primaryElements;
     this.sitePerformance.additionalItems = dataResponse.additionalItems;
 

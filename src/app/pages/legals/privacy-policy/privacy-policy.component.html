@@ -7,12 +7,22 @@
                 </button>
             </div>
             <div class="content-header">
-                <h1 class="label-500-24">Trends</h1>
+                <h1 class="label-500-24">{{"LEGALS.POLITICAS_DE_PRIVACIDAD.TITULO"| translate}}</h1>
             </div>
         </div>
 
         <div class="c-content c-taps grid grid-cols-4 gap-x-6 gap-y-4 md:gap-5">
-        
+            <div class="col-span-3 position-relative">
+                
+
+                        <pdf-viewer class="pdfViewer" *ngIf="selectedLanguage=='english'"  [zoom]=".8" [src]="pdfSources.english" [show-all]="true"
+                            style=""></pdf-viewer>
+
+
+                        <pdf-viewer class="pdfViewer" *ngIf="selectedLanguage=='spanish'"  [zoom]=".8" [src]="pdfSources.spanish" [show-all]="true"
+                            style=""></pdf-viewer>
+
+            </div>
 
 
             <div class="col-span-1 position-relative">

@@ -7,34 +7,27 @@
                 </button>
             </div>
             <div class="content-header">
-                <h1 class="label-500-24">Terms of service</h1>
+                <h1 class="label-500-24">{{"LEGALS.TERMINOS_DE_SERVICIO.TITULO"| translate}}</h1>
             </div>
         </div>
 
         <div class="c-content c-taps grid grid-cols-4 gap-x-6 gap-y-4 md:gap-5">
             <div class="col-span-3 position-relative">
-                <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="0"
-                    (selectedTabChange)="onTabChange($event)">
 
-                    <mat-tab label="English">
-                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="termsServiceSources.english" [show-all]="true"
-                            style=""></pdf-viewer>
+                <pdf-viewer class="pdfViewer" *ngIf="selectedLanguage=='english'" [zoom]=".8"
+                    [src]="termsServiceSources.english" [show-all]="true" style=""></pdf-viewer>
 
-                    </mat-tab>
 
-                    <mat-tab label="Spanish">
-                        <pdf-viewer class="pdfViewer" [zoom]=".8" [src]="termsServiceSources.spanish" [show-all]="true"
-                            style=""></pdf-viewer>
-                    </mat-tab>
+                <pdf-viewer class="pdfViewer" *ngIf="selectedLanguage=='spanish'" [zoom]=".8"
+                    [src]="termsServiceSources.spanish" [show-all]="true" style=""></pdf-viewer>
 
-                </mat-tab-group>
             </div>
 
 
             <div class="col-span-1 position-relative">
                 <button class="btn-action-add width-large btn-width-large" (click)="downloadPDF()">
                     <span class="material-symbols-outlined">download</span>
-                    Download
+                    {{"LEGALS.DOWNLOAD_BUTTON"| translate}}
                 </button>
             </div>
         </div>

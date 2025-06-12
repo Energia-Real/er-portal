@@ -32,7 +32,7 @@ export class PrivacyPolicyComponent implements OnDestroy {
     .subscribe(resp => {
       this.selectedLanguage = resp === "es-MX" ? 'spanish' : 'english';
 
-      console.log(resp)
+      console.log(this.selectedLanguage)
     });
   }
 

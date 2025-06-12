@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Location } from '@angular/common';
+import { TranslationService } from '@app/shared/services/i18n/translation.service';
 
 @Component({
     selector: 'app-terms-service',
@@ -16,19 +17,23 @@ export class TermsServiceComponent implements OnDestroy  {
 
   termsServiceSources = {
     english: '../../../../assets/pdfs/Términos de servicios - inglés.pdf',
-    spanish: '../../../../assets/pdfs/ter',
+    spanish: '../../../../assets/pdfs/Terminos de servicio-español.pdf',
   };
 
   selectedLanguage: 'english' | 'spanish' = 'english';
 
   constructor(
     private dialog: MatDialog,
-    private location: Location
-  ) { }
+    private location: Location,
+    private translationService: TranslationService,
+  ) {
+    this.translationService.currentLang$
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(resp => {
+      this.selectedLanguage = resp === "es-MX" ? 'spanish' : 'english';
+    });
+   }
 
-  onTabChange(event: MatTabChangeEvent) {
-    this.selectedLanguage = event.index === 1 ? 'spanish' : 'english';
-  }
 
   downloadPDF() {
     const pdfUrl = this.termsServiceSources[this.selectedLanguage];
