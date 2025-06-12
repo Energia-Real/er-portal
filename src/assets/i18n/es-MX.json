@@ -396,6 +396,12 @@
       "HORARIO": "09:00 AM – 08:00 PM",
       "MENSAJE_SERVICIO": "Estamos a tu servicio para cualquier duda o consulta.",
       "SEGUIR_REDES": "Síguenos en"
+    },
+    "POLITICAS_DE_PRIVACIDAD":{
+      "TITULO": "Política de Privacidad"
+    },
+    "TERMINOS_DE_SERVICIO":{
+      "TITULO": "Términos de servicio"
     }
   },
   "MAPA": {

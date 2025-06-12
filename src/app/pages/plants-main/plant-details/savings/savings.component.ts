@@ -186,6 +186,12 @@ export class SavingsComponent implements OnInit, OnDestroy {
       const userInfo = this.encryptionService.decryptData(encryptedData);
 
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.translationService.currentLang$
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(() => {
+            this.initializeTranslations();
+            this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
+          });
         this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
       });
     }
