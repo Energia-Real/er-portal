@@ -168,6 +168,7 @@ export interface DataSiteDetails {
   installDate: string;
   cod: string
   commissionDate: string
+  plazoNominal: number
 }
 
 export interface ResponseSystem {

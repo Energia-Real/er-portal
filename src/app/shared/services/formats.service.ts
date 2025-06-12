@@ -137,13 +137,13 @@ export class FormatsService {
     return months[month - 1];
   }
 
-  formatContractDuration(duration: { years: number; months: number; days: number }): string {
-    const { years, months, days } = duration;
+  formatContractDuration(duration: number): string {
+   // const { years, months, days } = duration;
 
-    const yearText = years ? `${years} year(s)` : '';
-    const monthText = months ? `${months} month(s)` : '';
-    const dayText = days ? `${days} day(s)` : '';
+    const yearText = duration ? `${duration} year(s)` : '';
+    //const monthText = months ? `${months} month(s)` : '';
+    //const dayText = days ? `${days} day(s)` : '';
 
-    return [yearText, monthText].filter(Boolean).join(' ');
+    return yearText;
   }
 }
