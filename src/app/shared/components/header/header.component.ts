@@ -12,6 +12,7 @@ import { selectTopUnreadNotifications } from '@app/core/store/selectors/notifica
 import { EncryptionService } from '@app/shared/services/encryption.service';
 import { NOTIFICATION_CONSTANTS } from '@app/core/constants/notification-constants';
 import { ConfigGlobalFilters } from '../global-filters/global-filters-model';
+import { LoadingService } from '@app/core/services/loading.service';
 
 
 @Component({
@@ -47,7 +48,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
     private encryptionService: EncryptionService,
-
   ) {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.routeActive = this.router.url.split('?')[0];

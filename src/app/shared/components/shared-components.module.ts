@@ -16,6 +16,7 @@ import { TabulatorTableComponent } from './tabulator-table/tabulator-table.compo
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageSwitcherComponent } from './language-switcher/language-switcher.component';
 import { GlobalFiltersComponent } from './global-filters/global-filters.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { GlobalFiltersComponent } from './global-filters/global-filters.componen
     FormsModule,
     TranslateModule,
     LanguageSwitcherComponent,
-    
+    NgxSkeletonLoaderModule
   ],
   exports: [
     HeaderComponent,

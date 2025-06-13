@@ -83,13 +83,14 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
     this.destroyTooltips();
 
     const estados = this.el.nativeElement.querySelectorAll('path');
+    
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
       const dataEstado = this.tooltipsInfo.find(item => item.state.toLowerCase() === nombreEstado?.toLowerCase());
       const tooltipContent = this.createComponent(TooltipComponent);
       tooltipContent.instance.title = nombreEstado || '';
 
-      if (dataEstado) {
+      if (dataEstado && dataEstado.plants && dataEstado.tco2Savings) {
         tooltipContent.instance.infoAdicional = [
           { subtitle: this.translationService.instant('MAPA.TOOLTIPS.ACTIVE'), content: `${dataEstado.plants} ${this.translationService.instant('MAPA.TOOLTIPS.PLANTS')}` },
           { subtitle: this.translationService.instant('MAPA.TOOLTIPS.TOTAL_CAPACITY'), content: `${dataEstado.totalInstalledCapacity.toLocaleString()} kWh` },

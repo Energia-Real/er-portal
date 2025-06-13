@@ -127,13 +127,6 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUserClient();
-
-    // Subscribe to language changes
-    this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.initializeTranslations();
-      });
   }
 
   initializeTranslations(): void {
@@ -189,9 +182,11 @@ export class SavingsComponent implements OnInit, OnDestroy {
         this.translationService.currentLang$
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(() => {
+            this.isLoading = true;
             this.initializeTranslations();
             this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
           });
+          this.isLoading = true;
         this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
       });
     }
@@ -236,7 +231,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
     this.displayChart = true;
     this.isLoading = false;
     this.initChart();
-    this.chart?.update();
+    //this.chart?.update();
   }
 
   getSavings(filters: GeneralFilters) {
@@ -248,6 +243,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
+        this.isLoading = false;
       }
     });
   }

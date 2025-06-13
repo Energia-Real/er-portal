@@ -150,12 +150,6 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.dateToday = new Date(this.dateToday.getFullYear(), 0, 1);
     this.getStatus();
     this.getUserClient();
-
-    this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.initializeTranslations();
-      });
   }
 
   initializeTranslations(): void {
@@ -210,10 +204,11 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
         this.translationService.currentLang$
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(() => {
+            this.isLoading = true;
             this.initializeTranslations();
             this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
           });
-        this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
+        //this.getSitePerformance({ clientId: userInfo.clientes[0], ...generalFilters });
 
       });
     }
@@ -276,7 +271,7 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
     this.displayChart = true;
     this.isLoading = false;
     this.initChart();
-    this.chart?.update();
+    //this.chart?.update();
   }
 
   getStatus() {
@@ -295,14 +290,27 @@ export class SitePerformanceComponent implements OnInit, OnDestroy {
   }
 
   initChart(): void {
-    const ctx = document.getElementById('myChartPerformance') as HTMLCanvasElement;
-    if (ctx) {
+    setTimeout(() => {
+      const canvasId = 'myChartPerformance';
+      const ctx = document.getElementById(canvasId) as HTMLCanvasElement | null;
+  
+      if (!ctx) {
+        console.warn('Canvas not found:', canvasId);
+        return;
+      }
+  
+      // Destruye gráfica previa si existe
+      const existingChart = Chart.getChart(canvasId);
+      if (existingChart) {
+        existingChart.destroy();
+      }
+  
       this.chart = new Chart(ctx, {
         type: 'bar',
         data: this.lineChartData,
-        options: this.lineChartOptions
+        options: this.lineChartOptions,
       });
-    }
+    });
   }
 
   createNotificationError(notificationType: string, title?: string, description?: string, warn?: string) {
