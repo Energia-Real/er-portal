@@ -83,8 +83,7 @@ export class MapaComponent implements AfterViewInit, OnDestroy {
     this.destroyTooltips();
 
     const estados = this.el.nativeElement.querySelectorAll('path');
-    console.log(estados)
-    console.log(this.tooltipsInfo)
+    
     estados.forEach((estado: HTMLElement) => {
       const nombreEstado = estado.getAttribute('id');
       const dataEstado = this.tooltipsInfo.find(item => item.state.toLowerCase() === nombreEstado?.toLowerCase());
