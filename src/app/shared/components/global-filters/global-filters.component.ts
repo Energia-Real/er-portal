@@ -14,6 +14,7 @@ import { selectClients, selectClientsIndividual, selectLegalNames, selectProduct
 import * as CatalogActions from '../../../core/store/actions/catalogs.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { LoadingService } from '@app/core/services/loading.service';
 
 @Component({
   selector: 'app-global-filters',
@@ -85,13 +86,16 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
 
   filteredLegalNames$!: Observable<any[]>;
   filteredProducts$!: Observable<any[]>;
-
+  loading$ = this.loadingService.loading$;
+  
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private store: Store<{ filters: GeneralFilters }>,
     private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private loadingService: LoadingService
+
   ) {
     this.generalFilters$ = this.store.select(state => state.filters);
     this.clients$ = this.store.select(selectClients);
