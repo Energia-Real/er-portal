@@ -139,7 +139,7 @@
         </mat-form-field>
     </div>
 
-    <button class="apply" [ngClass]="{
+    <button *ngIf="!(loading$ | async); else loadingSkeletonCircle" class="apply" [ngClass]="{
           'color-disabled': yearStartSelected > yearEndSelected,
           'cursor-pointer': yearStartSelected < yearEndSelected ,
           }" [disabled]="yearStartSelected > yearEndSelected"
@@ -147,3 +147,11 @@
         (click)="emitOrDispatchFilters()">Apply
     </button>
 </div>
+
+<ng-template #loadingSkeletonCircle>
+    <div class="flex flex-col  ">
+        <ngx-skeleton-loader count="1" appearance="circle">
+           
+        </ngx-skeleton-loader>
+    </div>
+</ng-template>

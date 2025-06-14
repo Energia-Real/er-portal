@@ -84,6 +84,7 @@
       font-size: 16px;
       font-weight: 700;
     }
+    
 
     .div-groups-saving {
 
@@ -261,7 +262,8 @@
 
   .table-container-scroll {
     overflow-y: auto;
-    height: 450px;
+    height: auto;
+    max-height: 450px;
     margin-bottom: 0 !important;
     margin-top: 0 !important;
     overflow-x: hidden;
@@ -412,3 +414,4 @@
 .messageEC {
   font-size: 16px !important;
 }
+

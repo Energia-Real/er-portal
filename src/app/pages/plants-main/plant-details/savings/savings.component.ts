@@ -109,7 +109,9 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   isLoading: boolean = true;
 
-  labelsChart: { key: string; text: string; }[] = [];
+  labelsChart: { key: string; dataKey: string; color: any }[] = [];
+  translatedChartMap: Record<string, string> = {};
+
   translatedMonthsMap: Record<string, string> = {};
 
   constructor(
@@ -125,21 +127,16 @@ export class SavingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getUserClient();
-
-    // Subscribe to language changes
-    this.translationService.currentLang$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-        this.initializeTranslations();
-      });
   }
 
   initializeTranslations(): void {
-    const keysChart = [
-      'GRAFICOS.GASTOS_SIN_ENERGIA_REAL',
-      'GRAFICOS.CFE_SUBTOTAL',
-      'GRAFICOS.ENERGIA_REAL_SUBTOTAL',
-      'GRAFICOS.AHORRO_ECONOMICO',
+    const chartKeys = [
+      { key: 'GRAFICOS.CFE_SUBTOTAL', dataKey: 'cfeSubtotal', color: 'rgba(121, 36, 48, 1)' },
+      {
+        key: 'GRAFICOS.ENERGIA_REAL_SUBTOTAL', dataKey: 'erSubtotal', color: 'rgba(255, 71, 19, 1)',
+      },
+      { key: 'GRAFICOS.GASTOS_SIN_ENERGIA_REAL', dataKey: 'expenditureWithoutER', color: 'rgba(239, 68, 68, 1)' },
+      { key: 'GRAFICOS.AHORRO_ECONOMICO', dataKey: 'savings', color: 'rgba(87, 177, 177, 1)', },
     ];
 
     const months: Record<string, string> = {
@@ -158,22 +155,21 @@ export class SavingsComponent implements OnInit, OnDestroy {
     };
 
     const monthKeys = Object.values(months);
-    const chartTranslations$ = forkJoin(keysChart.map(k => this.translationService.getTranslation(k)));
+    const chartTranslations$ = forkJoin(chartKeys.map(k => this.translationService.getTranslation(k.key)));
     const monthTranslations$ = forkJoin(monthKeys.map(k => this.translationService.getTranslation(k)));
 
-    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([[generacion, produccion, consumo, ahorro], translatedMonths]) => {
-      this.labelsChart = [
-        { key: keysChart[0], text: generacion },
-        { key: keysChart[1], text: produccion },
-        { key: keysChart[2], text: consumo },
-        { key: keysChart[3], text: ahorro }
-      ];
+    forkJoin([chartTranslations$, monthTranslations$]).subscribe(([chartTranslations, translatedMonths]) => {
+      this.labelsChart = chartKeys;
+
+      this.translatedChartMap = chartKeys.reduce((acc, item, index) => {
+        acc[item.key] = chartTranslations[index];
+        return acc;
+      }, {} as Record<string, string>);
 
       this.translatedMonthsMap = Object.keys(months).reduce((acc, abbr, index) => {
         acc[abbr] = translatedMonths[index];
         return acc;
       }, {} as Record<string, string>);
-
     });
   }
 
@@ -183,67 +179,59 @@ export class SavingsComponent implements OnInit, OnDestroy {
       const userInfo = this.encryptionService.decryptData(encryptedData);
 
       this.generalFilters$.subscribe((generalFilters: GeneralFilters) => {
+        this.translationService.currentLang$
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(() => {
+            this.isLoading = true;
+            this.initializeTranslations();
+            this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
+          });
+          this.isLoading = true;
         this.getSavings({ clientId: userInfo.clientes[0], ...generalFilters });
       });
     }
   }
 
   updateClientsChart(dataResponse: entity.getSavingsDetails) {
-    const labels = this.labelsChart.map(l => l.text);
+    //const labels = this.labelsChart.map(l => l.text);
     const translatedMonthsMap = this.translatedMonthsMap;
 
     const chartLabels = dataResponse.monthlyData?.map((item: any) => {
       const match = item.month.match(/^([A-Z]+)\((\d{2})\)$/);
       if (match) {
         const [_, monthAbbr, year] = match;
-        const translatedMonth = translatedMonthsMap[monthAbbr] ?? monthAbbr;
+        const translatedMonth = this.translatedMonthsMap[monthAbbr] ?? monthAbbr;
         return `${translatedMonth} (${year})`;
       } else {
-        return translatedMonthsMap[item.month] ?? item.month;
+        return this.translatedMonthsMap[item.month] ?? item.month;
       }
     });
 
+
     this.lineChartData = {
       labels: chartLabels,
-      datasets: [
-        {
-          type: 'bar',
-          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.cfeSubtotal)),
-          label: labels[0],
-          backgroundColor: 'rgba(121, 36, 48, 1)',
-          order: 1
-        },
-        {
-          type: 'bar',
-          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.erSubtotal)),
-          label: labels[1],
-          backgroundColor: 'rgba(255, 71, 19, 1)',
-          order: 1
-        },
-        {
-          type: 'bar',
-          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.savings)),
-          label: labels[2],
-          backgroundColor: 'rgba(87, 177, 177, 1)',
-          order: 1
-        },
-        {
-          type: 'line',
-          data: dataResponse.monthlyData.map(item => this.formatsService.savingsGraphFormat(item.expenditureWithoutER)),
-          label: labels[3],
-          borderColor: 'rgba(239, 68, 68, 1)',
-          backgroundColor: 'rgba(239, 68, 68, 1)',
-          pointBackgroundColor: 'rgba(239, 68, 68, 1)',
-          pointBorderColor: 'rgba(239, 68, 68, 1)',
-          order: 0
-        }
-      ]
+      datasets: this.labelsChart.map((labelItem, index) => {
+        const isLine = labelItem.dataKey === 'expenditureWithoutER';
+
+        return {
+          type: isLine ? 'line' : 'bar',
+          data: dataResponse.monthlyData.map(item =>
+            this.formatsService.savingsGraphFormat((item as Record<string, any>)[labelItem.dataKey])
+          ),
+          label: this.translatedChartMap[labelItem.key],
+          backgroundColor: labelItem.color,
+          borderColor: isLine ? labelItem.color : undefined,
+          pointBackgroundColor: isLine ? labelItem.color : undefined,
+          pointBorderColor: isLine ? labelItem.color : undefined,
+          order: isLine ? 0 : 1
+        };
+      })
     };
 
     this.displayChart = true;
     this.isLoading = false;
     this.initChart();
-    this.chart?.update();
+    //this.chart?.update();
   }
 
   getSavings(filters: GeneralFilters) {
@@ -255,6 +243,7 @@ export class SavingsComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.notificationService.notificacion(`Talk to the administrator.`, 'alert');
         console.log(error);
+        this.isLoading = false;
       }
     });
   }

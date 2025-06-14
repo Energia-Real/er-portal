@@ -65,6 +65,7 @@ export class SiteDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
         if (!this.notData) {
+          this.isLoading = true
           this.getSiteDetails();
         }
       });

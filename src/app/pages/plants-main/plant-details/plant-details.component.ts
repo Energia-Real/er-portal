@@ -279,7 +279,7 @@ export class PlantsDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loadingTimeZone = false;
         this.isLoadingTZ = false;
         this.createNotificationError(NOTIFICATION_CONSTANTS.ERROR_TITLE_TIME_ZONE, NOTIFICATION_CONSTANTS.ERROR_CONTENT_TIME_ZONE)
-        console.error(error)
+        //console.error(error)
       }
     })
   }

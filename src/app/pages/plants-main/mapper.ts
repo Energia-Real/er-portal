@@ -8,7 +8,6 @@ export class Mapper {
 	static getSiteDetailsMapper(response: entity.DataSiteDetails, formatsService: FormatsService, translationService?: TranslationService): DataResponseArraysMapper {
 		const primaryElements: entity.DataResponseDetailsCard[] = []
 		const additionalItems: entity.DataResponseDetailsCard[] = []
-
 		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.RPU') : 'RPU',
 			description: response.rpu
@@ -21,12 +20,12 @@ export class Mapper {
 
 		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.DURACION_PPA') : 'PPA Duration',
-			description: formatsService.formatContractDuration(response.contractDuration)
+			description: formatsService.formatContractDuration(response.plazoNominal)
 		});
 
 		primaryElements.push({
 			title: translationService ? translationService.instant('PLANTAS.MAPPER.FECHA_OPERACION_COMERCIAL') : 'Commercial Operation Date (COD)',
-			description: formatsService.dateFormat(response.cod)
+			description: formatsService.dateFormat(response.commissionDate)
 		});
 
 

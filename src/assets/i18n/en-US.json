@@ -8,7 +8,9 @@
     "NO_RESULTADOS": "No results found.",
     "INFORMACION_NO_DISPONIBLE": "The requested information is not available.",
     "SIN_DATOS_TITULO": "No data available",
-    "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later."
+    "SIN_DATOS_SUBTITULO": "Try adjusting the filters or check back later.",
+    "ERROR_FINAL_MENOR_INICIO": "End date cannot be before start date",
+    "CERRAR" : "Close"
   },
   "SIDEBAR" : {
     "INICIO": "Home",
@@ -395,6 +397,12 @@
       "HORARIO": "09:00 AM – 08:00 PM",
       "MENSAJE_SERVICIO": "We are at your service for any questions or concerns.",
       "SEGUIR_REDES": "Follow us on"
+    },
+    "POLITICAS_DE_PRIVACIDAD":{
+      "TITULO": "Privacy Policy"
+    },
+    "TERMINOS_DE_SERVICIO":{
+      "TITULO": "Términos de servicio"
     }
   },
   "MAPA": {
@@ -408,6 +416,6 @@
   "DETALLE_PLANTA": {
     "GENERACION": "Generation",
     "CONSUMO_CFE_RED": "CFE network consumption (MWh)",
-    "CONSUMO_CFE": "Consumption (MWh)"
+    "CONSUMO": "Consumption (MWh)"
   }
 }
