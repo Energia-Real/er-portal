@@ -204,6 +204,8 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
 
     const start = new Date(baseFilters.startDate);
     const end = new Date(baseFilters.endDate);
+ 
+
 
     if (end < start) {
       this.snackBar.open(
@@ -307,6 +309,9 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
 
   selectStartMonth(month: MonthsFilters, menuTrigger: MatMenuTrigger) {
     this.selectedStartMonth = month;
+    if(this.singleMonth){
+      this.selectedEndMonth = month;
+    }
     menuTrigger.closeMenu();
   }
 
@@ -324,6 +329,14 @@ export class GlobalFiltersComponent implements OnInit, AfterViewInit, OnDestroy,
         if (monthNum > this.currentMonth) this.selectedStartMonth = { name: 'Jan', value: '01' };
       }
     } else {
+      this.yearEndSelected = year;
+      if (year == this.currentYear && this.selectedEndMonth) {
+        const monthNum = +this.selectedEndMonth.value;
+        if (monthNum > this.currentMonth) this.selectedEndMonth = { name: this.months[this.currentMonth - 1].name, value: this.months[this.currentMonth - 1].value };
+      }
+    }
+
+    if(this.singleMonth){
       this.yearEndSelected = year;
       if (year == this.currentYear && this.selectedEndMonth) {
         const monthNum = +this.selectedEndMonth.value;
