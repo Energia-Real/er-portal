@@ -341,6 +341,7 @@
     "ESTADO": "Status",
     "PRODUCTO": "Product",
     "MONTO": "Amount",
+    "SUBTOTAL": "Subtotal",
     "ACCION": "Action",
     "DESCARGAR_PDF": "Download PDF",
     "DESCARGAR_XML": "Download XML",
