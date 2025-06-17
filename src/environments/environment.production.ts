@@ -9,7 +9,7 @@ export const environment = {
   API_URL_FINANTIAL_MODEL_SOCKET:
     'ws://er-financial-model-calc-ms.azurewebsites.net/api/',
   APP: 'backoffice',
-  GOOGLE_API_KEY: 'AIzaSyAO4bqxxS4-CkLR_vY1RKJNwDanh5vyvq8',
+  GOOGLE_API_KEY: 'AIzaSyAm6X3YpXfXqYdRANKV4AADLZPkedrwG2k',
   TOMORROW_KEY: '5ly8YFL87NUmMvqZBd1QWIyKovbH6uNF',
   CRYPTO_KEY: '4Vx!9H7j@LkP*2qZ$m#F&tWdRp^C!8s',
 };
