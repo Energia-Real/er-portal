@@ -104,7 +104,7 @@ export class InvoiceTableService {
       'FACTURACION.PERIODO',
       'FACTURACION.ESTADO',
       'FACTURACION.PRODUCTO',
-      'FACTURACION.MONTO',
+      'FACTURACION.SUBTOTAL',
       'FACTURACION.ACCION'
     ];
 
