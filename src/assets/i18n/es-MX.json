@@ -39,7 +39,7 @@
     "ELEMENTOS": "Elementos",
     "RPU": "RPU",
     "NOMBRE_CLIENTE": "Nombre del cliente",
-    "CAPACIDAD_AC": "Capacidad AC (kW)",
+    "CAPACIDAD_AC": "Capacidad instalada \n en corriente alterna",
     "ESTADO": "Estado",
     "ACCIONES": "Acciones",
     "EDITAR": "Editar",
@@ -97,8 +97,9 @@
     "POTENCIA_ESPECIFICA": "Potencia específica (kW/kWp)",
     "POTENCIA_ACTIVA": "Potencia activa (kW)",
     "IRRADIANCIA": "Irradiancia",
+    "TAXES_INFO":"*Precios mostrados antes de impuestos (IVA no incluido).",  
     "MAPPER": {
-      "ULTIMA_CONEXION": "Última conexión",
+      "ULTIMA_CONEXION": "Última conexión registrada",
       "DURACION_PPA": "Duración PPA",
       "EDAD_ACTIVO": "Edad del activo (años)",
       "AÑOS": "Años",
@@ -142,7 +143,9 @@
     "CARGAS_OLYMPIC": "cargas completas de coche eléctrico.",
     "CALCULANDO_AHORRO": "Calculando ahorro económico...",
     "AHORRO_ECONOMICO": "Ahorro económico",
-    "OBTENIENDO_CONSUMO": "Obteniendo consumo de energía..."
+    "OBTENIENDO_CONSUMO": "Obteniendo consumo de energía...",
+    "ENERGIA_OVERVIEW": "Resumen energético"
+
   },
   "TABLA": {
     "NOMBRE_SITIO": "Nombre del sitio",

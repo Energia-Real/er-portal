@@ -120,9 +120,10 @@ export class OverviewComponent implements OnInit, OnInit, OnDestroy {
           ticks: {
             callback: function (value: any) {
               if (value >= 1000) {
-                return `${value / 1000}K`;
+                return `$ ${value / 1000}K`;
               }
-              return value.toString();
+              return `$ ${ value}`
+             
             },
           },
         },
