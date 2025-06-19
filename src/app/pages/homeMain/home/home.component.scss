@@ -252,7 +252,12 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      .title{
+        h2{
+          font-weight: 700 !important;
 
+        }
+      }
     }
 
     highcharts-chart {

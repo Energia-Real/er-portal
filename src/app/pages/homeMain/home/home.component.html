@@ -28,7 +28,7 @@
                         <div class="linea"></div>
                     </div>
                 </div>
-                <div class="total-saving" *ngIf="!isLoadingSDWidget else loadingSkeleton">
+                <div  *ngIf="!isLoadingSDWidget else loadingSkeleton">
                     <h2 *ngIf="savingsDetails?.totalSavings else notDataTable">
                         ${{ savingsDetails.totalSavings }}
                     </h2>
@@ -40,7 +40,7 @@
         <div class="c-solar-co2">
             <div class="c-card-section solar-coverage">
                 <div>
-                    <img src="../../../../assets/icons/solar-coverage.svg" alt="">
+                    <img src="../../../../assets/svg/solar-coverage-icon.svg" alt="">
                     <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingSCWidget">{{
                         'HOME.COBERTURA_SOLAR' | translate }}</h2>
                     <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingSCWidget">{{
@@ -62,7 +62,7 @@
                         <p *ngIf="savingsDetails?.totalSavingsPercent else notDataTable">
                             {{ savingsDetails.totalSavingsPercent }}%</p>
                         <br>
-                        <h3 *ngIf="savingsDetails?.totalSavingsPercent ">CFE vs CFE+ER</h3>
+                        <h3 *ngIf="savingsDetails?.totalSavingsPercent ">vs CFE</h3>
                     </div>
                 </div>
             </div>
@@ -148,10 +148,8 @@
     <div class="col-span-2 lg:col-span-1">
         <div class="c-card-section c-plants">
             <div class="c-section-plant">
-                <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingMapa">{{ 'PLANTAS.RECUPERANDO_DATOS' |
-                    translate }}</h2>
-                <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">{{ 'PLANTAS.PLANTAS' | translate
-                    }}</h2>
+                <h2 class="text-er-orange text-base font-normal" *ngIf="isLoadingMapa">{{ 'PLANTAS.RECUPERANDO_DATOS' |translate }}</h2>
+                <h2 class="text-er-orange text-base font-normal" *ngIf="!isLoadingMapa">{{ 'PLANTAS.PLANTAS' | translate }}</h2>
                 
             </div>
             <div class="flex gap-4 items-stretch">
@@ -190,14 +188,40 @@
             </div>
 
             <div class="graph">
-                <h2 class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">{{
-                    'HOME.OBTENIENDO_CONSUMO' | translate }}</h2>
+                <div class="title w-full flex justify-start">
+                    <h2 class="text-er-orange text-base messageEC h-10" *ngIf="isLoadingECWidget">{{
+                        'HOME.OBTENIENDO_CONSUMO' | translate }}</h2>
+                    <h2 class="text-er-orange text-base text-left messageEC h-10" *ngIf="!isLoadingECWidget">{{ 'HOME.ENERGIA_OVERVIEW'
+                    | translate }}</h2>
+                </div>
 
                 <canvas baseChart [type]="'bar'" [data]="lineChartData" height="195" [options]="lineChartOptions">
                 </canvas>
             </div>
         </div>
     </div>
+   <!--  <div class="col-span-2 lg:col-span-1">
+        <div class="c-card-section economic-savings flex flex-col">
+            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="isLoadingECWidget">{{'HOME.OBTENIENDO_CONSUMO' | translate }}</h2>
+            <h2 class="text-er-orange text-base font-normal h-10" *ngIf="!isLoadingECWidget">{{ 'HOME.AHORRO_ECONOMICO'
+                | translate }}</h2>
+            <div class="d-flex c-graphic-performance justify-center align-center text-center flex-1">
+                <div class="graphic-performance relative h-full w-full flex items-center">
+
+                    <canvas baseChart [type]="'bar'" [data]="lineChartData" height="195" [options]="lineChartOptions">
+                    </canvas>
+
+                    <div *ngIf="isLoadingECWidget"
+                        class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-200 bg-opacity-50">
+                        <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="40"
+                            class="custom-spinner">
+                        </mat-progress-spinner>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
 
     <div class="col-span-2 mb-5">
         <div class="c-card-section">

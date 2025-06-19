@@ -5,7 +5,7 @@
 
       <div class="c-address" *ngIf="!isLoadingPD else loadingSkeletonTwo">
         <h1 *ngIf="plantData?.siteName else notDataTable">{{ plantData.siteName }} </h1>
-        <p>{{ 'PLANTAS.DIRECCION_APROXIMADA' | translate }}: <span
+        <p>{{ 'PLANTAS.DIRECCION' | translate }}: <span
             *ngIf="addressPlace else loadingSkeletonTwo">{{addressPlace}}</span>
       </div>
     </div>
@@ -39,7 +39,7 @@
 
         <div>
           <div class="content" *ngIf="!isLoadingPD else loadingSkeletonTwo">
-            <p>{{ 'PLANTAS.CAPACIDAD_AC' | translate }}</p>
+            <p class="whitespace-pre-line">{{ 'PLANTAS.CAPACIDAD_AC' | translate }}</p>
             <span *ngIf="plantData?.nominalPowerAC else notDataTable">{{ plantData.nominalPowerAC }} kW</span>
           </div>
           <div class="linea"></div>
