@@ -39,7 +39,7 @@
     "ELEMENTOS": "Items",
     "RPU": "RPU",
     "NOMBRE_CLIENTE": "Client name",
-    "CAPACIDAD_AC": "AC Capacity (kW)",
+    "CAPACIDAD_AC": "Alternating \n Current Capacity",
     "ESTADO": "Status",
     "ACCIONES": "Actions",
     "EDITAR": "Edit",
@@ -97,8 +97,9 @@
     "POTENCIA_ESPECIFICA": "Specific power (kW/kWp)",
     "POTENCIA_ACTIVA": "Active power (kW)",
     "IRRADIANCIA": "Irradiance",
+    "TAXES_INFO":"*Prices shown before taxes (VAT not included).",  
     "MAPPER": {
-      "ULTIMA_CONEXION": "Last connection timestamp",
+      "ULTIMA_CONEXION": "Last recorded connection ",
       "DURACION_PPA": "PPA Duration",
       "EDAD_ACTIVO": "Asset age (years)",
       "AÑOS": "Years",
@@ -129,7 +130,6 @@
     "ENERGIA_CONSUMO_TOTAL": "Total Energy Consumption",
     "ENERGIA_PRODUCCION_TOTAL": "Total Energy Production",
     "COSTO_CFE_SIN_SOLAR": "CFE Cost without Solar",
-    "AHORRO_TOTAL": "Total Savings",
     "COBERTURA_SOLAR": "Solar Coverage",
     "AHORRO_TOTAL": "Total Savings",
     "CALCULANDO_COBERTURA": "Calculating solar coverage...",
@@ -143,7 +143,8 @@
     "CARGAS_OLYMPIC": "Olympic-sized swimming pools",
     "CALCULANDO_AHORRO": "Calculating economic savings...",
     "AHORRO_ECONOMICO": "Economic savings",
-    "OBTENIENDO_CONSUMO": "Getting energy consumption..."
+    "OBTENIENDO_CONSUMO": "Getting energy consumption...",
+    "ENERGIA_OVERVIEW": "Energy overview"
   },
   "TABLA": {
     "NOMBRE_SITIO": "Site name",
